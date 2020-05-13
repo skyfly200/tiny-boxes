@@ -33,7 +33,7 @@
           v-col(align="center" md="2" offset-sm="5" xs="4" offset-xs="4")
             v-pagination(v-model="page" circle @click="loadCells" :length="pages")
             v-combobox.page-items(v-model="itemsPerPage" @change="selectCellsPerPage" dense hint="Cells per page" label="Tokens per page" menu-props="top" :items='["12","18","24","36","48","96"]')
-    v-dialog(v-model="dialog" persistent max-width="600px" @keydown.enter="tx.send(); dialog = false" @keydown.esc="clearMerge(); dialog = false" @keydown.delete="clearMerge(); dialog = false")
+    v-dialog(v-model="dialog" persistent max-width="600px" @keydown.enter="tx.send(); dialog = false" @keydown.esc="dialog = false" @keydown.delete="dialog = false")
       v-card.tx-preview
         v-card-title {{ tx.title }}
         v-card-subtitle Transaction Preview
@@ -44,7 +44,7 @@
         v-card-actions
           v-btn(class="mt-6" text color="success" @click="tx.send(); dialog = false") Submit
           v-spacer
-          v-btn(class="mt-6" text color="error" @click="clearMerge(); dialog = false") Cancel
+          v-btn(class="mt-6" text color="error" @click="dialog = false") Cancel
 </template>
 
 <script>
@@ -91,14 +91,6 @@ export default {
     selectCellsPerPage() {
       this.$store.commit("setCellsPerPage", this.itemsPerPage);
       this.loadCells();
-    },
-    clearMerge() {
-      this.mergeCompare = false;
-      this.merge = [null, null];
-    },
-    setMerge(x, i) {
-      this.merge[x] = i;
-      this.mergeCompare = this.merge[0] && this.merge[1];
     },
     lookupCell: function(id) {
       return this.$store.state.contracts.cell.methods.get(id).call();
@@ -189,40 +181,6 @@ export default {
           .mint(699823429231)
           .encodeABI()
       });
-      this.listenForCells();
-    },
-    divideCell: function() {
-      this.$store.state.web3.eth
-        .sendTransaction({
-          from: this.currentAccount,
-          to: cellAddress,
-          value: this.$store.state.web3.utils.toWei("2", "finney"),
-          data: this.$store.state.contracts.cell.methods
-            .split(this.divide)
-            .encodeABI()
-        })
-        .then((err, result) => {
-          this.loadCells();
-        });
-      this.divide = null;
-      this.listenForCells();
-    },
-    mergeCells: function() {
-      this.$store.state.web3.eth
-        .sendTransaction({
-          from: this.currentAccount,
-          to: cellAddress,
-          value: this.$store.state.web3.utils.toWei("2", "finney"),
-          data: this.$store.state.contracts.cell.methods
-            .merge(this.merge[0], this.merge[1])
-            .encodeABI()
-        })
-        .then((err, result) => {
-          this.$delete(this.cells, this.merge[0]);
-          this.$delete(this.cells, this.merge[1]);
-          this.loadCells();
-        });
-      this.clearMerge();
       this.listenForCells();
     }
   }
