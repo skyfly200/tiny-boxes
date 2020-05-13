@@ -1,57 +1,49 @@
-<template>
-  <v-app>
-    <v-app-bar app color="primary" dark>
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <v-content>
-      <HelloWorld />
-    </v-content>
-  </v-app>
+<template lang="pug">
+  v-app
+    Nav(v-if="this.$route.path !== '/'")
+    v-content
+      router-view
+    v-bottom-navigation.bottom-nav(v-if="this.$route.path !== '/'" :value="page" color="secondary" app shift grow)
+      v-btn(to="/about" value="About")
+        span About
+        v-icon mdi-information
+      v-btn(to="/collection" value="Collection")
+        span Collection
+        v-icon mdi-scatter-plot-outline
+      v-btn(to="/guide" value="Guide")
+        span Guide
+        v-icon mdi-book-open-page-variant
 </template>
 
-<script lang="ts">
+<script>
 import Vue from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
+import Nav from "@/components/Nav.vue";
 
 export default Vue.extend({
   name: "App",
-
-  components: {
-    HelloWorld
+  components: { Nav },
+  computed: {
+    page() {
+      const route = this.$route.name;
+      if (route === 'Cell') return "Collection"; // show cell page as collection route
+      else return route;
+    }
   },
-
-  data: () => ({
-    //
-  })
 });
 </script>
+
+<style lang="sass">
+body
+  margin: 0
+  background-color: #121212
+  font-family: sans-serif
+.title
+  font-family: "Pangolin"
+  font-size: 2rem
+  color: #ffffff !important
+  text-decoration: none
+@media (min-width: 600px)
+  .v-bottom-navigation
+    visibility: hidden
+  
+</style>
