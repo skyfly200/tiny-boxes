@@ -37,7 +37,6 @@
                   span Complete
         v-col
           h1 Families
-          GChart(type="PieChart" :data="familyChart" :options="familyChartOptions")
 
           h1 Features
           .features
@@ -58,29 +57,29 @@
 <script lang="ts">
 import Vue from "vue";
 import { mapGetters } from "vuex";
-import { GChart } from 'vue-google-charts';
 import Cell from "@/components/Cell.vue";
 import Level from "@/components/Level.vue";
-import { cellAddress, cellABI } from "@/cell-contract";
-import cellUtils from "@/mixins/cellUtils";
-import cellRender from "@/mixins/cellRender";
 
 export default Vue.extend({
   name: "CellPage",
-  mixins: [cellUtils, cellRender],
-  components: { Cell, Level, GChart },
+  components: { Cell, Level },
   computed: {
     id(): number {
       return parseInt(this.$route.params.id);
     },
     familyChart(): any {
       const sorted = (this as any).sortFamilies(this.data.featureFamilies);
-      const titled = sorted.map((i: Array<any>) => [(this as any).getFeatureFamily(i[0]).title, i[1]]);
+      const titled = sorted.map((i: Array<any>) => [
+        (this as any).getFeatureFamily(i[0]).title,
+        i[1]
+      ]);
       return [this.familyChartHeader, ...titled];
     },
     familyChartOptions(): any {
       const sorted = (this as any).sortFamilies(this.data.featureFamilies);
-      const slices = sorted.map((i: Array<any>) => ({ color: (this as any).getFeatureFamily(i[0]).color }));
+      const slices = sorted.map((i: Array<any>) => ({
+        color: (this as any).getFeatureFamily(i[0]).color
+      }));
       const options = { ...this.chartOptions, slices: slices };
       return options;
     },
@@ -93,22 +92,32 @@ export default Vue.extend({
     },
     cyborg(): boolean {
       // cells with natural and artificial features
-      const natural = [0,1,2,3];
-      const artificial = [4,5];
-      return natural.reduce((acc,i) => acc || this.data.featureFamilies.includes(i.toString()), false )
-        && artificial.reduce((acc,i) => acc || this.data.featureFamilies.includes(i.toString()), false );
+      const natural = [0, 1, 2, 3];
+      const artificial = [4, 5];
+      return (
+        natural.reduce(
+          (acc, i) => acc || this.data.featureFamilies.includes(i.toString()),
+          false
+        ) &&
+        artificial.reduce(
+          (acc, i) => acc || this.data.featureFamilies.includes(i.toString()),
+          false
+        )
+      );
     },
     pure(): boolean {
-      return this.data.featureFamilies.reduce((acc: boolean, i: number) => acc && ( i === this.data.featureFamilies[0] ) );
+      return this.data.featureFamilies.reduce(
+        (acc: boolean, i: number) => acc && i === this.data.featureFamilies[0]
+      );
     },
     complete(): boolean {
       // has all manditory features for the family
       return false;
     },
-    ...mapGetters(['currentAccount']),
+    ...mapGetters(["currentAccount"])
   },
   mounted: async function() {
-    await this.$store.dispatch('initialize');
+    await this.$store.dispatch("initialize");
     await this.loadCell();
   },
   methods: {
@@ -118,34 +127,36 @@ export default Vue.extend({
         this.data = cached;
         this.loading = false;
       } else {
-        this.$store.state.contracts.cell.methods.get(this.id).call()
+        this.$store.state.contracts.cell.methods
+          .get(this.id)
+          .call()
           .then((result: any) => {
-            this.$store.commit('setCell', {id: this.id, data: result});
+            this.$store.commit("setCell", { id: this.id, data: result });
             this.data = result;
             this.loading = false;
-          })
-          // .catch( (err: any) => {
-          //   console.error(err);
-          // });
+          });
+        // .catch( (err: any) => {
+        //   console.error(err);
+        // });
       }
-    },
+    }
   },
   data: () => ({
     founders: 100,
     walls: 11,
     loading: true,
     data: {} as any,
-    familyChartHeader: ['Family', 'Features'],
+    familyChartHeader: ["Family", "Features"],
     chartOptions: {
       backgroundColor: "#121212",
       pieHole: 0.55,
       legend: {
-        textStyle: {color: '#ffffff', fontSize: 16},
-        position: 'labeled',
-        maxLines: 8,
+        textStyle: { color: "#ffffff", fontSize: 16 },
+        position: "labeled",
+        maxLines: 8
       },
-      pieSliceText: 'none',
-    },
+      pieSliceText: "none"
+    }
   })
 });
 </script>

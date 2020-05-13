@@ -1,15 +1,5 @@
 <template lang="pug">
   .home
-    vue-particles(color="#ffffff"
-      width=1000
-      :particleOpacity="0.1"
-      :particlesNumber="70"
-      shapeType="circle"
-      :particleSize="7"
-      :lineLinked="false"
-      :moveSpeed="1"
-      :hoverEffect="false"
-      :clickEffect="false").particles
     v-container(fluid)
       v-row(cols=6).landing
         v-col(align="center")
@@ -53,12 +43,7 @@
 
 <script>
 import Vue from "vue";
-import { mapGetters } from "vuex";
-
 import Cell from "@/components/Cell.vue";
-
-import VueParticles from "vue-particles";
-Vue.use(VueParticles);
 
 export default {
   name: "Home",
@@ -67,29 +52,35 @@ export default {
   },
   data: () => ({
     data: {
-      "mass": "1854",
-      "wallWave": "13",
-      "wallRound": true,
-      "wallColor": "76379945",
-      "nucleusHidden": false,
-      "nucleusColor": "120900",
-      "featureCategories": ["0","1","2","3","4","5","6","7"],
-      "featureFamilies": ["1","1","1","1","1","3","3","3"],
-      "featureCounts": ["14","9","5","3","2","11","13","14"],
-      "featureColors": ["176130","15004091","9558604","13202218","579032","16426533","14842158","568390"]
-    },
-  }),
-  computed: {
-    //...mapGetters(),
-  }
+      mass: "1854",
+      wallWave: "13",
+      wallRound: true,
+      wallColor: "76379945",
+      nucleusHidden: false,
+      nucleusColor: "120900",
+      featureCategories: ["0", "1", "2", "3", "4", "5", "6", "7"],
+      featureFamilies: ["1", "1", "1", "1", "1", "3", "3", "3"],
+      featureCounts: ["14", "9", "5", "3", "2", "11", "13", "14"],
+      featureColors: [
+        "176130",
+        "15004091",
+        "9558604",
+        "13202218",
+        "579032",
+        "16426533",
+        "14842158",
+        "568390"
+      ]
+    }
+  })
 };
 </script>
 
 <style lang="sass" scoped>
-  .particles
-    position: fixed
-    height: 100vh
-    width: 100vw
+.particles
+  position: fixed
+  height: 100vh
+  width: 100vw
   .landing
     padding-top: 10vh
     min-height: 100vh

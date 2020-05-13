@@ -17,9 +17,6 @@
             v-card.cell(:class="{ 'selected-cell': (merge[0] === i || merge[1] === i) }")
               v-card-title 
                 span {{ "#" + i }}
-                v-spacer 
-                v-skeleton-loader(v-if="cellsLoading[i]" transition-group="fade-transition" height="50" type="avatar")
-                Level(v-else :mass="cells[i].mass")
               v-card-text.cell-wrapper
                 v-skeleton-loader(:loading="cellsLoading[i]" transition-group="fade-transition" height="320" type="image")
                   Cell(:id="i" :data="cells[i]")
@@ -79,16 +76,12 @@
 
 <script>
 import Cell from "@/components/Cell.vue";
-import Level from "@/components/Level.vue";
-import { cellAddress, cellABI } from "../cell-contract";
+import { cellAddress } from "../cell-contract";
 import { mapGetters } from "vuex";
-
-import cellUtils from "@/mixins/cellUtils";
 
 export default {
   name: "Collection",
-  mixins: [cellUtils],
-  components: { Cell, Level },
+  components: { Cell },
   data: () => ({
     page: 1,
     itemsPerPage: 12, // this.$store.cellsPerPage
@@ -101,7 +94,7 @@ export default {
     loading: true,
     cellIDs: [],
     cellsLoading: {},
-    cells: {},
+    cells: {}
   }),
   computed: {
     selecting() {
@@ -112,12 +105,12 @@ export default {
     },
     pageCells() {
       const start = (this.page - 1) * this.itemsPerPage;
-      return this.cellIDs.slice(start, (start + this.itemsPerPage));
+      return this.cellIDs.slice(start, start + this.itemsPerPage);
     },
-    ...mapGetters(['currentAccount', 'cellsPerPage']),
+    ...mapGetters(["currentAccount", "cellsPerPage"])
   },
   mounted: async function() {
-    await this.$store.dispatch('initialize');
+    await this.$store.dispatch("initialize");
     this.itemsPerPage = this.cellsPerPage;
     // check if page param is within range
     this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
@@ -125,7 +118,7 @@ export default {
   },
   methods: {
     selectCellsPerPage() {
-      this.$store.commit('setCellsPerPage', this.itemsPerPage);
+      this.$store.commit("setCellsPerPage", this.itemsPerPage);
       this.loadCells();
     },
     clearMerge() {
@@ -143,13 +136,17 @@ export default {
       this.cells = {};
       this.cellIDs = [];
       this.clearMerge();
-      this.count = await this.$store.state.contracts.cell.methods.balanceOf(this.currentAccount).call();
-      this.$store.commit('setCount', this.count);
+      this.count = await this.$store.state.contracts.cell.methods
+        .balanceOf(this.currentAccount)
+        .call();
+      this.$store.commit("setCount", this.count);
       if (this.page > this.pages) this.page = this.pages;
       const start = (this.page - 1) * this.itemsPerPage;
-      for (let i = 0; i < this.itemsPerPage && (start + i) < this.count; i++) {
+      for (let i = 0; i < this.itemsPerPage && start + i < this.count; i++) {
         const index = start + i;
-        const cellID = await this.$store.state.contracts.cell.methods.tokenOfOwnerByIndex(this.currentAccount, index).call();
+        const cellID = await this.$store.state.contracts.cell.methods
+          .tokenOfOwnerByIndex(this.currentAccount, index)
+          .call();
         this.$set(this.cellIDs, index, cellID);
         this.$set(this.cellsLoading, cellID, true);
         this.loading = false;
@@ -158,8 +155,8 @@ export default {
           this.$set(this.cells, cellID, data);
           this.$set(this.cellsLoading, cellID, false);
         } else {
-          this.lookupCell(cellID).then((resp) => {
-            this.$store.commit('setCell', {id: cellID, data: resp});
+          this.lookupCell(cellID).then(resp => {
+            this.$store.commit("setCell", { id: cellID, data: resp });
             this.$set(this.cells, cellID, resp);
             this.$set(this.cellsLoading, cellID, false);
           });
@@ -167,22 +164,26 @@ export default {
       }
     },
     listenForCells: function() {
-      const cellsSubscription = this.$store.state.web3.eth.subscribe('logs', {
+      const cellsSubscription = this.$store.state.web3.eth
+        .subscribe("logs", {
           address: cellAddress,
           topics: [
-            '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef', 
-            '0x0000000000000000000000000000000000000000000000000000000000000000',
-            '0x000000000000000000000000' + this.currentAccount.slice(2)
-          ],
-      })
-      .on("data", function(log){
-        const index = parseInt(log.topics[3], 16)
-        this.lookupCell(index).then((resp) => this.cells[index] = resp);
-        this.loadCells();
-      }.bind(this))
-      .on("error", function(log){
-        this.listenForCells();
-      });
+            "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+            "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "0x000000000000000000000000" + this.currentAccount.slice(2)
+          ]
+        })
+        .on(
+          "data",
+          function(log) {
+            const index = parseInt(log.topics[3], 16);
+            this.lookupCell(index).then(resp => (this.cells[index] = resp));
+            this.loadCells();
+          }.bind(this)
+        )
+        .on("error", function(log) {
+          this.listenForCells();
+        });
     },
     previewTX(type) {
       const types = {
@@ -190,72 +191,70 @@ export default {
           title: "Mint Cell",
           message: "Mint a new CELL token",
           fee: 0.008,
-          send: this.mintCell,
+          send: this.mintCell
         },
         merge: {
           title: "Merge Cells",
           message: `Merge CELL tokens ${this.merge[0]} and ${this.merge[1]}`,
           fee: 0.002,
-          send: this.mergeCells,
+          send: this.mergeCells
         },
         divide: {
           title: "Divide Cell",
           message: `Divide CELL token ${this.divide}`,
           fee: 0.002,
-          send: this.divideCell,
-        },
+          send: this.divideCell
+        }
       };
       this.tx = types[type];
       this.dialog = true;
     },
     mintCell: function() {
-      this.$store.state.web3.eth.sendTransaction(
-        {
-          from: this.currentAccount,
-          to: cellAddress,
-          value: this.$store.state.web3.utils.toWei("8", "finney"),
-          data: this.$store.state.contracts.cell.methods
-            .mint(699823429231)
-            .encodeABI()
-        }
-      );
-      this.listenForCells()
+      this.$store.state.web3.eth.sendTransaction({
+        from: this.currentAccount,
+        to: cellAddress,
+        value: this.$store.state.web3.utils.toWei("8", "finney"),
+        data: this.$store.state.contracts.cell.methods
+          .mint(699823429231)
+          .encodeABI()
+      });
+      this.listenForCells();
     },
     divideCell: function() {
-      this.$store.state.web3.eth.sendTransaction(
-        {
+      this.$store.state.web3.eth
+        .sendTransaction({
           from: this.currentAccount,
           to: cellAddress,
           value: this.$store.state.web3.utils.toWei("2", "finney"),
           data: this.$store.state.contracts.cell.methods
             .split(this.divide)
             .encodeABI()
-        }
-      ).then((err, result) => {
-        this.loadCells();
-      });
+        })
+        .then((err, result) => {
+          this.loadCells();
+        });
       this.divide = null;
-      this.listenForCells()
+      this.listenForCells();
     },
     mergeCells: function() {
-      this.$store.state.web3.eth.sendTransaction(
-        {
+      this.$store.state.web3.eth
+        .sendTransaction({
           from: this.currentAccount,
           to: cellAddress,
           value: this.$store.state.web3.utils.toWei("2", "finney"),
           data: this.$store.state.contracts.cell.methods
             .merge(this.merge[0], this.merge[1])
             .encodeABI()
-        }
-      ).then((err, result) => {
-        this.$delete(this.cells, this.merge[0]);
-        this.$delete(this.cells, this.merge[1]);
-        this.loadCells();
-      });
+        })
+        .then((err, result) => {
+          this.$delete(this.cells, this.merge[0]);
+          this.$delete(this.cells, this.merge[1]);
+          this.loadCells();
+        });
       this.clearMerge();
-      this.listenForCells()
-    },
-  },
+      this.listenForCells();
+    }
+  }
 };
 </script>
 
