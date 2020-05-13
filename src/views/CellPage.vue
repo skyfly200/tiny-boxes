@@ -58,11 +58,10 @@
 import Vue from "vue";
 import { mapGetters } from "vuex";
 import Cell from "@/components/Cell.vue";
-import Level from "@/components/Level.vue";
 
 export default Vue.extend({
   name: "CellPage",
-  components: { Cell, Level },
+  components: { Cell },
   computed: {
     id(): number {
       return parseInt(this.$route.params.id);
