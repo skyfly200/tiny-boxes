@@ -6,7 +6,7 @@
       v-row(v-if="loading")
         v-col(align="center").cells-loading
           v-progress-circular(indeterminate size="75" color="primary")
-          h1 Fetching Your Cells
+          h1 Fetching Tokens
           h3 Please Wait...
       template(v-else)
         v-row
@@ -18,23 +18,13 @@
               v-card-title 
                 span {{ "#" + i }}
               v-card-text.cell-wrapper
-                v-skeleton-loader(:loading="cellsLoading[i]" transition-group="fade-transition" height="320" type="image")
-                  Cell(:id="i" :data="cells[i]")
+                  p Token Art Here
               v-divider
               v-card-actions
                 v-btn(:to="'/cell/' + i") View
-                v-spacer
-                v-btn(v-if="!merge[0]" :disabled="i === merge[0]" color="primary" @click="setMerge(0, i)")
-                  v-icon mdi-call-merge
-                  span Merge
-                v-btn(v-else-if="i === merge[0]" color="warning" @click="clearMerge") Cancel
-                v-btn(v-else color="success" @click="setMerge(1, i)") Select
-                v-btn(color="primary" @click="divide = i; previewTX('divide')")
-                  v-icon mdi-call-split
-                  span Divide
           v-col(v-if="count === 0").get-started
             v-card(align="center").get-started-card
-              p You dont have any cells yet!
+              p You dont have any tokens yet!
               v-btn(outlined color="secondary") Mint
               span &nbsp;or&nbsp;
               v-btn(outlined color="secondary") Buy
@@ -42,24 +32,7 @@
         v-row(justify="center")
           v-col(align="center" md="2" offset-sm="5" xs="4" offset-xs="4")
             v-pagination(v-model="page" circle @click="loadCells" :length="pages")
-            v-combobox.page-items(v-model="itemsPerPage" @change="selectCellsPerPage" dense hint="Cells per page" label="Cells per page" menu-props="top" :items='["12","18","24","36","48","96"]')
-    v-bottom-sheet(v-model="mergeCompare" inset persistent @keydown.enter="previewTX('merge'); mergeCompare = false" @keydown.esc="clearMerge()" @keydown.delete="clearMerge()")
-      v-sheet(v-if="mergeCompare" align="center" height="430px")
-        v-container
-          v-row
-            template(v-for="i in merge")
-              v-col(:key="i")
-                .stats-bar
-                  span {{ "#" + i }}
-                  .mass
-                    span {{ cells[i].mass }}
-                    v-icon(large) mdi-atom
-                  Level(:mass="cells[i].mass")
-                Cell(:id="'merge' + i" :data="cells[i]")
-              v-divider(v-if="i === merge[0]" vertical)
-        .merge-btns
-          v-btn(class="mt-6" text color="success" @click="previewTX('merge'); mergeCompare = false") Merge
-          v-btn(class="mt-6" text color="error" @click="clearMerge()") Cancel
+            v-combobox.page-items(v-model="itemsPerPage" @change="selectCellsPerPage" dense hint="Cells per page" label="Tokens per page" menu-props="top" :items='["12","18","24","36","48","96"]')
     v-dialog(v-model="dialog" persistent max-width="600px" @keydown.enter="tx.send(); dialog = false" @keydown.esc="clearMerge(); dialog = false" @keydown.delete="clearMerge(); dialog = false")
       v-card.tx-preview
         v-card-title {{ tx.title }}
@@ -75,13 +48,11 @@
 </template>
 
 <script>
-import Cell from "@/components/Cell.vue";
 import { cellAddress } from "../cell-contract";
 import { mapGetters } from "vuex";
 
 export default {
   name: "Collection",
-  components: { Cell },
   data: () => ({
     page: 1,
     itemsPerPage: 12, // this.$store.cellsPerPage

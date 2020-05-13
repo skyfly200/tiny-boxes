@@ -3,53 +3,19 @@
     v-container(fluid)
       v-row(cols=6).landing
         v-col(align="center")
-          Cell.cell(id="1" :data="data")
-          h1.title Microverse
-          h3 Mint, merge, and divide NFT cells
-          h3 Compete to make massive unique cells and avoid getting rekt!
+          h1.title TinyBoxes
+          h3 Boxes Upon Boxes
+          h3 Art is stored on chain!
           .call-to-action
             v-btn.btn(color="primary" large to="/collection") Play Now
             v-btn.btn(color="tertiary" large to="/about") Learn More
-      v-row(no-gutters).details
-        v-col(align="center" xl="3" md="6" sm="12")
-          v-card.details-card
-            v-icon(large) mdi-draw
-            h1 Generative Open Source Art 
-            p An open source SVG renderer means you own your cells art
-            p Simultaniously promoting a vibrant third party ecosystem
-            v-btn(color="primary" large target="_new" href="https://github.com/NonFungibleTeam/cell") View Source
-        v-col(align="center" xl="3" md="6" sm="12")
-          v-card.details-card
-            v-icon(large) mdi-check-decagram
-            h1 ERC721 Standard NFTs
-            p Trade your cells on OpenSea
-            p Manage them in any NFT compatible wallet
-            v-btn(color="primary" large target="_new" href="https://opensea.io/") Shop OpenSea
-        v-col(align="center" xl="3" md="6" sm="12")
-          v-card.details-card
-            v-icon(large) mdi-dna
-            h1 Evolve Your Genetics
-            p Each cell has its own set of genes the determine its features
-            p Learn about how genes combine on merging
-            v-btn(color="primary" href="/guide/genes") Genetics
-        v-col(align="center" xl="3" md="6" sm="12")
-          v-card.details-card
-            v-icon(large) mdi-atom
-            h1 Expand Your Mass
-            p Gain mass to level up you cells
-            p Unlock special rewards for having the largest cells
-            v-btn(color="primary" href="/guide/mass") Mass
 </template>
 
 <script>
 import Vue from "vue";
-import Cell from "@/components/Cell.vue";
 
 export default {
   name: "Home",
-  components: {
-    Cell
-  },
   data: () => ({
     data: {
       mass: "1854",

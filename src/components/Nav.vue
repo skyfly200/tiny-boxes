@@ -29,7 +29,7 @@
       router-link(to="/")
         v-img.logo(src="/img/logo.svg" width="55" height="55")
       v-toolbar-title
-        router-link(to="/" text).mr-2.title Microverse
+        router-link(to="/" text).mr-2.title TinyBoxes
       v-spacer
       .link(v-for="l in links")
         v-btn(v-if="l.type === 'page'" :to="l.path" text)
@@ -61,7 +61,7 @@ export default {
     }
   },
   mounted: async function() {
-    await this.$store.dispatch('initialize');
+    await this.$store.dispatch("initialize");
   },
   data: () => ({
     drawer: false,
@@ -99,7 +99,7 @@ export default {
     ]
   }),
   computed: {
-    ...mapGetters(['currentAccount', 'web3Status']),
+    ...mapGetters(["currentAccount", "web3Status"])
   }
 };
 </script>
@@ -120,7 +120,7 @@ export default {
 .gravatar-mobile
   margin-right: 10px
 .mobile-menu-btn
-    display: none !important
+  display: none !important
 @media(max-width: 700px)
   .mobile-menu-btn
     display: block !important
