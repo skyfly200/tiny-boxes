@@ -27,7 +27,7 @@
         
     v-app-bar(app color="primary" dark)
       router-link(to="/")
-        v-img.logo(src="/img/logo.svg" width="55" height="55")
+        v-img.logo(src="/img/icons/favicon-32x32.png" width="55" height="55")
       v-toolbar-title
         router-link(to="/" text).mr-2.title TinyBoxes
       v-spacer
