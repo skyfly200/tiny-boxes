@@ -38,15 +38,15 @@ const store = new Vuex.Store({
       state.cellsPerPage = n;
     },
     setCellID(state, payload) {
-      let index: (keyof typeof state.cellIDs) = payload.index;
+      const index: (keyof typeof state.cellIDs) = payload.index;
       state.cellIDs[index] = payload.id;
     },
     setCell(state, payload) {
-      let id: (keyof typeof state.cachedCells) = payload.id;
+      const id: (keyof typeof state.cachedCells) = payload.id;
       state.cachedCells[id] = payload.data;
     },
     setContract(state, payload) {
-      let id: (keyof typeof state.contracts) = payload.id;
+      const id: (keyof typeof state.contracts) = payload.id;
       state.contracts[id] = payload.contract;
     },
     setWeb3(state, instance) {
@@ -93,7 +93,7 @@ const store = new Vuex.Store({
     },
     registerContracts(context) {
       return new Promise((resolve, reject) => {
-        let web3: any = context.state.web3;
+        const web3: any = context.state.web3;
         if (web3 !== null) {
           context.commit("setContract", {
             id: "cell",
@@ -105,7 +105,7 @@ const store = new Vuex.Store({
     },
     loadAccount(context) {
       return new Promise((resolve, reject) => {
-        let web3: any = context.state.web3;
+        const web3: any = context.state.web3;
         if (web3 !== null) {
           web3.eth.getAccounts((err: any, resp: any) => {
             if (err) reject(err);
