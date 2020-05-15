@@ -1,11 +1,21 @@
 <template lang="pug">
-  v-container.guide
-    v-row(cols=6).landing
-      v-col(align="center").content
-        h1 Guide
-        h2 Index panel to left
-        h3 content pane to right
-        h3 {{ topic }}
+  .guide
+    v-navigation-drawer(permanent).menu
+      v-list(dense nav)
+        v-list-item
+          v-list-item-content
+            v-list-item-title(class="title") Welcome
+        v-list-item
+          v-list-item-content
+            v-list-item-title(class="title") Minting
+        v-list-item
+          v-list-item-content
+            v-list-item-title(class="title") Types
+    v-sheet.content
+      h1 Welcome to the Guide
+      h2 Learn more about tiny boxes
+      h3 Get started here
+      h3 {{ topic }}
 </template>
 
 <script lang="ts">
@@ -21,5 +31,15 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
+.v-content
+  padding-bottom: 0 !important
+.guide
+  display: flex
+  height: 100%
+.menu
+  height: 100%
+.content
+  width: 100%
+  text-align: center
 </style>
