@@ -26,11 +26,9 @@ const store = new Vuex.Store({
     web3: null,
     count: null,
     cellsPerPage: 12,
-    cellIDs: {},
-    cachedCells: {},
-    contracts: {
-      cells: null
-    }
+    cellIDs: { null: null },
+    cachedCells: { null: null },
+    contracts: { null: null }
   },
   mutations: {
     setCount(state, count) {
@@ -40,13 +38,16 @@ const store = new Vuex.Store({
       state.cellsPerPage = n;
     },
     setCellID(state, payload) {
-      state.cellIDs[payload.index] = payload.id;
+      let index: (keyof typeof state.cellIDs) = payload.index;
+      state.cellIDs[index] = payload.id;
     },
     setCell(state, payload) {
-      state.cachedCells[payload.id] = payload.data;
+      let id: (keyof typeof state.cachedCells) = payload.id;
+      state.cachedCells[id] = payload.data;
     },
     setContract(state, payload) {
-      state.contracts[payload.id] = payload.contract;
+      let id: (keyof typeof state.contracts) = payload.id;
+      state.contracts[id] = payload.contract;
     },
     setWeb3(state, instance) {
       state.web3 = instance;
@@ -92,22 +93,28 @@ const store = new Vuex.Store({
     },
     registerContracts(context) {
       return new Promise((resolve, reject) => {
-        context.commit("setContract", {
-          id: "cell",
-          contract: new context.state.web3.eth.Contract(cellABI, cellAddress)
-        });
-        resolve();
+        let web3: any = context.state.web3;
+        if (web3 !== null) {
+          context.commit("setContract", {
+            id: "cell",
+            contract: new web3.eth.Contract(cellABI, cellAddress)
+          });
+          resolve();
+        } else reject();
       });
     },
     loadAccount(context) {
       return new Promise((resolve, reject) => {
-        context.state.web3.eth.getAccounts((err: any, resp: any) => {
-          if (err) reject(err);
-          else {
-            context.commit("setAccount", resp[0]);
-            resolve(resp[0]);
-          }
-        });
+        let web3: any = context.state.web3;
+        if (web3 !== null) {
+          web3.eth.getAccounts((err: any, resp: any) => {
+            if (err) reject(err);
+            else {
+              context.commit("setAccount", resp[0]);
+              resolve(resp[0]);
+            }
+          });
+        } else reject();
       });
     },
   },
