@@ -40,6 +40,7 @@ export default Vue.extend({
   data: () => ({
     drawer: false,
     mobile: true,
+    mobileBreak: 720,
     topics: {
       "": {
         title: "Welcome",
@@ -102,6 +103,17 @@ export default Vue.extend({
           }
         ];
       } else return [{ text: "404" }];
+    }
+  },
+  created() {
+    window.addEventListener("resize", this.resized);
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.resized);
+  },
+  methods: {
+    resized(e) {
+      this.mobile = window.innerWidth < this.mobileBreak;
     }
   }
 });
