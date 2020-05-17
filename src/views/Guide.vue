@@ -39,7 +39,7 @@ export default Vue.extend({
   components: { Welcome },
   data: () => ({
     drawer: false,
-    mobile: true,
+    mobile: false,
     mobileBreak: 720,
     topics: {
       "": {
@@ -106,14 +106,29 @@ export default Vue.extend({
     }
   },
   created() {
-    window.addEventListener("resize", this.resized);
+    this.resized();
+    const debouncedResize = this.debounce(this.resized, 250);
+    window.addEventListener("resize", debouncedResize);
   },
   destroyed() {
     window.removeEventListener("resize", this.resized);
   },
   methods: {
-    resized(e) {
+    resized() {
       this.mobile = window.innerWidth < this.mobileBreak;
+    },
+    debounce(func, wait, immediate) {
+      let timeout: null | boolean;
+      return function executedFunction() {
+        const later = function() {
+          timeout = null;
+          if (!immediate) func.apply(this);
+        };
+        const callNow = immediate && !timeout;
+        clearTimeout(this);
+        timeout = (setTimeout(later, wait) as unknown) as boolean;
+        if (callNow) func.apply(this);
+      };
     }
   }
 });
