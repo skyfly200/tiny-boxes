@@ -22,8 +22,7 @@
               p Error 404
               p {{ subtopic ? topic + '/' + subtopic : topic }} not found in guide
             v-col
-              br
-              v-btn(to="/guide/") Guide Home
+              v-btn(to="/guide/").btn404 Guide Home
 </template>
 
 <script lang="ts">
@@ -117,5 +116,7 @@ export default Vue.extend({
     justify-content: center
     padding-bottom: 0
 .err404
-  margin: 2em
+  margin: 20% 2em 2em 2em
+  .btn404
+    margin-top: 2em
 </style>
