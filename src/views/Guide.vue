@@ -1,10 +1,11 @@
 <template lang="pug">
   .guide
-    v-navigation-drawer(permanent).menu
+    v-navigation-drawer(v-model="drawer" :permanent="!mobile" :absolute="mobile").menu
       v-list(dense nav)
         v-list-item(v-for="t,tKey of topics" :to="'/guide/' + tKey")
           v-list-item-content
-            v-list-item-title(class="title") {{ t.title }}
+            v-list-item-title(class="title")
+              b {{ t.title }}
             template(v-if="t.subtopics")
               v-divider
               v-list(dense nav)
@@ -12,6 +13,10 @@
                   v-list-item-content
                     v-list-item-title(class="title") {{s.title}}
     v-sheet.content
+      v-app-bar(v-show="mobile && !drawer" collapse absolute width="55px")
+        v-btn(icon @click="drawer = !drawer")
+          v-icon mdi-book
+        v-spacer
       v-breadcrumbs(:items="items" large).breadcrumbs
       v-divider
       component(v-if="active" :is="active")
@@ -33,6 +38,8 @@ export default Vue.extend({
   name: "Guide",
   components: { Welcome },
   data: () => ({
+    drawer: false,
+    mobile: true,
     topics: {
       "": {
         title: "Welcome",
