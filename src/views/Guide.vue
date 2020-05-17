@@ -14,12 +14,16 @@
     v-sheet.content
       v-breadcrumbs(:items="items" large).breadcrumbs
       v-divider
-      Welcome(v-if="!topic")
-      h1(v-else-if="topic === 'minting'") Minting
-      h1(v-else-if="topic === 'types'") Types
-      h1(v-else-if="topic === 'graphics'") Graphics
+      component(v-if="active" :is="active")
       .err404(v-else) 
-        h1.error 404 Error: Page {{ topic }} not found in guide
+        v-alert(type="error" prominent)
+          v-row 
+            v-col 
+              p Error 404
+              p {{ subtopic ? topic + '/' + subtopic : topic }} not found in guide
+            v-col
+              br
+              v-btn(to="/guide/") Guide Home
 </template>
 
 <script lang="ts">
@@ -57,38 +61,41 @@ export default Vue.extend({
   }),
   computed: {
     topic() {
-      return this.$route.params.topic;
+      return this.$route.params.topic ? this.$route.params.topic : "";
     },
     subtopic() {
-      return this.$route.params.subtopic;
+      return this.$route.params.subtopic ? this.$route.params.subtopic : "";
+    },
+    active() {
+      const t = this.topic;
+      const s = this.subtopic;
+      return this.topics[t]
+        ? s && this.topics[t].subtopics
+          ? this.topics[t].subtopics[s]
+            ? this.topics[t].subtopics[s].component
+            : null
+          : this.topics[t].component
+        : null;
     },
     items() {
+      const topicData = this.topics[this.topic];
+      const title = topicData ? topicData.title : "404";
       if (!this.subtopic) {
+        return [{ text: title }];
+      } else if (this.active) {
         return [
           {
-            text: this.topic
-              ? this.topics[this.topic]
-                ? this.topics[this.topic].title
-                : "404"
-              : this.topics[""].title
-          }
-        ];
-      } else {
-        return [
-          {
-            text: this.topic
-              ? this.topics[this.topic]
-                ? this.topics[this.topic].title
-                : "404"
-              : this.topics[""].title,
+            text: title,
             exact: true,
             to: "/guide/" + this.topic
           },
           {
-            text: this.topics[this.topic].subtopics[this.subtopic].title
+            text: topicData.subtopics[this.subtopic]
+              ? topicData.subtopics[this.subtopic].title
+              : ""
           }
         ];
-      }
+      } else return [{ text: "404" }];
     }
   }
 });
@@ -109,4 +116,6 @@ export default Vue.extend({
     display: flex
     justify-content: center
     padding-bottom: 0
+.err404
+  margin: 2em
 </style>
