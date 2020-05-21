@@ -12,7 +12,7 @@ const vuexLocalStorage = new VuexPersist({
   storage: window.localStorage,
   reducer: (state: any) => ({
     count: state.count,
-    cellsPerPage: state.cellsPerPage,
+    itemsPerPage: state.itemsPerPage,
     cellIDs: state.cellIDs,
     cachedCells: state.cachedCells,
   })
@@ -25,25 +25,21 @@ const store = new Vuex.Store({
     web3Status: "loading",
     web3: null,
     count: null,
-    cellsPerPage: 12,
+    itemsPerPage: 12,
     cellIDs: { null: null },
-    cachedCells: { null: null },
+    cachedTokens: { null: null },
     contracts: { null: null }
   },
   mutations: {
     setCount(state, count) {
       state.count = count;
     },
-    setCellsPerPage(state, n) {
-      state.cellsPerPage = n;
+    setItemsPerPage(state, n) {
+      state.itemsPerPage = n;
     },
-    setCellID(state, payload) {
-      const index: (keyof typeof state.cellIDs) = payload.index;
-      state.cellIDs[index] = payload.id;
-    },
-    setCell(state, payload) {
-      const id: (keyof typeof state.cachedCells) = payload.id;
-      state.cachedCells[id] = payload.data;
+    setToken(state, payload) {
+      const id: (keyof typeof state.cachedTokens) = payload.id;
+      state.cachedTokens[id] = payload.data;
     },
     setContract(state, payload) {
       const id: (keyof typeof state.contracts) = payload.id;

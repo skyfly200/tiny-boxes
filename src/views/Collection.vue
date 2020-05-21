@@ -32,7 +32,7 @@
         v-row(justify="center")
           v-col(align="center" md="2" offset-sm="5" xs="4" offset-xs="4")
             v-pagination(v-model="page" circle @click="loadCells" :length="pages")
-            v-combobox.page-items(v-model="itemsPerPage" @change="selectCellsPerPage" dense hint="Cells per page" label="Tokens per page" menu-props="top" :items='["12","18","24","36","48","96"]')
+            v-combobox.page-items(v-model="itemsPerPage" @change="selectItemsPerPage" dense hint="Cells per page" label="Tokens per page" menu-props="top" :items='["12","18","24","36","48","96"]')
     v-dialog(v-model="dialog" persistent max-width="600px" @keydown.enter="tx.send(); dialog = false" @keydown.esc="dialog = false" @keydown.delete="dialog = false")
       v-card.tx-preview
         v-card-title {{ tx.title }}
@@ -55,7 +55,7 @@ export default {
   name: "Collection",
   data: () => ({
     page: 1,
-    itemsPerPage: 12, // this.$store.cellsPerPage
+    itemsPerPage: 12, // this.$store.itemsPerPage
     dialog: false,
     tx: {},
     mergeCompare: false,
@@ -78,18 +78,18 @@ export default {
       const start = (this.page - 1) * this.itemsPerPage;
       return this.cellIDs.slice(start, start + this.itemsPerPage);
     },
-    ...mapGetters(["currentAccount", "cellsPerPage"])
+    ...mapGetters(["currentAccount", "itemsPerPage"])
   },
   mounted: async function() {
     await this.$store.dispatch("initialize");
-    this.itemsPerPage = this.cellsPerPage;
+    this.itemsPerPage = this.itemsPerPage;
     // check if page param is within range
     this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
     await this.loadCells();
   },
   methods: {
-    selectCellsPerPage() {
-      this.$store.commit("setCellsPerPage", this.itemsPerPage);
+    selectItemsPerPage() {
+      this.$store.commit("setItemsPerPage", this.itemsPerPage);
       this.loadCells();
     },
     lookupCell: function(id) {
