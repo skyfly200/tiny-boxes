@@ -18,7 +18,7 @@
               v-card-title 
                 span {{ "#" + i }}
               v-card-text.cell-wrapper
-                  p Token Art Here
+                  Token(:id="0" :data="{}")
               v-divider
               v-card-actions
                 v-btn(:to="'/cell/' + i") View
@@ -50,9 +50,11 @@
 <script>
 import { cellAddress } from "../cell-contract";
 import { mapGetters } from "vuex";
+import Token from "@/components/Token.vue";
 
 export default {
   name: "Collection",
+  components: { Token },
   data: () => ({
     page: 1,
     itemsPerPage: 12, // this.$store.itemsPerPage
@@ -82,7 +84,7 @@ export default {
   },
   mounted: async function() {
     await this.$store.dispatch("initialize");
-    this.itemsPerPage = this.itemsPerPage;
+    this.itemsPerPage = this.$store.itemsPerPage;
     // check if page param is within range
     this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
     await this.loadCells();
