@@ -11,7 +11,7 @@
             .token-stats
             v-divider
             .token-graphic
-              Cell(:id="id" :data="data")
+              Token(:id="id" :data="data")
             v-divider
             .token-info
         v-col
@@ -22,11 +22,11 @@
 <script lang="ts">
 import Vue from "vue";
 import { mapGetters } from "vuex";
-import Cell from "@/components/Cell.vue";
+import Token from "@/components/Token.vue";
 
 export default Vue.extend({
   name: "TokenPage",
-  components: { Cell },
+  components: { Token },
   computed: {
     id(): number {
       return parseInt(this.$route.params.id);

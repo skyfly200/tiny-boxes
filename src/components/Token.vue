@@ -6,7 +6,7 @@
 import Vue from "vue";
 
 export default Vue.extend({
-  name: "Cell",
+  name: "Token",
   props: ["id", "data"],
   data: () => ({
     size: 100
