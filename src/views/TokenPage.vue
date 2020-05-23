@@ -53,14 +53,14 @@ export default Vue.extend({
         this.data = cached;
         this.loading = false;
       } else {
-        this.$store.state.contracts.cell.methods
-          .get(this.id)
-          .call()
-          .then((result: any) => {
-            this.$store.commit("setToken", { id: this.id, data: result });
-            this.data = result;
-            this.loading = false;
-          });
+        // this.$store.state.contracts.cell.methods
+        //   .get(this.id)
+        //   .call()
+        //   .then((result: any) => {
+        //     this.$store.commit("setToken", { id: this.id, data: result });
+        //     this.data = result;
+        //     this.loading = false;
+        //   });
         // .catch( (err: any) => {
         //   console.error(err);
         // });

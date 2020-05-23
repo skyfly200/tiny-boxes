@@ -3,7 +3,7 @@ import Vuex from "vuex";
 import Web3 from "web3";
 import VuexPersist from "vuex-persist";
 
-import { cellAddress, cellABI } from "@/cell-contract.ts";
+import { tinyboxesAddress, tinyboxesABI } from "@/tinyboxes-contract.ts";
 
 Vue.use(Vuex);
 
@@ -87,18 +87,6 @@ const store = new Vuex.Store({
         }
       });
     },
-    registerContracts(context) {
-      return new Promise((resolve, reject) => {
-        const web3: any = context.state.web3;
-        if (web3 !== null) {
-          context.commit("setContract", {
-            id: "cell",
-            contract: new web3.eth.Contract(cellABI, cellAddress)
-          });
-          resolve();
-        } else reject();
-      });
-    },
     loadAccount(context) {
       return new Promise((resolve, reject) => {
         const web3: any = context.state.web3;
@@ -110,6 +98,18 @@ const store = new Vuex.Store({
               resolve(resp[0]);
             }
           });
+        } else reject();
+      });
+    },
+    registerContracts(context) {
+      return new Promise((resolve, reject) => {
+        const web3: any = context.state.web3;
+        if (web3 !== null) {
+          context.commit("setContract", {
+            id: "tinyboxes",
+            contract: new web3.eth.Contract(tinyboxesABI,tinyboxesAddress)
+          });
+          resolve();
         } else reject();
       });
     },
