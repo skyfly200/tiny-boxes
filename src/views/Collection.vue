@@ -1,6 +1,6 @@
 <template lang="pug">
   .collection
-    v-app-bar(v-if="cells !== {}" absolute collapse dense)
+    v-app-bar(v-if="tokens !== {}" absolute collapse dense)
       v-btn(@click="previewTX('mint')") Mint
     v-container
       v-row(v-if="loading")
@@ -11,17 +11,17 @@
       template(v-else)
         v-row
           v-col(align="center")
-            v-pagination(v-model="page" circle @input="loadCells" :length="pages")
+            v-pagination(v-model="page" circle @input="loadTokens" :length="pages")
         v-row(no-gutters)
-          v-col(v-for="i in pageCells" :key="i + '-' + cells[i].mass" align="center" xl="3" lg="4" md="6" sm="12")
-            v-card.token(:class="{ 'selected-token': (merge[0] === i || merge[1] === i) }")
+          v-col(v-for="i in pageTokens" :key="i + '-token'" align="center" xl="3" lg="4" md="6" sm="12")
+            v-card.token
               v-card-title 
                 span {{ "#" + i }}
               v-card-text.token-wrapper
                   Token(:id="0" :data="{}")
               v-divider
               v-card-actions
-                v-btn(:to="'/cell/' + i") View
+                v-btn(:to="'/token/' + i") View
           v-col(v-if="count === 0").get-started
             v-card(align="center").get-started-card
               p You dont have any tokens yet!
@@ -31,8 +31,8 @@
               p one to get started
         v-row(justify="center")
           v-col(align="center" md="2" offset-sm="5" xs="4" offset-xs="4")
-            v-pagination(v-model="page" circle @click="loadCells" :length="pages")
-            v-combobox.page-items(v-model="itemsPerPage" @change="selectItemsPerPage" dense hint="Cells per page" label="Tokens per page" menu-props="top" :items='["12","18","24","36","48","96"]')
+            v-pagination(v-model="page" circle @click="loadTokens" :length="pages")
+            v-combobox.page-items(v-model="itemsPerPage" @change="selectItemsPerPage" dense hint="Tokens per page" label="Tokens per page" menu-props="top" :items='["12","18","24","36","48","96"]')
     v-dialog(v-model="dialog" persistent max-width="600px" @keydown.enter="tx.send(); dialog = false" @keydown.esc="dialog = false" @keydown.delete="dialog = false")
       v-card.tx-preview
         v-card-title {{ tx.title }}
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { cellAddress } from "../cell-contract";
+import { tinyboxesAddress } from "../tinyboxes-contract";
 import { mapGetters } from "vuex";
 import Token from "@/components/Token.vue";
 
@@ -65,9 +65,9 @@ export default {
     divide: null,
     count: null,
     loading: true,
-    cellIDs: [],
-    cellsLoading: {},
-    cells: {}
+    tokenIDs: [],
+    tokensLoading: {},
+    tokens: {}
   }),
   computed: {
     selecting() {
@@ -76,9 +76,9 @@ export default {
     pages() {
       return Math.floor(this.count / this.itemsPerPage + 1);
     },
-    pageCells() {
+    pageTokens() {
       const start = (this.page - 1) * this.itemsPerPage;
-      return this.cellIDs.slice(start, start + this.itemsPerPage);
+      return this.tokenIDs.slice(start, start + this.itemsPerPage);
     },
     ...mapGetters(["currentAccount", "itemsPerPage"])
   },
@@ -87,20 +87,20 @@ export default {
     this.itemsPerPage = this.$store.itemsPerPage;
     // check if page param is within range
     this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
-    await this.loadCells();
+    await this.loadTokens();
   },
   methods: {
     selectItemsPerPage() {
       this.$store.commit("setItemsPerPage", this.itemsPerPage);
-      this.loadCells();
+      this.loadTokens();
     },
-    lookupCell: function(id) {
-      return this.$store.state.contracts.cell.methods.get(id).call();
+    lookupToken: function(id) {
+      return this.$store.state.contracts.tinyboxes.methods.get(id).call();
     },
-    loadCells: async function() {
-      this.cells = {};
-      this.cellIDs = [];
-      this.count = await this.$store.state.contracts.cell.methods
+    loadTokens: async function() {
+      this.tokens = {};
+      this.tokenIDs = [];
+      this.count = await this.$store.state.contracts.tinyboxes.methods
         .balanceOf(this.currentAccount)
         .call();
       this.$store.commit("setCount", this.count);
@@ -108,29 +108,29 @@ export default {
       const start = (this.page - 1) * this.itemsPerPage;
       for (let i = 0; i < this.itemsPerPage && start + i < this.count; i++) {
         const index = start + i;
-        const cellID = await this.$store.state.contracts.cell.methods
+        const tokenID = await this.$store.state.contracts.tinyboxes.methods
           .tokenOfOwnerByIndex(this.currentAccount, index)
           .call();
-        this.$set(this.cellIDs, index, cellID);
-        this.$set(this.cellsLoading, cellID, true);
+        this.$set(this.tokenIDs, index, tokenID);
+        this.$set(this.tokensLoading, tokenID, true);
         this.loading = false;
-        const data = this.$store.state.cachedCells[cellID];
+        const data = this.$store.state.cachedTokens[tokenID];
         if (data) {
-          this.$set(this.cells, cellID, data);
-          this.$set(this.cellsLoading, cellID, false);
+          this.$set(this.tokens, tokenID, data);
+          this.$set(this.tokensLoading, tokenID, false);
         } else {
-          this.lookupCell(cellID).then(resp => {
-            this.$store.commit("setCell", { id: cellID, data: resp });
-            this.$set(this.cells, cellID, resp);
-            this.$set(this.cellsLoading, cellID, false);
+          this.lookupToken(tokenID).then(resp => {
+            this.$store.commit("setToken", { id: tokenID, data: resp });
+            this.$set(this.tokens, tokenID, resp);
+            this.$set(this.tokensLoading, tokenID, false);
           });
         }
       }
     },
-    listenForCells: function() {
-      const cellsSubscription = this.$store.state.web3.eth
+    listenForTokens: function() {
+      const tokenSubscription = this.$store.state.web3.eth
         .subscribe("logs", {
-          address: cellAddress,
+          address: tinyboxesAddress,
           topics: [
             "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
             "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -141,48 +141,36 @@ export default {
           "data",
           function(log) {
             const index = parseInt(log.topics[3], 16);
-            this.lookupCell(index).then(resp => (this.cells[index] = resp));
-            this.loadCells();
+            this.lookupToken(index).then(resp => (this.tokens[index] = resp));
+            this.loadTokens();
           }.bind(this)
         )
         .on("error", function(log) {
-          this.listenForCells();
+          this.listenForTokens();
         });
     },
     previewTX(type) {
       const types = {
         mint: {
-          title: "Mint Cell",
-          message: "Mint a new CELL token",
-          fee: 0.008,
-          send: this.mintCell
+          title: "Mint",
+          message: "Mint a new TinyBox token",
+          fee: 0.3,
+          send: this.mintToken
         },
-        merge: {
-          title: "Merge Cells",
-          message: `Merge CELL tokens ${this.merge[0]} and ${this.merge[1]}`,
-          fee: 0.002,
-          send: this.mergeCells
-        },
-        divide: {
-          title: "Divide Cell",
-          message: `Divide CELL token ${this.divide}`,
-          fee: 0.002,
-          send: this.divideCell
-        }
       };
       this.tx = types[type];
       this.dialog = true;
     },
-    mintCell: function() {
+    mintToken: function() {
       this.$store.state.web3.eth.sendTransaction({
         from: this.currentAccount,
-        to: cellAddress,
-        value: this.$store.state.web3.utils.toWei("8", "finney"),
-        data: this.$store.state.contracts.cell.methods
-          .mint(699823429231)
+        to: tinyboxesAddress,
+        value: this.$store.state.web3.utils.toWei("300", "finney"),
+        data: this.$store.state.contracts.tinyboxes.methods
+          .mint(699823429231) // put seed and dials here
           .encodeABI()
       });
-      this.listenForCells();
+      this.listenForTokens();
     }
   }
 };
@@ -193,9 +181,6 @@ export default {
   margin: 1rem
 .token-wrapper
   padding: 0
-.selected-token
-  border: solid #ffc107 2px
-  box-shadow: 0 0 20px 0 rgba(255,255,255,0.2)
 .tokens-loading
   padding-top: 40vh
 .get-started

@@ -20,7 +20,7 @@
             h4 Last Transfered:
           h1 Token Properties
             .token-properties
-              v-sheet.property(v-for="p in properties")
+              v-sheet.property(v-for="p in properties" :key="p.title")
                 h2 {{ p.value }}
                 h4 {{ p.title }}
           h1 OpenSea
@@ -53,23 +53,23 @@ export default Vue.extend({
         this.data = cached;
         this.loading = false;
       } else {
-        // this.$store.state.contracts.cell.methods
-        //   .get(this.id)
-        //   .call()
-        //   .then((result: any) => {
-        //     this.$store.commit("setToken", { id: this.id, data: result });
-        //     this.data = result;
-        //     this.loading = false;
-        //   });
-        // .catch( (err: any) => {
-        //   console.error(err);
-        // });
+        this.$store.state.contracts.tinyboxes.methods
+          .ownerOf(this.id)
+          .call()
+          .then((result: any) => {
+            this.$store.commit("setToken", { id: this.id, data: result });
+            this.data = result;
+            this.loading = false;
+          })
+          .catch( (err: any) => {
+            console.error(err);
+          });
       }
     }
   },
   data: () => ({
     loading: true,
-    data: {} as any,
+    data: {} as object,
     properties: [
       {
         title: "Shape Count",
@@ -78,8 +78,8 @@ export default Vue.extend({
       {
         title: "Color Count",
         value: 21
-      },
-    ],
+      }
+    ]
   })
 });
 </script>

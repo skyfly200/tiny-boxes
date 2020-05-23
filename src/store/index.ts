@@ -115,8 +115,8 @@ const store = new Vuex.Store({
     },
   },
   getters: {
-    cellsPerPage: state => {
-      return state.cellsPerPage;
+    itemsPerPage: state => {
+      return state.itemsPerPage;
     },
     currentAccount: state => {
       return state.currentAccount;
