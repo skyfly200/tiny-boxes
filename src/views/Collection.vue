@@ -4,7 +4,7 @@
       v-btn(@click="previewTX('mint')") Mint
     v-container
       v-row(v-if="loading")
-        v-col(align="center").cells-loading
+        v-col(align="center").tokens-loading
           v-progress-circular(indeterminate size="75" color="primary")
           h1 Fetching Tokens
           h3 Please Wait...
@@ -14,10 +14,10 @@
             v-pagination(v-model="page" circle @input="loadCells" :length="pages")
         v-row(no-gutters)
           v-col(v-for="i in pageCells" :key="i + '-' + cells[i].mass" align="center" xl="3" lg="4" md="6" sm="12")
-            v-card.cell(:class="{ 'selected-cell': (merge[0] === i || merge[1] === i) }")
+            v-card.token(:class="{ 'selected-token': (merge[0] === i || merge[1] === i) }")
               v-card-title 
                 span {{ "#" + i }}
-              v-card-text.cell-wrapper
+              v-card-text.token-wrapper
                   Token(:id="0" :data="{}")
               v-divider
               v-card-actions
@@ -189,14 +189,14 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.cell
+.token
   margin: 1rem
-.cell-wrapper
+.token-wrapper
   padding: 0
-.selected-cell
+.selected-token
   border: solid #ffc107 2px
   box-shadow: 0 0 20px 0 rgba(255,255,255,0.2)
-.cells-loading
+.tokens-loading
   padding-top: 40vh
 .get-started
   justify-content: center

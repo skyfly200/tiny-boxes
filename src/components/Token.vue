@@ -1,5 +1,6 @@
 <template lang="pug">
-  .shape
+  .token
+    span(v-html="data.svg").token-svg
 </template>
 
 <script>
@@ -9,14 +10,14 @@ export default Vue.extend({
   name: "Token",
   props: ["id", "data"],
   data: () => ({
-    size: 100
+    size: 100,
   }),
   async mounted() {
     this.load();
   },
   methods: {
     load() {
-      alert(this.size);
+      this.size = 100;
     }
   }
 });

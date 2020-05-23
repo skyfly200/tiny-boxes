@@ -9,13 +9,22 @@
         v-col(align="center")
           v-card
             .token-stats
+              h1 Token {{ id }}
             v-divider
             .token-graphic
               Token(:id="id" :data="data")
-            v-divider
-            .token-info
         v-col
           h1 Token Info
+            h4 Owner: 0x27af......0cb0
+            h4 Minted: 
+            h4 Last Transfered:
+          h1 Token Properties
+            .token-properties
+              v-sheet.property(v-for="p in properties")
+                h2 {{ p.value }}
+                h4 {{ p.title }}
+          h1 OpenSea
+            v-btn(large target="_blank" href="//opensea.io") View on OpenSea
     
 </template>
 
@@ -59,21 +68,18 @@ export default Vue.extend({
     }
   },
   data: () => ({
-    founders: 100,
-    walls: 11,
     loading: true,
     data: {} as any,
-    familyChartHeader: ["Family", "Features"],
-    chartOptions: {
-      backgroundColor: "#121212",
-      pieHole: 0.55,
-      legend: {
-        textStyle: { color: "#ffffff", fontSize: 16 },
-        position: "labeled",
-        maxLines: 8
+    properties: [
+      {
+        title: "Shape Count",
+        value: 11
       },
-      pieSliceText: "none"
-    }
+      {
+        title: "Color Count",
+        value: 21
+      },
+    ],
   })
 });
 </script>
@@ -93,7 +99,7 @@ export default Vue.extend({
   display: flex
   flex-direction: row
   justify-content: space-between
-.token-info
+.token-properties
   padding: 0 1rem 1rem 1rem
 .features
   margin: 2hv 1vw
