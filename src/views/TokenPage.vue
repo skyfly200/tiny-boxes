@@ -14,17 +14,17 @@
             .token-graphic
               Token(:id="id" :data="data")
         v-col
-          h1 Token Info
-            h4 Owner: 0x27af......0cb0
-            h4 Minted: 
-            h4 Last Transfered:
-          h1 Token Properties
-            .token-properties
-              v-sheet.property(v-for="p in properties" :key="p.title")
-                h2 {{ p.value }}
-                h4 {{ p.title }}
-          h1 OpenSea
+          .token-inf0
+            h1 Token Info
+            p Owner: 0x27af......0cb0
+            p Minted: 
+            p Last Transfered:
             v-btn(large target="_blank" href="//opensea.io") View on OpenSea
+          v-sheet.token-properties
+            h1 Token Properties
+            .property(v-for="p in properties" :key="p.title")
+              h2 {{ p.value }}
+              h4 {{ p.title }}
     
 </template>
 
@@ -54,13 +54,50 @@ export default Vue.extend({
         this.loading = false;
       } else {
         this.$store.state.contracts.tinyboxes.methods
-          .shapeCount(this.id)
+          .perpetualRender(
+            3425423452345, // seed
+            11, // color count
+            7, // shape count
+            200, // X position
+            200, // Y position
+            100, // width
+            50, // widht variance
+            100, // height
+            50, // height variance
+            7 // density
+          )
           .call()
           .then((result: any) => {
             this.$store.commit("setToken", { id: this.id, data: result });
-            this.properties.push({title: "Shape Count", value: result});
             this.data = result;
             this.loading = false;
+          })
+          .catch( (err: any) => {
+            console.error(err);
+          });
+        this.$store.state.contracts.tinyboxes.methods
+          .colorCount(this.id)
+          .call()
+          .then((result: any) => {
+            this.properties.push({title: "Color Count", value: result});
+          })
+          .catch( (err: any) => {
+            console.error(err);
+          });
+        this.$store.state.contracts.tinyboxes.methods
+          .shapeCount(this.id)
+          .call()
+          .then((result: any) => {
+            this.properties.push({title: "Shape Count", value: result});
+          })
+          .catch( (err: any) => {
+            console.error(err);
+          });
+        this.$store.state.contracts.tinyboxes.methods
+          .creator(this.id)
+          .call()
+          .then((result: any) => {
+            this.properties.push({title: "Creator", value: result});
           })
           .catch( (err: any) => {
             console.error(err);
@@ -71,12 +108,7 @@ export default Vue.extend({
   data: () => ({
     loading: true,
     data: {} as object,
-    properties: [
-      {
-        title: "Color Count",
-        value: 21
-      }
-    ]
+    properties: []
   })
 });
 </script>
@@ -96,8 +128,6 @@ export default Vue.extend({
   display: flex
   flex-direction: row
   justify-content: space-between
-.token-properties
-  padding: 0 1rem 1rem 1rem
 .features
   margin: 2hv 1vw
   display: flex
