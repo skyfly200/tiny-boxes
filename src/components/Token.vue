@@ -1,6 +1,6 @@
 <template lang="pug">
   .token
-    span(v-html="data.svg").token-svg
+    span(v-html="data").token-svg
 </template>
 
 <script>
@@ -23,7 +23,3 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="sass" scoped>
-.token-svg
-  margin: 1rem
-</style>
