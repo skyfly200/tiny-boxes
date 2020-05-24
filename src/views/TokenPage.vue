@@ -23,8 +23,8 @@
           v-sheet.token-properties
             h1 Token Properties
             .property(v-for="p in properties" :key="p.title")
-              h2 {{ p.value }}
               h4 {{ p.title }}
+              span {{ p.value }}
     
 </template>
 
@@ -123,13 +123,16 @@ export default Vue.extend({
   font-size: 2rem
 .token-loading
   padding-top: 40vh
+.token-properties
+  padding: 1rem
+  margin: 1rem 0
 .token-stats
   padding: 1rem
   display: flex
   flex-direction: row
   justify-content: space-between
 .features
-  margin: 2hv 1vw
+  margin: 2vh 1vw
   display: flex
   flex-wrap: wrap
 .feature

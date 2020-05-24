@@ -22,3 +22,8 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style lang="sass" scoped>
+.token-svg
+  margin: 1rem
+</style>
