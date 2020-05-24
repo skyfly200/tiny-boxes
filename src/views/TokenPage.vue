@@ -54,10 +54,11 @@ export default Vue.extend({
         this.loading = false;
       } else {
         this.$store.state.contracts.tinyboxes.methods
-          .ownerOf(this.id)
+          .shapeCount(this.id)
           .call()
           .then((result: any) => {
             this.$store.commit("setToken", { id: this.id, data: result });
+            this.properties.push({title: "Shape Count", value: result});
             this.data = result;
             this.loading = false;
           })
@@ -71,10 +72,6 @@ export default Vue.extend({
     loading: true,
     data: {} as object,
     properties: [
-      {
-        title: "Shape Count",
-        value: 11
-      },
       {
         title: "Color Count",
         value: 21
