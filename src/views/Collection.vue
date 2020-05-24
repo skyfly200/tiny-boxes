@@ -18,7 +18,7 @@
               v-card-title 
                 span {{ "#" + i }}
               v-card-text.token-wrapper
-                  Token(:id="0" :data="{}")
+                  Token(:id="id" :data="tokens[i]")
               v-divider
               v-card-actions
                 v-btn(:to="'/token/' + i") View
