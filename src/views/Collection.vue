@@ -61,6 +61,7 @@ export default {
     tx: {},
     itemsPerPageSelector: 12,
     count: null,
+    ownerOnly: false,
     loading: true,
     tokenIDs: [],
     tokensLoading: {},
@@ -97,30 +98,51 @@ export default {
     loadTokens: async function() {
       this.tokens = {};
       this.tokenIDs = [];
-      this.count = await this.$store.state.contracts.tinyboxes.methods
-        .balanceOf(this.currentAccount)
-        .call();
-      this.$store.commit("setCount", this.count);
       if (this.page > this.pages) this.page = this.pages;
-      const start = (this.page - 1) * this.itemsPerPage;
-      for (let i = 0; i < this.itemsPerPage && start + i < this.count; i++) {
-        const index = start + i;
-        const tokenID = await this.$store.state.contracts.tinyboxes.methods
-          .tokenOfOwnerByIndex(this.currentAccount, index)
+      if (this.ownerOnly) { // load only tokens that you own
+        this.count = await this.$store.state.contracts.tinyboxes.methods
+          .balanceOf(this.currentAccount)
           .call();
-        this.$set(this.tokenIDs, index, tokenID);
-        this.$set(this.tokensLoading, tokenID, true);
-        this.loading = false;
-        const data = this.$store.state.cachedTokens[tokenID];
-        if (data) {
-          this.$set(this.tokens, tokenID, data);
-          this.$set(this.tokensLoading, tokenID, false);
-        } else {
-          this.lookupToken(tokenID).then(resp => {
-            this.$store.commit("setToken", { id: tokenID, data: resp });
-            this.$set(this.tokens, tokenID, resp);
+        this.$store.commit("setCount", this.count);
+        const start = (this.page - 1) * this.itemsPerPage;
+        for (let i = 0; i < this.itemsPerPage && start + i < this.count; i++) {
+          const index = start + i;
+          const tokenID = await this.$store.state.contracts.tinyboxes.methods
+            .tokenOfOwnerByIndex(this.currentAccount, index)
+            .call();
+          this.$set(this.tokenIDs, index, tokenID);
+          this.$set(this.tokensLoading, tokenID, true);
+          this.loading = false;
+          const data = this.$store.state.cachedTokens[tokenID];
+          if (data) {
+            this.$set(this.tokens, tokenID, data);
             this.$set(this.tokensLoading, tokenID, false);
-          });
+          } else {
+            this.lookupToken(tokenID).then(resp => {
+              this.$store.commit("setToken", { id: tokenID, data: resp });
+              this.$set(this.tokens, tokenID, resp);
+              this.$set(this.tokensLoading, tokenID, false);
+            });
+          }
+        }
+      } else { // load all
+        const start = (this.page - 1) * this.itemsPerPage;
+        for (let i = 0; i < this.itemsPerPage && start + i < this.count; i++) {
+          const tokenID = start + i;
+          this.$set(this.tokenIDs, tokenID, tokenID);
+          this.$set(this.tokensLoading, tokenID, true);
+          this.loading = false;
+          const data = this.$store.state.cachedTokens[tokenID];
+          if (data) {
+            this.$set(this.tokens, tokenID, data);
+            this.$set(this.tokensLoading, tokenID, false);
+          } else {
+            this.lookupToken(tokenID).then(resp => {
+              this.$store.commit("setToken", { id: tokenID, data: resp });
+              this.$set(this.tokens, tokenID, resp);
+              this.$set(this.tokensLoading, tokenID, false);
+            });
+          }
         }
       }
     },
