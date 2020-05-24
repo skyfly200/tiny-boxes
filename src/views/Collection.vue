@@ -94,16 +94,16 @@ export default {
       this.loadTokens();
     },
     lookupToken: function(id) {
-      return this.$store.state.contracts.tinyboxes.methods.perpetualrender(
+      return this.$store.state.contracts.tinyboxes.methods.perpetualRender(
             id, // seed
-            11, // color count
-            7, // shape count
+            id + 11, // color count
+            id + 7, // shape count
             200, // X position
             200, // Y position
             100, // width
-            50, // widht variance
+            id + 50, // widht variance
             100, // height
-            50, // height variance
+            id + 50, // height variance
             7 // density
           ).call();
     },
