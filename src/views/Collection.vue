@@ -18,7 +18,7 @@
               v-card-title 
                 span {{ "#" + i }}
               v-card-text.token-wrapper
-                  Token(:id="id" :data="tokens[i]")
+                  Token(:id="i" :data="tokens[i]")
               v-divider
               v-card-actions
                 v-btn(:to="'/token/' + i") View
@@ -64,6 +64,7 @@ export default {
     ownerOnly: false,
     loading: true,
     tokenIDs: [],
+    supply: 80,
     tokensLoading: {},
     tokens: {}
   }),
@@ -93,7 +94,18 @@ export default {
       this.loadTokens();
     },
     lookupToken: function(id) {
-      return this.$store.state.contracts.tinyboxes.methods.get(id).call();
+      return this.$store.state.contracts.tinyboxes.methods.perpetualrender(
+            id, // seed
+            11, // color count
+            7, // shape count
+            200, // X position
+            200, // Y position
+            100, // width
+            50, // widht variance
+            100, // height
+            50, // height variance
+            7 // density
+          ).call();
     },
     loadTokens: async function() {
       this.tokens = {};
@@ -127,7 +139,7 @@ export default {
         }
       } else { // load all
         const start = (this.page - 1) * this.itemsPerPage;
-        for (let i = 0; i < this.itemsPerPage && start + i < this.count; i++) {
+        for (let i = 0; i < this.itemsPerPage && start + i < this.supply; i++) {
           const tokenID = start + i;
           this.$set(this.tokenIDs, tokenID, tokenID);
           this.$set(this.tokensLoading, tokenID, true);
