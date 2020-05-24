@@ -32,7 +32,7 @@
         v-row(justify="center")
           v-col(align="center" md="2" offset-sm="5" xs="4" offset-xs="4")
             v-pagination(v-model="page" circle @click="loadTokens" :length="pages")
-            v-combobox.page-items(v-model="itemsPerPage" @change="selectItemsPerPage" dense hint="Tokens per page" label="Tokens per page" menu-props="top" :items='["12","18","24","36","48","96"]')
+            v-combobox.page-items(v-model="itemsPerPageSelector" @change="selectItemsPerPage" dense hint="Tokens per page" label="Tokens per page" menu-props="top" :items='["12","18","24","36","48","96"]')
     v-dialog(v-model="dialog" persistent max-width="600px" @keydown.enter="tx.send(); dialog = false" @keydown.esc="dialog = false" @keydown.delete="dialog = false")
       v-card.tx-preview
         v-card-title {{ tx.title }}
@@ -57,12 +57,9 @@ export default {
   components: { Token },
   data: () => ({
     page: 1,
-    itemsPerPage: 12, // this.$store.itemsPerPage
     dialog: false,
     tx: {},
-    mergeCompare: false,
-    merge: [null, null],
-    divide: null,
+    itemsPerPageSelector: 12,
     count: null,
     loading: true,
     tokenIDs: [],
@@ -84,14 +81,14 @@ export default {
   },
   mounted: async function() {
     await this.$store.dispatch("initialize");
-    this.itemsPerPage = this.$store.itemsPerPage;
+    this.itemsPerPageSelector = this.itemsPerPage;
     // check if page param is within range
     this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
     await this.loadTokens();
   },
   methods: {
     selectItemsPerPage() {
-      this.$store.commit("setItemsPerPage", this.itemsPerPage);
+      this.$store.commit("setItemsPerPage", this.itemsPerPageSelector);
       this.loadTokens();
     },
     lookupToken: function(id) {
