@@ -54,17 +54,16 @@ export default Vue.extend({
         this.loading = false;
       } else {
         this.$store.state.contracts.tinyboxes.methods
-          .perpetualRender(
+          .perpetualrender(
             3425423452345, // seed
-            11, // color count
-            7, // shape count
-            200, // X position
+            [11, 7], // color and shape counts
+            [200, // X position
             200, // Y position
             100, // width
             50, // widht variance
             100, // height
             50, // height variance
-            7 // density
+            7] // density
           )
           .call()
           .then((result: any) => {

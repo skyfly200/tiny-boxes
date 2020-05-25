@@ -64,7 +64,6 @@ export default {
     ownerOnly: false,
     loading: true,
     tokenIDs: [],
-    supply: 80,
     tokensLoading: {},
     tokens: {}
   }),
@@ -77,7 +76,7 @@ export default {
     },
     pageTokens() {
       const start = (this.page - 1) * this.itemsPerPage;
-      return this.tokenIDs.slice(start, start + this.itemsPerPage);
+      return this.tokenIDs.slice(start + 1, start + this.itemsPerPage + 1);
     },
     ...mapGetters(["currentAccount", "itemsPerPage"])
   },
@@ -94,18 +93,10 @@ export default {
       this.loadTokens();
     },
     lookupToken: function(id) {
-      return this.$store.state.contracts.tinyboxes.methods.perpetualRender(
-            id, // seed
-            id + 11, // color count
-            id + 7, // shape count
-            200, // X position
-            200, // Y position
-            100, // width
-            id + 50, // widht variance
-            100, // height
-            id + 50, // height variance
-            7 // density
-          ).call();
+      return this.$store.state.contracts.tinyboxes.methods.tokenArt(id).call();
+    },
+    lookupSupply: function() {
+      return this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
     },
     loadTokens: async function() {
       this.tokens = {};
@@ -139,23 +130,25 @@ export default {
         }
       } else { // load all
         const start = (this.page - 1) * this.itemsPerPage;
-        for (let i = 0; i < this.itemsPerPage && start + i < this.supply; i++) {
-          const tokenID = start + i;
-          this.$set(this.tokenIDs, tokenID, tokenID);
-          this.$set(this.tokensLoading, tokenID, true);
-          this.loading = false;
-          const data = this.$store.state.cachedTokens[tokenID];
-          if (data) {
-            this.$set(this.tokens, tokenID, data);
-            this.$set(this.tokensLoading, tokenID, false);
-          } else {
-            this.lookupToken(tokenID).then(resp => {
-              this.$store.commit("setToken", { id: tokenID, data: resp });
-              this.$set(this.tokens, tokenID, resp);
+        this.lookupSupply().then((supply) => {
+          for (let i = 0; i < this.itemsPerPage && start + i < supply; i++) {
+            const tokenID = start + i + 1;
+            this.$set(this.tokenIDs, tokenID, tokenID);
+            this.$set(this.tokensLoading, tokenID, true);
+            this.loading = false;
+            const data = this.$store.state.cachedTokens[tokenID];
+            if (data) {
+              this.$set(this.tokens, tokenID, data);
               this.$set(this.tokensLoading, tokenID, false);
-            });
+            } else {
+              this.lookupToken(tokenID).then(resp => {
+                this.$store.commit("setToken", { id: tokenID, data: resp });
+                this.$set(this.tokens, tokenID, resp);
+                this.$set(this.tokensLoading, tokenID, false);
+              });
+            }
           }
-        }
+        });
       }
     },
     listenForTokens: function() {
