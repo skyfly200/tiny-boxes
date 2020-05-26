@@ -15,17 +15,18 @@
             v-text-field(v-model="seed" outlined label="Seed" required)
             h3 Counts
             .counts
-              v-text-field(v-model="counts[0]" outlined label="Color Count" required)
-              v-text-field(v-model="counts[1]" outlined label="Shape Count" required)
+              v-slider(v-model="counts[0]" thumb-label label="Color Count" required)
+              v-slider(v-model="counts[1]" thumb-label label="Shape Count" required)
             h3 Dials
             .dials
-              v-text-field(v-model="dials[0]" outlined label="X Position" required)
-              v-text-field(v-model="dials[1]" outlined label="Y Position" required)
-              v-text-field(v-model="dials[2]" outlined label="Width" required)
-              v-text-field(v-model="dials[3]" outlined label="Width Variation" required)
-              v-text-field(v-model="dials[4]" outlined label="Height" required)
-              v-text-field(v-model="dials[5]" outlined label="Height Variation" required)
-              v-text-field(v-model="dials[6]" outlined label="Density" required)
+              .position
+                v-text-field(v-model="dials[0]" outlined label="X Position" required)
+                v-text-field(v-model="dials[1]" outlined label="Y Position" required)
+              v-slider(v-model="dials[2]" thumb-label label="Width" required)
+              v-slider(v-model="dials[3]" thumb-label label="Width Variation" required)
+              v-slider(v-model="dials[4]" thumb-label label="Height" required)
+              v-slider(v-model="dials[5]" thumb-label label="Height Variation" required)
+              v-slider(v-model="dials[6]" thumb-label label="Density" required)
             .form-buttons
               v-btn(@click="loadToken") Preview
               v-spacer
@@ -90,11 +91,17 @@ export default Vue.extend({
   .id
     font-size: 2rem
   .token-loading
-    padding-top: 40vh
-  .theme--dark.v-input input, .theme--dark.v-input textarea
-    color: #121212
-    background-color: #121212
-    border: none
+    padding-top: 40hv
+  .position
+    display: flex
+    .v-input
+      margin: 0 15px !important
+  .theme--dark.v-input
+    margin: 0 15px
+    input, textarea
+      color: #121212
+      background-color: #121212
+      border: none
   .form-buttons
     display: flex
   .features
