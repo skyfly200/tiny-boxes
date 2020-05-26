@@ -12,20 +12,20 @@
         v-col
           h1 Create a TinyBox
           v-form(v-model="valid").create-form
-            v-text-field(v-model="seed" label="Seed" required)
+            v-text-field(v-model="seed" outlined label="Seed" required)
             h3 Counts
             .counts
-              v-text-field(v-model="counts[0]" label="Color Count" required)
-              v-text-field(v-model="counts[1]" label="Shape Count" required)
+              v-text-field(v-model="counts[0]" outlined label="Color Count" required)
+              v-text-field(v-model="counts[1]" outlined label="Shape Count" required)
             h3 Dials
             .dials
-              v-text-field(v-model="dials[0]" label="X Position" required)
-              v-text-field(v-model="dials[1]" label="Y Position" required)
-              v-text-field(v-model="dials[2]" label="Width" required)
-              v-text-field(v-model="dials[3]" label="Width Variation" required)
-              v-text-field(v-model="dials[4]" label="Height" required)
-              v-text-field(v-model="dials[5]" label="Height Variation" required)
-              v-text-field(v-model="dials[6]" label="Density" required)
+              v-text-field(v-model="dials[0]" outlined label="X Position" required)
+              v-text-field(v-model="dials[1]" outlined label="Y Position" required)
+              v-text-field(v-model="dials[2]" outlined label="Width" required)
+              v-text-field(v-model="dials[3]" outlined label="Width Variation" required)
+              v-text-field(v-model="dials[4]" outlined label="Height" required)
+              v-text-field(v-model="dials[5]" outlined label="Height Variation" required)
+              v-text-field(v-model="dials[6]" outlined label="Density" required)
             .form-buttons
               v-btn(@click="loadToken") Preview
               v-spacer
@@ -92,7 +92,9 @@ export default Vue.extend({
   .token-loading
     padding-top: 40vh
   .theme--dark.v-input input, .theme--dark.v-input textarea
-    color: #121212 !important
+    color: #121212
+    background-color: #121212
+    border: none
   .form-buttons
     display: flex
   .features
