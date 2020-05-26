@@ -1,6 +1,6 @@
 <template lang="pug">
   .collection
-    v-app-bar(v-if="tokens !== {}" absolute collapse dense)
+    v-app-bar(v-if="tokens !== {} && !soldOut" absolute collapse dense)
       v-btn(to="/create") Create
     v-container
       v-row(v-if="loading")
@@ -61,6 +61,7 @@ export default {
     tx: {},
     itemsPerPageSelector: 12,
     count: null,
+    limit: null,
     ownerOnly: false,
     loading: true,
     tokenIDs: [],
@@ -74,6 +75,9 @@ export default {
     pages() {
       return Math.floor(this.count / this.itemsPerPage + 1);
     },
+    soldOut() {
+      return this.lookupSupply() < this.limit;
+    },
     pageTokens() {
       const start = (this.page - 1) * this.itemsPerPage;
       return this.tokenIDs.slice(start + 1, start + this.itemsPerPage + 1);
@@ -86,6 +90,7 @@ export default {
     // check if page param is within range
     this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
     await this.loadTokens();
+    this.limit = this.lookupLimit();
   },
   methods: {
     selectItemsPerPage() {
@@ -97,6 +102,9 @@ export default {
     },
     lookupSupply: function() {
       return this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
+    },
+    lookupLimit: function() {
+      return this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
     },
     loadTokens: async function() {
       this.tokens = {};
