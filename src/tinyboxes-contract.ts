@@ -1,8 +1,7 @@
-export const tinyboxesAddress = "0xf6918b25474424a403183633DF2CaE8eb5c6Fa4c";
+export const tinyboxesAddress = "0xD3a0b4A705E21f6CAf7EfBDFd1F215231a67D5f6";
 export const tinyboxesABI: any = [
 	{
 		"inputs": [],
-		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "constructor"
 	},
@@ -120,7 +119,6 @@ export const tinyboxesABI: any = [
 		"type": "event"
 	},
 	{
-		"constant": true,
 		"inputs": [],
 		"name": "ARTIST_PRINTS",
 		"outputs": [
@@ -130,12 +128,10 @@ export const tinyboxesABI: any = [
 				"type": "uint256"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [],
 		"name": "TOKEN_LIMIT",
 		"outputs": [
@@ -145,12 +141,10 @@ export const tinyboxesABI: any = [
 				"type": "uint256"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": false,
 		"inputs": [
 			{
 				"internalType": "address",
@@ -165,12 +159,10 @@ export const tinyboxesABI: any = [
 		],
 		"name": "approve",
 		"outputs": [],
-		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [
 			{
 				"internalType": "address",
@@ -186,12 +178,23 @@ export const tinyboxesABI: any = [
 				"type": "uint256"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": false,
+		"inputs": [],
+		"name": "baseURI",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -211,12 +214,10 @@ export const tinyboxesABI: any = [
 		],
 		"name": "createBoxes",
 		"outputs": [],
-		"payable": true,
 		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -232,12 +233,10 @@ export const tinyboxesABI: any = [
 				"type": "address"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [],
 		"name": "getprice",
 		"outputs": [
@@ -247,12 +246,10 @@ export const tinyboxesABI: any = [
 				"type": "uint256"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [
 			{
 				"internalType": "address",
@@ -273,12 +270,10 @@ export const tinyboxesABI: any = [
 				"type": "bool"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [],
 		"name": "name",
 		"outputs": [
@@ -288,12 +283,10 @@ export const tinyboxesABI: any = [
 				"type": "string"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -309,13 +302,16 @@ export const tinyboxesABI: any = [
 				"type": "address"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			},
 			{
 				"internalType": "uint256",
 				"name": "seed",
@@ -332,7 +328,7 @@ export const tinyboxesABI: any = [
 				"type": "int256[7]"
 			}
 		],
-		"name": "perpetualrender",
+		"name": "perpetualRender",
 		"outputs": [
 			{
 				"internalType": "string",
@@ -340,12 +336,10 @@ export const tinyboxesABI: any = [
 				"type": "string"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": false,
 		"inputs": [
 			{
 				"internalType": "address",
@@ -365,12 +359,10 @@ export const tinyboxesABI: any = [
 		],
 		"name": "safeTransferFrom",
 		"outputs": [],
-		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"constant": false,
 		"inputs": [
 			{
 				"internalType": "address",
@@ -395,16 +387,14 @@ export const tinyboxesABI: any = [
 		],
 		"name": "safeTransferFrom",
 		"outputs": [],
-		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"constant": false,
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "to",
+				"name": "operator",
 				"type": "address"
 			},
 			{
@@ -415,12 +405,10 @@ export const tinyboxesABI: any = [
 		],
 		"name": "setApprovalForAll",
 		"outputs": [],
-		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [
 			{
 				"internalType": "bytes4",
@@ -436,12 +424,10 @@ export const tinyboxesABI: any = [
 				"type": "bool"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [],
 		"name": "symbol",
 		"outputs": [
@@ -451,12 +437,10 @@ export const tinyboxesABI: any = [
 				"type": "string"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -472,12 +456,10 @@ export const tinyboxesABI: any = [
 				"type": "string"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -493,12 +475,10 @@ export const tinyboxesABI: any = [
 				"type": "uint256"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -514,12 +494,10 @@ export const tinyboxesABI: any = [
 				"type": "uint256[]"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -535,12 +513,10 @@ export const tinyboxesABI: any = [
 				"type": "address"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -556,12 +532,10 @@ export const tinyboxesABI: any = [
 				"type": "int256[]"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [
 			{
 				"internalType": "address",
@@ -582,12 +556,10 @@ export const tinyboxesABI: any = [
 				"type": "uint256"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -603,16 +575,14 @@ export const tinyboxesABI: any = [
 				"type": "uint256"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "_id",
+				"name": "tokenId",
 				"type": "uint256"
 			}
 		],
@@ -624,12 +594,10 @@ export const tinyboxesABI: any = [
 				"type": "string"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [],
 		"name": "totalSupply",
 		"outputs": [
@@ -639,12 +607,10 @@ export const tinyboxesABI: any = [
 				"type": "uint256"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": false,
 		"inputs": [
 			{
 				"internalType": "address",
@@ -664,7 +630,6 @@ export const tinyboxesABI: any = [
 		],
 		"name": "transferFrom",
 		"outputs": [],
-		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
 	}
