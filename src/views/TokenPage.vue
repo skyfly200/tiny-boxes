@@ -14,7 +14,7 @@
             .token-graphic
               Token(:id="id" :data="data")
         v-col
-          .token-inf0
+          .token-info
             h1 Token Info
             p Owner: 0x27af......0cb0
             p Minted: 
@@ -53,18 +53,7 @@ export default Vue.extend({
         this.data = cached;
         this.loading = false;
       } else {
-        this.$store.state.contracts.tinyboxes.methods
-          .perpetualrender(
-            3425423452345, // seed
-            [11, 7], // color and shape counts
-            [200, // X position
-            200, // Y position
-            100, // width
-            50, // widht variance
-            100, // height
-            50, // height variance
-            7] // density
-          )
+        this.$store.state.contracts.tinyboxes.methods.tokenArt(this.id)
           .call()
           .then((result: any) => {
             this.$store.commit("setToken", { id: this.id, data: result });

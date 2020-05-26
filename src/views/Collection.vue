@@ -1,7 +1,7 @@
 <template lang="pug">
   .collection
     v-app-bar(v-if="tokens !== {}" absolute collapse dense)
-      v-btn(@click="previewTX('mint')") Mint
+      v-btn(to="/create") Create
     v-container
       v-row(v-if="loading")
         v-col(align="center").tokens-loading

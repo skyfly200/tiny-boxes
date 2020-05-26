@@ -10,10 +10,15 @@ const routes = [
     component: () => import(/* webpackChunkName: "home" */ "../views/Home.vue")
   },
   {
+    path: "/create",
+    name: "Create",
+    component: () => import(/* webpackChunkName: "create" */ "../views/Create.vue")
+  },
+  {
     path: "/token/:id",
     name: "Token",
     component: () =>
-      import(/* webpackChunkName: "cell" */ "../views/TokenPage.vue")
+      import(/* webpackChunkName: "token" */ "../views/TokenPage.vue")
   },
   {
     path: "/collection/:page?",
