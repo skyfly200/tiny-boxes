@@ -81,7 +81,7 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
   .v-chip__content
     span
       color: #FFF !important
@@ -91,7 +91,7 @@ export default Vue.extend({
     font-size: 2rem
   .token-loading
     padding-top: 40vh
-  input
+  .theme--dark.v-input input, .theme--dark.v-input textarea
     color: #121212 !important
   .form-buttons
     display: flex
