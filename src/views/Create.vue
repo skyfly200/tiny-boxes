@@ -12,7 +12,7 @@
             v-card-actions
               v-btn(@click="loadToken") Preview
               v-spacer
-              v-btn(@click="") Mint
+              v-btn(@click="mintToken") Mint
         v-col
           h1 Create a TinyBox
           v-form(v-model="valid").create-form
@@ -27,6 +27,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { mapGetters } from "vuex";
+import { tinyboxesAddress } from "../tinyboxes-contract";
 import Token from "@/components/Token.vue";
 
 export default Vue.extend({
@@ -61,6 +62,21 @@ export default Vue.extend({
         .catch( (err: any) => {
           console.error(err);
         });
+    },
+    mintToken: async function() {
+      const v = this.values;
+      const counts = [v.colors, v.shapes];
+      const dials = [v.x, v.y, v.width, v.widthVariance, v.height, v.heightVariance, v.density];
+      this.$store.state.web3.eth.sendTransaction({
+        from: this.currentAccount,
+        to: tinyboxesAddress,
+        value: this.$store.state.web3.utils.toWei("300", "finney"),
+        data: this.$store.state.contracts.tinyboxes.methods
+          .createBoxes(v.seed, counts, dials)
+          .encodeABI()
+      });
+      // TODO: redirect to detyails page on new token transmited event
+      //this.listenForTokens();
     }
   },
   data: function() {

@@ -193,17 +193,6 @@ export default {
       this.tx = types[type];
       this.dialog = true;
     },
-    mintToken: function() {
-      this.$store.state.web3.eth.sendTransaction({
-        from: this.currentAccount,
-        to: tinyboxesAddress,
-        value: this.$store.state.web3.utils.toWei("300", "finney"),
-        data: this.$store.state.contracts.tinyboxes.methods
-          .mint(699823429231) // put seed and dials here
-          .encodeABI()
-      });
-      this.listenForTokens();
-    }
   }
 };
 </script>
