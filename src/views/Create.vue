@@ -120,14 +120,14 @@ export default Vue.extend({
               label: "X",
               key: "x",
               type: "number",
-              min: -500,
+              min: 0,
               max: 500
             },
             {
               label: "Y",
               key: "y",
               type: "number",
-              min: -500,
+              min: 0,
               max: 500
             }
           ]
@@ -139,14 +139,14 @@ export default Vue.extend({
               label: "Width",
               key: "width",
               type: "number",
-              min: 0,
+              min: 1,
               max: 500
             },
             {
               label: "Height",
               key: "height",
               type: "number",
-              min: 0,
+              min: 1,
               max: 500
             }
           ]
