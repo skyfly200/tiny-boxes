@@ -101,14 +101,14 @@ export default Vue.extend({
               label: "Colors",
               key: "colors",
               type: "number",
-              min: 0,
+              min: 1,
               max: 100
             },
             {
               label: "Shapes",
               key: "shapes",
               type: "number",
-              min: 0,
+              min: 1,
               max: 77
             }
           ]
