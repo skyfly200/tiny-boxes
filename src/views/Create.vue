@@ -125,7 +125,7 @@ export default Vue.extend({
             },
             {
               label: "Y",
-              key: "shapes",
+              key: "y",
               type: "number",
               min: -500,
               max: 500
