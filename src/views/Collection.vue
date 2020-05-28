@@ -33,18 +33,6 @@
           v-col(align="center" md="2" offset-sm="5" xs="4" offset-xs="4")
             v-pagination(v-model="page" circle @click="loadTokens" :length="pages")
             v-combobox.page-items(v-model="itemsPerPageSelector" @change="selectItemsPerPage" dense hint="Tokens per page" label="Tokens per page" menu-props="top" :items='["12","18","24","36","48","96"]')
-    v-dialog(v-model="dialog" persistent max-width="600px" @keydown.enter="tx.send(); dialog = false" @keydown.esc="dialog = false" @keydown.delete="dialog = false")
-      v-card.tx-preview
-        v-card-title {{ tx.title }}
-        v-card-subtitle Transaction Preview
-        v-card-text.tx-preview-form
-          p {{ tx.message }}
-          h3 Fee: {{ tx.fee }} Eth
-          h3 Current Account: {{ currentAccount }}
-        v-card-actions
-          v-btn(class="mt-6" text color="success" @click="tx.send(); dialog = false") Submit
-          v-spacer
-          v-btn(class="mt-6" text color="error" @click="dialog = false") Cancel
 </template>
 
 <script>
@@ -57,8 +45,6 @@ export default {
   components: { Token },
   data: () => ({
     page: 1,
-    dialog: false,
-    tx: {},
     itemsPerPageSelector: 12,
     count: null,
     limit: null,
@@ -180,18 +166,6 @@ export default {
         .on("error", function(log) {
           this.listenForTokens();
         });
-    },
-    previewTX(type) {
-      const types = {
-        mint: {
-          title: "Mint",
-          message: "Mint a new TinyBox token",
-          fee: 0.3,
-          send: this.mintToken
-        },
-      };
-      this.tx = types[type];
-      this.dialog = true;
     },
   }
 };
