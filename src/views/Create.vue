@@ -38,7 +38,7 @@ export default Vue.extend({
   },
   mounted: async function() {
     await this.$store.dispatch("initialize");
-    await this.loadToken();
+    await this.getNext();
   },
   methods: {
     getNext: function() {
@@ -52,7 +52,7 @@ export default Vue.extend({
       await this.getNext();
       const v = this.values;
       const counts = [v.colors, v.shapes];
-      const dials = [v.x, v.y, v.width, v.widthVariance, v.height, v.heightVariance, v.density];
+      const dials = [v.x, v.y, v.width, v.widthVariance, v.height, v.heightVariance, v.density, v.mirror1, v.mirror2, v.mirror3];
       this.$store.state.contracts.tinyboxes.methods.perpetualRender(this.id, v.seed, counts, dials)
         .call()
         .then((result: any) => {
@@ -66,7 +66,8 @@ export default Vue.extend({
     mintToken: async function() {
       const v = this.values;
       const counts = [v.colors, v.shapes];
-      const dials = [v.x, v.y, v.width, v.widthVariance, v.height, v.heightVariance, v.density];
+      const dials = [v.x, v.y, v.width, v.widthVariance, v.height, v.heightVariance, v.density, v.mirror1, v.mirror2, v.mirror3];
+      // TODO: look up dynamic price here and use for tx
       this.$store.state.web3.eth.sendTransaction({
         from: this.currentAccount,
         to: tinyboxesAddress,
@@ -95,6 +96,9 @@ export default Vue.extend({
         height: 200,
         widthVariance: 200,
         heightVariance: 200,
+        mirror1: 1300,
+        mirror2: 2200,
+        mirror3: 2400,
         density: 7
       },
       sections: [
@@ -187,13 +191,39 @@ export default Vue.extend({
           ]
         },
         {
+          title: "Mirror",
+          options: [
+            {
+              label: "Mirror 1",
+              key: "mirror1",
+              type: "number",
+              min: 0,
+              max: 5000
+            },
+            {
+              label: "Mirror 2",
+              key: "mirror2",
+              type: "number",
+              min: 0,
+              max: 5000
+            },
+            {
+              label: "Mirror 3",
+              key: "mirror3",
+              type: "number",
+              min: 0,
+              max: 5000
+            }
+          ]
+        },
+        {
           title: "Other",
           options: [
             {
               label: "Density",
               key: "density",
               type: "number",
-              min: 0,
+              min: 1,
               max: 25
             }
           ]
