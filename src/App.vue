@@ -9,7 +9,7 @@
         v-icon mdi-information
       v-btn(to="/list" value="List")
         span List
-        v-icon mdi-scatter-plot-outline
+        v-icon mdi-view-grid
       v-btn(to="/guide" value="Guide")
         span Guide
         v-icon mdi-book-open-page-variant
