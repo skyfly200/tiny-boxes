@@ -1,4 +1,4 @@
-export const tinyboxesAddress = '0x297B4A54f7e76b3bd004A8f7b13101BD6F91d6D3'
+export const tinyboxesAddress = '0x65FE7298AF2E8C8c72D63b1DdD9A4E94721bD932'
 export const tinyboxesABI: any = [
   {
     inputs: [],
@@ -159,9 +159,9 @@ export const tinyboxesABI: any = [
   {
     inputs: [
       {
-        internalType: 'uint256',
+        internalType: 'string',
         name: 'seed',
-        type: 'uint256',
+        type: 'string',
       },
       {
         internalType: 'uint256[2]',
@@ -293,9 +293,9 @@ export const tinyboxesABI: any = [
         type: 'uint256',
       },
       {
-        internalType: 'uint256',
+        internalType: 'string',
         name: 'seed',
-        type: 'uint256',
+        type: 'string',
       },
       {
         internalType: 'uint256[2]',

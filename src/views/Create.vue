@@ -15,9 +15,13 @@
               h2 {{ priceInETH }}
                 v-icon(large) mdi-ethereum
               v-spacer
-              v-btn(@click="mintToken" :disabled="!valid") Mint
+              v-btn(@click="mintToken" :disabled="!valid || soldOut") Mint
         v-col
-          h1 Create your TinyBox
+          h1 Create a TinyBox
+          v-alert(v-if="soldOut" type="warning" prominent outlined border="left")
+            h3 Sold Out
+            p All boxes have sold, try the secondary market on
+            v-btn(href="//opensea.io" target="new" color="warning" outline) OpenSea
           v-form(v-model="valid").create-form
             .form-buttons
               v-btn(@click="loadFormDefaults(); update()") Reset
@@ -72,15 +76,19 @@ export default Vue.extend({
     update: async function () {
       if (this.valid) this.loadToken()
     },
-    updateStatus: function () {
+    loadStatus: function () {
       return new Promise(async (resolve, reject) => {
-        this.id = await this.getNext()
+        this.id = await this.lookupSupply()
+        this.soldOut = this.id >= this.lookupLimit()
         this.price = await this.getPrice()
         resolve()
       })
     },
-    getNext: function () {
+    lookupSupply: function () {
       return this.$store.state.contracts.tinyboxes.methods.totalSupply().call()
+    },
+    lookupLimit: function () {
+      return this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call()
     },
     getPrice: function () {
       return this.$store.state.contracts.tinyboxes.methods.currentPrice().call()
@@ -90,7 +98,7 @@ export default Vue.extend({
     },
     loadToken: async function () {
       this.loading = true
-      await this.updateStatus()
+      await this.loadStatus()
       const v = this.values
       const counts = [v.colors, v.shapes]
       const dials = [
@@ -110,7 +118,7 @@ export default Vue.extend({
       ]
       const switches = [v.mirror1, v.mirror2, v.mirror3]
       this.data = await this.$store.state.contracts.tinyboxes.methods
-        .perpetualRenderer(this.id, v.seed, counts, dials, switches)
+        .perpetualRenderer(this.id, v.seed.toString(), counts, dials, switches)
         .call()
       this.loading = false
     },
@@ -139,7 +147,7 @@ export default Vue.extend({
         to: tinyboxesAddress,
         value: this.price,
         data: this.$store.state.contracts.tinyboxes.methods
-          .createBox(v.seed, counts, dials, switches)
+          .createBox(v.seed.toString(), counts, dials, switches)
           .encodeABI(),
       })
       // TODO: redirect to details page on new token transmited event
@@ -150,6 +158,7 @@ export default Vue.extend({
     return {
       id: 0,
       loading: true,
+      soldOut: false,
       data: null as null | object,
       price: '160000000000000000',
       section: 0,
@@ -163,8 +172,8 @@ export default Vue.extend({
         y: 200,
         xSeg: 2,
         ySeg: 2,
-        width: [200, 200],
-        height: [200, 200],
+        width: [200, 300],
+        height: [200, 300],
         hatching: 0,
         mirror1: true,
         mirror2: true,
@@ -175,18 +184,6 @@ export default Vue.extend({
         scale: 1,
       },
       sections: [
-        {
-          title: 'RNG',
-          options: [
-            {
-              label: 'Seed',
-              key: 'seed',
-              type: 'slider',
-              min: 0,
-              max: 6800,
-            },
-          ],
-        },
         {
           title: 'Counts',
           options: [
@@ -280,6 +277,18 @@ export default Vue.extend({
               type: 'slider',
               min: 0,
               max: 100,
+            },
+          ],
+        },
+        {
+          title: 'RNG',
+          options: [
+            {
+              label: 'Seed',
+              key: 'seed',
+              type: 'slider',
+              min: 0,
+              max: 2 ** 53,
             },
           ],
         },
