@@ -23,20 +23,23 @@
               v-btn(@click="loadFormDefaults(); update()") Reset
               v-spacer
               v-btn(@click="") Randomize
-            .section(v-for="section of active" :key="section.title")
-              h3 {{ section.title }}
-              template(v-for="option of section.options")
-                template(v-if="!option.hide || values[option.hide]")
-                  v-slider(v-if="option.type === 'slider'" v-model="values[option.key]" @change="update" :step="option.step" thumb-label :label="option.label" dense required :min="option.min" :max="option.max")
-                    template(v-slot:append)
-                      v-text-field(v-model="values[option.key]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
-                  v-range-slider(v-else-if="option.type === 'range-slider'" v-model="values[option.key]" @change="update" :step="option.step" thumb-label :label="option.label" dense required :min="option.min" :max="option.max")
-                    template(v-slot:prepend)
-                      v-text-field(v-model="values[option.key][0]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
-                    template(v-slot:append)
-                      v-text-field(v-model="values[option.key][1]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
-                  v-switch(v-else-if="option.type === 'switch'" v-model="values[option.key]" @change="update" :label="option.label")
-                  v-text-field(v-else v-model="values[option.key]" @change="update" :label="option.label" required outlined type="number")
+            br
+            v-expansion-panels(v-model="section" accordion flat tile)
+              v-expansion-panel.section(v-for="section of active" :key="section.title" ripple)
+                v-expansion-panel-header(color="#3F51B5").section-title {{ section.title }}
+                v-expansion-panel-content
+                  template(v-for="option of section.options")
+                    template(v-if="!option.hide || values[option.hide]")
+                      v-slider(v-if="option.type === 'slider'" v-model="values[option.key]" @change="update" :step="option.step" thumb-label :label="option.label" required :min="option.min" :max="option.max")
+                        template(v-slot:append)
+                          v-text-field(v-model="values[option.key]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
+                      v-range-slider(v-else-if="option.type === 'range-slider'" v-model="values[option.key]" @change="update" :step="option.step" thumb-label :label="option.label" required :min="option.min" :max="option.max")
+                        template(v-slot:prepend)
+                          v-text-field(v-model="values[option.key][0]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
+                        template(v-slot:append)
+                          v-text-field(v-model="values[option.key][1]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
+                      v-switch(v-else-if="option.type === 'switch'" v-model="values[option.key]" @change="update" :label="option.label")
+                      v-text-field(v-else v-model="values[option.key]" @change="update" :label="option.label" required outlined type="number")
 </template>
 
 <script lang="ts">
@@ -61,50 +64,33 @@ export default Vue.extend({
     ...mapGetters(['currentAccount']),
   },
   mounted: async function () {
-    this.loadFormDefaults()
     await this.$store.dispatch('initialize')
-    this.updater = setInterval(this.updateStatus, 15000)
-  },
-  destroyed: function () {
-    clearInterval(this.updater)
+    this.loadFormDefaults()
+    this.update()
   },
   methods: {
-    update(): function() {
-      this.updateStatus();
-      if(this.valid) this.loadToken();
+    update: async function () {
+      if (this.valid) this.loadToken()
     },
-    updateStatus: async function () {
-      await this.getNext()
-      await this.getPrice()
+    updateStatus: function () {
+      return new Promise(async (resolve, reject) => {
+        this.id = await this.getNext()
+        this.price = await this.getPrice()
+        resolve()
+      })
     },
     getNext: function () {
-      new Promise((resolve, reject) => {
-        this.$store.state.contracts.tinyboxes.methods
-          .totalSupply()
-          .call()
-          .then((total: number) => {
-            this.id = total
-            this.id++
-            resolve()
-          })
-      })
+      return this.$store.state.contracts.tinyboxes.methods.totalSupply().call()
     },
     getPrice: function () {
-      new Promise((resolve, reject) => {
-        this.$store.state.contracts.tinyboxes.methods
-          .currentPrice()
-          .call()
-          .then((price: number) => {
-            this.price = price
-          })
-      })
+      return this.$store.state.contracts.tinyboxes.methods.currentPrice().call()
     },
     loadFormDefaults: function () {
       Object.assign(this.values, this.defaults)
     },
     loadToken: async function () {
       this.loading = true
-      await this.getNext()
+      await this.updateStatus()
       const v = this.values
       const counts = [v.colors, v.shapes]
       const dials = [
@@ -123,16 +109,10 @@ export default Vue.extend({
         v.scale * 100,
       ]
       const switches = [v.mirror1, v.mirror2, v.mirror3]
-      this.$store.state.contracts.tinyboxes.methods
+      this.data = await this.$store.state.contracts.tinyboxes.methods
         .perpetualRenderer(this.id, v.seed, counts, dials, switches)
         .call()
-        .then((result: any) => {
-          this.data = result
-          this.loading = false
-        })
-        .catch((err: any) => {
-          console.error(err)
-        })
+      this.loading = false
     },
     mintToken: async function () {
       const v = this.values
@@ -153,7 +133,7 @@ export default Vue.extend({
         v.scale * 100,
       ]
       const switches = [v.mirror1, v.mirror2, v.mirror3]
-      await this.updateStatus() // return promise here
+      this.price = await this.getPrice()
       this.$store.state.web3.eth.sendTransaction({
         from: this.currentAccount,
         to: tinyboxesAddress,
@@ -168,12 +148,12 @@ export default Vue.extend({
   },
   data: function () {
     return {
+      id: 0,
       loading: true,
       data: null as null | object,
-      updater: null as any,
-      valid: true,
-      id: 0,
       price: '160000000000000000',
+      section: 0,
+      valid: true,
       values: {} as any,
       defaults: {
         seed: 1234,
@@ -227,6 +207,25 @@ export default Vue.extend({
           ],
         },
         {
+          title: 'Size',
+          options: [
+            {
+              label: 'Width',
+              key: 'width',
+              type: 'range-slider',
+              min: 1,
+              max: 500,
+            },
+            {
+              label: 'Height',
+              key: 'height',
+              type: 'range-slider',
+              min: 1,
+              max: 500,
+            },
+          ],
+        },
+        {
           title: 'Position',
           options: [
             {
@@ -260,21 +259,27 @@ export default Vue.extend({
           ],
         },
         {
-          title: 'Size',
+          title: 'Scale',
           options: [
             {
-              label: 'Width',
-              key: 'width',
-              type: 'range-slider',
-              min: 1,
-              max: 500,
+              label: 'Master',
+              key: 'scale',
+              type: 'slider',
+              step: 0.1,
+              min: 0.1,
+              max: 10.0,
             },
+          ],
+        },
+        {
+          title: 'Hatching',
+          options: [
             {
-              label: 'Height',
-              key: 'height',
-              type: 'range-slider',
-              min: 1,
-              max: 500,
+              label: 'Amount',
+              key: 'hatchMod',
+              type: 'slider',
+              min: 0,
+              max: 100,
             },
           ],
         },
@@ -322,31 +327,6 @@ export default Vue.extend({
             },
           ],
         },
-        {
-          title: 'Scale',
-          options: [
-            {
-              label: 'Master',
-              key: 'scale',
-              type: 'slider',
-              step: 0.1,
-              min: 0.1,
-              max: 10.0,
-            },
-          ],
-        },
-        {
-          title: 'Hatching',
-          options: [
-            {
-              label: 'Amount',
-              key: 'hatchMod',
-              type: 'slider',
-              min: 0,
-              max: 100,
-            },
-          ],
-        },
       ],
     }
   },
@@ -373,13 +353,6 @@ export default Vue.extend({
     color: #121212
     background-color: #121212
     border: none
-.features
-  margin: 2vh 1vw
-  display: flex
-  flex-wrap: wrap
-.feature
-  margin: 5px
-  .v-chip
-    border: 1px solid rgba(255,255,255,0.3) !important
-    text-shadow: 0px 1px 5px #000000
+.section-title
+  color: #fff
 </style>
