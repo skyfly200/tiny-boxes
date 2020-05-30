@@ -1,5 +1,5 @@
 <template lang="pug">
-  .collection
+  .list
     v-app-bar(v-if="tokens !== {} && !soldOut" absolute collapse dense)
       v-btn(to="/create") Create
     v-container
@@ -41,7 +41,7 @@ import { mapGetters } from 'vuex'
 import Token from '@/components/Token.vue'
 
 export default {
-  name: 'Collection',
+  name: 'List',
   components: { Token },
   data: () => ({
     page: 1,

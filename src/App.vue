@@ -7,8 +7,8 @@
       v-btn(to="/about" value="About")
         span About
         v-icon mdi-information
-      v-btn(to="/collection" value="Collection")
-        span Collection
+      v-btn(to="/list" value="List")
+        span List
         v-icon mdi-scatter-plot-outline
       v-btn(to="/guide" value="Guide")
         span Guide
@@ -16,20 +16,21 @@
 </template>
 
 <script>
-import Vue from "vue";
-import Nav from "@/components/Nav.vue";
+import Vue from 'vue'
+import Nav from '@/components/Nav.vue'
 
 export default Vue.extend({
-  name: "App",
+  name: 'App',
   components: { Nav },
   computed: {
     page() {
-      const route = this.$route.name;
-      if (route === 'Cell') return "Collection"; // show cell page as collection route
-      else return route;
-    }
+      const route = this.$route.name
+      if (route === 'Cell') return 'Collection'
+      // show cell page as collection route
+      else return route
+    },
   },
-});
+})
 </script>
 
 <style lang="sass">
@@ -45,5 +46,4 @@ body
 @media (min-width: 600px)
   .v-bottom-navigation
     visibility: hidden
-  
 </style>

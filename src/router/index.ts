@@ -1,54 +1,54 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
-    component: () => import(/* webpackChunkName: "home" */ "../views/Home.vue")
+    path: '/',
+    name: 'Home',
+    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
   },
   {
-    path: "/create",
-    name: "Create",
-    component: () => import(/* webpackChunkName: "create" */ "../views/Create.vue")
-  },
-  {
-    path: "/token/:id",
-    name: "Token",
+    path: '/create',
+    name: 'Create',
     component: () =>
-      import(/* webpackChunkName: "token" */ "../views/TokenPage.vue")
+      import(/* webpackChunkName: "create" */ '../views/Create.vue'),
   },
   {
-    path: "/collection/:page?",
-    name: "Collection",
+    path: '/token/:id',
+    name: 'Token',
     component: () =>
-      import(/* webpackChunkName: "collection" */ "../views/Collection.vue")
+      import(/* webpackChunkName: "token" */ '../views/TokenPage.vue'),
   },
   {
-    path: "/about",
-    name: "About",
+    path: '/list/:page?',
+    name: 'List',
+    component: () => import(/* webpackChunkName: "list" */ '../views/List.vue'),
+  },
+  {
+    path: '/about',
+    name: 'About',
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+      import(/* webpackChunkName: "about" */ '../views/About.vue'),
   },
   {
-    path: "/guide/:topic?/:subtopic?",
-    name: "Guide",
+    path: '/guide/:topic?/:subtopic?',
+    name: 'Guide',
     component: () =>
-      import(/* webpackChunkName: "guide" */ "../views/Guide.vue")
+      import(/* webpackChunkName: "guide" */ '../views/Guide.vue'),
   },
   {
-    path: "/*",
-    name: "404",
-    component: () => import(/* webpackChunkName: "404" */ "../views/404.vue")
-  }
-];
+    path: '/*',
+    name: '404',
+    component: () => import(/* webpackChunkName: "404" */ '../views/404.vue'),
+  },
+]
 
 const router = new VueRouter({
-  mode: "history",
+  mode: 'history',
   base: process.env.BASE_URL,
-  routes
-});
+  routes,
+})
 
-export default router;
+export default router
