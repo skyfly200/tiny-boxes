@@ -50,6 +50,7 @@ export default {
     limit: null,
     ownerOnly: false,
     loading: true,
+    soldOut: false,
     tokenIDs: [],
     tokensLoading: {},
     tokens: {}
@@ -60,9 +61,6 @@ export default {
     },
     pages() {
       return Math.floor(this.count / this.itemsPerPage + 1);
-    },
-    soldOut() {
-      return this.lookupSupply() < this.limit;
     },
     pageTokens() {
       const start = (this.page - 1) * this.itemsPerPage;
@@ -77,6 +75,7 @@ export default {
     this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
     await this.loadTokens();
     this.limit = this.lookupLimit();
+    this.soldOut = (this.lookupSupply() < this.limit);
   },
   methods: {
     selectItemsPerPage() {
