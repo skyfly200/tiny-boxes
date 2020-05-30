@@ -20,9 +20,9 @@
           h1 Create your TinyBox
           v-form(v-model="valid").create-form
             .form-buttons
-              v-btn(@click="update()" :disabled="!valid") Preview 
-              v-spacer
               v-btn(@click="loadFormDefaults(); update()") Reset
+              v-spacer
+              v-btn(@click="") Randomize
             .section(v-for="section of active" :key="section.title")
               h3 {{ section.title }}
               template(v-for="option of section.options")
