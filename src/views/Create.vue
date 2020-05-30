@@ -8,33 +8,35 @@
               h1 Token {{ "#" + id }}
             v-divider
             v-card-text.token-graphic
-              Token(:id="id" :data="data")
+              v-fade-transition(mode="out-in")
+                v-skeleton-loader(v-if="loading" tile type="image")
+                Token(v-else :id="id" :data="data")
             v-card-actions
               h2 {{ priceInETH }}
                 v-icon(large) mdi-ethereum
               v-spacer
-              v-btn(@click="mintToken") Mint
+              v-btn(@click="mintToken" :disabled="!valid") Mint
         v-col
           h1 Create your TinyBox
           v-form(v-model="valid").create-form
             .form-buttons
-              v-btn(@click="updateStatus(); loadToken()") Preview 
+              v-btn(@click="update()" :disabled="!valid") Preview 
               v-spacer
-              v-btn(@click="loadFormDefaults(); loadToken()") Reset
+              v-btn(@click="loadFormDefaults(); update()") Reset
             .section(v-for="section of active" :key="section.title")
               h3 {{ section.title }}
               template(v-for="option of section.options")
                 template(v-if="!option.hide || values[option.hide]")
-                  v-slider(v-if="option.type === 'slider'" v-model="values[option.key]" :step="option.step" thumb-label :label="option.label" dense required :min="option.min" :max="option.max")
+                  v-slider(v-if="option.type === 'slider'" v-model="values[option.key]" @change="update" :step="option.step" thumb-label :label="option.label" dense required :min="option.min" :max="option.max")
                     template(v-slot:append)
-                      v-text-field(v-model="values[option.key]" hide-details single-line type="number" style="width: 60px").slider-text-field
-                  v-range-slider(v-else-if="option.type === 'range-slider'" v-model="values[option.key]" :step="option.step" thumb-label :label="option.label" dense required :min="option.min" :max="option.max")
+                      v-text-field(v-model="values[option.key]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
+                  v-range-slider(v-else-if="option.type === 'range-slider'" v-model="values[option.key]" @change="update" :step="option.step" thumb-label :label="option.label" dense required :min="option.min" :max="option.max")
                     template(v-slot:prepend)
-                      v-text-field(v-model="values[option.key][0]" hide-details single-line type="number" style="width: 60px").slider-text-field
+                      v-text-field(v-model="values[option.key][0]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
                     template(v-slot:append)
-                      v-text-field(v-model="values[option.key][1]" hide-details single-line type="number" style="width: 60px").slider-text-field
-                  v-switch(v-else-if="option.type === 'switch'" v-model="values[option.key]" :label="option.label")
-                  v-text-field(v-else v-model="values[option.key]" :label="option.label" required outlined type="number")
+                      v-text-field(v-model="values[option.key][1]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
+                  v-switch(v-else-if="option.type === 'switch'" v-model="values[option.key]" @change="update" :label="option.label")
+                  v-text-field(v-else v-model="values[option.key]" @change="update" :label="option.label" required outlined type="number")
 </template>
 
 <script lang="ts">
@@ -67,6 +69,10 @@ export default Vue.extend({
     clearInterval(this.updater)
   },
   methods: {
+    update(): function() {
+      this.updateStatus();
+      if(this.valid) this.loadToken();
+    },
     updateStatus: async function () {
       await this.getNext()
       await this.getPrice()
@@ -97,6 +103,7 @@ export default Vue.extend({
       Object.assign(this.values, this.defaults)
     },
     loadToken: async function () {
+      this.loading = true
       await this.getNext()
       const v = this.values
       const counts = [v.colors, v.shapes]
