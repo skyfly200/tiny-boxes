@@ -71,6 +71,7 @@ export default Vue.extend({
     await this.$store.dispatch('initialize')
     this.loadFormDefaults()
     this.update()
+    this.listenForTokens()
   },
   methods: {
     update: async function () {
@@ -150,8 +151,42 @@ export default Vue.extend({
           .createBox(v.seed.toString(), counts, dials, switches)
           .encodeABI(),
       })
-      // TODO: redirect to details page on new token transmited event
-      //this.listenForTokens();
+      // TODO: show an overlay here with loading screen and wait for token TX result
+      this.listenForMyTokens()
+    },
+    listenForMyTokens: function () {
+      this.$store.state.web3.eth
+        .subscribe('logs', {
+          address: tinyboxesAddress,
+          topics: [
+            '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+            '0x0000000000000000000000000000000000000000000000000000000000000000',
+            '0x000000000000000000000000' + this.currentAccount.slice(2),
+          ],
+        })
+        .on(
+          'data',
+          function (log) {
+            const index = parseInt(log.topics[3], 16)
+            // TODO: change overlay state to show new token id and graphics with mint another button
+          }.bind(this),
+        )
+    },
+    listenForTokens: function () {
+      this.$store.state.web3.eth
+        .subscribe('logs', {
+          address: tinyboxesAddress,
+          topics: [
+            '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+            '0x0000000000000000000000000000000000000000000000000000000000000000',
+          ],
+        })
+        .on(
+          'data',
+          function (log) {
+            this.update()
+          }.bind(this),
+        )
     },
   },
   data: function () {
