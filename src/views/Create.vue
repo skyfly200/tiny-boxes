@@ -1,5 +1,27 @@
 <template lang="pug">
   .token-creator
+    v-overlay(:value="dialog" transition="fade")
+      v-card(min-width="200")
+        v-fade-transition(appear group)
+          .dialog-confirm(v-if="overlay === 'confirm'" key="confirm")
+            v-card-title Confirming Transaction
+            v-card-text
+              v-progress-circular(width="100" indeterminate)
+          .dialog-wait(v-else-if="overlay === 'wait'" key="wait")
+            v-card-title Minting Token
+            v-card-text
+              v-progress-circular(width="100" indeterminate)
+              h3 Please Wait
+          .dialog-ready(v-else-if="overlay === 'ready'" key="ready")
+            v-skeleton-loader(type="image")
+            v-card-title Newly Minted Token {{ "#" + minted.id }}
+            v-card-text
+              v-btn(@click="overlay = ''; update()") Mint Another
+          .dialog-error(v-if="overlay === 'error'" key="error")
+            v-card-title Transaction Error
+            v-card-text
+              v-alert(type="error" border="left") An error occured while minting your token
+              v-btn(@click="overlay = ''; update()") Try Again
     v-container
       v-row
         v-col(align="center")
@@ -15,20 +37,21 @@
               h2 {{ priceInETH }}
                 v-icon(large) mdi-ethereum
               v-spacer
-              v-btn(@click="mintToken" :disabled="!valid || soldOut") Mint
+              v-btn(@click="mintToken" :disabled="!form.valid || soldOut") Mint
         v-col
           h1 Create a TinyBox
           v-alert(v-if="soldOut" type="warning" prominent outlined border="left")
             h3 Sold Out
-            p All boxes have sold, try the secondary market on
-            v-btn(href="//opensea.io" target="new" color="warning" outline) OpenSea
-          v-form(v-model="valid").create-form
+            p All boxes have sold, minting is disabled
+            p Try the secondary market
+            v-btn(href="//opensea.io" target="new" color="warning" outlined) Browse OpenSea
+          v-form(v-model="form.valid").create-form
             .form-buttons
               v-btn(@click="loadFormDefaults(); update()") Reset
               v-spacer
               v-btn(@click="") Randomize
             br
-            v-expansion-panels(v-model="section" accordion flat tile)
+            v-expansion-panels(v-model="form.section" accordion flat tile)
               v-expansion-panel.section(v-for="section of active" :key="section.title" ripple)
                 v-expansion-panel-header(color="#3F51B5").section-title {{ section.title }}
                 v-expansion-panel-content
@@ -47,67 +70,72 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { mapGetters } from 'vuex'
-import { tinyboxesAddress } from '../tinyboxes-contract'
-import Token from '@/components/Token.vue'
+import Vue from "vue";
+import { mapGetters } from "vuex";
+import { tinyboxesAddress } from "../tinyboxes-contract";
+import Token from "@/components/Token.vue";
 
 export default Vue.extend({
-  name: 'Create',
+  name: "Create",
   components: { Token },
   computed: {
-    priceInETH: function () {
-      return this.$store.state.web3.utils.fromWei(this.price)
+    priceInETH: function() {
+      return this.$store.state.web3.utils.fromWei(this.price);
     },
-    active: function () {
+    active: function() {
       return this.sections.map((s: any) => {
-        s.options.filter((o: any) => !o.hide || this.values[o.hide])
-        return s
-      })
+        s.options.filter((o: any) => !o.hide || this.values[o.hide]);
+        return s;
+      });
     },
-    ...mapGetters(['currentAccount']),
+    dialog: function() {
+      return this.overlay !== "";
+    },
+    soldOut: function() {
+      return this.id >= this.limit;
+    },
+    ...mapGetters(["currentAccount"])
   },
-  mounted: async function () {
-    await this.$store.dispatch('initialize')
-    this.loadFormDefaults()
-    this.update()
-    this.listenForTokens()
+  mounted: async function() {
+    await this.$store.dispatch("initialize");
+    this.limit = await this.lookupLimit();
+    this.loadFormDefaults();
+    this.update();
+    this.listenForTokens();
   },
   methods: {
-    update: async function () {
-      if (this.valid) this.loadToken()
+    update: async function() {
+      if (this.form.valid) this.loadToken();
     },
-    loadStatus: function () {
-      return new Promise(async (resolve, reject) => {
-        this.id = await this.lookupSupply()
-        this.soldOut = this.id >= this.lookupLimit()
-        this.price = await this.getPrice()
-        resolve()
-      })
+    loadStatus: async function() {
+      this.id = await this.lookupSupply();
+      this.price = await this.getPrice();
     },
-    lookupSupply: function () {
-      return this.$store.state.contracts.tinyboxes.methods.totalSupply().call()
+    lookupSupply: function() {
+      return this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
     },
-    lookupLimit: function () {
-      return this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call()
+    lookupLimit: function() {
+      return this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
     },
-    getPrice: function () {
-      return this.$store.state.contracts.tinyboxes.methods.currentPrice().call()
+    getPrice: function() {
+      return this.$store.state.contracts.tinyboxes.methods
+        .currentPrice()
+        .call();
     },
-    loadFormDefaults: function () {
-      Object.assign(this.values, this.defaults)
+    loadFormDefaults: function() {
+      Object.assign(this.values, this.defaults);
     },
-    loadToken: async function () {
-      this.loading = true
-      await this.loadStatus()
-      const v = this.values
-      const counts = [v.colors, v.shapes]
+    loadToken: async function() {
+      this.loading = true;
+      await this.loadStatus();
+      const v = this.values;
+      const counts = [v.colors, v.shapes];
       const dials = [
         v.x,
         v.y,
         v.xSeg,
         v.ySeg,
-        v.width[1],
+        v.width[0],
         v.width[1],
         v.height[0],
         v.height[1],
@@ -115,23 +143,23 @@ export default Vue.extend({
         v.mirrorPos1,
         v.mirrorPos2,
         v.mirrorPos3,
-        v.scale * 100,
-      ]
-      const switches = [v.mirror1, v.mirror2, v.mirror3]
+        v.scale * 100
+      ];
+      const switches = [v.mirror1, v.mirror2, v.mirror3];
       this.data = await this.$store.state.contracts.tinyboxes.methods
         .perpetualRenderer(this.id, v.seed.toString(), counts, dials, switches)
-        .call()
-      this.loading = false
+        .call();
+      this.loading = false;
     },
-    mintToken: async function () {
-      const v = this.values
-      const counts = [v.colors, v.shapes]
+    mintToken: async function() {
+      const v = this.values;
+      const counts = [v.colors, v.shapes];
       const dials = [
         v.x,
         v.y,
         v.xSeg,
         v.ySeg,
-        v.width[1],
+        v.width[0],
         v.width[1],
         v.height[0],
         v.height[1],
@@ -139,65 +167,76 @@ export default Vue.extend({
         v.mirrorPos1,
         v.mirrorPos2,
         v.mirrorPos3,
-        v.scale * 100,
-      ]
-      const switches = [v.mirror1, v.mirror2, v.mirror3]
-      this.price = await this.getPrice()
-      this.$store.state.web3.eth.sendTransaction({
-        from: this.currentAccount,
-        to: tinyboxesAddress,
-        value: this.price,
-        data: this.$store.state.contracts.tinyboxes.methods
-          .createBox(v.seed.toString(), counts, dials, switches)
-          .encodeABI(),
-      })
-      // TODO: show an overlay here with loading screen and wait for token TX result
-      this.listenForMyTokens()
-    },
-    listenForMyTokens: function () {
+        v.scale * 100
+      ];
+      const switches = [v.mirror1, v.mirror2, v.mirror3];
+      this.price = await this.getPrice();
+      this.overlay = "confirm";
       this.$store.state.web3.eth
-        .subscribe('logs', {
+        .sendTransaction({
+          from: this.currentAccount,
+          to: tinyboxesAddress,
+          value: this.price,
+          data: this.$store.state.contracts.tinyboxes.methods
+            .createBox(v.seed.toString(), counts, dials, switches)
+            .encodeABI()
+        })
+        .then(
+          function() {
+            if (this.overlay === "confirm") this.overlay = "wait";
+            this.listenForMyTokens();
+          }.bind(this)
+        );
+    },
+    listenForMyTokens: function() {
+      this.$store.state.web3.eth
+        .subscribe("logs", {
           address: tinyboxesAddress,
           topics: [
-            '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
-            '0x0000000000000000000000000000000000000000000000000000000000000000',
-            '0x000000000000000000000000' + this.currentAccount.slice(2),
-          ],
+            "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+            "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "0x000000000000000000000000" + this.currentAccount.slice(2)
+          ]
         })
         .on(
-          'data',
-          function (log) {
-            const index = parseInt(log.topics[3], 16)
-            // TODO: change overlay state to show new token id and graphics with mint another button
-          }.bind(this),
-        )
+          "data",
+          function(log) {
+            this.minted.id = parseInt(log.topics[3], 16);
+            this.minted.art = this.data; // TODO: load art of new token instead of reusing the last preview
+            this.overlay = "ready";
+          }.bind(this)
+        );
     },
-    listenForTokens: function () {
+    listenForTokens: function() {
       this.$store.state.web3.eth
-        .subscribe('logs', {
+        .subscribe("logs", {
           address: tinyboxesAddress,
           topics: [
-            '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
-            '0x0000000000000000000000000000000000000000000000000000000000000000',
-          ],
+            "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+            "0x0000000000000000000000000000000000000000000000000000000000000000"
+          ]
         })
         .on(
-          'data',
-          function (log) {
-            this.update()
-          }.bind(this),
-        )
-    },
+          "data",
+          function(log) {
+            this.update();
+          }.bind(this)
+        );
+    }
   },
-  data: function () {
+  data: function() {
     return {
       id: 0,
       loading: true,
-      soldOut: false,
+      overlay: "",
       data: null as null | object,
-      price: '160000000000000000',
-      section: 0,
-      valid: true,
+      price: "160000000000000000",
+      limit: null as any,
+      form: {
+        section: 0,
+        valid: true
+      },
+      minted: {} as any,
       values: {} as any,
       defaults: {
         seed: 1234,
@@ -216,165 +255,165 @@ export default Vue.extend({
         mirrorPos1: 1300,
         mirrorPos2: 2200,
         mirrorPos3: 2400,
-        scale: 1,
+        scale: 1
       },
       sections: [
         {
-          title: 'Counts',
+          title: "Counts",
           options: [
             {
-              label: 'Colors',
-              key: 'colors',
-              type: 'slider',
+              label: "Colors",
+              key: "colors",
+              type: "slider",
               min: 1,
-              max: 100,
+              max: 100
             },
             {
-              label: 'Shapes',
-              key: 'shapes',
-              type: 'slider',
+              label: "Shapes",
+              key: "shapes",
+              type: "slider",
               min: 1,
-              max: 77,
-            },
-          ],
+              max: 77
+            }
+          ]
         },
         {
-          title: 'Size',
+          title: "Size",
           options: [
             {
-              label: 'Width',
-              key: 'width',
-              type: 'range-slider',
+              label: "Width",
+              key: "width",
+              type: "range-slider",
               min: 1,
-              max: 500,
+              max: 500
             },
             {
-              label: 'Height',
-              key: 'height',
-              type: 'range-slider',
+              label: "Height",
+              key: "height",
+              type: "range-slider",
               min: 1,
-              max: 500,
-            },
-          ],
+              max: 500
+            }
+          ]
         },
         {
-          title: 'Position',
+          title: "Position",
           options: [
             {
-              label: 'X',
-              key: 'x',
-              type: 'slider',
+              label: "X",
+              key: "x",
+              type: "slider",
               min: 0,
-              max: 500,
+              max: 500
             },
             {
-              label: 'Y',
-              key: 'y',
-              type: 'slider',
+              label: "Y",
+              key: "y",
+              type: "slider",
               min: 0,
-              max: 500,
+              max: 500
             },
             {
-              label: 'Columns',
-              key: 'xSeg',
-              type: 'slider',
+              label: "Columns",
+              key: "xSeg",
+              type: "slider",
               min: 1,
-              max: 50,
+              max: 50
             },
             {
-              label: 'Rows',
-              key: 'ySeg',
-              type: 'slider',
+              label: "Rows",
+              key: "ySeg",
+              type: "slider",
               min: 1,
-              max: 50,
-            },
-          ],
+              max: 50
+            }
+          ]
         },
         {
-          title: 'Scale',
+          title: "Scale",
           options: [
             {
-              label: 'Master',
-              key: 'scale',
-              type: 'slider',
+              label: "Master",
+              key: "scale",
+              type: "slider",
               step: 0.1,
               min: 0.1,
-              max: 10.0,
-            },
-          ],
+              max: 10.0
+            }
+          ]
         },
         {
-          title: 'Hatching',
+          title: "Hatching",
           options: [
             {
-              label: 'Amount',
-              key: 'hatchMod',
-              type: 'slider',
+              label: "Amount",
+              key: "hatchMod",
+              type: "slider",
               min: 0,
-              max: 100,
-            },
-          ],
+              max: 100
+            }
+          ]
         },
         {
-          title: 'RNG',
+          title: "RNG",
           options: [
             {
-              label: 'Seed',
-              key: 'seed',
-              type: 'slider',
+              label: "Seed",
+              key: "seed",
+              type: "slider",
               min: 0,
-              max: 2 ** 53,
-            },
-          ],
+              max: 2 ** 53
+            }
+          ]
         },
         {
-          title: 'Mirroring',
+          title: "Mirroring",
           options: [
             {
-              label: 'Mirror 1',
-              key: 'mirror1',
-              type: 'switch',
+              label: "Mirror 1",
+              key: "mirror1",
+              type: "switch"
             },
             {
-              label: 'Mirror 1 Position',
-              key: 'mirrorPos1',
-              type: 'slider',
-              hide: 'mirror1',
+              label: "Mirror 1 Position",
+              key: "mirrorPos1",
+              type: "slider",
+              hide: "mirror1",
               min: 0,
-              max: 4000,
+              max: 4000
             },
             {
-              label: 'Mirror 2',
-              key: 'mirror2',
-              type: 'switch',
+              label: "Mirror 2",
+              key: "mirror2",
+              type: "switch"
             },
             {
-              label: 'Mirror 2 Position',
-              key: 'mirrorPos2',
-              type: 'slider',
-              hide: 'mirror2',
+              label: "Mirror 2 Position",
+              key: "mirrorPos2",
+              type: "slider",
+              hide: "mirror2",
               min: 0,
-              max: 4000,
+              max: 4000
             },
             {
-              label: 'Mirror 3',
-              key: 'mirror3',
-              type: 'switch',
+              label: "Mirror 3",
+              key: "mirror3",
+              type: "switch"
             },
             {
-              label: 'Mirror 3 Position',
-              key: 'mirrorPos3',
-              type: 'slider',
-              hide: 'mirror3',
+              label: "Mirror 3 Position",
+              key: "mirrorPos3",
+              type: "slider",
+              hide: "mirror3",
               min: 0,
-              max: 4000,
-            },
-          ],
-        },
-      ],
-    }
-  },
-})
+              max: 4000
+            }
+          ]
+        }
+      ]
+    };
+  }
+});
 </script>
 
 <style lang="sass">
