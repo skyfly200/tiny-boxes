@@ -1,7 +1,7 @@
 <template lang="pug">
   .token-creator
     v-overlay(:value="dialog" transition="fade")
-      v-card(min-width="200")
+      v-card(min-width="40vw")
         v-fade-transition(appear group)
           .dialog-confirm(v-if="overlay === 'confirm'" key="confirm")
             v-card-title Confirming Transaction
@@ -13,19 +13,26 @@
               v-progress-circular(width="100" indeterminate)
               h3 Please Wait
           .dialog-ready(v-else-if="overlay === 'ready'" key="ready")
-            v-skeleton-loader(type="image")
+            v-skeleton-loader(:value="!minted.art" type="image")
+              Token(:id="minted.id" :data="data")
             v-card-title Newly Minted Token {{ "#" + minted.id }}
             v-card-text
+              p Transaction Completed
+              a(:href="'https://rinkeby.etherscan.io/tx/' + minted.txHash" target="new") View on Etherscan
+            v-card-actions
+              v-btn(:to="'/token/' + minted.id") View
+              v-spacer
               v-btn(@click="overlay = ''; update()") Mint Another
-          .dialog-error(v-if="overlay === 'error'" key="error")
+          .dialog-error(v-else-if="overlay === 'error'" key="error")
             v-card-title Transaction Error
             v-card-text
               v-alert(type="error" border="left") An error occured while minting your token
+            v-card-actions
               v-btn(@click="overlay = ''; update()") Try Again
-    v-container
-      v-row
-        v-col(align="center")
-          v-card
+    v-container(fluid)
+      v-row(flex)
+        v-col(align="center" cols="12" md="5" offset-md="1")
+          v-card(max-height="90vh")
             v-card-title.token-stats
               h1 Token {{ "#" + id }}
             v-divider
@@ -38,9 +45,9 @@
                 v-icon(large) mdi-ethereum
               v-spacer
               v-btn(@click="mintToken" :disabled="!form.valid || soldOut") Mint
-        v-col
+        v-col(align="center" cols="12" md="5")
           h1 Create a TinyBox
-          v-alert(v-if="soldOut" type="warning" prominent outlined border="left")
+          v-alert(v-if="!loading && soldOut" type="warning" prominent outlined border="left")
             h3 Sold Out
             p All boxes have sold, minting is disabled
             p Try the secondary market
@@ -172,21 +179,21 @@ export default Vue.extend({
       const switches = [v.mirror1, v.mirror2, v.mirror3];
       this.price = await this.getPrice();
       this.overlay = "confirm";
-      this.$store.state.web3.eth
-        .sendTransaction({
+      this.listenForMyTokens();
+      this.$store.state.web3.eth.sendTransaction(
+        {
           from: this.currentAccount,
           to: tinyboxesAddress,
           value: this.price,
           data: this.$store.state.contracts.tinyboxes.methods
             .createBox(v.seed.toString(), counts, dials, switches)
             .encodeABI()
-        })
-        .then(
-          function() {
-            if (this.overlay === "confirm") this.overlay = "wait";
-            this.listenForMyTokens();
-          }.bind(this)
-        );
+        },
+        (err: any, txHash: string) => {
+          this.minted.txHash = txHash;
+          this.overlay = err ? "error" : "wait";
+        }
+      );
     },
     listenForMyTokens: function() {
       this.$store.state.web3.eth
@@ -428,6 +435,8 @@ export default Vue.extend({
   padding-top: 40hv
 .token-graphic
   padding: 0 !important
+.token
+  height: 60vh
 .form-buttons
   display: flex
 .theme--dark.v-input
@@ -438,4 +447,15 @@ export default Vue.extend({
     border: none
 .section-title
   color: #fff
+.dialog-error .v-card__text
+  padding: 0
+  .v-alert
+    margin: 1rem
+.container
+  padding-left: 0
+  padding-right: 0
+  .row
+    margin-right: 0
+    @media(max-width: 700px)
+      margin: 0
 </style>
