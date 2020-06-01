@@ -69,7 +69,7 @@
             v-expansion-panels(v-model="form.section" accordion flat tile)
               v-expansion-panel.section(v-for="section of active" :key="section.title" ripple)
                 v-expansion-panel-header(color="#3F51B5").section-title {{ section.title }}
-                v-expansion-panel-content
+                v-expansion-panel-content.section-content
                   template(v-for="option of section.options")
                     template(v-if="!option.hide || values[option.hide]")
                       v-slider(v-if="option.type === 'slider'" v-model="values[option.key]" @change="update" :step="option.step" thumb-label :label="option.label" required :min="option.min" :max="option.max")
@@ -269,9 +269,9 @@ export default Vue.extend({
         mirror1: true,
         mirror2: true,
         mirror3: true,
-        mirrorPos1: 1300,
-        mirrorPos2: 2200,
-        mirrorPos3: 2400,
+        mirrorPos1: 750,
+        mirrorPos2: 1300,
+        mirrorPos3: 2600,
         scale: 1
       },
       sections: [
@@ -387,43 +387,46 @@ export default Vue.extend({
           title: "Mirroring",
           options: [
             {
-              label: "Mirror 1",
+              label: "1",
               key: "mirror1",
               type: "switch"
             },
             {
-              label: "Mirror 1 Position",
-              key: "mirrorPos1",
-              type: "slider",
-              hide: "mirror1",
-              min: 0,
-              max: 4000
-            },
-            {
-              label: "Mirror 2",
+              label: "2",
               key: "mirror2",
               type: "switch"
             },
             {
-              label: "Mirror 2 Position",
-              key: "mirrorPos2",
-              type: "slider",
-              hide: "mirror2",
-              min: 0,
-              max: 4000
-            },
-            {
-              label: "Mirror 3",
+              label: "3",
               key: "mirror3",
               type: "switch"
             },
             {
-              label: "Mirror 3 Position",
+              label: "Position 1",
+              key: "mirrorPos1",
+              type: "slider",
+              hide: "mirror1",
+              step: 25,
+              min: 0,
+              max: 3400
+            },
+            {
+              label: "Position 2",
+              key: "mirrorPos2",
+              type: "slider",
+              hide: "mirror2",
+              step: 25,
+              min: 0,
+              max: 3400
+            },
+            {
+              label: "Position 3",
               key: "mirrorPos3",
               type: "slider",
               hide: "mirror3",
+              step: 25,
               min: 0,
-              max: 4000
+              max: 3400
             }
           ]
         }
@@ -459,6 +462,9 @@ export default Vue.extend({
     border: none
 .section-title
   color: #fff
+.section-content .v-expansion-panel-content__wrap
+  display: flex
+  flex-wrap: wrap
 .dialog .v-card__text
   padding: 0
   .message
