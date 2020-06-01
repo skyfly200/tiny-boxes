@@ -1,26 +1,29 @@
 <template lang="pug">
   .token-creator
     v-overlay(:value="dialog" transition="fade")
-      v-card(min-width="40vw")
+      v-card(min-width="40vw").dialog
         v-fade-transition(appear group)
           .dialog-confirm(v-if="overlay === 'confirm'" key="confirm")
             v-card-title Confirming Transaction
             v-card-text
-              h3 Mint Token {{ "#" + id }} for {{ priceInETH }} 
-                v-icon mdi-ethereum
-              v-progress-linear(width="100" indeterminate)
+              .message
+                h3 Mint Token {{ "#" + id }} for {{ priceInETH }} 
+                  v-icon mdi-ethereum
+              v-progress-linear(indeterminate)
           .dialog-wait(v-else-if="overlay === 'wait'" key="wait")
             v-card-title Minting Token
             v-card-text
+              .message
+                h3 Please Wait
               v-progress-linear(indeterminate)
-              h3 Please Wait
           .dialog-ready(v-else-if="overlay === 'ready'" key="ready")
             v-skeleton-loader(:value="!minted.art" type="image")
               Token(:id="minted.id" :data="data")
             v-card-title Newly Minted Token {{ "#" + minted.id }}
             v-card-text
-              p Transaction Completed
-              a(:href="'https://rinkeby.etherscan.io/tx/' + minted.txHash" target="new") View on Etherscan
+              .message
+                h3 Transaction Completed
+                a(:href="'https://rinkeby.etherscan.io/tx/' + minted.txHash" target="new") View on Etherscan
             v-card-actions
               v-btn(:to="'/token/' + minted.id") View Token
               v-spacer
@@ -452,10 +455,12 @@ export default Vue.extend({
     border: none
 .section-title
   color: #fff
-.dialog-error .v-card__text, .dialog-wait .v-card__text, .dialog-confirm .v-card__text
+.dialog .v-card__text
   padding: 0
-  .v-alert
+  .message
     margin: 1rem
+.dialog-error .v-card__text,  .v-alert
+  margin: 1rem
 .container
   padding-left: 0
   padding-right: 0
