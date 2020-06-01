@@ -45,13 +45,12 @@
                 v-icon(large) mdi-ethereum
               v-spacer
               v-btn(@click="mintToken" :disabled="!form.valid || soldOut") Mint
-        v-col(align="center" cols="12" md="5")
-          h1 Create a TinyBox
-          v-alert(v-if="!loading && soldOut" type="warning" prominent outlined border="left")
-            h3 Sold Out
-            p All boxes have sold, minting is disabled
+          v-alert(v-if="!loading && !soldOut" type="warning" prominent outlined border="left").sold-out
+            p All boxes have sold, minting is disabled.
             p Try the secondary market
             v-btn(href="//opensea.io" target="new" color="warning" outlined) Browse OpenSea
+        v-col(align="center" cols="12" md="5")
+          h1 Create a TinyBox
           v-form(v-model="form.valid").create-form
             .form-buttons
               v-btn(@click="loadFormDefaults(); update()") Reset
@@ -437,6 +436,8 @@ export default Vue.extend({
   padding: 0 !important
 .token
   height: 60vh
+.sold-out
+  margin-top: 1rem
 .form-buttons
   display: flex
 .theme--dark.v-input
