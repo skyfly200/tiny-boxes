@@ -39,17 +39,21 @@
         v-col(align="center" cols="12" md="5" offset-md="1")
           v-card(max-height="90vh").token-preview
             v-card-title.token-stats
-              h1 Token {{ "#" + id }}
+              v-skeleton-loader(v-if="id === null" type="card-heading" width="20vw")
+              h1(v-else) Token {{ "#" + id }}
             v-divider
             v-card-text.token-graphic
               v-fade-transition(mode="out-in")
                 v-skeleton-loader(v-if="loading" tile type="image")
                 Token(v-else :id="id" :data="data")
             v-card-actions
-              h2 {{ priceInETH }}
-                v-icon(large) mdi-ethereum
-              v-spacer
-              v-btn(@click="mintToken" :disabled="!form.valid || soldOut") Mint
+              v-skeleton-loader(v-if="price === ''" type="card-heading" width="100%")
+              template(v-else)
+                .price-tag
+                  h2 {{ priceInETH }}
+                  v-icon(large) mdi-ethereum
+                v-spacer
+                v-btn(@click="mintToken" :disabled="!form.valid || soldOut") Mint
           v-alert(v-if="!loading && soldOut" type="warning" prominent outlined border="left").sold-out
             p All boxes have sold, minting is disabled.
             p Try the secondary market
@@ -239,11 +243,11 @@ export default Vue.extend({
   },
   data: function() {
     return {
-      id: 0,
+      id: null as number | null,
       loading: true,
       overlay: "",
       data: null as null | object,
-      price: "160000000000000000",
+      price: "",
       limit: null as any,
       form: {
         section: 0,
@@ -445,7 +449,7 @@ export default Vue.extend({
   height: 60vh
 .sold-out
   margin-top: 1rem
-.form-buttons
+.form-buttons, .price-tag
   display: flex
 .theme--dark.v-input
   margin: 0 15px
