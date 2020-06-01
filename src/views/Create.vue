@@ -6,11 +6,13 @@
           .dialog-confirm(v-if="overlay === 'confirm'" key="confirm")
             v-card-title Confirming Transaction
             v-card-text
-              v-progress-circular(width="100" indeterminate)
+              h3 Mint Token {{ "#" + id }} for {{ priceInETH }} 
+                v-icon mdi-ethereum
+              v-progress-linear(width="100" indeterminate)
           .dialog-wait(v-else-if="overlay === 'wait'" key="wait")
             v-card-title Minting Token
             v-card-text
-              v-progress-circular(width="100" indeterminate)
+              v-progress-linear(indeterminate)
               h3 Please Wait
           .dialog-ready(v-else-if="overlay === 'ready'" key="ready")
             v-skeleton-loader(:value="!minted.art" type="image")
@@ -20,7 +22,7 @@
               p Transaction Completed
               a(:href="'https://rinkeby.etherscan.io/tx/' + minted.txHash" target="new") View on Etherscan
             v-card-actions
-              v-btn(:to="'/token/' + minted.id") View
+              v-btn(:to="'/token/' + minted.id") View Token
               v-spacer
               v-btn(@click="overlay = ''; update()") Mint Another
           .dialog-error(v-else-if="overlay === 'error'" key="error")
@@ -32,7 +34,7 @@
     v-container(fluid)
       v-row(flex)
         v-col(align="center" cols="12" md="5" offset-md="1")
-          v-card(max-height="90vh")
+          v-card(max-height="90vh").token-preview
             v-card-title.token-stats
               h1 Token {{ "#" + id }}
             v-divider
@@ -45,7 +47,7 @@
                 v-icon(large) mdi-ethereum
               v-spacer
               v-btn(@click="mintToken" :disabled="!form.valid || soldOut") Mint
-          v-alert(v-if="!loading && !soldOut" type="warning" prominent outlined border="left").sold-out
+          v-alert(v-if="!loading && soldOut" type="warning" prominent outlined border="left").sold-out
             p All boxes have sold, minting is disabled.
             p Try the secondary market
             v-btn(href="//opensea.io" target="new" color="warning" outlined) Browse OpenSea
@@ -206,9 +208,11 @@ export default Vue.extend({
         })
         .on(
           "data",
-          function(log) {
+          async function(log) {
             this.minted.id = parseInt(log.topics[3], 16);
-            this.minted.art = this.data; // TODO: load art of new token instead of reusing the last preview
+            this.minted.art = await this.$store.state.contracts.tinyboxes.methods
+              .tokenArt(this.minted.id)
+              .call();
             this.overlay = "ready";
           }.bind(this)
         );
@@ -434,7 +438,7 @@ export default Vue.extend({
   padding-top: 40hv
 .token-graphic
   padding: 0 !important
-.token
+.token-preview .token
   height: 60vh
 .sold-out
   margin-top: 1rem
@@ -448,7 +452,7 @@ export default Vue.extend({
     border: none
 .section-title
   color: #fff
-.dialog-error .v-card__text
+.dialog-error .v-card__text, .dialog-wait .v-card__text, .dialog-confirm .v-card__text
   padding: 0
   .v-alert
     margin: 1rem
