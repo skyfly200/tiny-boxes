@@ -116,6 +116,7 @@ export default Vue.extend({
     this.limit = await this.lookupLimit();
     this.loadFormDefaults();
     this.listenForTokens();
+    this.listenForMyTokens();
   },
   methods: {
     update: async function() {
@@ -150,6 +151,10 @@ export default Vue.extend({
               this.between(o.min, o.max),
               this.between(o.min, o.max)
             ].sort();
+          else if (o.key === "scale")
+            randomSettings[o.key] = Math.floor(
+              Math.ceil(Math.random() * o.max * 10) / 10
+            );
           else if (o.key === "seed")
             randomSettings[o.key] = this.between(o.min, 2 ** 52);
           else randomSettings[o.key] = this.between(o.min, o.max);
@@ -205,8 +210,8 @@ export default Vue.extend({
       ];
       const switches = [v.mirror1, v.mirror2, v.mirror3];
       this.price = await this.getPrice();
+      this.minted = {};
       this.overlay = "confirm";
-      this.listenForMyTokens();
       this.$store.state.web3.eth.sendTransaction(
         {
           from: this.currentAccount,
