@@ -62,9 +62,9 @@
           h1 Create a TinyBox
           v-form(v-model="form.valid").create-form
             .form-buttons
-              v-btn(@click="loadFormDefaults(); update()") Reset
+              v-btn(@click="loadFormDefaults") Reset
               v-spacer
-              v-btn(@click="") Randomize
+              v-btn(@click="randomizeForm") Randomize
             br
             v-expansion-panels(v-model="form.section" accordion flat tile)
               v-expansion-panel.section(v-for="section of active" :key="section.title" ripple)
@@ -115,7 +115,6 @@ export default Vue.extend({
     await this.$store.dispatch("initialize");
     this.limit = await this.lookupLimit();
     this.loadFormDefaults();
-    this.update();
     this.listenForTokens();
   },
   methods: {
@@ -139,6 +138,26 @@ export default Vue.extend({
     },
     loadFormDefaults: function() {
       Object.assign(this.values, this.defaults);
+      this.update();
+    },
+    randomizeForm: function() {
+      const randomSettings = {};
+      for (const s of this.sections)
+        for (const o of s.options)
+          if (o.type === "switch") randomSettings[o.key] = Math.random() > 0.5;
+          else if (o.type === "range-slider")
+            randomSettings[o.key] = [
+              this.between(o.min, o.max),
+              this.between(o.min, o.max)
+            ].sort();
+          else if (o.key === "seed")
+            randomSettings[o.key] = this.between(o.min, 2 ** 52);
+          else randomSettings[o.key] = this.between(o.min, o.max);
+      Object.assign(this.values, randomSettings);
+      this.update();
+    },
+    between: function(min: number, max: number) {
+      return Math.floor(Math.random() * (max - min + 1) + min);
     },
     loadToken: async function() {
       this.loading = true;
