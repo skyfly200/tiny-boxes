@@ -80,7 +80,7 @@
                           v-text-field(v-model="values[option.key][0]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
                         template(v-slot:append)
                           v-text-field(v-model="values[option.key][1]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
-                      v-switch(v-else-if="option.type === 'switch'" v-model="values[option.key]" @change="update" :label="option.label")
+                      v-switch(v-else-if="option.type === 'switch'" v-model="values[option.key]" @change="update" :label="option.label").switch
                       v-text-field(v-else v-model="values[option.key]" @change="update" :label="option.label" required outlined type="number")
 </template>
 
@@ -456,10 +456,13 @@ export default Vue.extend({
   display: flex
 .theme--dark.v-input
   margin: 0 15px
+  width: 100%
   input, textarea
     color: #121212
     background-color: #121212
     border: none
+.v-input.switch
+  width: auto
 .section-title
   color: #fff
 .section-content .v-expansion-panel-content__wrap
