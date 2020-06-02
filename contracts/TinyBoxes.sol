@@ -1,7 +1,7 @@
 pragma solidity ^0.6.4;
 
-import "https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-contracts/v3.0.1/contracts/token/ERC721/ERC721.sol";
-import "https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-contracts/v3.0.1/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 
 library Buffer {
