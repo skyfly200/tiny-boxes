@@ -6,12 +6,20 @@
   "version": "0.1.0",
   "compiler": {
     "compilerSettings": {
-      "optimizer": {}
+      "optimizer": {
+        "enabled": false,
+        "runs": "200"
+      }
     },
     "typechain": {
       "enabled": true,
       "outDir": "./types/contracts/",
       "target": "web3-v1"
-    }
-  }
+    },
+    "manager": "openzeppelin",
+    "solcVersion": "0.6.8",
+    "artifactsDir": "build/contracts",
+    "contractsDir": "contracts"
+  },
+  "telemetryOptIn": true
 }
