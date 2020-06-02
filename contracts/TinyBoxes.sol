@@ -439,7 +439,7 @@ contract TinyBoxes is ERC721 {
             colorValues[i] = _generateColor(pool, _id);
 
         // generate shapes
-        uint256 hybrid = uint256(dials[8]); // hatching mod. 1 in hybrid shapes will be hatching
+        uint256 hybrid = uint256(dials[8]); // hatching mod. 1 in hybrid shapes will be hatching type
         for (uint256 i = 0; i < counts[1]; i++) {
             uint256 colorRand = uint256(
                 Random.uniform(pool, 0, int256(counts[0].sub(1)))
