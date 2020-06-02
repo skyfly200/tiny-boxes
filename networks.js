@@ -1,3 +1,6 @@
+const { projectId, mnemonic } = require('./secrets.json')
+const HDWalletProvider = require('@truffle/hdwallet-provider')
+
 module.exports = {
   networks: {
     development: {
@@ -8,12 +11,23 @@ module.exports = {
       gasPrice: 2e10,
       networkId: '*',
     },
+    ropsten: {
+      provider: () =>
+        new HDWalletProvider(
+          mnemonic,
+          `https://ropsten.infura.io/v3/${projectId}`,
+        ),
+      gasPrice: 10e9,
+      networkId: '3',
+    },
     rinkeby: {
-      protocol: 'https',
-      host: 'rinkeby.infura.io/v3/517826b8f74845aa8b16945c61780ca1',
-      gas: 6721975,
-      gasPrice: 5e9,
-      networkId: '*',
+      provider: () =>
+        new HDWalletProvider(
+          mnemonic,
+          `https://rinkeby.infura.io/v3/${projectId}`,
+        ),
+      gasPrice: 10e9,
+      networkId: '4',
     },
   },
 }
