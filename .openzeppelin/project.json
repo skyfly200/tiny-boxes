@@ -1,0 +1,17 @@
+{
+  "manifestVersion": "2.2",
+  "contracts": {},
+  "dependencies": {},
+  "name": "tiny-boxes",
+  "version": "0.1.0",
+  "compiler": {
+    "compilerSettings": {
+      "optimizer": {}
+    },
+    "typechain": {
+      "enabled": true,
+      "outDir": "./types/contracts/",
+      "target": "web3-v1"
+    }
+  }
+}
