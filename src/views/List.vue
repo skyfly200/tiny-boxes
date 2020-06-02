@@ -36,12 +36,12 @@
 </template>
 
 <script>
-import { tinyboxesAddress } from '../tinyboxes-contract'
-import { mapGetters } from 'vuex'
-import Token from '@/components/Token.vue'
+import { tinyboxesAddress } from "../tinyboxes-contract";
+import { mapGetters } from "vuex";
+import Token from "@/components/Token.vue";
 
 export default {
-  name: 'List',
+  name: "List",
   components: { Token },
   data: () => ({
     page: 1,
@@ -52,122 +52,120 @@ export default {
     soldOut: false,
     tokenIDs: [],
     tokensLoading: {},
-    tokens: {},
+    tokens: {}
   }),
   computed: {
     selecting() {
-      return this.merge[0] !== null
+      return this.merge[0] !== null;
     },
     pages() {
-      return Math.floor(this.count / this.itemsPerPage + 1)
+      return Math.floor(this.count / this.itemsPerPage + 1);
     },
     pageTokens() {
-      const start = (this.page - 1) * this.itemsPerPage
-      return this.tokenIDs.slice(start + 1, start + this.itemsPerPage + 1)
+      const start = (this.page - 1) * this.itemsPerPage;
+      return this.tokenIDs.slice(start + 1, start + this.itemsPerPage + 1);
     },
-    ...mapGetters(['currentAccount', 'itemsPerPage']),
+    ...mapGetters(["currentAccount", "itemsPerPage"])
   },
-  mounted: async function () {
-    await this.$store.dispatch('initialize')
-    this.itemsPerPageSelector = this.itemsPerPage
+  mounted: async function() {
+    await this.$store.dispatch("initialize");
+    this.itemsPerPageSelector = this.itemsPerPage;
     // check if page param is within range
-    this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1
-    await this.loadTokens()
-    this.soldOut = this.lookupSupply() === this.lookupLimit()
+    this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
+    await this.loadTokens();
+    this.soldOut = this.lookupSupply() === this.lookupLimit();
   },
   methods: {
     selectItemsPerPage() {
-      this.$store.commit('setItemsPerPage', this.itemsPerPageSelector)
-      this.loadTokens()
+      this.$store.commit("setItemsPerPage", this.itemsPerPageSelector);
+      this.loadTokens();
     },
-    lookupToken: function (id) {
-      return this.$store.state.contracts.tinyboxes.methods.tokenArt(id).call()
+    lookupToken: function(id) {
+      return this.$store.state.contracts.tinyboxes.methods.tokenArt(id).call();
     },
-    lookupSupply: function () {
-      return this.$store.state.contracts.tinyboxes.methods.totalSupply().call()
+    lookupSupply: function() {
+      return this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
     },
-    lookupLimit: function () {
-      return this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call()
+    lookupLimit: function() {
+      return this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
     },
-    loadTokens: async function () {
-      this.tokens = {}
-      this.tokenIDs = []
-      if (this.page > this.pages) this.page = this.pages
+    loadTokens: async function() {
+      this.tokens = {};
+      this.tokenIDs = [];
+      if (this.page > this.pages) this.page = this.pages;
       if (this.ownerOnly) {
         // load only tokens that you own
         this.count = await this.$store.state.contracts.tinyboxes.methods
           .balanceOf(this.currentAccount)
-          .call()
-        this.$store.commit('setCount', this.count)
-        const start = (this.page - 1) * this.itemsPerPage
+          .call();
+        this.$store.commit("setCount", this.count);
+        const start = (this.page - 1) * this.itemsPerPage;
         for (let i = 0; i < this.itemsPerPage && start + i < this.count; i++) {
-          const index = start + i
+          const index = start + i;
           const tokenID = await this.$store.state.contracts.tinyboxes.methods
             .tokenOfOwnerByIndex(this.currentAccount, index)
-            .call()
-          this.$set(this.tokenIDs, index, tokenID)
-          this.$set(this.tokensLoading, tokenID, true)
-          this.loading = false
-          const data = this.$store.state.cachedTokens[tokenID]
+            .call();
+          this.$set(this.tokenIDs, index, tokenID);
+          this.$set(this.tokensLoading, tokenID, true);
+          const data = this.$store.state.cachedTokens[tokenID];
           if (data) {
-            this.$set(this.tokens, tokenID, data)
-            this.$set(this.tokensLoading, tokenID, false)
+            this.$set(this.tokens, tokenID, data);
+            this.$set(this.tokensLoading, tokenID, false);
           } else {
-            this.lookupToken(tokenID).then((resp) => {
-              this.$store.commit('setToken', { id: tokenID, data: resp })
-              this.$set(this.tokens, tokenID, resp)
-              this.$set(this.tokensLoading, tokenID, false)
-            })
+            const resp = await this.lookupToken(tokenID);
+            this.$store.commit("setToken", { id: tokenID, data: resp });
+            this.$set(this.tokens, tokenID, resp);
+            this.$set(this.tokensLoading, tokenID, false);
           }
         }
+        this.loading = false;
       } else {
         // load all
-        const start = (this.page - 1) * this.itemsPerPage
-        this.lookupSupply().then((supply) => {
-          for (let i = 0; i < this.itemsPerPage && start + i < supply; i++) {
-            const tokenID = start + i
-            this.$set(this.tokenIDs, tokenID, tokenID)
-            this.$set(this.tokensLoading, tokenID, true)
-            this.loading = false
-            const data = this.$store.state.cachedTokens[tokenID]
-            if (data) {
-              this.$set(this.tokens, tokenID, data)
-              this.$set(this.tokensLoading, tokenID, false)
-            } else {
-              this.lookupToken(tokenID).then((resp) => {
-                this.$store.commit('setToken', { id: tokenID, data: resp })
-                this.$set(this.tokens, tokenID, resp)
-                this.$set(this.tokensLoading, tokenID, false)
-              })
-            }
+        const start = (this.page - 1) * this.itemsPerPage;
+        const supply = await this.lookupSupply();
+        for (let i = 0; i < this.itemsPerPage && start + i < supply; i++) {
+          const tokenID = start + i;
+          this.$set(this.tokenIDs, tokenID, tokenID);
+          this.$set(this.tokensLoading, tokenID, true);
+          const data = this.$store.state.cachedTokens[tokenID];
+          if (data) {
+            this.$set(this.tokens, tokenID, data);
+            this.$set(this.tokensLoading, tokenID, false);
+          } else {
+            const result = await this.lookupToken(tokenID);
+            //alert(result);
+            this.$store.commit("setToken", { id: tokenID, data: result });
+            this.$set(this.tokens, tokenID, result);
+            this.$set(this.tokensLoading, tokenID, false);
           }
-        })
+        }
+        this.loading = false;
       }
     },
-    listenForTokens: function () {
+    listenForTokens: function() {
       const tokenSubscription = this.$store.state.web3.eth
-        .subscribe('logs', {
+        .subscribe("logs", {
           address: tinyboxesAddress,
           topics: [
-            '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
-            '0x0000000000000000000000000000000000000000000000000000000000000000',
-            '0x000000000000000000000000' + this.currentAccount.slice(2),
-          ],
+            "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+            "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "0x000000000000000000000000" + this.currentAccount.slice(2)
+          ]
         })
         .on(
-          'data',
-          function (log) {
-            const index = parseInt(log.topics[3], 16)
-            this.lookupToken(index).then((resp) => (this.tokens[index] = resp))
-            this.loadTokens()
-          }.bind(this),
+          "data",
+          function(log) {
+            const index = parseInt(log.topics[3], 16);
+            this.lookupToken(index).then(resp => (this.tokens[index] = resp));
+            this.loadTokens();
+          }.bind(this)
         )
-        .on('error', function (log) {
-          this.listenForTokens()
-        })
-    },
-  },
-}
+        .on("error", function(log) {
+          this.listenForTokens();
+        });
+    }
+  }
+};
 </script>
 
 <style lang="sass" scoped>
