@@ -104,39 +104,44 @@ export default Vue.extend({
   components: { Token },
   computed: {
     priceInETH: function() {
-      return this.$store.state.web3.utils.fromWei(this.price);
+      return this.$store.state.web3.utils.fromWei((this as any).price);
     },
     active: function() {
-      return this.sections.map((s: any) => {
-        s.options.filter((o: any) => !o.hide || this.values[o.hide]);
+      return (this as any).sections.map((s: any) => {
+        s.options.filter((o: any) => !o.hide || (this as any).values[o.hide]);
         return s;
       });
     },
     dialog: function() {
-      return this.overlay !== "";
+      return (this as any).overlay !== "";
     },
     inProgress: function() {
-      return this.overlay === "confirm" || this.overlay === "wait";
+      return (
+        (this as any).overlay === "confirm" || (this as any).overlay === "wait"
+      );
     },
     soldOut: function() {
-      return this.id >= this.limit;
+      return (this as any).id >= (this as any).limit;
     },
     ...mapGetters(["currentAccount"])
   },
   mounted: async function() {
+    const t = this as any;
     await this.$store.dispatch("initialize");
-    this.limit = await this.lookupLimit();
-    this.loadFormDefaults();
-    this.listenForTokens();
-    this.listenForMyTokens();
+    t.limit = await t.lookupLimit();
+    t.loadFormDefaults();
+    t.listenForTokens();
+    t.listenForMyTokens();
   },
   methods: {
     update: async function() {
-      if (this.form.valid) this.loadToken();
+      const t = this as any;
+      if (t.form.valid) t.loadToken();
     },
     loadStatus: async function() {
-      this.id = await this.lookupSupply();
-      this.price = await this.getPrice();
+      const t = this as any;
+      t.id = await t.lookupSupply();
+      t.price = await t.getPrice();
     },
     lookupSupply: function() {
       return this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
@@ -150,36 +155,39 @@ export default Vue.extend({
         .call();
     },
     loadFormDefaults: function() {
-      Object.assign(this.values, this.defaults);
-      this.update();
+      const t = this as any;
+      Object.assign(t.values, t.defaults);
+      t.update();
     },
     randomizeForm: function() {
-      const randomSettings = {};
-      for (const s of this.sections)
+      const t = this as any;
+      const randomSettings: any = {};
+      for (const s of t.sections)
         for (const o of s.options)
           if (o.type === "switch") randomSettings[o.key] = Math.random() > 0.5;
           else if (o.type === "range-slider")
             randomSettings[o.key] = [
-              this.between(o.min, o.max),
-              this.between(o.min, o.max)
+              t.between(o.min, o.max),
+              t.between(o.min, o.max)
             ].sort();
           else if (o.key === "scale")
             randomSettings[o.key] = Math.floor(
               Math.ceil(Math.random() * o.max * 10) / 10
             );
           else if (o.key === "seed")
-            randomSettings[o.key] = this.between(o.min, 2 ** 52);
-          else randomSettings[o.key] = this.between(o.min, o.max);
-      Object.assign(this.values, randomSettings);
-      this.update();
+            randomSettings[o.key] = t.between(o.min, 2 ** 52);
+          else randomSettings[o.key] = t.between(o.min, o.max);
+      Object.assign(t.values, randomSettings);
+      t.update();
     },
     between: function(min: number, max: number) {
       return Math.floor(Math.random() * (max - min + 1) + min);
     },
     loadToken: async function() {
-      this.loading = true;
-      await this.loadStatus();
-      const v = this.values;
+      const t = this as any;
+      t.loading = true;
+      await t.loadStatus();
+      const v = t.values;
       const counts = [v.colors, v.shapes];
       const dials = [
         v.x,
@@ -197,13 +205,14 @@ export default Vue.extend({
         v.scale * 100
       ];
       const switches = [v.mirror1, v.mirror2, v.mirror3];
-      this.data = await this.$store.state.contracts.tinyboxes.methods
-        .perpetualRenderer(this.id, v.seed.toString(), counts, dials, switches)
+      t.data = await this.$store.state.contracts.tinyboxes.methods
+        .perpetualRenderer(t.id, v.seed.toString(), counts, dials, switches)
         .call();
-      this.loading = false;
+      t.loading = false;
     },
     mintToken: async function() {
-      const v = this.values;
+      const t = this as any;
+      const v = t.values;
       const counts = [v.colors, v.shapes];
       const dials = [
         v.x,
@@ -221,21 +230,22 @@ export default Vue.extend({
         v.scale * 100
       ];
       const switches = [v.mirror1, v.mirror2, v.mirror3];
-      this.price = await this.getPrice();
-      this.minted = {};
-      this.overlay = "confirm";
-      this.$store.state.web3.eth.sendTransaction(
+      t.price = await t.getPrice();
+      t.minted = {};
+      t.overlay = "confirm";
+      t.$store.state.web3.eth.sendTransaction(
         {
           from: this.currentAccount,
           to: tinyboxesAddress,
-          value: this.price,
+          value: t.price,
           data: this.$store.state.contracts.tinyboxes.methods
             .createBox(v.seed.toString(), counts, dials, switches)
             .encodeABI()
         },
         (err: any, txHash: string) => {
-          this.minted.txHash = txHash;
-          this.overlay = err ? "error" : "wait";
+          const t = this as any;
+          t.minted.txHash = txHash;
+          t.overlay = err ? "error" : "wait";
         }
       );
     },
@@ -249,16 +259,14 @@ export default Vue.extend({
             "0x000000000000000000000000" + this.currentAccount.slice(2)
           ]
         })
-        .on(
-          "data",
-          async function(log) {
-            this.minted.id = parseInt(log.topics[3], 16);
-            this.minted.art = await this.$store.state.contracts.tinyboxes.methods
-              .tokenArt(this.minted.id)
-              .call();
-            this.overlay = "ready";
-          }.bind(this)
-        );
+        .on("data", async (log: any) => {
+          const t = this as any;
+          t.minted.id = parseInt(log.topics[3], 16);
+          t.minted.art = await t.$store.state.contracts.tinyboxes.methods
+            .tokenArt(t.minted.id)
+            .call();
+          t.overlay = "ready";
+        });
     },
     listenForTokens: function() {
       this.$store.state.web3.eth
@@ -269,12 +277,9 @@ export default Vue.extend({
             "0x0000000000000000000000000000000000000000000000000000000000000000"
           ]
         })
-        .on(
-          "data",
-          function(log) {
-            this.update();
-          }.bind(this)
-        );
+        .on("data", (log: any) => {
+          (this as any).update();
+        });
     }
   },
   data: function() {

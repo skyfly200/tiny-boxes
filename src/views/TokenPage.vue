@@ -53,41 +53,45 @@ export default Vue.extend({
         this.data = cached;
         this.loading = false;
       } else {
-        this.$store.state.contracts.tinyboxes.methods.tokenArt(this.id)
+        this.$store.state.contracts.tinyboxes.methods
+          .tokenArt(this.id)
           .call()
           .then((result: any) => {
             this.$store.commit("setToken", { id: this.id, data: result });
             this.data = result;
             this.loading = false;
           })
-          .catch( (err: any) => {
+          .catch((err: any) => {
             console.error(err);
           });
         this.$store.state.contracts.tinyboxes.methods
           .colorCount(this.id)
           .call()
           .then((result: any) => {
-            this.properties.push({title: "Color Count", value: result});
+            const newProp: any = { title: "Color Count", value: result };
+            this.properties.push(newProp as never);
           })
-          .catch( (err: any) => {
+          .catch((err: any) => {
             console.error(err);
           });
         this.$store.state.contracts.tinyboxes.methods
           .shapeCount(this.id)
           .call()
           .then((result: any) => {
-            this.properties.push({title: "Shape Count", value: result});
+            const newProp: any = { title: "Shape Count", value: result };
+            this.properties.push(newProp as never);
           })
-          .catch( (err: any) => {
+          .catch((err: any) => {
             console.error(err);
           });
         this.$store.state.contracts.tinyboxes.methods
           .creator(this.id)
           .call()
           .then((result: any) => {
-            this.properties.push({title: "Creator", value: result});
+            const newProp: any = { title: "Creator", value: result };
+            this.properties.push(newProp as never);
           })
-          .catch( (err: any) => {
+          .catch((err: any) => {
             console.error(err);
           });
       }

@@ -9,7 +9,7 @@
             template(v-if="t.subtopics")
               v-divider
               v-list(dense nav)
-                v-list-item(v-for="s,sKey of t.subtopics" :to="'/guide/' + tKey + '/' + sKey")
+                v-list-item(v-for="s,sKey of t.subtopics" :to="'/guide/' + tKey + '/' + sKey" :key="tKey + '/' + sKey")
                   v-list-item-content
                     v-list-item-title(class="title") {{s.title}}
     v-sheet.content
@@ -72,18 +72,20 @@ export default Vue.extend({
       return this.$route.params.subtopic ? this.$route.params.subtopic : "";
     },
     active() {
-      const t = this.topic;
-      const s = this.subtopic;
-      return this.topics[t]
-        ? s && this.topics[t].subtopics
-          ? this.topics[t].subtopics[s]
-            ? this.topics[t].subtopics[s].component
+      const t = this as any;
+      const topic = t.topic;
+      const subtopic = t.subtopic;
+      return t.topics[topic]
+        ? subtopic && t.topics[topic].subtopics
+          ? t.topics[topic].subtopics[subtopic]
+            ? t.topics[topic].subtopics[subtopic].component
             : null
-          : this.topics[t].component
+          : t.topics[topic].component
         : null;
     },
     items() {
-      const topicData = this.topics[this.topic];
+      const t = this as any;
+      const topicData = t.topics[t.topic];
       const title = topicData ? topicData.title : "404";
       if (!this.subtopic) {
         return [{ text: title }];
@@ -92,11 +94,11 @@ export default Vue.extend({
           {
             text: title,
             exact: true,
-            to: "/guide/" + this.topic
+            to: "/guide/" + t.topic
           },
           {
-            text: topicData.subtopics[this.subtopic]
-              ? topicData.subtopics[this.subtopic].title
+            text: topicData.subtopics[t.subtopic]
+              ? topicData.subtopics[t.subtopic].title
               : ""
           }
         ];
@@ -105,7 +107,7 @@ export default Vue.extend({
   },
   created() {
     this.resized();
-    const debouncedResize = this.debounce(this.resized, 250);
+    const debouncedResize = this.debounce(this.resized, 250, false);
     window.addEventListener("resize", debouncedResize);
   },
   destroyed() {
@@ -115,15 +117,15 @@ export default Vue.extend({
     resized() {
       this.mobile = window.innerWidth < this.mobileBreak;
     },
-    debounce(func, wait, immediate) {
+    debounce(func: Function, wait: number, immediate: boolean) {
       let timeout: null | boolean;
-      return function executedFunction() {
-        const later = function() {
+      return () => {
+        const later = () => {
           timeout = null;
           if (!immediate) func.apply(this);
         };
         const callNow = immediate && !timeout;
-        clearTimeout(this);
+        clearTimeout(this as any);
         timeout = (setTimeout(later, wait) as unknown) as boolean;
         if (callNow) func.apply(this);
       };
