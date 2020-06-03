@@ -47,61 +47,67 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import { mapGetters } from 'vuex'
-import Gravatar from 'vue-gravatar'
+import Vue from "vue";
+import { mapGetters } from "vuex";
+import Gravatar from "vue-gravatar";
 
-Vue.component('v-gravatar', Gravatar)
+Vue.component("v-gravatar", Gravatar);
 
 export default {
   components: { Gravatar },
   methods: {
     formatAccount(account) {
-      return '0x' + account.slice(2, 6) + '....' + account.slice(-4)
-    },
+      return "0x" + account.slice(2, 6) + "...." + account.slice(-4);
+    }
   },
-  mounted: async function () {
-    await this.$store.dispatch('initialize')
+  mounted: async function() {
+    await this.$store.dispatch("initialize");
   },
   data: () => ({
     drawer: false,
     links: [
       {
-        type: 'page',
-        icon: 'mdi-information',
-        text: 'About',
-        path: '/about',
+        type: "page",
+        icon: "mdi-information",
+        text: "About",
+        path: "/about"
       },
       {
-        type: 'page',
-        icon: 'mdi-scatter-plot-outline',
-        text: 'Boxes',
-        path: '/list',
+        type: "page",
+        icon: "mdi-plus-box",
+        text: "Create",
+        path: "/create"
       },
       {
-        type: 'page',
-        icon: 'mdi-book-open-page-variant',
-        text: 'Guide',
-        path: '/guide',
+        type: "page",
+        icon: "mdi-scatter-plot-outline",
+        text: "Boxes",
+        path: "/list"
       },
       {
-        type: 'link',
-        icon: 'mdi-discord',
-        text: 'Discord',
-        path: 'https://discord.gg/upwdYAh',
+        type: "page",
+        icon: "mdi-book-open-page-variant",
+        text: "Guide",
+        path: "/guide"
       },
       {
-        type: 'link',
-        icon: 'mdi-twitter',
-        text: 'Twitter',
-        path: 'https://twitter.com/MicroverseLife',
+        type: "link",
+        icon: "mdi-discord",
+        text: "Discord",
+        path: "https://discord.gg/upwdYAh"
       },
-    ],
+      {
+        type: "link",
+        icon: "mdi-twitter",
+        text: "Twitter",
+        path: "https://twitter.com/MicroverseLife"
+      }
+    ]
   }),
   computed: {
-    ...mapGetters(['currentAccount', 'web3Status']),
-  },
-}
+    ...mapGetters(["currentAccount", "web3Status"])
+  }
+};
 </script>
 
 <style lang="sass">
