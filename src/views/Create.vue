@@ -1,6 +1,6 @@
 <template lang="pug">
   .token-creator
-    v-overlay(:value="dialog" transition="fade")
+    v-dialog(:value="dialog" transition="fade" persistent)
       v-card(min-width="40vw").dialog
         v-fade-transition(appear group)
           .dialog-confirm(v-if="overlay === 'confirm'" key="confirm")
