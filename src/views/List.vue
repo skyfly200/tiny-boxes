@@ -1,7 +1,7 @@
 <template lang="pug">
   .list
-    v-app-bar(v-if="tokens !== {} && !soldOut" absolute collapse dense)
-      v-btn(to="/create") Create
+    v-btn(to="/create" color="#3F51B5" fab bottom right fixed large)
+        v-icon(large) mdi-plus-box
     v-container(fluid)
       v-row(v-if="loading")
         v-col(align="center").tokens-loading
@@ -9,23 +9,25 @@
           h1 Fetching Tokens
           h3 Please Wait...
       template(v-else)
-        v-row
+        v-row(v-if="pages > 1")
           v-col(align="center")
             v-pagination(v-model="page" circle @input="loadTokens" :length="pages")
         v-row(no-gutters)
-          v-col(v-for="i in pageTokens" :key="i + '-token'" align="center" xl="1" lg="2" md="3" sm="4")
-            v-card.token(:to="'/token/' + i" tile)
-              Token(:id="i" :data="tokens[i]")
-              v-card-text.token-wrapper
-                .title TinyBox {{ "#" + i }}
+          v-col(v-for="i in pageTokens" :key="i + '-token'" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
+            v-hover(v-slot:default="{ hover }")
+              v-card.token(:to="'/token/' + i" tile)
+                Token(:id="i" :data="tokens[i]")
+                  v-expand-transition
+                    div(v-if="hover" class="d-flex transition-fast-in-fast-out darken-2 v-card--reveal display-3 white--text" style="height: 100%;")
+                      h1 View
+                v-card-text.title {{ i }}
           v-col(v-if="count === 0").get-started
             v-card(align="center").get-started-card
-              p You dont have any tokens yet!
-              v-btn(outlined color="secondary") Mint
-              span &nbsp;or&nbsp;
-              v-btn(outlined color="secondary") Buy
-              p one to get started
-        v-row(justify="center")
+              p {{ ownerOnly ? "You dont have any tokens yet!" : "No tokens have been minted yet" }}
+              v-btn(v-if="tokens !== {} && !soldOut" to="/create" outlined color="secondary") Mint
+              span(v-if="tokens !== {} && !soldOut && ownerOnly") &nbsp;or&nbsp;
+              v-btn(v-if="ownerOnly" to="opensea.io" outlined color="secondary") Buy
+        v-row(v-if="pages > 1")
           v-col(align="center" md="2" offset-sm="5" xs="4" offset-xs="4")
             v-pagination(v-model="page" circle @click="loadTokens" :length="pages")
             v-combobox.page-items(v-model="itemsPerPageSelector" @change="selectItemsPerPage" dense hint="Tokens per page" label="Tokens per page" menu-props="top" :items='["12","18","24","36","48","96"]')
