@@ -3,34 +3,24 @@
     Nav(v-if="this.$route.path !== '/'")
     v-content
       router-view
-    v-bottom-navigation.bottom-nav(v-if="this.$route.path !== '/'" :value="page" color="secondary" app shift grow)
-      v-btn(to="/about" value="About")
-        span About
-        v-icon mdi-information
-      v-btn(to="/list" value="List")
-        span List
-        v-icon mdi-view-grid
-      v-btn(to="/guide" value="Guide")
-        span Guide
-        v-icon mdi-book-open-page-variant
 </template>
 
 <script>
-import Vue from 'vue'
-import Nav from '@/components/Nav.vue'
+import Vue from "vue";
+import Nav from "@/components/Nav.vue";
 
 export default Vue.extend({
-  name: 'App',
+  name: "App",
   components: { Nav },
   computed: {
     page() {
-      const route = this.$route.name
-      if (route === 'Cell') return 'Collection'
+      const route = this.$route.name;
+      if (route === "Cell") return "Collection";
       // show cell page as collection route
-      else return route
-    },
-  },
-})
+      else return route;
+    }
+  }
+});
 </script>
 
 <style lang="sass">
@@ -43,7 +33,4 @@ body
   font-size: 2rem
   color: #ffffff !important
   text-decoration: none
-@media (min-width: 600px)
-  .v-bottom-navigation
-    visibility: hidden
 </style>
