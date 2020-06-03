@@ -13,10 +13,8 @@
                   v-list-item-content
                     v-list-item-title(class="title") {{s.title}}
     v-sheet.content
-      v-app-bar(v-show="mobile && !drawer" collapse absolute width="55px")
-        v-btn(icon @click="drawer = !drawer")
-          v-icon mdi-book
-        v-spacer
+      v-btn(v-show="mobile && !drawer" @click="drawer = !drawer" fab fixed left)
+        v-icon mdi-book
       v-breadcrumbs(:items="items" large).breadcrumbs
       v-divider
       component(v-if="active" :is="active")
