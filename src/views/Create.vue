@@ -11,19 +11,23 @@
                   v-icon mdi-ethereum
               v-progress-linear(indeterminate)
           .dialog-wait(v-else-if="overlay === 'wait'" key="wait")
-            v-card-title Minting Token
+            v-card-title Transaction Pending
             v-card-text
               .message
-                h3 Please Wait
+                h3 Please Wait...
               v-progress-linear(indeterminate)
           .dialog-ready(v-else-if="overlay === 'ready'" key="ready")
             v-skeleton-loader(:value="!minted.art" type="image")
               Token(:id="minted.id" :data="data")
-            v-card-title Newly Minted Token {{ "#" + minted.id }}
+            v-card-title Yay! You Minted Token {{ "#" + minted.id }}
             v-card-text
               .message
                 h3 Transaction Completed
-                a(:href="'https://rinkeby.etherscan.io/tx/' + minted.txHash" target="new") View on Etherscan
+                  v-tooltip(top)
+                    template(v-slot:activator='{ on }')
+                      span(:href="'https://rinkeby.etherscan.io/tx/' + minted.txHash" v-on='on' target="new") &nbsp;
+                        v-icon mdi-open-in-new
+                    span View on Etherscan
             v-card-actions
               v-btn(:to="'/token/' + minted.id") View Token
               v-spacer
