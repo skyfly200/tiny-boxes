@@ -2,7 +2,7 @@
   .list
     v-app-bar(v-if="tokens !== {} && !soldOut" absolute collapse dense)
       v-btn(to="/create") Create
-    v-container
+    v-container(fluid)
       v-row(v-if="loading")
         v-col(align="center").tokens-loading
           v-progress-circular(indeterminate size="75" color="primary")
@@ -13,15 +13,11 @@
           v-col(align="center")
             v-pagination(v-model="page" circle @input="loadTokens" :length="pages")
         v-row(no-gutters)
-          v-col(v-for="i in pageTokens" :key="i + '-token'" align="center" xl="3" lg="4" md="6" sm="12")
-            v-card.token
-              v-card-title 
-                span {{ "#" + i }}
+          v-col(v-for="i in pageTokens" :key="i + '-token'" align="center" xl="1" lg="2" md="3" sm="4")
+            v-card.token(:to="'/token/' + i" tile)
+              Token(:id="i" :data="tokens[i]")
               v-card-text.token-wrapper
-                  Token(:id="i" :data="tokens[i]")
-              v-divider
-              v-card-actions
-                v-btn(:to="'/token/' + i") View
+                .title TinyBox {{ "#" + i }}
           v-col(v-if="count === 0").get-started
             v-card(align="center").get-started-card
               p You dont have any tokens yet!
@@ -169,10 +165,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.token
-  margin: 1rem
-.token-wrapper
-  padding: 0
 .tokens-loading
   padding-top: 40vh
 .get-started
