@@ -1,43 +1,48 @@
 <template lang="pug">
   .token-creator
-    v-dialog(:value="dialog" transition="fade" persistent)
-      v-card(min-width="40vw").dialog
-        v-fade-transition(appear group)
-          .dialog-confirm(v-if="overlay === 'confirm'" key="confirm")
-            v-card-title Confirming Transaction
-            v-card-text
-              .message
-                h3 Mint Token {{ "#" + id }} for {{ priceInETH }} 
-                  v-icon mdi-ethereum
-              v-progress-linear(indeterminate)
-          .dialog-wait(v-else-if="overlay === 'wait'" key="wait")
-            v-card-title Transaction Pending
-            v-card-text
-              .message
-                h3 Please Wait...
-              v-progress-linear(indeterminate)
-          .dialog-ready(v-else-if="overlay === 'ready'" key="ready")
-            v-skeleton-loader(:value="!minted.art" type="image")
-              Token(:id="minted.id" :data="data")
-            v-card-title Yay! You Minted Token {{ "#" + minted.id }}
-            v-card-text
-              .message
-                h3 Transaction Completed
-                  v-tooltip(top)
-                    template(v-slot:activator='{ on }')
-                      span(:href="'https://rinkeby.etherscan.io/tx/' + minted.txHash" v-on='on' target="new") &nbsp;
-                        v-icon mdi-open-in-new
-                    span View on Etherscan
-            v-card-actions
-              v-btn(:to="'/token/' + minted.id") View Token
-              v-spacer
-              v-btn(@click="overlay = ''; update()") Mint Another
-          .dialog-error(v-else-if="overlay === 'error'" key="error")
-            v-card-title Transaction Error
-            v-card-text
-              v-alert(type="error" border="left") An error occured while minting your token
-            v-card-actions
-              v-btn(@click="overlay = ''; update()") Try Again
+    v-dialog(:value="dialog" transition="fade" :persistent="inProgress")
+      v-container(fluid)
+        v-row
+          v-col(md="4" sm="6" xs="12" offset-md="4" offset-sm="3")
+            v-card.dialog
+              v-fade-transition(appear group)
+                .dialog-confirm(v-if="overlay === 'confirm'" key="confirm")
+                  v-card-title Confirming Transaction
+                  v-card-text
+                    .message
+                      h3 Mint Token {{ "#" + id }} for {{ priceInETH }} 
+                        v-icon mdi-ethereum
+                    v-progress-linear(indeterminate)
+                .dialog-wait(v-else-if="overlay === 'wait'" key="wait")
+                  v-card-title Transaction Pending
+                  v-card-text
+                    .message
+                      h3 Please Wait...
+                    v-progress-linear(indeterminate)
+                .dialog-ready(v-else-if="overlay === 'ready'" key="ready")
+                  v-skeleton-loader(:value="!minted.art" type="image")
+                    Token(:id="minted.id" :data="data")
+                  v-card-title Yay! You Minted Token {{ "#" + minted.id }}
+                  v-card-text
+                    .message
+                      h3 Transaction Completed
+                        v-tooltip(top)
+                          template(v-slot:activator='{ on }')
+                            span(:href="'https://rinkeby.etherscan.io/tx/' + minted.txHash" v-on='on' target="new") &nbsp;
+                              v-icon mdi-open-in-new
+                          span View on Etherscan
+                  v-card-actions
+                    v-btn(:to="'/token/' + minted.id") View Token
+                    v-spacer
+                    v-btn(@click="overlay = ''; update()") Mint Another
+                .dialog-error(v-else-if="overlay === 'error'" key="error")
+                  v-card-title Transaction Error
+                  v-card-text
+                    v-alert(type="error" border="left") An error occured while minting your token
+                  v-card-actions
+                    v-btn(@click="mintToken" color="success") Try Again
+                    v-spacer
+                    v-btn(@click="overlay = ''; update()" color="error") Cancel
     v-container(fluid)
       v-row(flex)
         v-col(align="center" cols="12" md="5" offset-md="1")
@@ -109,6 +114,9 @@ export default Vue.extend({
     },
     dialog: function() {
       return this.overlay !== "";
+    },
+    inProgress: function() {
+      return this.overlay === "confirm" || this.overlay === "wait";
     },
     soldOut: function() {
       return this.id >= this.limit;
