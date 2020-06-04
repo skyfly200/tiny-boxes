@@ -358,14 +358,14 @@ export default Vue.extend({
           title: "Position",
           options: [
             {
-              label: "X",
+              label: "X Spread",
               key: "x",
               type: "slider",
               min: 0,
               max: 500
             },
             {
-              label: "Y",
+              label: "Y Spread",
               key: "y",
               type: "slider",
               min: 0,
@@ -388,57 +388,20 @@ export default Vue.extend({
           ]
         },
         {
-          title: "Scale",
+          title: "Mirror",
           options: [
             {
-              label: "Master",
-              key: "scale",
-              type: "slider",
-              step: 0.1,
-              min: 0.1,
-              max: 10.0
-            }
-          ]
-        },
-        {
-          title: "Hatching",
-          options: [
-            {
-              label: "Amount",
-              key: "hatchMod",
-              type: "slider",
-              min: 0,
-              max: 100
-            }
-          ]
-        },
-        {
-          title: "RNG",
-          options: [
-            {
-              label: "Seed",
-              key: "seed",
-              type: "slider",
-              min: 0,
-              max: 2 ** 53
-            }
-          ]
-        },
-        {
-          title: "Mirroring",
-          options: [
-            {
-              label: "1",
+              label: "Level 1",
               key: "mirror1",
               type: "switch"
             },
             {
-              label: "2",
+              label: "Level 2",
               key: "mirror2",
               type: "switch"
             },
             {
-              label: "3",
+              label: "Level 3",
               key: "mirror3",
               type: "switch"
             },
@@ -468,6 +431,33 @@ export default Vue.extend({
               step: 25,
               min: 0,
               max: 3400
+            }
+          ]
+        },
+        {
+          title: "Advanced",
+          options: [
+            {
+              label: "RNG Seed",
+              key: "seed",
+              type: "slider",
+              min: 0,
+              max: 2 ** 53
+            },
+            {
+              label: "Hatching Mod",
+              key: "hatchMod",
+              type: "slider",
+              min: 0,
+              max: 100
+            },
+            {
+              label: "Scale",
+              key: "scale",
+              type: "slider",
+              step: 0.1,
+              min: 0.1,
+              max: 10.0
             }
           ]
         }
