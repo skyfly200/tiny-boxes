@@ -164,19 +164,22 @@ export default Vue.extend({
       const randomSettings: any = {};
       for (const s of t.sections)
         for (const o of s.options)
-          if (o.type === "switch") randomSettings[o.key] = Math.random() > 0.5;
-          else if (o.type === "range-slider")
-            randomSettings[o.key] = [
-              t.between(o.min, o.max),
-              t.between(o.min, o.max)
-            ].sort();
-          else if (o.key === "scale")
-            randomSettings[o.key] = Math.floor(
-              Math.ceil(Math.random() * o.max * 10) / 10
-            );
-          else if (o.key === "seed")
-            randomSettings[o.key] = t.between(o.min, 2 ** 52);
-          else randomSettings[o.key] = t.between(o.min, o.max);
+          if (o.rand) {
+            if (o.type === "switch")
+              randomSettings[o.key] = Math.random() > 0.5;
+            else if (o.type === "range-slider")
+              randomSettings[o.key] = [
+                t.between(o.min, o.max),
+                t.between(o.min, o.max)
+              ].sort();
+            else if (o.key === "scale")
+              randomSettings[o.key] = Math.floor(
+                Math.ceil(Math.random() * o.max * 10) / 10
+              );
+            else if (o.key === "seed")
+              randomSettings[o.key] = t.between(o.min, 2 ** 52);
+            else randomSettings[o.key] = t.between(o.min, o.max);
+          }
       Object.assign(t.values, randomSettings);
       t.update();
     },
@@ -323,6 +326,7 @@ export default Vue.extend({
               label: "Colors",
               key: "colors",
               type: "slider",
+              rand: true,
               min: 1,
               max: 100
             },
@@ -330,6 +334,7 @@ export default Vue.extend({
               label: "Shapes",
               key: "shapes",
               type: "slider",
+              rand: true,
               min: 1,
               max: 77
             }
@@ -342,6 +347,7 @@ export default Vue.extend({
               label: "Width",
               key: "width",
               type: "range-slider",
+              rand: true,
               min: 1,
               max: 500
             },
@@ -349,6 +355,7 @@ export default Vue.extend({
               label: "Height",
               key: "height",
               type: "range-slider",
+              rand: true,
               min: 1,
               max: 500
             }
@@ -361,6 +368,7 @@ export default Vue.extend({
               label: "X Spread",
               key: "x",
               type: "slider",
+              rand: true,
               min: 0,
               max: 500
             },
@@ -368,6 +376,7 @@ export default Vue.extend({
               label: "Y Spread",
               key: "y",
               type: "slider",
+              rand: true,
               min: 0,
               max: 500
             },
@@ -375,6 +384,7 @@ export default Vue.extend({
               label: "Columns",
               key: "xSeg",
               type: "slider",
+              rand: true,
               min: 1,
               max: 50
             },
@@ -382,6 +392,7 @@ export default Vue.extend({
               label: "Rows",
               key: "ySeg",
               type: "slider",
+              rand: true,
               min: 1,
               max: 50
             }
