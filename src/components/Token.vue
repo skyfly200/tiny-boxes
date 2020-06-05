@@ -10,7 +10,7 @@ export default Vue.extend({
   name: "Token",
   props: ["id", "data"],
   data: () => ({
-    size: 100,
+    size: 100
   }),
   async mounted() {
     this.load();
@@ -22,4 +22,3 @@ export default Vue.extend({
   }
 });
 </script>
-

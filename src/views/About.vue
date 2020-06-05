@@ -7,6 +7,6 @@
 import Vue from "vue";
 
 export default Vue.extend({
-  name: "About",
+  name: "About"
 });
 </script>

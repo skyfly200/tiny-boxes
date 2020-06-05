@@ -12,34 +12,34 @@
 </template>
 
 <script>
-import Vue from 'vue'
+import Vue from "vue";
 
 export default {
-  name: 'Home',
+  name: "Home",
   data: () => ({
     data: {
-      mass: '1854',
-      wallWave: '13',
+      mass: "1854",
+      wallWave: "13",
       wallRound: true,
-      wallColor: '76379945',
+      wallColor: "76379945",
       nucleusHidden: false,
-      nucleusColor: '120900',
-      featureCategories: ['0', '1', '2', '3', '4', '5', '6', '7'],
-      featureFamilies: ['1', '1', '1', '1', '1', '3', '3', '3'],
-      featureCounts: ['14', '9', '5', '3', '2', '11', '13', '14'],
+      nucleusColor: "120900",
+      featureCategories: ["0", "1", "2", "3", "4", "5", "6", "7"],
+      featureFamilies: ["1", "1", "1", "1", "1", "3", "3", "3"],
+      featureCounts: ["14", "9", "5", "3", "2", "11", "13", "14"],
       featureColors: [
-        '176130',
-        '15004091',
-        '9558604',
-        '13202218',
-        '579032',
-        '16426533',
-        '14842158',
-        '568390',
-      ],
-    },
-  }),
-}
+        "176130",
+        "15004091",
+        "9558604",
+        "13202218",
+        "579032",
+        "16426533",
+        "14842158",
+        "568390"
+      ]
+    }
+  })
+};
 </script>
 
 <style lang="sass" scoped>
