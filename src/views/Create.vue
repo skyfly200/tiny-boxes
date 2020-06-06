@@ -81,14 +81,16 @@
                 v-expansion-panel-content.section-content
                   template(v-for="option of section.options")
                     template(v-if="!option.hide || values[option.hide]")
-                      v-slider(v-if="option.type === 'slider'" v-model="values[option.key]" @change="update" :step="option.step" thumb-label :label="option.label" required :min="option.min" :max="option.max")
-                        template(v-slot:append)
-                          v-text-field(v-model="values[option.key]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
-                      v-range-slider(v-else-if="option.type === 'range-slider'" v-model="values[option.key]" @change="update" :step="option.step" thumb-label :label="option.label" required :min="option.min" :max="option.max")
-                        template(v-slot:prepend)
-                          v-text-field(v-model="values[option.key][0]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
-                        template(v-slot:append)
-                          v-text-field(v-model="values[option.key][1]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
+                      v-slider(v-if="option.type === 'slider'" v-model="values[option.key]" @change="update" thumb-label required
+                        :label="option.label" :step="option.step" :min="option.range.min" :max="option.range.max")
+                          template(v-slot:append)
+                            v-text-field(v-model="values[option.key]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
+                      v-range-slider(v-else-if="option.type === 'range-slider'" v-model="values[option.key]" @change="update" thumb-label required
+                        :step="option.step" :label="option.label" :min="option.range.min" :max="option.range.max")
+                          template(v-slot:prepend)
+                            v-text-field(v-model="values[option.key][0]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
+                          template(v-slot:append)
+                            v-text-field(v-model="values[option.key][1]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
                       v-switch(v-else-if="option.type === 'switch'" v-model="values[option.key]" @change="update" :label="option.label").switch
                       v-text-field(v-else v-model="values[option.key]" @change="update" :label="option.label" required outlined type="number")
 </template>
@@ -163,28 +165,30 @@ export default Vue.extend({
       const t = this as any;
       const randomSettings: any = {};
       for (const s of t.sections)
-        for (const o of s.options)
-          if (o.rand) {
-            if (o.type === "switch")
-              randomSettings[o.key] = Math.random() > 0.5;
-            else if (o.type === "range-slider")
-              randomSettings[o.key] = [
-                t.between(o.min, o.max),
-                t.between(o.min, o.max)
-              ].sort();
-            else if (o.key === "scale")
-              randomSettings[o.key] = Math.floor(
-                Math.ceil(Math.random() * o.max * 10) / 10
-              );
-            else if (o.key === "seed")
-              randomSettings[o.key] = t.between(o.min, 2 ** 52);
-            else randomSettings[o.key] = t.between(o.min, o.max);
+        if (s.rand)
+          for (const o of s.options) {
+            const range = o.rand ? o.rand : o.range;
+            switch (o.type) {
+              case "switch":
+                randomSettings[o.key] = Math.random() > 0.5;
+                break;
+              case "range-slider":
+                randomSettings[o.key] = [range, range]
+                  .map(r => t.between(r))
+                  .sort();
+                break;
+              default:
+                randomSettings[o.key] = t.between(range);
+                break;
+            }
           }
       Object.assign(t.values, randomSettings);
       t.update();
     },
-    between: function(min: number, max: number) {
-      return Math.floor(Math.random() * (max - min + 1) + min);
+    between: function(range: any) {
+      return Math.floor(
+        Math.random() * (range.max - range.min + 1) + range.min
+      );
     },
     loadToken: async function() {
       const t = this as any;
@@ -210,7 +214,10 @@ export default Vue.extend({
       const switches = [v.mirror1, v.mirror2, v.mirror3];
       t.data = await this.$store.state.contracts.tinyboxes.methods
         .perpetualRenderer(t.id, v.seed.toString(), counts, dials, switches)
-        .call();
+        .call()
+        .catch(err => {
+          console.error(err, t.id, v.seed);
+        });
       t.loading = false;
     },
     mintToken: async function() {
@@ -321,80 +328,99 @@ export default Vue.extend({
       sections: [
         {
           title: "Counts",
+          rand: true,
           options: [
             {
               label: "Colors",
               key: "colors",
               type: "slider",
-              rand: true,
-              min: 1,
-              max: 100
+              rand: {
+                min: 1,
+                max: 50
+              },
+              range: {
+                min: 1,
+                max: 100
+              }
             },
             {
               label: "Shapes",
               key: "shapes",
               type: "slider",
-              rand: true,
-              min: 1,
-              max: 77
+              rand: {
+                min: 1,
+                max: 55
+              },
+              range: {
+                min: 1,
+                max: 77
+              }
             }
           ]
         },
         {
           title: "Size",
+          rand: true,
           options: [
             {
               label: "Width",
               key: "width",
               type: "range-slider",
-              rand: true,
-              min: 1,
-              max: 500
+              range: {
+                min: 1,
+                max: 500
+              }
             },
             {
               label: "Height",
               key: "height",
               type: "range-slider",
-              rand: true,
-              min: 1,
-              max: 500
+              range: {
+                min: 1,
+                max: 500
+              }
             }
           ]
         },
         {
           title: "Position",
+          rand: true,
           options: [
             {
               label: "X Spread",
               key: "x",
               type: "slider",
-              rand: true,
-              min: 0,
-              max: 500
+              range: {
+                min: 1,
+                max: 500
+              }
             },
             {
               label: "Y Spread",
               key: "y",
               type: "slider",
-              rand: true,
-              min: 0,
-              max: 500
+              range: {
+                min: 1,
+                max: 500
+              }
             },
             {
               label: "Columns",
               key: "xSeg",
               type: "slider",
-              rand: true,
-              min: 1,
-              max: 50
+              range: {
+                min: 1,
+                max: 50
+              }
             },
             {
               label: "Rows",
               key: "ySeg",
               type: "slider",
-              rand: true,
-              min: 1,
-              max: 50
+              range: {
+                min: 1,
+                max: 50
+              }
             }
           ]
         },
@@ -422,8 +448,10 @@ export default Vue.extend({
               type: "slider",
               hide: "mirror1",
               step: 25,
-              min: 0,
-              max: 3400
+              range: {
+                min: 0,
+                max: 3400
+              }
             },
             {
               label: "Position 2",
@@ -431,8 +459,10 @@ export default Vue.extend({
               type: "slider",
               hide: "mirror2",
               step: 25,
-              min: 0,
-              max: 3400
+              range: {
+                min: 0,
+                max: 3400
+              }
             },
             {
               label: "Position 3",
@@ -440,8 +470,10 @@ export default Vue.extend({
               type: "slider",
               hide: "mirror3",
               step: 25,
-              min: 0,
-              max: 3400
+              range: {
+                min: 0,
+                max: 3400
+              }
             }
           ]
         },
@@ -452,23 +484,29 @@ export default Vue.extend({
               label: "RNG Seed",
               key: "seed",
               type: "slider",
-              min: 0,
-              max: 2 ** 53
+              range: {
+                min: 0,
+                max: 2 ** 53
+              }
             },
             {
               label: "Hatching Mod",
               key: "hatchMod",
               type: "slider",
-              min: 0,
-              max: 100
+              range: {
+                min: 0,
+                max: 1000
+              }
             },
             {
               label: "Scale",
               key: "scale",
               type: "slider",
               step: 0.1,
-              min: 0.1,
-              max: 10.0
+              range: {
+                min: 0.1,
+                max: 10.0
+              }
             }
           ]
         }
