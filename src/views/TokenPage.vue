@@ -6,38 +6,52 @@
             v-progress-circular(indeterminate size="75" color="primary")
             h1 Fetching Token {{ "#" + id }}
       v-row(v-else)
-        v-col(align="center")
-          v-card
-            .token-stats
-              h1 Token {{ id }}
-            v-divider
-            .token-graphic
-              Token(:id="id" :data="data.art")
         v-col
-          v-sheet.token-properties
-            h1 Token Properties
-            .creation
-              p Created By: {{ data.creation.address }}
-              p With Tx:
-              a(:href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash")
-                span {{ data.creation.transactionHash }}
-                v-icon mdi-open-in-new
-              p In Block: {{ data.creation.blockNumber }}
+          v-card
+            v-card-title Token {{ id }}
+            Token(:id="id" :data="data.art").token-graphic
+            v-card-text.creation
+              h4 Minted
               p For: {{ priceInETH }} 
                 v-icon mdi-ethereum
-            h1 Token Stats
-            .seed
-              p Seed: {{ data.seed }}
-            .counts
-              p Colors: {{ data.counts[0] }}
-              p Shapes: {{ data.counts[1] }}
-            .dials
-              h3 Dials:
-                p {{ data.dials }}
-            .switches
-              h3 Switches
-              p {{ data.switches }}
-            v-btn(large target="_blank" color="primary" href="//opensea.io") View on OpenSea
+              p With TX: 
+                a(:href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash") {{ formatHash(data.creation.transactionHash) }}
+                  v-icon mdi-open-in-new
+              p By Address:
+                a(:href="'https://rinkeby.etherscan.io/address/' + data.creation.address") {{ formatHash(data.creation.address) }}
+                    v-icon mdi-open-in-new
+              p In Block: {{ data.creation.blockNumber }}
+        v-col
+          v-sheet.token-properties
+            h1 Stats
+            .stats
+              h4 Counts
+              .counts
+                p {{ data.counts[0] }} Colors
+                p {{ data.counts[1] }} Shapes
+              h4 Size
+              .size
+                p Width: {{ data.dials[4] }} to {{ data.dials[5] }}
+                p Height: {{ data.dials[6] }} to {{ data.dials[7] }}
+              h4 Position
+              .position
+                p Spread: {{ data.dials[0] }} X {{ data.dials[1] }} Y
+                p Segments: {{ data.dials[2] }} Rows by {{ data.dials[3] }} Columns
+              h4 Advanced
+              .advanced
+                p Seed: {{ data.seed }}
+                p Hatching Mod: {{ data.dials[8] }}
+                p {{ data.dials[12] + "%" }} Scale
+              h4 Mirroring
+              .switches
+                p {{ data.dials[9] }}
+                  v-icon {{ data.switches[0] ? "mdi-checkbox-marked-outline" : "mdi-checkbox-blank-outline" }}
+                p {{ data.dials[10] }}
+                  v-icon {{ data.switches[1] ? "mdi-checkbox-marked-outline" : "mdi-checkbox-blank-outline" }}
+                p {{ data.dials[11] }}
+                  v-icon {{ data.switches[2] ? "mdi-checkbox-marked-outline" : "mdi-checkbox-blank-outline" }}
+            .opensea
+              v-btn(large target="_blank" color="primary" href="//opensea.io") View on OpenSea
     
 </template>
 
@@ -64,6 +78,9 @@ export default Vue.extend({
     await this.loadToken();
   },
   methods: {
+    formatHash(account: string) {
+      return "0x" + account.slice(2, 6) + "...." + account.slice(-4);
+    },
     loadToken: async function() {
       const cached = this.$store.state.cachedTokens[this.id];
       if (cached) {
@@ -133,16 +150,15 @@ export default Vue.extend({
   padding-top: 40vh
 .token-properties
   padding: 1rem
-  margin: 1rem 0
 .token-stats
   padding: 1rem
   display: flex
   flex-direction: row,
   justify-content: space-between
-.features
-  margin: 2vh 1vw
+.switches, .advanced, .counts, .position, .size
   display: flex
-  flex-wrap: wrap
+  width: 100%
+  justify-content: space-around
 .feature
   margin: 5px
   .v-chip
