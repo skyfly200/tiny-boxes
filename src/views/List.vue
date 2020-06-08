@@ -16,10 +16,11 @@
           v-col(v-for="i in pageTokens" :key="i + '-token'" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
             v-hover(v-slot:default="{ hover }")
               v-card.token(:to="'/token/' + i" tile)
-                Token(:id="i" :data="tokens[i]")
-                  v-expand-transition
-                    div(v-if="hover" class="d-flex transition-fast-in-fast-out darken-2 v-card--reveal display-3 white--text" style="height: 100%;")
-                      h1 View
+                v-skeleton-loader(:loading="!tokensLoaded[i]" transition-group="fade-transition" height="320" type="image")
+                  Token(:id="i" :data="tokens[i]")
+                    v-expand-transition
+                      div(v-if="hover" class="d-flex transition-fast-in-fast-out darken-2 v-card--reveal display-3 white--text" style="height: 100%;")
+                        h1 View
                 v-card-text.title {{ i }}
           v-col(v-if="count === 0").get-started
             v-card(align="center").get-started-card
@@ -50,7 +51,7 @@ export default {
     loading: true,
     soldOut: false,
     tokenIDs: [],
-    tokensLoading: {},
+    tokensLoaded: {},
     tokens: {}
   }),
   computed: {
@@ -69,7 +70,7 @@ export default {
   mounted: async function() {
     await this.$store.dispatch("initialize");
     this.itemsPerPageSelector = this.itemsPerPage;
-    // check if page param is within range
+    // TODO: check if page param is within range
     this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
     await this.loadTokens();
     this.limit = await this.lookupLimit();
@@ -110,14 +111,13 @@ export default {
               .tokenOfOwnerByIndex(this.currentAccount, i)
               .call();
         this.$set(this.tokenIDs, i, tokenID);
-        this.$set(this.tokensLoading, tokenID, true);
         const data = this.$store.state.cachedTokens[tokenID];
-        const result =
-          data && data.art ? data.art : await this.lookupToken(tokenID);
-        this.$set(this.tokens, tokenID, result);
-        this.$set(this.tokensLoading, tokenID, false);
+        const result = await this.lookupToken(tokenID).then(result => {
+          this.$set(this.tokens, tokenID, data && data.art ? data.art : result);
+          this.$set(this.tokensLoaded, tokenID, true);
+          this.loading = false;
+        });
       }
-      this.loading = false;
     },
     listenForTokens: function() {
       const tokenSubscription = this.$store.state.web3.eth
@@ -131,13 +131,14 @@ export default {
         })
         .on(
           "data",
-          function(log) {
+          async function(log) {
             const index = parseInt(log.topics[3], 16);
-            this.lookupToken(index).then(resp => (this.tokens[index] = resp));
-            this.loadTokens();
+            this.tokens[index] = await this.lookupToken(index);
             // lookup new supply and check if sold out
             this.supply = await this.lookupSupply();
             this.soldOut = this.supply === this.limit;
+            // rerender token list
+            this.loadTokens();
           }.bind(this)
         )
         .on("error", function(log) {
