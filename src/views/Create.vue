@@ -34,7 +34,7 @@
                   v-card-actions
                     v-btn(:to="'/token/' + minted.id") View Token
                     v-spacer
-                    v-btn(@click="overlay = ''; update()") Mint Another
+                    v-btn(@click="overlay = ''; loadFormDefaults(); update()") Mint Another
                 .dialog-error(v-else-if="overlay === 'error'" key="error")
                   v-card-title Transaction Error
                   v-card-text
