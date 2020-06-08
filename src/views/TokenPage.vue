@@ -1,56 +1,62 @@
 <template lang="pug">
   .token-page
-    v-container
+    v-container(fluid)
       v-row(v-if="loading")
         v-col(align="center").token-loading
             v-progress-circular(indeterminate size="75" color="primary")
             h1 Fetching Token {{ "#" + id }}
-      v-row(v-else)
-        v-col
+      v-row(v-else no-gutters)
+        v-col(cols="12" md="6" lg="5" offset-lg="1")
           v-card
-            v-card-title Token {{ id }}
+            v-card-title(align="center")
+              h2 Token {{ id }}
             Token(:id="id" :data="data.art").token-graphic
             v-card-text.creation
-              h4 Minted
-              p For: {{ priceInETH }} 
-                v-icon mdi-ethereum
-              p With TX: 
-                a(:href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash") {{ formatHash(data.creation.transactionHash) }}
-                  v-icon mdi-open-in-new
-              p By Address:
-                a(:href="'https://rinkeby.etherscan.io/address/' + data.creation.address") {{ formatHash(data.creation.address) }}
-                    v-icon mdi-open-in-new
-              p In Block: {{ data.creation.blockNumber }}
-        v-col
-          v-sheet.token-properties
-            h1 Stats
-            .stats
-              h4 Counts
-              .counts
-                p {{ data.counts[0] }} Colors
-                p {{ data.counts[1] }} Shapes
-              h4 Size
-              .size
-                p Width: {{ data.dials[4] }} to {{ data.dials[5] }}
-                p Height: {{ data.dials[6] }} to {{ data.dials[7] }}
-              h4 Position
-              .position
-                p Spread: {{ data.dials[0] }} X {{ data.dials[1] }} Y
-                p Segments: {{ data.dials[2] }} Rows by {{ data.dials[3] }} Columns
-              h4 Advanced
-              .advanced
-                p Seed: {{ data.seed }}
-                p Hatching Mod: {{ data.dials[8] }}
-                p {{ data.dials[12] + "%" }} Scale
-              h4 Mirroring
-              .switches
-                p {{ data.dials[9] }}
-                  v-icon {{ data.switches[0] ? "mdi-checkbox-marked-outline" : "mdi-checkbox-blank-outline" }}
-                p {{ data.dials[10] }}
-                  v-icon {{ data.switches[1] ? "mdi-checkbox-marked-outline" : "mdi-checkbox-blank-outline" }}
-                p {{ data.dials[11] }}
-                  v-icon {{ data.switches[2] ? "mdi-checkbox-marked-outline" : "mdi-checkbox-blank-outline" }}
-            .opensea
+              h2(align="center") Minted
+              .minting-stats
+                p At {{ (new Date(data.block.timestamp)).toLocaleTimeString() }} On {{ (new Date(data.block.timestamp)).toLocaleDateString() }}
+                p In Block # {{ data.creation.blockNumber }}
+                p For {{ priceInETH }} 
+                  v-icon mdi-ethereum
+              .minting-stats
+                p By Address 
+                  a(:href="'https://rinkeby.etherscan.io/address/' + data.creation.address") {{ formatHash(data.creation.address) }}
+                p With TX 
+                  a(:href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash") {{ formatHash(data.creation.transactionHash) }}
+        v-col(cols="12" md="6" lg="5")
+          v-card.token-properties
+            v-card-title(align="center")
+              h2 Stats
+            v-card-text
+              .stats
+                h3 Counts
+                .counts
+                  p {{ data.counts[0] }} Colors
+                  p {{ data.counts[1] }} Shapes
+                h3 Size
+                .size
+                  p Width: {{ data.dials[4] }} to {{ data.dials[5] }}
+                  p Height: {{ data.dials[6] }} to {{ data.dials[7] }}
+                h3 Position
+                .position
+                  p Spread: {{ data.dials[0] }} X {{ data.dials[1] }} Y
+                  p {{ data.dials[2] }} Rows
+                  p {{ data.dials[3] }} Columns
+                h3 Advanced
+                .advanced
+                  p Seed: {{ data.seed }}
+                  p Hatching Mod: {{ data.dials[8] }}
+                  p {{ data.dials[12] + "%" }} Scale
+                h3 Mirroring
+                .mirroring
+                  p {{ data.dials[9] }}
+                    v-icon {{ data.switches[0] ? "mdi-checkbox-marked-outline" : "mdi-checkbox-blank-outline" }}
+                  p {{ data.dials[10] }}
+                    v-icon {{ data.switches[1] ? "mdi-checkbox-marked-outline" : "mdi-checkbox-blank-outline" }}
+                  p {{ data.dials[11] }}
+                    v-icon {{ data.switches[2] ? "mdi-checkbox-marked-outline" : "mdi-checkbox-blank-outline" }}
+            v-card-actions.opensea
+              v-spacer
               v-btn(large target="_blank" color="primary" href="//opensea.io") View on OpenSea
     
 </template>
@@ -107,6 +113,9 @@ export default Vue.extend({
         this.data.switches = await this.$store.state.contracts.tinyboxes.methods
           .tokenSwitches(this.id)
           .call();
+        this.data.block = await this.$store.state.web3.eth.getBlock(
+          this.data.creation.blockNumber
+        );
 
         // cache token data and end loading
         this.$store.commit("setToken", { id: this.id, data: this.data });
@@ -155,10 +164,16 @@ export default Vue.extend({
   display: flex
   flex-direction: row,
   justify-content: space-between
-.switches, .advanced, .counts, .position, .size
+.v-card 
+  margin: 1rem
+.mirroring, .advanced, .counts, .position, .size, .minting-stats
   display: flex
-  width: 100%
+  flex-wrap: wrap
   justify-content: space-around
+  p
+    margin-top: 0
+.v-card__text
+  width: auto !important
 .feature
   margin: 5px
   .v-chip
