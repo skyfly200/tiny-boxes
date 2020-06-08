@@ -23,11 +23,20 @@
                 span {{ data.creation.transactionHash }}
                 v-icon mdi-open-in-new
               p In Block: {{ data.creation.blockNumber }}
+              p For: {{ priceInETH }} 
+                v-icon mdi-ethereum
+            h1 Token Stats
+            .seed
+              p Seed: {{ data.seed }}
             .counts
               p Colors: {{ data.counts[0] }}
               p Shapes: {{ data.counts[1] }}
             .dials
+              h3 Dials:
+                p {{ data.dials }}
             .switches
+              h3 Switches
+              p {{ data.switches }}
             v-btn(large target="_blank" color="primary" href="//opensea.io") View on OpenSea
     
 </template>
@@ -42,6 +51,9 @@ export default Vue.extend({
   name: "TokenPage",
   components: { Token },
   computed: {
+    priceInETH: function() {
+      return this.$store.state.web3.utils.fromWei((this as any).data.price);
+    },
     id(): number {
       return parseInt(this.$route.params.id);
     },
@@ -63,8 +75,20 @@ export default Vue.extend({
         this.data.art = await this.$store.state.contracts.tinyboxes.methods
           .tokenArt(this.id)
           .call();
+        this.data.seed = await this.$store.state.contracts.tinyboxes.methods
+          .tokenSeed(this.id)
+          .call();
+        this.data.price = await this.$store.state.contracts.tinyboxes.methods
+          .priceAt(this.id)
+          .call();
         this.data.counts = await this.$store.state.contracts.tinyboxes.methods
           .tokenCounts(this.id)
+          .call();
+        this.data.dials = await this.$store.state.contracts.tinyboxes.methods
+          .tokenDials(this.id)
+          .call();
+        this.data.switches = await this.$store.state.contracts.tinyboxes.methods
+          .tokenSwitches(this.id)
           .call();
 
         // cache token data and end loading
