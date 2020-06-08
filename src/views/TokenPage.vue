@@ -24,6 +24,8 @@
                 v-icon mdi-open-in-new
               p In Block: {{ data.creation.blockNumber }}
             .counts
+              p Colors: {{ data.counts[0] }}
+              p Shapes: {{ data.counts[1] }}
             .dials
             .switches
             v-btn(large target="_blank" color="primary" href="//opensea.io") View on OpenSea
