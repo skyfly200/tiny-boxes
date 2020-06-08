@@ -81,20 +81,21 @@ export default Vue.extend({
   },
   mounted: async function() {
     await this.$store.dispatch("initialize");
-    await this.loadToken();
+    await (this as any).loadToken();
   },
   methods: {
     formatHash(account: string) {
       return "0x" + account.slice(2, 6) + "...." + account.slice(-4);
     },
     loadToken: async function() {
-      const cached = this.$store.state.cachedTokens[this.id];
+      const t = this as any;
+      const cached = this.$store.state.cachedTokens[t.id];
       if (cached) {
         this.data = cached;
         this.loading = false;
       } else {
         // load all token data
-        this.data.creation = (await this.lookupMinting()) as any;
+        this.data.creation = (await t.lookupMinting()) as any;
         this.data.art = await this.$store.state.contracts.tinyboxes.methods
           .tokenArt(this.id)
           .call();
@@ -132,7 +133,7 @@ export default Vue.extend({
               "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
               "0x0000000000000000000000000000000000000000000000000000000000000000",
               null,
-              "0x" + this.id.toString(16).padStart(64, "0")
+              "0x" + (this.id as number).toString(16).padStart(64, "0")
             ]
           })
           .on("data", resolve)

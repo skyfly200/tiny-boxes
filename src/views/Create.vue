@@ -215,7 +215,7 @@ export default Vue.extend({
       t.data = await this.$store.state.contracts.tinyboxes.methods
         .perpetualRenderer(t.id, v.seed.toString(), counts, dials, switches)
         .call()
-        .catch(err => {
+        .catch((err: any) => {
           console.error(err, t.id, v.seed);
         });
       t.loading = false;
