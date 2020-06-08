@@ -12,13 +12,20 @@
               h1 Token {{ id }}
             v-divider
             .token-graphic
-              Token(:id="id" :data="data")
+              Token(:id="id" :data="data.art")
         v-col
           v-sheet.token-properties
             h1 Token Properties
-            .property(v-for="p in properties" :key="p.title")
-              h4 {{ p.title }}
-              span {{ p.value }}
+            .creation
+              p Created By: {{ data.creation.address }}
+              p With Tx:
+                a(:href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionmHash")
+                  span {{ data.creation.transactionmHash }}
+                  v-icon mdi-open-in-new
+              p In Block: {{ data.creation.blockNumber }}
+            .counts
+            .dials
+            .switches
             v-btn(large target="_blank" color="primary" href="//opensea.io") View on OpenSea
     
 </template>
@@ -43,59 +50,47 @@ export default Vue.extend({
     await this.loadToken();
   },
   methods: {
-    loadToken: function() {
+    loadToken: async function() {
       const cached = this.$store.state.cachedTokens[this.id];
       if (cached) {
         this.data = cached;
         this.loading = false;
       } else {
-        this.$store.state.contracts.tinyboxes.methods
+        // load all token data
+        this.data.creation = (await this.lookupMinting()) as any;
+        this.data.art = await this.$store.state.contracts.tinyboxes.methods
           .tokenArt(this.id)
-          .call()
-          .then((result: any) => {
-            this.$store.commit("setToken", { id: this.id, data: result });
-            this.data = result;
-            this.loading = false;
-          })
-          .catch((err: any) => {
-            console.error(err);
-          });
+          .call();
+        this.data.counts = await this.$store.state.contracts.tinyboxes.methods
+          .tokenCounts(this.id)
+          .call();
+
+        // cache token data and end loading
+        this.$store.commit("setToken", { id: this.id, data: this.data });
+        this.loading = false;
       }
-      this.$store.state.contracts.tinyboxes.methods
-        .tokenCounts(this.id)
-        .call()
-        .then((result: any) => {
-          const colors: any = { title: "Color Counts: ", value: result[0] };
-          this.properties.push(colors as never);
-          const shapes: any = { title: "Shape Counts: ", value: result[1] };
-          this.properties.push(shapes as never);
-        })
-        .catch((err: any) => {
-          console.error(err);
-        });
-      this.$store.state.web3.eth
-        .subscribe("logs", {
-          address: tinyboxesAddress,
-          fromBlock: 0,
-          topics: [
-            "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-            "0x0000000000000000000000000000000000000000000000000000000000000000",
-            null,
-            "0x" + this.id.toString(16).padStart(64, "0")
-          ]
-        })
-        .on("data", (log: any) => {
-          const t = this as any;
-          const creator = log.topics[2];
-          const newProp: any = { title: "Creator", value: creator };
-          this.properties.push(newProp as never);
-        });
+    },
+    lookupMinting: function() {
+      return new Promise((resolve, reject) => {
+        this.$store.state.web3.eth
+          .subscribe("logs", {
+            address: tinyboxesAddress,
+            fromBlock: 0,
+            topics: [
+              "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+              "0x0000000000000000000000000000000000000000000000000000000000000000",
+              null,
+              "0x" + this.id.toString(16).padStart(64, "0")
+            ]
+          })
+          .on("data", resolve)
+          .on("error", reject);
+      });
     }
   },
   data: () => ({
     loading: true,
-    data: {} as object,
-    properties: []
+    data: {} as any
   })
 });
 </script>
