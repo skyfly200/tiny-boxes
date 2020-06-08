@@ -16,7 +16,7 @@
           v-col(v-for="i in pageTokens" :key="i + '-token'" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
             v-hover(v-slot:default="{ hover }")
               v-card.token(:to="'/token/' + i" tile)
-                v-skeleton-loader(:loading="!tokensLoaded[i]" transition-group="fade-transition" height="320" type="image")
+                v-skeleton-loader(:loading="!tokensLoaded[i]" transition-group="fade-transition" height="16.666vh" type="image")
                   Token(:id="i" :data="tokens[i]")
                     v-expand-transition
                       div(v-if="hover" class="d-flex transition-fast-in-fast-out darken-2 v-card--reveal display-3 white--text" style="height: 100%;")
@@ -47,6 +47,7 @@ export default {
     itemsPerPageSelector: 12,
     count: null,
     supply: null,
+    limit: null,
     ownerOnly: false,
     loading: true,
     soldOut: false,
@@ -72,7 +73,7 @@ export default {
     this.itemsPerPageSelector = this.itemsPerPage;
     // TODO: check if page param is within range
     this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
-    await this.loadTokens();
+    this.loadTokens();
     this.limit = await this.lookupLimit();
     this.supply = await this.lookupSupply();
     this.soldOut = this.supply === this.limit;
@@ -105,19 +106,27 @@ export default {
       const max = this.ownerOnly ? this.count : await this.lookupSupply();
       const start = (this.page - 1) * this.itemsPerPage;
       for (let i = start; i - start < this.itemsPerPage && i < max; i++) {
-        const tokenID = !this.ownerOnly
-          ? i
-          : await this.$store.state.contracts.tinyboxes.methods
-              .tokenOfOwnerByIndex(this.currentAccount, i)
-              .call();
-        this.$set(this.tokenIDs, i, tokenID);
-        const data = this.$store.state.cachedTokens[tokenID];
-        const result = await this.lookupToken(tokenID).then(result => {
-          this.$set(this.tokens, tokenID, data && data.art ? data.art : result);
-          this.$set(this.tokensLoaded, tokenID, true);
-          this.loading = false;
-        });
+        if (this.ownerOnly)
+          this.$store.state.contracts.tinyboxes.methods
+            .tokenOfOwnerByIndex(this.currentAccount, i)
+            .call()
+            .then(id => {
+              this.loadToken(id);
+              this.$set(this.tokenIDs, i, id);
+            });
+        else {
+          this.loadToken(i);
+          this.$set(this.tokenIDs, i, i);
+        }
       }
+    },
+    loadToken(tokenID) {
+      const data = this.$store.state.cachedTokens[tokenID];
+      this.lookupToken(tokenID).then(result => {
+        this.$set(this.tokens, tokenID, data && data.art ? data.art : result);
+        this.$set(this.tokensLoaded, tokenID, true);
+        this.loading = false;
+      });
     },
     listenForTokens: function() {
       const tokenSubscription = this.$store.state.web3.eth
