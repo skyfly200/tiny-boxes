@@ -561,4 +561,6 @@ export default Vue.extend({
     margin-right: 0
     @media(max-width: 700px)
       margin: 0
+.v-dialog
+  box-shadow: none !important
 </style>
