@@ -19,9 +19,9 @@
             .creation
               p Created By: {{ data.creation.address }}
               p With Tx:
-                a(:href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionmHash")
-                  span {{ data.creation.transactionmHash }}
-                  v-icon mdi-open-in-new
+              a(:href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash")
+                span {{ data.creation.transactionHash }}
+                v-icon mdi-open-in-new
               p In Block: {{ data.creation.blockNumber }}
             .counts
             .dials
