@@ -90,7 +90,7 @@ export default Vue.extend({
     loadToken: async function() {
       const t = this as any;
       const cached = this.$store.state.cachedTokens[t.id];
-      if (cached) {
+      if (cached && typeof cached === "object") {
         this.data = cached;
         this.loading = false;
       } else {

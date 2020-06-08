@@ -111,7 +111,6 @@ export default {
             this.$set(this.tokensLoading, tokenID, false);
           } else {
             const resp = await this.lookupToken(tokenID);
-            this.$store.commit("setToken", { id: tokenID, data: resp });
             this.$set(this.tokens, tokenID, resp);
             this.$set(this.tokensLoading, tokenID, false);
           }
@@ -126,13 +125,11 @@ export default {
           this.$set(this.tokenIDs, tokenID, tokenID);
           this.$set(this.tokensLoading, tokenID, true);
           const data = this.$store.state.cachedTokens[tokenID];
-          if (data) {
-            this.$set(this.tokens, tokenID, data);
+          if (data && !data.art) {
+            this.$set(this.tokens, tokenID, data.art);
             this.$set(this.tokensLoading, tokenID, false);
           } else {
             const result = await this.lookupToken(tokenID);
-            //alert(result);
-            this.$store.commit("setToken", { id: tokenID, data: result });
             this.$set(this.tokens, tokenID, result);
             this.$set(this.tokensLoading, tokenID, false);
           }
