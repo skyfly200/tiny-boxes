@@ -45,6 +45,7 @@ export default {
     page: 1,
     itemsPerPageSelector: 12,
     count: null,
+    supply: null,
     ownerOnly: false,
     loading: true,
     soldOut: false,
@@ -53,15 +54,15 @@ export default {
     tokens: {}
   }),
   computed: {
-    selecting() {
-      return this.merge[0] !== null;
-    },
     pages() {
-      return Math.floor(this.count / this.itemsPerPage + 1);
+      return Math.floor(
+        (this.ownerOnly ? this.count : this.supply) / this.itemsPerPage + 1
+      );
     },
     pageTokens() {
       const start = (this.page - 1) * this.itemsPerPage;
-      return this.tokenIDs.slice(start + 1, start + this.itemsPerPage + 1);
+      const end = start + this.itemsPerPage + 1;
+      return this.tokenIDs.slice(start, end > this.supply ? this.supply : end);
     },
     ...mapGetters(["currentAccount", "itemsPerPage"])
   },
@@ -71,7 +72,9 @@ export default {
     // check if page param is within range
     this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
     await this.loadTokens();
-    this.soldOut = this.lookupSupply() === this.lookupLimit();
+    this.limit = await this.lookupLimit();
+    this.supply = await this.lookupSupply();
+    this.soldOut = this.supply === this.limit;
   },
   methods: {
     selectItemsPerPage() {
@@ -97,45 +100,24 @@ export default {
           .balanceOf(this.currentAccount)
           .call();
         this.$store.commit("setCount", this.count);
-        const start = (this.page - 1) * this.itemsPerPage;
-        for (let i = 0; i < this.itemsPerPage && start + i < this.count; i++) {
-          const index = start + i;
-          const tokenID = await this.$store.state.contracts.tinyboxes.methods
-            .tokenOfOwnerByIndex(this.currentAccount, index)
-            .call();
-          this.$set(this.tokenIDs, index, tokenID);
-          this.$set(this.tokensLoading, tokenID, true);
-          const data = this.$store.state.cachedTokens[tokenID];
-          if (data) {
-            this.$set(this.tokens, tokenID, data);
-            this.$set(this.tokensLoading, tokenID, false);
-          } else {
-            const resp = await this.lookupToken(tokenID);
-            this.$set(this.tokens, tokenID, resp);
-            this.$set(this.tokensLoading, tokenID, false);
-          }
-        }
-        this.loading = false;
-      } else {
-        // load all
-        const start = (this.page - 1) * this.itemsPerPage;
-        const supply = await this.lookupSupply();
-        for (let i = 0; i < this.itemsPerPage && start + i < supply; i++) {
-          const tokenID = start + i;
-          this.$set(this.tokenIDs, tokenID, tokenID);
-          this.$set(this.tokensLoading, tokenID, true);
-          const data = this.$store.state.cachedTokens[tokenID];
-          if (data && !data.art) {
-            this.$set(this.tokens, tokenID, data.art);
-            this.$set(this.tokensLoading, tokenID, false);
-          } else {
-            const result = await this.lookupToken(tokenID);
-            this.$set(this.tokens, tokenID, result);
-            this.$set(this.tokensLoading, tokenID, false);
-          }
-        }
-        this.loading = false;
       }
+      const max = this.ownerOnly ? this.count : await this.lookupSupply();
+      const start = (this.page - 1) * this.itemsPerPage;
+      for (let i = start; i - start < this.itemsPerPage && i < max; i++) {
+        const tokenID = !this.ownerOnly
+          ? i
+          : await this.$store.state.contracts.tinyboxes.methods
+              .tokenOfOwnerByIndex(this.currentAccount, i)
+              .call();
+        this.$set(this.tokenIDs, i, tokenID);
+        this.$set(this.tokensLoading, tokenID, true);
+        const data = this.$store.state.cachedTokens[tokenID];
+        const result =
+          data && data.art ? data.art : await this.lookupToken(tokenID);
+        this.$set(this.tokens, tokenID, result);
+        this.$set(this.tokensLoading, tokenID, false);
+      }
+      this.loading = false;
     },
     listenForTokens: function() {
       const tokenSubscription = this.$store.state.web3.eth
@@ -153,6 +135,9 @@ export default {
             const index = parseInt(log.topics[3], 16);
             this.lookupToken(index).then(resp => (this.tokens[index] = resp));
             this.loadTokens();
+            // lookup new supply and check if sold out
+            this.supply = await this.lookupSupply();
+            this.soldOut = this.supply === this.limit;
           }.bind(this)
         )
         .on("error", function(log) {
