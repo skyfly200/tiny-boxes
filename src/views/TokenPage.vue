@@ -14,17 +14,12 @@
             .token-graphic
               Token(:id="id" :data="data")
         v-col
-          .token-info
-            h1 Token Info
-            p Owner: 0x27af......0cb0
-            p Minted: 
-            p Last Transfered:
-            v-btn(large target="_blank" href="//opensea.io") View on OpenSea
           v-sheet.token-properties
             h1 Token Properties
             .property(v-for="p in properties" :key="p.title")
               h4 {{ p.title }}
               span {{ p.value }}
+            v-btn(large target="_blank" color="primary" href="//opensea.io") View on OpenSea
     
 </template>
 
@@ -32,6 +27,7 @@
 import Vue from "vue";
 import { mapGetters } from "vuex";
 import Token from "@/components/Token.vue";
+import { tinyboxesAddress } from "../tinyboxes-contract";
 
 export default Vue.extend({
   name: "TokenPage",
@@ -64,37 +60,36 @@ export default Vue.extend({
           .catch((err: any) => {
             console.error(err);
           });
-        this.$store.state.contracts.tinyboxes.methods
-          .colorCount(this.id)
-          .call()
-          .then((result: any) => {
-            const newProp: any = { title: "Color Count", value: result };
-            this.properties.push(newProp as never);
-          })
-          .catch((err: any) => {
-            console.error(err);
-          });
-        this.$store.state.contracts.tinyboxes.methods
-          .shapeCount(this.id)
-          .call()
-          .then((result: any) => {
-            const newProp: any = { title: "Shape Count", value: result };
-            this.properties.push(newProp as never);
-          })
-          .catch((err: any) => {
-            console.error(err);
-          });
-        this.$store.state.contracts.tinyboxes.methods
-          .creator(this.id)
-          .call()
-          .then((result: any) => {
-            const newProp: any = { title: "Creator", value: result };
-            this.properties.push(newProp as never);
-          })
-          .catch((err: any) => {
-            console.error(err);
-          });
       }
+      this.$store.state.contracts.tinyboxes.methods
+        .tokenCounts(this.id)
+        .call()
+        .then((result: any) => {
+          const colors: any = { title: "Color Counts: ", value: result[0] };
+          this.properties.push(colors as never);
+          const shapes: any = { title: "Shape Counts: ", value: result[1] };
+          this.properties.push(shapes as never);
+        })
+        .catch((err: any) => {
+          console.error(err);
+        });
+      this.$store.state.web3.eth
+        .subscribe("logs", {
+          address: tinyboxesAddress,
+          fromBlock: 0,
+          topics: [
+            "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+            "0x0000000000000000000000000000000000000000000000000000000000000000",
+            null,
+            "0x" + this.id.toString(16).padStart(64, "0")
+          ]
+        })
+        .on("data", (log: any) => {
+          const t = this as any;
+          const creator = log.topics[2];
+          const newProp: any = { title: "Creator", value: creator };
+          this.properties.push(newProp as never);
+        });
     }
   },
   data: () => ({
@@ -121,7 +116,7 @@ export default Vue.extend({
 .token-stats
   padding: 1rem
   display: flex
-  flex-direction: row
+  flex-direction: row,
   justify-content: space-between
 .features
   margin: 2vh 1vw
