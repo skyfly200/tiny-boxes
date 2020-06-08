@@ -233,7 +233,6 @@ contract TinyBoxes is ERC721 {
     string header = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="-100 -100 2600 2600" style="stroke-width:0; background-color:#121212;">\n\n<symbol id="upperleftquad4">\n<symbol id="upperleftquad3">\n<symbol id="upperleftquad2">\n<symbol id="upperleftquad">\n\n';
     address payable artmuseum = 0x027Fb48bC4e3999DCF88690aEbEBCC3D1748A0Eb; //lolz
 
-    mapping(uint256 => address) private idToCreator;
     mapping(uint256 => uint256) internal idToSeed;
     mapping(uint256 => uint256[]) internal idToCounts;
     mapping(uint256 => int256[]) internal idToDials;
@@ -476,7 +475,7 @@ contract TinyBoxes is ERC721 {
         int256[13] calldata dials,
         bool[3] calldata switches
     ) external payable {
-        require(msg.sender != address(0));
+        require(msg.sender != address(0), "token recipient man not be the zero address");
         require(
             totalSupply() < TOKEN_LIMIT,
             "ART SALE IS OVER. Tinyboxes are now only available on the secondary market."
@@ -497,7 +496,6 @@ contract TinyBoxes is ERC721 {
 
         uint256 id = totalSupply();
 
-        idToCreator[id] = msg.sender;
         idToSeed[id] = Random.stringToUint(seed);
         idToCounts[id] = counts;
         idToDials[id] = dials;
@@ -522,15 +520,6 @@ contract TinyBoxes is ERC721 {
     function priceAt(uint256 _id) public view returns (uint256 price) {
         uint256 tokeninflation = (_id / 2) * 1000000000000000; // add .001 eth inflation per token
         price = tokeninflation + 160000000000000000; // in wei, starting price .16 eth, ending price .2 eth
-    }
-
-    /**
-     * @dev Lookup the creator
-     * @param _id Id for which we want the creator address of
-     * @return creator address of token _id.
-     */
-    function tokenCreator(uint256 _id) external view returns (address) {
-        return idToCreator[_id];
     }
 
     /**
