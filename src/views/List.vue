@@ -14,14 +14,10 @@
             v-pagination(v-model="page" circle @input="loadTokens" :length="pages")
         v-row(no-gutters)
           v-col(v-for="i in pageTokens" :key="i + '-token'" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
-            v-hover(v-slot:default="{ hover }")
-              v-card.token(:to="'/token/' + i" tile)
-                v-skeleton-loader(:loading="!tokensLoaded[i]" transition-group="fade-transition" height="16.666vh" type="image")
-                  Token(:id="i" :data="tokens[i]")
-                    v-expand-transition
-                      div(v-if="hover" class="d-flex transition-fast-in-fast-out darken-2 v-card--reveal display-3 white--text" style="height: 100%;")
-                        h1 View
-                v-card-text.title {{ i }}
+            v-card.token(:to="'/token/' + i" tile)
+              v-skeleton-loader(v-if="!tokensLoaded[i]" transition-group="fade-transition" height="16.666vw" type="image")
+              Token(v-else :id="i" :data="tokens[i]")
+              v-card-text.title {{ i }}
           v-col(v-if="count === 0").get-started
             v-card(align="center").get-started-card
               p {{ ownerOnly ? "You dont have any tokens yet!" : "No tokens have been minted yet" }}
