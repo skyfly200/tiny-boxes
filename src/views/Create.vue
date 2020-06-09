@@ -408,6 +408,10 @@ export default Vue.extend({
               label: "Columns",
               key: "xSeg",
               type: "slider",
+              rand: {
+                min: 1,
+                max: 20
+              },
               range: {
                 min: 1,
                 max: 50
@@ -417,6 +421,10 @@ export default Vue.extend({
               label: "Rows",
               key: "ySeg",
               type: "slider",
+              rand: {
+                min: 1,
+                max: 20
+              },
               range: {
                 min: 1,
                 max: 50
