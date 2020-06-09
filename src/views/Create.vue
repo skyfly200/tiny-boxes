@@ -353,7 +353,7 @@ export default Vue.extend({
               },
               range: {
                 min: 1,
-                max: 77
+                max: 70
               }
             }
           ]
