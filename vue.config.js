@@ -10,9 +10,10 @@ module.exports = {
       .use('@openzeppelin/solidity-loader')
       .loader('@openzeppelin/solidity-loader')
       .tap((options) => {
-        options.network = 'development',;
-        options.disabled = false;
-        return options;
+        return {
+          network: 'development',
+          disabled: false,
+        }
       })
   },
 }
