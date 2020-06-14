@@ -86,8 +86,6 @@ export class TinyBoxes extends Contract {
 
     tokenCounts(_id: number | string): TransactionObject<string[]>;
 
-    tokenCreator(_id: number | string): TransactionObject<string>;
-
     tokenDials(_id: number | string): TransactionObject<string[]>;
 
     tokenOfOwnerByIndex(
