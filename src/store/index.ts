@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import Web3 from 'web3'
 import VuexPersist from 'vuex-persist'
 
-import TinyBoxes from '../../contracts/TinyBoxes.sol'
+//import TinyBoxes from 'Contracts/TinyBoxes.sol'
 import { tinyboxesAddress, tinyboxesABI } from '@/tinyboxes-contract.ts'
 
 Vue.use(Vuex)

@@ -1,4 +1,13 @@
+const path = require('path')
+
 module.exports = {
+  configureWebpack: {
+    resolve: {
+      alias: {
+        Contracts: path.resolve(__dirname, 'contracts/'),
+      },
+    },
+  },
   transpileDependencies: ['vuetify'],
   chainWebpack: (config) => {
     config.module
