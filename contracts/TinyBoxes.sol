@@ -224,8 +224,8 @@ library Random {
 }
 
 contract TinyBoxes is ERC721 {
-    uint256 public constant TOKEN_LIMIT = 80; // 80 for testing, 800 for prod;
-    uint256 public constant ARTIST_PRINTS = 1;
+    uint256 public constant TOKEN_LIMIT = 1000;
+    uint256 public constant ARTIST_PRINTS = 0;
     address public creator;
     string header = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2600 2600" style="stroke-width:0; background-color:#121212;">\n\n<symbol id="upperleftquad4">\n<symbol id="upperleftquad3">\n<symbol id="upperleftquad2">\n<symbol id="upperleftquad">\n\n';
     address payable artmuseum = 0x027Fb48bC4e3999DCF88690aEbEBCC3D1748A0Eb; //lolz
@@ -435,16 +435,16 @@ contract TinyBoxes is ERC721 {
             colorValues[i] = _generateColor(pool, _id);
 
         // generate shapes
-        uint256 hybrid = uint256(dials[8]);
+        uint256 hybrid = 2; //uint256(dials[8]);
         for (uint256 i = 0; i < counts[1]; i++) {
             uint256 colorRand = uint256(
                 Random.uniform(pool, 0, int256(counts[0].sub(1)))
             );
-            //bool hatched = (hybrid > 0 && i.mod(hybrid) == 0); // hatching mod. 1 in hybrid shapes will be hatching type
+            bool hatched = (hybrid > 0 && i.mod(hybrid) == 0); // hatching mod. 1 in hybrid shapes will be hatching type
             (
                 int256[2] memory positions,
                 uint256[2] memory size
-            ) = _generateShape(pool, dials, true);
+            ) = _generateShape(pool, dials, hatched);
             Buffer.rect(buffer, positions, size, colorValues[colorRand]);
         }
 
