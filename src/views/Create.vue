@@ -298,9 +298,9 @@ export default Vue.extend({
       id: null as number | null,
       loading: true,
       overlay: "",
-      data: null as null | object,
+      data: null as object | null,
       price: "",
-      limit: null as any,
+      limit: null as number | null,
       form: {
         section: 0,
         valid: true
