@@ -124,7 +124,7 @@ export default Vue.extend({
       );
     },
     soldOut: function() {
-      return (this as any).id >= (this as any).limit;
+      return parseInt((this as any).id) >= parseInt((this as any).limit);
     },
     ...mapGetters(["currentAccount"])
   },
