@@ -1,6 +1,6 @@
 [build]
   command = "npm run build"
-  publish = "./dist"
+  publish = "dist"
 
   # Directory with the lambda functions to deploy to AWS.
-  functions = "./lambda"
+  functions = "lambda"
