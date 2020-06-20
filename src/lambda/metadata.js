@@ -26,19 +26,16 @@ exports.handler = function (event, context, callback) {
   // build the metadata object from the token data
   let metadata = {
     description:
-      'Friendly OpenSea Creature that enjoys long swims in the ocean.',
-    external_url: 'https://openseacreatures.io/3',
+      'A modge podge of TinyBoxes, Aranged in patterns ranging from mundane to magnificent.',
+    external_url: 'https://tiny-boxes.netlify.app/token/' + id,
     image:
       'https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png',
-    name: 'Dave Starbelly',
+    name: 'Token Number ' + id,
     attributes: [],
   }
 
-  //let resp = generateResponse('Server Error', 500)
-  let resp = generateResponse({ metadata }, 200)
-  return callback(null, resp)
-  return {
-    statusCode: 200,
-    body: `Token: ${id}`,
-  }
+  // on internal error return this
+  //generateResponse('Server Error', 500)
+
+  return callback(null, generateResponse({ metadata }, 200))
 }
