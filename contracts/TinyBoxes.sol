@@ -505,8 +505,9 @@ contract TinyBoxes is ERC721 {
         uint256 id = totalSupply();
 
         // TODO - generate animation with RNG weighted non uniformly for varying rarity
+        // maybe use log base 2 of a number in a range 2 to the animation counts
         idToSeed[id] = Random.stringToUint(seed);
-        idToAnimation[id] = Random.uniform(pool, 1, ANIMATION_COUNT);
+        idToAnimation[id] = Random.uniform(pool, 0, ANIMATION_COUNT-1);
         idToCounts[id] = counts;
         idToDials[id] = dials;
         idToSwitches[id] = switches;
