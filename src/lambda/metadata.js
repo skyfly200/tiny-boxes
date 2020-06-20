@@ -1,7 +1,11 @@
 require('dotenv').config()
 import querystring from 'querystring'
-const domain = process.env.DOMAIN
-const { PINATA_API_KEY, PINATA_API_SECRET, WALLET_PRIVATE_KEY } = process.env
+const {
+  PINATA_API_KEY,
+  PINATA_API_SECRET,
+  WALLET_PRIVATE_KEY,
+  EXTERNAL_URL_BASE,
+} = process.env
 
 const generateResponse = (body, statusCode) => {
   return {
@@ -24,14 +28,17 @@ exports.handler = function (event, context, callback) {
   }
 
   // build the metadata object from the token data
+  const image = ''
+  const animationHash = ''
   let metadata = {
     description:
-      'A modge podge of TinyBoxes, Aranged in patterns ranging from mundane to magnificent.',
-    external_url: 'https://tiny-boxes.netlify.app/token/' + id,
-    image:
-      'https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png',
-    name: 'Token Number ' + id,
+      'A scattering of tiny boxes, Aranged in patterns ranging from mundane to magnificent.',
+    external_url: EXTERNAL_URL_BASE + id,
+    image: image,
+    name: 'Token ' + id,
     attributes: [],
+    background_color: '121212',
+    animation_url: animationHash,
   }
 
   // on internal error return this
