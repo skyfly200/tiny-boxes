@@ -579,6 +579,25 @@ contract TinyBoxes is ERC721 {
     }
 
     /**
+     * @dev Lookup all token data in one call
+     * @param _id for which we want token data
+     * @return data of token _id.
+     */
+    function tokenData(uint256 _id) external view returns (
+        uint256 seed,
+        uint256 animation,
+        uint256[2] memory counts,
+        int256[13] memory dials,
+        bool[] memory switches
+    ) {
+        seed = idToSeed[_id];
+        animation = idToAnimation[_id];
+        counts = idToCounts[_id];
+        dials = idToDials[_id];
+        switches = idToSwitches[_id];
+    }
+
+    /**
      * @dev Generate the token SVG art
      * @param _id for which we want art
      * @return URI of _id.
