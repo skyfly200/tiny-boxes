@@ -21,6 +21,8 @@ export class TinyBoxes extends Contract {
   );
   clone(): TinyBoxes;
   methods: {
+    ANIMATION_COUNT(): TransactionObject<string>;
+
     ARTIST_PRINTS(): TransactionObject<string>;
 
     TOKEN_LIMIT(): TransactionObject<string>;
@@ -58,7 +60,9 @@ export class TinyBoxes extends Contract {
       seed: string,
       counts: (number | string)[],
       dials: (number | string)[],
-      switches: boolean[]
+      switches: boolean[],
+      animation: number | string,
+      frame: number | string
     ): TransactionObject<string>;
 
     priceAt(_id: number | string): TransactionObject<string>;
@@ -80,13 +84,35 @@ export class TinyBoxes extends Contract {
 
     symbol(): TransactionObject<string>;
 
+    tokenAnimation(_id: number | string): TransactionObject<string>;
+
     tokenArt(_id: number | string): TransactionObject<string>;
 
     tokenByIndex(index: number | string): TransactionObject<string>;
 
     tokenCounts(_id: number | string): TransactionObject<string[]>;
 
+    tokenData(
+      _id: number | string
+    ): TransactionObject<{
+      seed: string;
+      animation: string;
+      counts: string[];
+      dials: string[];
+      switches: boolean[];
+      0: string;
+      1: string;
+      2: string[];
+      3: string[];
+      4: boolean[];
+    }>;
+
     tokenDials(_id: number | string): TransactionObject<string[]>;
+
+    tokenFrame(
+      _id: number | string,
+      _frame: number | string
+    ): TransactionObject<string>;
 
     tokenOfOwnerByIndex(
       owner: string,

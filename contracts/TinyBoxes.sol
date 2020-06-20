@@ -226,7 +226,7 @@ library Random {
 contract TinyBoxes is ERC721 {
     uint256 public constant TOKEN_LIMIT = 1000;
     uint256 public constant ARTIST_PRINTS = 0;
-    uint public constant ANIMATION_COUNT = 1;
+    int public constant ANIMATION_COUNT = 1;
     address public creator;
     string header = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2600 2600" style="stroke-width:0; background-color:#121212;">\n\n<symbol id="upperleftquad4">\n<symbol id="upperleftquad3">\n<symbol id="upperleftquad2">\n<symbol id="upperleftquad">\n\n';
     address payable artmuseum = 0x027Fb48bC4e3999DCF88690aEbEBCC3D1748A0Eb; //lolz
@@ -439,11 +439,11 @@ contract TinyBoxes is ERC721 {
             colorValues[i] = _generateColor(pool, _id);
 
         // generate shapes
-        uint256 hybrid = 2; //uint256(dials[8]);
         for (uint256 i = 0; i < counts[1]; i++) {
             uint256 colorRand = uint256(
                 Random.uniform(pool, 0, int256(counts[0].sub(1)))
             );
+            uint256 hybrid = 2; //uint256(dials[8]);
             bool hatched = (hybrid > 0 && i.mod(hybrid) == 0); // hatching mod. 1 in hybrid shapes will be hatching type
             (
                 int256[2] memory positions,
@@ -507,7 +507,7 @@ contract TinyBoxes is ERC721 {
         // TODO - generate animation with RNG weighted non uniformly for varying rarity
         // maybe use log base 2 of a number in a range 2 to the animation counts
         idToSeed[id] = Random.stringToUint(seed);
-        idToAnimation[id] = Random.uniform(pool, 0, ANIMATION_COUNT-1);
+        idToAnimation[id] = uint(Random.uniform(pool, 0, ANIMATION_COUNT-1));
         idToCounts[id] = counts;
         idToDials[id] = dials;
         idToSwitches[id] = switches;
@@ -581,13 +581,17 @@ contract TinyBoxes is ERC721 {
     /**
      * @dev Lookup all token data in one call
      * @param _id for which we want token data
-     * @return data of token _id.
+     * @return seed of token
+     * @return animation of token
+     * @return counts of token
+     * @return dials of token
+     * @return switches of token
      */
     function tokenData(uint256 _id) external view returns (
         uint256 seed,
         uint256 animation,
-        uint256[2] memory counts,
-        int256[13] memory dials,
+        uint256[] memory counts,
+        int256[] memory dials,
         bool[] memory switches
     ) {
         seed = idToSeed[_id];
@@ -636,7 +640,7 @@ contract TinyBoxes is ERC721 {
      */
     function tokenFrame(uint256 _id, uint _frame) external view returns (string memory) {
         string memory seed = Strings.toString(idToSeed[_id]);
-        uint memory animation = idToAnimation[_id];
+        uint animation = idToAnimation[_id];
         uint256[2] memory counts = [idToCounts[_id][0], idToCounts[_id][1]];
         int256[13] memory dials = [
             idToDials[_id][0],
