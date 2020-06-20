@@ -226,11 +226,13 @@ library Random {
 contract TinyBoxes is ERC721 {
     uint256 public constant TOKEN_LIMIT = 1000;
     uint256 public constant ARTIST_PRINTS = 0;
+    uint public constant ANIMATION_COUNT = 1;
     address public creator;
     string header = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2600 2600" style="stroke-width:0; background-color:#121212;">\n\n<symbol id="upperleftquad4">\n<symbol id="upperleftquad3">\n<symbol id="upperleftquad2">\n<symbol id="upperleftquad">\n\n';
     address payable artmuseum = 0x027Fb48bC4e3999DCF88690aEbEBCC3D1748A0Eb; //lolz
 
     mapping(uint256 => uint256) internal idToSeed;
+    mapping(uint256 => uint256) internal idToAnimation;
     mapping(uint256 => uint256[]) internal idToCounts;
     mapping(uint256 => int256[]) internal idToDials;
     mapping(uint256 => bool[]) internal idToSwitches;
@@ -238,7 +240,7 @@ contract TinyBoxes is ERC721 {
     /**
      * @dev Contract constructor.
      */
-    constructor() public ERC721("tinyboxes", "[#][#]") {
+    constructor() public ERC721("TinyBoxes", "[#][#]") {
         creator = msg.sender;
     }
 
@@ -421,7 +423,9 @@ contract TinyBoxes is ERC721 {
         string memory seed,
         uint256[2] memory counts,
         int256[13] memory dials,
-        bool[3] memory switches
+        bool[3] memory switches,
+        uint animation,
+        uint frame
     ) public view returns (string memory) {
         bytes memory buffer = new bytes(8192);
         Buffer.append(buffer, header);
@@ -495,9 +499,14 @@ contract TinyBoxes is ERC721 {
             artmuseum.transfer(amount); // send the payment amount to the artmuseum account
         }
 
+        // initilized RNG with the seed and blocks 0 through 1
+        bytes32[] memory pool = Random.init(0, 1, Random.stringToUint(seed));
+
         uint256 id = totalSupply();
 
+        // TODO - generate animation with RNG weighted non uniformly for varying rarity
         idToSeed[id] = Random.stringToUint(seed);
+        idToAnimation[id] = Random.uniform(pool, 1, ANIMATION_COUNT);
         idToCounts[id] = counts;
         idToDials[id] = dials;
         idToSwitches[id] = switches;
@@ -530,6 +539,15 @@ contract TinyBoxes is ERC721 {
      */
     function tokenSeed(uint256 _id) external view returns (uint256) {
         return idToSeed[_id];
+    }
+
+    /**
+     * @dev Lookup the animation
+     * @param _id for which we want the animation
+     * @return animation value of _id.
+     */
+    function tokenAnimation(uint256 _id) external view returns (uint256) {
+        return idToAnimation[_id];
     }
 
     /**
@@ -587,6 +605,39 @@ contract TinyBoxes is ERC721 {
             idToSwitches[_id][1],
             idToSwitches[_id][2]
         ];
-        return perpetualRenderer(_id, seed, counts, dials, switches);
+        return perpetualRenderer(_id, seed, counts, dials, switches, 0, 0);
+    }
+
+    /**
+     * @dev Generate the token SVG art of a specified frame
+     * @param _id for which we want art
+     * @param _frame for which we want art
+     * @return animated SVG art of token _id at _frame.
+     */
+    function tokenFrame(uint256 _id, uint _frame) external view returns (string memory) {
+        string memory seed = Strings.toString(idToSeed[_id]);
+        uint memory animation = idToAnimation[_id];
+        uint256[2] memory counts = [idToCounts[_id][0], idToCounts[_id][1]];
+        int256[13] memory dials = [
+            idToDials[_id][0],
+            idToDials[_id][1],
+            idToDials[_id][2],
+            idToDials[_id][3],
+            idToDials[_id][4],
+            idToDials[_id][5],
+            idToDials[_id][6],
+            idToDials[_id][7],
+            idToDials[_id][8],
+            idToDials[_id][9],
+            idToDials[_id][10],
+            idToDials[_id][11],
+            idToDials[_id][12]
+        ];
+        bool[3] memory switches = [
+            idToSwitches[_id][0],
+            idToSwitches[_id][1],
+            idToSwitches[_id][2]
+        ];
+        return perpetualRenderer(_id, seed, counts, dials, switches, animation, _frame);
     }
 }
