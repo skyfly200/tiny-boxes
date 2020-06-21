@@ -1,5 +1,6 @@
 require('dotenv').config()
 import querystring from 'querystring'
+import Web3 from 'web3'
 
 const {
   PINATA_API_KEY,
