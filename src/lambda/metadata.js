@@ -41,30 +41,49 @@ exports.handler = async (event, context) => {
     CONTRACT_ADDRESS,
   )
 
-  console.log('Loaded Web3, loading token data')
-
   // lookup token data and art
   const data = await tinyboxesContract.methods.tokenData(id).call()
   const art = await tinyboxesContract.methods.tokenArt(id).call()
 
-  console.log('Loaded token data')
-  console.log(data)
-  console.log(art)
-
   // build the metadata object from the token data
-  const image = ''
+  const image = art // upload to IPFS and use hash
   const animationHash = ''
   let metadata = {
     description:
       'A scattering of tiny boxes, Aranged in patterns ranging from mundane to magnificent.',
     external_url: EXTERNAL_URL_BASE + id,
-    image_data: art,
+    image_data: image,
     name: 'Token ' + id,
-    attributes: [],
+    attributes: [
+      {
+        display_type: 'number',
+        trait_type: 'Animation',
+        value: data.animation,
+      },
+      {
+        display_type: 'number',
+        trait_type: 'Seed',
+        value: data.seed,
+      },
+      {
+        trait_type: 'Colors',
+        value: data.counts[0],
+      },
+      {
+        trait_type: 'Shapes',
+        value: data.counts[1],
+      },
+      {
+        trait_type: 'Hatching',
+        value: data.dials[8],
+      },
+    ],
     background_color: '121212',
     animation_url: animationHash,
   }
 
+  // log metadata to console
+  console.log('Metadata of token ' + id)
   console.log(metadata)
 
   // on internal error return this
