@@ -107,15 +107,15 @@ exports.handler = async (event, context) => {
       },
       {
         trait_type: 'Mirror Level 1',
-        value: data.switches[0],
+        value: data.switches[0] ? 'On' : 'Off',
       },
       {
         trait_type: 'Mirror Level 2',
-        value: data.switches[1],
+        value: data.switches[1] ? 'On' : 'Off',
       },
       {
         trait_type: 'Mirror Level 3',
-        value: data.switches[2],
+        value: data.switches[2] ? 'On' : 'Off',
       },
       {
         display_type: 'date',
