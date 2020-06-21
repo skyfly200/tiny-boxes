@@ -14,7 +14,7 @@ const {
 import { tinyboxesABI } from '../tinyboxes-contract'
 
 var web3 = new Web3(WEB3_PROVIDER_ENDPOINT)
-tinyboxesContract = new web3.eth.Contract(tinyboxesABI, CONTRACT_ADDRESS)
+const tinyboxesContract = new web3.eth.Contract(tinyboxesABI, CONTRACT_ADDRESS)
 
 const generateResponse = (body, statusCode) => {
   return {
