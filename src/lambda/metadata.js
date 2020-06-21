@@ -44,7 +44,7 @@ exports.handler = async function (event, context, callback) {
   console.log('Loaded Web3, loading token data')
 
   // lookup token data
-  const data = await tinyboxesContract.methods.tokenSeed(id).call()
+  const data = await tinyboxesContract.methods.tokenData(id).call()
 
   console.log('Loaded token data')
   console.log(data)
@@ -62,6 +62,8 @@ exports.handler = async function (event, context, callback) {
     background_color: '121212',
     animation_url: animationHash,
   }
+
+  console.log(metadata)
 
   // on internal error return this
   //generateResponse('Server Error', 500)
