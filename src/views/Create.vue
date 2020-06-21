@@ -214,7 +214,15 @@ export default Vue.extend({
       ];
       const switches = [v.mirror1, v.mirror2, v.mirror3];
       t.data = await this.$store.state.contracts.tinyboxes.methods
-        .perpetualRenderer(t.id, v.seed.toString(), counts, dials, switches)
+        .perpetualRenderer(
+          t.id,
+          v.seed.toString(),
+          counts,
+          dials,
+          switches,
+          0,
+          0
+        )
         .call()
         .catch((err: any) => {
           console.error(err, t.id, v.seed);
