@@ -43,11 +43,13 @@ exports.handler = async function (event, context, callback) {
 
   console.log('Loaded Web3, loading token data')
 
-  // lookup token data
+  // lookup token data and art
   const data = await tinyboxesContract.methods.tokenData(id).call()
+  const art = await tinyboxesContract.methods.tokenArt(id).call()
 
   console.log('Loaded token data')
   console.log(data)
+  console.log(art)
 
   // build the metadata object from the token data
   const image = ''
@@ -56,7 +58,7 @@ exports.handler = async function (event, context, callback) {
     description:
       'A scattering of tiny boxes, Aranged in patterns ranging from mundane to magnificent.',
     external_url: EXTERNAL_URL_BASE + id,
-    image: image,
+    image_data: art,
     name: 'Token ' + id,
     attributes: [],
     background_color: '121212',
