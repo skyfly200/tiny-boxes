@@ -2,7 +2,7 @@
   .guide
     v-navigation-drawer(v-model="drawer" :permanent="!mobile" :absolute="mobile").menu
       v-list(dense nav)
-        v-list-item(v-for="t,tKey of topics" :to="'/guide/' + tKey")
+        v-list-item(v-for="t,tKey of topics" :to="'/guide/' + tKey" :key="tKey")
           v-list-item-content
             v-list-item-title(class="title")
               b {{ t.title }}
