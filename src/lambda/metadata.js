@@ -41,9 +41,10 @@ exports.handler = async (event, context) => {
     CONTRACT_ADDRESS,
   )
 
-  // check token exists
-  if (id === undefined) {
-    // complain if id is missing
+  // check token exists and get owner
+  const owner = await tinyboxesContract.methods.ownerOf(id).call()
+  if (owner === '0x0000000000000000000000000000000000000000') {
+    // complain if token is missing
     console.log('Token ' + id + " dosn't exist")
     return generateResponse('Token ' + id + " dosn't exist", 204)
   }
