@@ -36,27 +36,27 @@ exports.handler = function (event, context, callback) {
     return callback(null, generateResponse('Invalid Request', 204))
   }
 
+  // build the metadata object from the token data
+  const image = ''
+  const animationHash = ''
+  let metadata = {
+    description:
+      'A scattering of tiny boxes, Aranged in patterns ranging from mundane to magnificent.',
+    external_url: EXTERNAL_URL_BASE + id,
+    image: image,
+    name: 'Token ' + id,
+    attributes: [],
+    background_color: '121212',
+    animation_url: animationHash,
+  }
+
+  // on internal error return this
+  //generateResponse('Server Error', 500)
+
+  return callback(null, generateResponse({ metadata }, 200))
+
   // lookup token data
   tinyboxesContract.methods.tokenSeed(id).call(function (result) {
     console.log(result)
-
-    // build the metadata object from the token data
-    const image = ''
-    const animationHash = ''
-    let metadata = {
-      description:
-        'A scattering of tiny boxes, Aranged in patterns ranging from mundane to magnificent.',
-      external_url: EXTERNAL_URL_BASE + id,
-      image: image,
-      name: 'Token ' + id,
-      attributes: [],
-      background_color: '121212',
-      animation_url: animationHash,
-    }
-
-    // on internal error return this
-    //generateResponse('Server Error', 500)
-
-    return callback(null, generateResponse({ metadata }, 200))
   })
 }
