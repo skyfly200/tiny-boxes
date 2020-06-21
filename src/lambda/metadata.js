@@ -36,6 +36,9 @@ exports.handler = async function (event, context, callback) {
     return callback(null, generateResponse('Invalid Request', 204))
   }
 
+  // lookup token data
+  //const data = await tinyboxesContract.methods.tokenSeed(id).call()
+
   // build the metadata object from the token data
   const image = ''
   const animationHash = ''
@@ -54,7 +57,4 @@ exports.handler = async function (event, context, callback) {
   //generateResponse('Server Error', 500)
 
   return callback(null, generateResponse({ metadata }, 200))
-
-  // lookup token data
-  const data = await tinyboxesContract.methods.tokenSeed(id).call()
 }
