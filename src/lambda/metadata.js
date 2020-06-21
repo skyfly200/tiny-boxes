@@ -88,15 +88,15 @@ exports.handler = async (event, context) => {
         value: data.dials[8],
       },
       {
-        trait_type: 'Mirroring 1',
+        trait_type: 'Mirror Level 1',
         value: data.switches[0],
       },
       {
-        trait_type: 'Mirroring 2',
+        trait_type: 'Mirror Level 2',
         value: data.switches[1],
       },
       {
-        trait_type: 'Mirroring 3',
+        trait_type: 'Mirror Level 3',
         value: data.switches[2],
       },
     ],
