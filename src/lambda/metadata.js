@@ -26,11 +26,11 @@ exports.handler = async (event, context) => {
   if (event.httpMethod !== 'GET') {
     // Only GET requests allowed
     console.log('Bad method:', event.httpMethod)
-    return generateResponse('Method Not Allowed', 405)
+    return generateResponse('Bad method:' + event.httpMethod, 405)
   } else if (id === undefined) {
     // complain if id is missing
     console.log('Undefined ID parameter is required')
-    return generateResponse('Invalid Request', 204)
+    return generateResponse('Undefined ID parameter is required', 204)
   }
   console.log('Loading Web3')
 
@@ -40,6 +40,13 @@ exports.handler = async (event, context) => {
     tinyboxesABI,
     CONTRACT_ADDRESS,
   )
+
+  // check token exists
+  if (id === undefined) {
+    // complain if id is missing
+    console.log('Token ' + id + " dosn't exist")
+    return generateResponse('Token ' + id + " dosn't exist", 204)
+  }
 
   // lookup token data and art
   const data = await tinyboxesContract.methods.tokenData(id).call()
