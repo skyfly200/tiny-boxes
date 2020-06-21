@@ -136,16 +136,7 @@ exports.handler = async (event, context) => {
   const pinata = pinataSDK(PINATA_API_KEY, PINATA_API_SECRET)
 
   // test Pinata SDK auth
-  pinata
-    .testAuthentication()
-    .then((result) => {
-      //handle successful authentication here
-      console.log(result)
-    })
-    .catch((err) => {
-      //handle error here
-      console.log(err)
-    })
+  console.log(await pinata.testAuthentication())
 
   // on internal error return this
   //generateResponse('Server Error', 500)
