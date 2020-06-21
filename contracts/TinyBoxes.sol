@@ -230,7 +230,7 @@ library Random {
 contract TinyBoxes is ERC721 {
     //using SafeMath for uint256;
 
-    uint256 public constant TOKEN_LIMIT = 1000;
+    uint256 public constant TOKEN_LIMIT = 1024;
     uint256 public constant ARTIST_PRINTS = 0;
     int public constant ANIMATION_COUNT = 1;
     address public creator;
