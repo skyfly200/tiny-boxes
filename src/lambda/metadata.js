@@ -50,9 +50,26 @@ exports.handler = async (event, context) => {
   }
 
   // lookup token data and art
-  const minted = 1546360800
   const data = await tinyboxesContract.methods.tokenData(id).call()
   const art = await tinyboxesContract.methods.tokenArt(id).call()
+
+  // lookup token minted timestamp
+  const minted = 1546360800
+  web3.eth
+    .subscribe('logs', {
+      address: CONTRACT_ADDRESS,
+      fromBlock: 0,
+      topics: [
+        '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+        '0x0000000000000000000000000000000000000000000000000000000000000000',
+        null,
+        '0x' + id.toString(16).padStart(64, '0'),
+      ],
+    })
+    .on('data', async (result) => {
+      const block = await web3.eth.getBlock(result.blockNumber)
+      minted = block.timestamp
+    })
 
   // build the metadata object from the token data
   const image = art // upload to IPFS and use hash
