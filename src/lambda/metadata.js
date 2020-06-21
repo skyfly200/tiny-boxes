@@ -118,6 +118,10 @@ exports.handler = async (event, context) => {
         value: data.switches[2] ? 'On' : 'Off',
       },
       {
+        trait_type: 'Scale',
+        value: data.dials[12] + '%',
+      },
+      {
         display_type: 'date',
         trait_type: 'Created',
         value: minted,
