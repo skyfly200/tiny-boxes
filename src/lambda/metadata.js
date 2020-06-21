@@ -131,6 +131,22 @@ exports.handler = async (event, context) => {
   console.log('Metadata of token ' + id)
   console.log(metadata)
 
+  // load Pinata SDK
+  const pinataSDK = require('@pinata/sdk')
+  const pinata = pinataSDK(PINATA_API_KEY, PINATA_API_SECRET)
+
+  // test Pinata SDK auth
+  pinata
+    .testAuthentication()
+    .then((result) => {
+      //handle successful authentication here
+      console.log(result)
+    })
+    .catch((err) => {
+      //handle error here
+      console.log(err)
+    })
+
   // on internal error return this
   //generateResponse('Server Error', 500)
 
