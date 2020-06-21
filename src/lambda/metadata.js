@@ -65,25 +65,39 @@ exports.handler = async (event, context) => {
     attributes: [
       {
         display_type: 'number',
+        trait_type: 'Colors',
+        value: toInt(data.counts[0]),
+      },
+      {
+        display_type: 'number',
+        trait_type: 'Shapes',
+        value: toInt(data.counts[1]),
+      },
+      {
+        display_type: 'number',
         trait_type: 'Animation',
-        value: data.animation,
+        value: toInt(data.animation),
       },
       {
         display_type: 'number',
         trait_type: 'Seed',
-        value: data.seed,
-      },
-      {
-        trait_type: 'Colors',
-        value: data.counts[0],
-      },
-      {
-        trait_type: 'Shapes',
-        value: data.counts[1],
+        value: toInt(data.seed),
       },
       {
         trait_type: 'Hatching',
         value: data.dials[8],
+      },
+      {
+        trait_type: 'Mirroring 1',
+        value: data.switches[0],
+      },
+      {
+        trait_type: 'Mirroring 2',
+        value: data.switches[1],
+      },
+      {
+        trait_type: 'Mirroring 3',
+        value: data.switches[2],
       },
     ],
     background_color: '121212',
