@@ -5,7 +5,7 @@ pragma solidity ^0.6.4;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/math/SafeMath.sol";
+//import "@openzeppelin/contracts/math/SafeMath.sol";
 
 library Buffer {
     function hasCapacityFor(bytes memory buffer, uint256 needed)
@@ -228,7 +228,7 @@ library Random {
 }
 
 contract TinyBoxes is ERC721 {
-    using SafeMath for uint256;
+    //using SafeMath for uint256;
 
     uint256 public constant TOKEN_LIMIT = 1000;
     uint256 public constant ARTIST_PRINTS = 0;
@@ -608,43 +608,12 @@ contract TinyBoxes is ERC721 {
     }
 
     /**
-     * @dev Generate the token SVG art
-     * @param _id for which we want art
-     * @return URI of _id.
-     */
-    function tokenArt(uint256 _id) external view returns (string memory) {
-        string memory seed = Strings.toString(idToSeed[_id]);
-        uint256[2] memory counts = [idToCounts[_id][0], idToCounts[_id][1]];
-        int256[13] memory dials = [
-            idToDials[_id][0],
-            idToDials[_id][1],
-            idToDials[_id][2],
-            idToDials[_id][3],
-            idToDials[_id][4],
-            idToDials[_id][5],
-            idToDials[_id][6],
-            idToDials[_id][7],
-            idToDials[_id][8],
-            idToDials[_id][9],
-            idToDials[_id][10],
-            idToDials[_id][11],
-            idToDials[_id][12]
-        ];
-        bool[3] memory switches = [
-            idToSwitches[_id][0],
-            idToSwitches[_id][1],
-            idToSwitches[_id][2]
-        ];
-        return perpetualRenderer(_id, seed, counts, dials, switches, 0, 0);
-    }
-
-    /**
      * @dev Generate the token SVG art of a specified frame
      * @param _id for which we want art
      * @param _frame for which we want art
      * @return animated SVG art of token _id at _frame.
      */
-    function tokenFrame(uint256 _id, uint _frame) external view returns (string memory) {
+    function tokenFrame(uint256 _id, uint _frame) public view returns (string memory) {
         string memory seed = Strings.toString(idToSeed[_id]);
         uint animation = idToAnimation[_id];
         uint256[2] memory counts = [idToCounts[_id][0], idToCounts[_id][1]];
@@ -669,5 +638,14 @@ contract TinyBoxes is ERC721 {
             idToSwitches[_id][2]
         ];
         return perpetualRenderer(_id, seed, counts, dials, switches, animation, _frame);
+    }
+
+    /**
+     * @dev Generate the static token SVG art
+     * @param _id for which we want art
+     * @return URI of _id.
+     */
+    function tokenArt(uint256 _id) external view returns (string memory) {
+        return tokenFrame(_id, 0);
     }
 }

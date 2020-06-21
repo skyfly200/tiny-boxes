@@ -1,4 +1,4 @@
-export const tinyboxesAddress = '0x59fE957c738d3b13299EBc0A18db6D3De4dD8377'
+export const tinyboxesAddress = '0x69248237Ee1b083C1081fBcFfC0C07eF8F06051D'
 export const tinyboxesABI: any = [
   {
     inputs: [],
@@ -56,121 +56,6 @@ export const tinyboxesABI: any = [
     type: 'event',
   },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'approve',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'string',
-        name: 'seed',
-        type: 'string',
-      },
-      {
-        internalType: 'uint256[2]',
-        name: 'counts',
-        type: 'uint256[2]',
-      },
-      {
-        internalType: 'int256[13]',
-        name: 'dials',
-        type: 'int256[13]',
-      },
-      {
-        internalType: 'bool[3]',
-        name: 'switches',
-        type: 'bool[3]',
-      },
-    ],
-    name: 'createBox',
-    outputs: [],
-    stateMutability: 'payable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'safeTransferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-      {
-        internalType: 'bytes',
-        name: '_data',
-        type: 'bytes',
-      },
-    ],
-    name: 'safeTransferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'operator',
-        type: 'address',
-      },
-      {
-        internalType: 'bool',
-        name: 'approved',
-        type: 'bool',
-      },
-    ],
-    name: 'setApprovalForAll',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
     anonymous: false,
     inputs: [
       {
@@ -196,26 +81,16 @@ export const tinyboxesABI: any = [
     type: 'event',
   },
   {
-    inputs: [
+    inputs: [],
+    name: 'ANIMATION_COUNT',
+    outputs: [
       {
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
+        internalType: 'int256',
+        name: '',
+        type: 'int256',
       },
     ],
-    name: 'transferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -229,6 +104,37 @@ export const tinyboxesABI: any = [
       },
     ],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'TOKEN_LIMIT',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'to',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'approve',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -261,6 +167,34 @@ export const tinyboxesABI: any = [
       },
     ],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'seed',
+        type: 'string',
+      },
+      {
+        internalType: 'uint256[2]',
+        name: 'counts',
+        type: 'uint256[2]',
+      },
+      {
+        internalType: 'int256[13]',
+        name: 'dials',
+        type: 'int256[13]',
+      },
+      {
+        internalType: 'bool[3]',
+        name: 'switches',
+        type: 'bool[3]',
+      },
+    ],
+    name: 'createBox',
+    outputs: [],
+    stateMutability: 'payable',
     type: 'function',
   },
   {
@@ -391,6 +325,16 @@ export const tinyboxesABI: any = [
         name: 'switches',
         type: 'bool[3]',
       },
+      {
+        internalType: 'uint256',
+        name: 'animation',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'frame',
+        type: 'uint256',
+      },
     ],
     name: 'perpetualRenderer',
     outputs: [
@@ -420,6 +364,75 @@ export const tinyboxesABI: any = [
       },
     ],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'from',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'to',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'safeTransferFrom',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'from',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'to',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'bytes',
+        name: '_data',
+        type: 'bytes',
+      },
+    ],
+    name: 'safeTransferFrom',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'operator',
+        type: 'address',
+      },
+      {
+        internalType: 'bool',
+        name: 'approved',
+        type: 'bool',
+      },
+    ],
+    name: 'setApprovalForAll',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -455,8 +468,14 @@ export const tinyboxesABI: any = [
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'TOKEN_LIMIT',
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_id',
+        type: 'uint256',
+      },
+    ],
+    name: 'tokenAnimation',
     outputs: [
       {
         internalType: 'uint256',
@@ -532,12 +551,32 @@ export const tinyboxesABI: any = [
         type: 'uint256',
       },
     ],
-    name: 'tokenCreator',
+    name: 'tokenData',
     outputs: [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
+        internalType: 'uint256',
+        name: 'seed',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'animation',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256[]',
+        name: 'counts',
+        type: 'uint256[]',
+      },
+      {
+        internalType: 'int256[]',
+        name: 'dials',
+        type: 'int256[]',
+      },
+      {
+        internalType: 'bool[]',
+        name: 'switches',
+        type: 'bool[]',
       },
     ],
     stateMutability: 'view',
@@ -557,6 +596,30 @@ export const tinyboxesABI: any = [
         internalType: 'int256[]',
         name: '',
         type: 'int256[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_id',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_frame',
+        type: 'uint256',
+      },
+    ],
+    name: 'tokenFrame',
+    outputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
       },
     ],
     stateMutability: 'view',
@@ -654,6 +717,29 @@ export const tinyboxesABI: any = [
       },
     ],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'from',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'to',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'transferFrom',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
 ]
