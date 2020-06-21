@@ -7,6 +7,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lambda": "netlify-lambda build ./src/lambda -c ./webpack.functions.js",
+    "postinstall": "netlify-lambda install ./src/lambda",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
