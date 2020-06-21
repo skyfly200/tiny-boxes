@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "@openzeppelin/contract-loader": "^0.6.1",
+    "@openzeppelin/contracts": "^3.0.2",
     "@openzeppelin/contracts-ethereum-package": "^3.0.0",
+    "@openzeppelin/upgrades": "^2.8.0",
     "core-js": "^3.6.4",
     "register-service-worker": "^1.7.1",
     "solidity-docgen": "^0.5.3",
@@ -28,7 +30,6 @@
   },
   "devDependencies": {
     "@openzeppelin/cli": "^2.8.2",
-    "@openzeppelin/contracts": "^3.0.1",
     "@openzeppelin/solidity-loader": "^1.5.1",
     "@truffle/hdwallet-provider": "^1.0.35",
     "@types/chai": "^4.2.11",

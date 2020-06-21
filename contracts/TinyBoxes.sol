@@ -1,7 +1,11 @@
 pragma solidity ^0.6.4;
 
+// needed for upgradability
+//import "@openzeppelin/upgrades/contracts/Initializable.sol";
+
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
 
 library Buffer {
     function hasCapacityFor(bytes memory buffer, uint256 needed)
@@ -224,6 +228,8 @@ library Random {
 }
 
 contract TinyBoxes is ERC721 {
+    using SafeMath for uint256;
+
     uint256 public constant TOKEN_LIMIT = 1000;
     uint256 public constant ARTIST_PRINTS = 0;
     int public constant ANIMATION_COUNT = 1;
