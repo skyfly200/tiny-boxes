@@ -89,5 +89,5 @@ exports.handler = async (event, context) => {
   // on internal error return this
   //generateResponse('Server Error', 500)
 
-  return generateResponse({ metadata }, 200)
+  return generateResponse(metadata, 200)
 }
