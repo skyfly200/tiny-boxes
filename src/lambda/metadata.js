@@ -13,9 +13,6 @@ const {
 
 import { tinyboxesABI } from '../tinyboxes-contract'
 
-var web3 = new Web3(WEB3_PROVIDER_ENDPOINT)
-const tinyboxesContract = new web3.eth.Contract(tinyboxesABI, CONTRACT_ADDRESS)
-
 const generateResponse = (body, statusCode) => {
   return {
     statusCode: statusCode,
@@ -35,9 +32,21 @@ exports.handler = async function (event, context, callback) {
     console.log('Undefined ID parameter is required')
     return callback(null, generateResponse('Invalid Request', 204))
   }
+  console.log('Loading Web3')
+
+  // init web3 provider
+  var web3 = new Web3(WEB3_PROVIDER_ENDPOINT)
+  const tinyboxesContract = new web3.eth.Contract(
+    tinyboxesABI,
+    CONTRACT_ADDRESS,
+  )
+
+  console.log('Loaded Web3, loading token data')
 
   // lookup token data
-  //const data = await tinyboxesContract.methods.tokenSeed(id).call()
+  const data = await tinyboxesContract.methods.tokenSeed(id).call()
+
+  console.log('Loaded token data')
 
   // build the metadata object from the token data
   const image = ''
