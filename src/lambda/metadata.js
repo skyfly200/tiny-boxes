@@ -5,7 +5,11 @@ const {
   PINATA_API_SECRET,
   WALLET_PRIVATE_KEY,
   EXTERNAL_URL_BASE,
+  WEB3_PROVIDER_ENDPOINT,
+  CONTRACT_ADDRESS,
 } = process.env
+
+var web3 = new Web3(WEB3_PROVIDER_ENDPOINT)
 
 const generateResponse = (body, statusCode) => {
   return {
