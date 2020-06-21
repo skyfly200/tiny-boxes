@@ -47,6 +47,7 @@ exports.handler = async function (event, context, callback) {
   const data = await tinyboxesContract.methods.tokenSeed(id).call()
 
   console.log('Loaded token data')
+  console.log(data)
 
   // build the metadata object from the token data
   const image = ''
