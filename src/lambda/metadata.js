@@ -55,7 +55,7 @@ exports.handler = async (event, context) => {
 
   // lookup token minted timestamp
   const minted = 1546360800
-  web3.eth
+  await web3.eth
     .subscribe('logs', {
       address: CONTRACT_ADDRESS,
       fromBlock: 0,
