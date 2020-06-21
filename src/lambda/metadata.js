@@ -1,5 +1,5 @@
 require('dotenv').config()
-import querystring from 'querystring'
+//import querystring from 'querystring'
 const {
   PINATA_API_KEY,
   PINATA_API_SECRET,
