@@ -1,5 +1,6 @@
 require('dotenv').config()
 require('querystring')
+
 const {
   PINATA_API_KEY,
   PINATA_API_SECRET,
@@ -9,7 +10,13 @@ const {
   CONTRACT_ADDRESS,
 } = process.env
 
+const tinyboxesRef = require('@/tinyboxes-contract.ts')
+
 var web3 = new Web3(WEB3_PROVIDER_ENDPOINT)
+tinyboxesContract = new web3.eth.Contract(
+  tinyboxesRef.tinyboxesABI,
+  CONTRACT_ADDRESS,
+)
 
 const generateResponse = (body, statusCode) => {
   return {
@@ -30,6 +37,11 @@ exports.handler = function (event, context, callback) {
     console.log('Undefined ID parameter is required')
     return callback(null, generateResponse('Invalid Request', 204))
   }
+
+  // lookup token data
+  tinyboxesContract.methods.tokenData(id).call(function (result) {
+    console.log(result)
+  })
 
   // build the metadata object from the token data
   const image = ''
