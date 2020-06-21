@@ -1,5 +1,5 @@
 require('dotenv').config()
-require('querystring')
+import querystring from 'querystring'
 
 const {
   PINATA_API_KEY,
@@ -10,13 +10,10 @@ const {
   CONTRACT_ADDRESS,
 } = process.env
 
-const tinyboxesRef = require('../tinyboxes-contract.ts')
+import { tinyboxesABI } from '../tinyboxes-contract'
 
 var web3 = new Web3(WEB3_PROVIDER_ENDPOINT)
-tinyboxesContract = new web3.eth.Contract(
-  tinyboxesRef.tinyboxesABI,
-  CONTRACT_ADDRESS,
-)
+tinyboxesContract = new web3.eth.Contract(tinyboxesABI, CONTRACT_ADDRESS)
 
 const generateResponse = (body, statusCode) => {
   return {
