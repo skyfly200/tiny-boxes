@@ -84,22 +84,22 @@ exports.handler = async (event, context) => {
       {
         display_type: 'number',
         trait_type: 'Colors',
-        value: toInt(data.counts[0]),
+        value: parseInt(data.counts[0]),
       },
       {
         display_type: 'number',
         trait_type: 'Shapes',
-        value: toInt(data.counts[1]),
+        value: parseInt(data.counts[1]),
       },
       {
         display_type: 'number',
         trait_type: 'Animation',
-        value: toInt(data.animation),
+        value: parseInt(data.animation),
       },
       {
         display_type: 'number',
         trait_type: 'Seed',
-        value: toInt(data.seed),
+        value: parseInt(data.seed),
       },
       {
         trait_type: 'Hatching',
