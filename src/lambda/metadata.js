@@ -50,6 +50,7 @@ exports.handler = async (event, context) => {
   }
 
   // lookup token data and art
+  const minted = 1546360800
   const data = await tinyboxesContract.methods.tokenData(id).call()
   const art = await tinyboxesContract.methods.tokenArt(id).call()
 
@@ -98,6 +99,11 @@ exports.handler = async (event, context) => {
       {
         trait_type: 'Mirror Level 3',
         value: data.switches[2],
+      },
+      {
+        display_type: 'date',
+        trait_type: 'Created',
+        value: minted,
       },
     ],
     background_color: '121212',
