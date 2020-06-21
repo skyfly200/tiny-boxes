@@ -23,7 +23,7 @@ const generateResponse = (body, statusCode) => {
   }
 }
 
-exports.handler = function (event, context, callback) {
+exports.handler = async function (event, context, callback) {
   const id = event.queryStringParameters.id
 
   if (event.httpMethod !== 'GET') {
@@ -56,7 +56,5 @@ exports.handler = function (event, context, callback) {
   return callback(null, generateResponse({ metadata }, 200))
 
   // lookup token data
-  tinyboxesContract.methods.tokenSeed(id).call(function (result) {
-    console.log(result)
-  })
+  const data = await tinyboxesContract.methods.tokenSeed(id).call()
 }
