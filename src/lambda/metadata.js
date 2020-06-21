@@ -20,17 +20,17 @@ const generateResponse = (body, statusCode) => {
   }
 }
 
-exports.handler = async function (event, context, callback) {
+exports.handler = async (event, context) => {
   const id = event.queryStringParameters.id
 
   if (event.httpMethod !== 'GET') {
     // Only GET requests allowed
     console.log('Bad method:', event.httpMethod)
-    return callback(null, generateResponse('Method Not Allowed', 405))
+    return generateResponse('Method Not Allowed', 405)
   } else if (id === undefined) {
     // complain if id is missing
     console.log('Undefined ID parameter is required')
-    return callback(null, generateResponse('Invalid Request', 204))
+    return generateResponse('Invalid Request', 204)
   }
   console.log('Loading Web3')
 
@@ -70,5 +70,5 @@ exports.handler = async function (event, context, callback) {
   // on internal error return this
   //generateResponse('Server Error', 500)
 
-  return callback(null, generateResponse({ metadata }, 200))
+  return generateResponse({ metadata }, 200)
 }
