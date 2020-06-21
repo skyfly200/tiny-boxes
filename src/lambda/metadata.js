@@ -54,7 +54,7 @@ exports.handler = async (event, context) => {
   const art = await tinyboxesContract.methods.tokenArt(id).call()
 
   // lookup token minted timestamp
-  const minted = 1546360800
+  let minted = 1546360800
   await web3.eth
     .subscribe('logs', {
       address: CONTRACT_ADDRESS,
