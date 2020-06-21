@@ -10,7 +10,7 @@ const {
   CONTRACT_ADDRESS,
 } = process.env
 
-const tinyboxesRef = require('@/tinyboxes-contract.ts')
+const tinyboxesRef = require('../tinyboxes-contract.ts')
 
 var web3 = new Web3(WEB3_PROVIDER_ENDPOINT)
 tinyboxesContract = new web3.eth.Contract(
