@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "production": "vue-cli-service build && netlify-lambda build ./src/lambda -c ./webpack.functions.js",
+    "production": "npm run build && npm run lambda",
+    "dev": "npm run lambda && npm run serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lambda": "netlify-lambda build ./src/lambda -c ./webpack.functions.js",

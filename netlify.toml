@@ -2,3 +2,6 @@
   command = "npm run production"
   publish = "dist"
   functions = "lambda"
+
+[dev]
+  command = "npm run dev"
