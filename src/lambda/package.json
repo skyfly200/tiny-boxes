@@ -9,8 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.0.20",
+    "@ffmpeg-installer/linux-x64": "^4.1.0",
     "@pinata/sdk": "^1.1.10",
     "dotenv": "^8.2.0",
+    "fluent-ffmpeg": "^2.1.2",
     "web3": "^1.2.9"
   },
   "devDependencies": {
