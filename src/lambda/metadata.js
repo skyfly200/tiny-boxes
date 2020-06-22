@@ -5,7 +5,7 @@ import ffmpegExec from '@ffmpeg-installer/ffmpeg'
 console.log('FFMPEG Path: ')
 console.log(ffmpegExec.path)
 import ffmpeg from 'fluent-ffmpeg'
-ffmpeg.setFfmpegPath(ffmpegExec.path)
+//ffmpeg.setFfmpegPath(ffmpegExec.path)
 
 const {
   PINATA_API_KEY,
