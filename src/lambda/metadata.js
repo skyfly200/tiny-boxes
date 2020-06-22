@@ -1,6 +1,10 @@
 require('dotenv').config()
 import querystring from 'querystring'
 import Web3 from 'web3'
+import ffmpegExec from '@ffmpeg-installer/ffmpeg'
+import ffmpeg from 'fluent-ffmpeg'
+ffmpeg.setFfmpegPath(ffmpegExec.path)
+console.log(ffmpegExec.path)
 
 const {
   PINATA_API_KEY,
