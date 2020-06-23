@@ -3,9 +3,9 @@ import fs from 'fs'
 import { Readable } from 'stream'
 import querystring from 'querystring'
 import Web3 from 'web3'
-import ffmpegExec from '@ffmpeg-installer/ffmpeg'
-console.log('FFMPEG Path: ')
-console.log(ffmpegExec.path)
+// import ffmpegExec from '@ffmpeg-installer/ffmpeg'
+// console.log('FFMPEG Path: ')
+// console.log(ffmpegExec.path)
 //import ffmpeg from 'fluent-ffmpeg'
 //ffmpeg.setFfmpegPath(ffmpegExec.path)
 
