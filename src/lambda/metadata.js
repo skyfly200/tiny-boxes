@@ -1,4 +1,5 @@
 require('dotenv').config()
+import fs from 'fs'
 import querystring from 'querystring'
 import Web3 from 'web3'
 import ffmpegExec from '@ffmpeg-installer/ffmpeg'
@@ -88,6 +89,26 @@ exports.handler = async (event, context) => {
   console.log(await pinata.testAuthentication())
 
   // upload image and video to IPFS
+  // const readableStreamForFile = fs.createReadStream('./yourfile.png');
+  // const options = {
+  //   pinataMetadata: {
+  //     name: MyCustomName,
+  //     keyvalues: {
+  //       customKey: 'customValue',
+  //       customKey2: 'customValue2'
+  //     }
+  //   },
+  //   pinataOptions: {
+  //     cidVersion: 0
+  //   }
+  // };
+  // pinata.pinFileToIPFS(readableStreamForFile, options).then((result) => {
+  //   //handle results here
+  //   console.log(result);
+  // }).catch((err) => {
+  //   //handle error here
+  //   console.log(err);
+  // });
   const image = art // TODO: upload to IPFS and use hash
   const animationHash = ''
 
