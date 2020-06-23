@@ -80,7 +80,7 @@ exports.handler = async (event, context) => {
 
   // generate readable stream of the SVG art markup
   const artStream = Readable.from([art])
-  readable.on('data', (chunk) => {
+  artStream.on('data', (chunk) => {
     console.log(chunk) // will be called once with `"input string"`
   })
 
