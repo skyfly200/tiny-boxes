@@ -154,8 +154,16 @@ exports.handler = async (event, context) => {
   console.log(metadata)
 
   // upload metadata JSON object to IPFS
-
-  // save IPFS hash to token URI
+  pinata
+    .pinJSONToIPFS(metadata)
+    .then((result) => {
+      console.log(result)
+      // save IPFS hash to token URI
+    })
+    .catch((err) => {
+      //handle error here
+      console.log(err)
+    })
 
   // on internal error return this
   //generateResponse('Server Error', 500)
