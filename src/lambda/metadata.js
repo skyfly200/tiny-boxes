@@ -4,7 +4,7 @@ import Web3 from 'web3'
 import ffmpegExec from '@ffmpeg-installer/ffmpeg'
 console.log('FFMPEG Path: ')
 console.log(ffmpegExec.path)
-import ffmpeg from 'fluent-ffmpeg'
+//import ffmpeg from 'fluent-ffmpeg'
 //ffmpeg.setFfmpegPath(ffmpegExec.path)
 
 const {
@@ -76,7 +76,7 @@ exports.handler = async (event, context) => {
       minted = block.timestamp
     })
 
-  // convert images from SVG to PNG
+  // convert art from SVG to PNG
 
   // build mp4 of animation from frames
 
@@ -88,10 +88,10 @@ exports.handler = async (event, context) => {
   console.log(await pinata.testAuthentication())
 
   // upload image and video to IPFS
+  const image = art // TODO: upload to IPFS and use hash
+  const animationHash = ''
 
   // build the metadata object from the token data and IPFS hashes
-  const image = art // upload to IPFS and use hash
-  const animationHash = ''
   let metadata = {
     description:
       'A scattering of tiny boxes, Aranged in patterns ranging from mundane to magnificent.',
