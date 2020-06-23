@@ -96,25 +96,12 @@ exports.handler = async (event, context) => {
   console.log(await pinata.testAuthentication())
 
   // upload image and video to IPFS
-  // const options = {
-  //   pinataMetadata: {
-  //     name: MyCustomName,
-  //     keyvalues: {
-  //       customKey: 'customValue',
-  //       customKey2: 'customValue2'
-  //     }
-  //   },
-  //   pinataOptions: {
-  //     cidVersion: 0
-  //   }
-  // };
-  // pinata.pinFileToIPFS(pngStream, options).then((result) => {
-  //   //handle results here
-  //   console.log(result);
-  // }).catch((err) => {
-  //   //handle error here
-  //   console.log(err);
-  // });
+  try {
+  } catch (err) {
+    console.log(err)
+    generateResponse('Server Error: pinata upload', 500)
+  }
+  const imageHash = await pinata.pinFileToIPFS(artStream, options)
   // pinata.pinFileToIPFS(mp4Stream, options).then((result) => {
   //   //handle results here
   //   console.log(result);
@@ -122,7 +109,6 @@ exports.handler = async (event, context) => {
   //   //handle error here
   //   console.log(err);
   // });
-  const image = art // TODO: upload to IPFS and use hash
   const animationHash = ''
 
   // build the metadata object from the token data and IPFS hashes
@@ -130,8 +116,10 @@ exports.handler = async (event, context) => {
     description:
       'A scattering of tiny boxes, Aranged in patterns ranging from mundane to magnificent.',
     external_url: EXTERNAL_URL_BASE + id,
-    image_data: image,
+    image: imageHash,
     name: 'Token ' + id,
+    background_color: '121212',
+    animation_url: animationHash,
     attributes: [
       {
         display_type: 'number',
@@ -179,8 +167,6 @@ exports.handler = async (event, context) => {
         value: minted,
       },
     ],
-    background_color: '121212',
-    animation_url: animationHash,
   }
 
   // log metadata to console
