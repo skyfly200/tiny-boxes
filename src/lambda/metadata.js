@@ -76,7 +76,20 @@ exports.handler = async (event, context) => {
       minted = block.timestamp
     })
 
-  // build the metadata object from the token data
+  // convert images from SVG to PNG
+
+  // build mp4 of animation from frames
+
+  // load Pinata SDK
+  const pinataSDK = require('@pinata/sdk')
+  const pinata = pinataSDK(PINATA_API_KEY, PINATA_API_SECRET)
+
+  // test Pinata SDK auth
+  console.log(await pinata.testAuthentication())
+
+  // upload image and video to IPFS
+
+  // build the metadata object from the token data and IPFS hashes
   const image = art // upload to IPFS and use hash
   const animationHash = ''
   let metadata = {
@@ -140,12 +153,9 @@ exports.handler = async (event, context) => {
   console.log('Metadata of token ' + id)
   console.log(metadata)
 
-  // load Pinata SDK
-  const pinataSDK = require('@pinata/sdk')
-  const pinata = pinataSDK(PINATA_API_KEY, PINATA_API_SECRET)
+  // upload metadata JSON object to IPFS
 
-  // test Pinata SDK auth
-  console.log(await pinata.testAuthentication())
+  // save IPFS hash to token URI
 
   // on internal error return this
   //generateResponse('Server Error', 500)
