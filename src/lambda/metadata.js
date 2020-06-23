@@ -1,5 +1,6 @@
 require('dotenv').config()
 import fs from 'fs'
+import { Readable } from 'stream'
 import querystring from 'querystring'
 import Web3 from 'web3'
 import ffmpegExec from '@ffmpeg-installer/ffmpeg'
@@ -77,9 +78,15 @@ exports.handler = async (event, context) => {
       minted = block.timestamp
     })
 
-  // convert art from SVG to PNG
+  // generate readable stream of the SVG art markup
+  const artStream = Readable.from([art])
+  readable.on('data', (chunk) => {
+    console.log(chunk) // will be called once with `"input string"`
+  })
 
-  // build mp4 of animation from frames
+  // convert art stream from SVG to PNG
+
+  // build MP4 stream of animation from frames
 
   // load Pinata SDK
   const pinataSDK = require('@pinata/sdk')
@@ -89,7 +96,6 @@ exports.handler = async (event, context) => {
   console.log(await pinata.testAuthentication())
 
   // upload image and video to IPFS
-  // const readableStreamForFile = fs.createReadStream('./yourfile.png');
   // const options = {
   //   pinataMetadata: {
   //     name: MyCustomName,
@@ -102,7 +108,14 @@ exports.handler = async (event, context) => {
   //     cidVersion: 0
   //   }
   // };
-  // pinata.pinFileToIPFS(readableStreamForFile, options).then((result) => {
+  // pinata.pinFileToIPFS(pngStream, options).then((result) => {
+  //   //handle results here
+  //   console.log(result);
+  // }).catch((err) => {
+  //   //handle error here
+  //   console.log(err);
+  // });
+  // pinata.pinFileToIPFS(mp4Stream, options).then((result) => {
   //   //handle results here
   //   console.log(result);
   // }).catch((err) => {
