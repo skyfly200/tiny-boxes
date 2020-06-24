@@ -4,6 +4,7 @@ import { Readable } from 'stream'
 import querystring from 'querystring'
 import Web3 from 'web3'
 import pinataSDK from '@pinata/sdk'
+import str from 'string-to-stream'
 // import ffmpegExec from '@ffmpeg-installer/ffmpeg'
 // console.log('FFMPEG Path: ')
 // console.log(ffmpegExec.path)
@@ -70,10 +71,7 @@ exports.handler = async (event, context) => {
     const art = await artPromise
 
     // generate readable stream of the SVG art markup
-    // let artFile = fs.createWriteStream('./art.svg')
-    // artFile.write(art)
-    // let artStream = fs.createReadStream('./art.svg')
-    const artStream = Readable.from([art])
+    //const artStream = Readable.from([art])
 
     // convert art stream from SVG to PNG
 
@@ -84,10 +82,10 @@ exports.handler = async (event, context) => {
 
     // upload image and video to IPFS
     console.log('Uploading art to IPFS...')
-    console.log(typeof artStream)
+    console.log(typeof str(art))
 
     readable.on("data", (chunk) => {
-      const imageHash = await pinata.pinFileToIPFS(artStream)
+      const imageHash = await pinata.pinFileToIPFS(str(art))
     })
     const animationHash = ''
     //const animationHash = await pinata.pinFileToIPFS(mp4Stream)
