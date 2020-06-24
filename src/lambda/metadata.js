@@ -7,12 +7,13 @@ import Web3 from 'web3'
 import pinataSDK from '@pinata/sdk'
 import axios from 'axios'
 import FormData from 'form-data'
-// import ffmpegExec from '@ffmpeg-installer/ffmpeg'
-// console.log('FFMPEG Path: ')
-// console.log(ffmpegExec.path)
+import { tinyboxesABI } from '../tinyboxes-contract'
+//import ffmpegExec from '@ffmpeg-installer/ffmpeg'
 //import ffmpeg from 'fluent-ffmpeg'
-//ffmpeg.setFfmpegPath(ffmpegExec.path)
 
+//console.log('FFMPEG Path: ')
+//console.log(ffmpegExec.path)
+//ffmpeg.setFfmpegPath(ffmpegExec.path)
 dotenv.config()
 
 const {
@@ -23,8 +24,6 @@ const {
   WEB3_PROVIDER_ENDPOINT,
   CONTRACT_ADDRESS,
 } = process.env
-
-import { tinyboxesABI } from '../tinyboxes-contract'
 
 const generateResponse = (body, statusCode) => {
   return {
