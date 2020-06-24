@@ -1,5 +1,5 @@
 [build]
-  command = "npm run production"
+  command = "npm i && npm run production"
   publish = "dist"
   functions = "lambda"
 
