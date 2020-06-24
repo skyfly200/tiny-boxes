@@ -2,7 +2,6 @@ import dotenv from 'dotenv'
 import querystring from 'querystring'
 import fs from 'fs'
 import { Readable } from 'stream'
-import str from 'string-to-stream'
 import Web3 from 'web3'
 import pinataSDK from '@pinata/sdk'
 import axios from 'axios'
@@ -72,10 +71,7 @@ exports.handler = async (event, context) => {
     const art = await artPromise
 
     // generate readable stream of the SVG art markup
-    console.log(typeof art)
-
     const artStream = Readable.from([art])
-    //const artStream = str(art)
 
     // convert art stream from SVG to PNG
 
@@ -94,23 +90,21 @@ exports.handler = async (event, context) => {
     let formData = new FormData()
     formData.append('file', artStream)
 
-    axios
-      .post(url, formData, {
-        maxContentLength: 'Infinity', //this is needed to prevent axios from erroring out with large files
-        headers: {
-          'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
-          pinata_api_key: PINATA_API_KEY,
-          pinata_secret_api_key: PINATA_API_SECRET,
-        },
-      })
-      .then((result) => console.log(result))
+    const ipfsResp = await axios.post(url, formData, {
+      maxContentLength: 'Infinity', //this is needed to prevent axios from erroring out with large files
+      headers: {
+        'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+        pinata_api_key: PINATA_API_KEY,
+        pinata_secret_api_key: PINATA_API_SECRET,
+      },
+    })
 
     //const imageHash = (await pinata.pinFileToIPFS(artStream)).IpfsHash
     const imageHash = ''
     const animationHash = ''
     //const animationHash = await pinata.pinFileToIPFS(mp4Stream)
-    console.log('IPFS Hash: ')
-    console.log(imageHash)
+    // console.log('IPFS Hash: ')
+    // console.log(imageHash)
 
     // lookup token minted timestamp
     let minted = 1546360800
@@ -191,7 +185,7 @@ exports.handler = async (event, context) => {
 
     // log metadata to console
     console.log('Metadata of token ' + id)
-    console.log(metadata)
+    //console.log(metadata)
 
     // upload metadata JSON object to IPFS
     console.log('Writing metadata to IPFS')
