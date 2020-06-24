@@ -71,8 +71,8 @@ exports.handler = async (event, context) => {
     const art = await artPromise
 
     // generate readable stream of the SVG art markup
-    //const artStream = Readable.from([art])
-    const artStream = str(art)
+    const artStream = Readable.from([art])
+    //const artStream = str(art)
 
     // convert art stream from SVG to PNG
 
@@ -83,9 +83,9 @@ exports.handler = async (event, context) => {
 
     // upload image and video to IPFS
     console.log('Uploading art to IPFS...')
-    console.log(typeof str(art))
 
     artStream.on("readable", (chunk) => {
+      console.log("Stream is Readable");
       const imageHash = await pinata.pinFileToIPFS(artStream)
     })
     const animationHash = ''
