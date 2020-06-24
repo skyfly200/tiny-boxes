@@ -80,9 +80,6 @@ exports.handler = async (event, context) => {
 
   // generate readable stream of the SVG art markup
   const artStream = Readable.from([art])
-  artStream.on('data', (chunk) => {
-    console.log(chunk) // will be called once with `"input string"`
-  })
 
   // convert art stream from SVG to PNG
 
@@ -91,9 +88,6 @@ exports.handler = async (event, context) => {
   // load Pinata SDK
   const pinataSDK = require('@pinata/sdk')
   const pinata = pinataSDK(PINATA_API_KEY, PINATA_API_SECRET)
-
-  // test Pinata SDK auth
-  console.log(await pinata.testAuthentication())
 
   // upload image and video to IPFS
   try {
