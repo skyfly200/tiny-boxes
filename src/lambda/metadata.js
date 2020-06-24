@@ -92,29 +92,17 @@ exports.handler = async (event, context) => {
     let formData = new FormData()
     formData.append('file', artStream)
 
-    axios
-      .post(url, formData, {
-        maxContentLength: 'Infinity', //this is needed to prevent axios from erroring out with large files
-        headers: {
-          'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
-          pinata_api_key: PINATA_API_KEY,
-          pinata_secret_api_key: PINATA_API_SECRET,
-        },
-      })
-      .then(function (response) {
-        //handle response here
-        console.log(response)
-      })
-      .catch(function (error) {
-        //handle error here
-        console.error(error)
-      })
-
-    artStream.on('readable', (chunk) => {
-      console.log('Stream is Readable')
-      //const imageHash = (await pinata.pinFileToIPFS(artStream)).IpfsHash
+    const ipfsResp = await axios.post(url, formData, {
+      maxContentLength: 'Infinity', //this is needed to prevent axios from erroring out with large files
+      headers: {
+        'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+        pinata_api_key: PINATA_API_KEY,
+        pinata_secret_api_key: PINATA_API_SECRET,
+      },
     })
-    const imageHash = ''
+
+    //const imageHash = (await pinata.pinFileToIPFS(artStream)).IpfsHash
+    const imageHash = ipfsResp
     const animationHash = ''
     //const animationHash = await pinata.pinFileToIPFS(mp4Stream)
     console.log('IPFS Hash: ')
