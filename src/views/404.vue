@@ -15,7 +15,7 @@ export default Vue.extend({
   name: "Error404"
 });
 </script>
-
+ 
 <style lang="sass" scoped>
 .content
   margin-top: 35vh

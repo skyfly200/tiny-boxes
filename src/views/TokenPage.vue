@@ -77,7 +77,7 @@ export default Vue.extend({
     id(): number {
       return parseInt(this.$route.params.id);
     },
-    ...mapGetters(["currentAccount"])
+    ...mapGetters(["currentAccount"]),
   },
   mounted: async function() {
     await this.$store.dispatch("initialize");
@@ -133,18 +133,18 @@ export default Vue.extend({
               "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
               "0x0000000000000000000000000000000000000000000000000000000000000000",
               null,
-              "0x" + (this.id as number).toString(16).padStart(64, "0")
-            ]
+              "0x" + (this.id as number).toString(16).padStart(64, "0"),
+            ],
           })
           .on("data", resolve)
           .on("error", reject);
       });
-    }
+    },
   },
   data: () => ({
     loading: true,
-    data: {} as any
-  })
+    data: {} as any,
+  }),
 });
 </script>
 
@@ -165,7 +165,7 @@ export default Vue.extend({
   display: flex
   flex-direction: row,
   justify-content: space-between
-.v-card 
+.v-card
   margin: 1rem
 .mirroring, .advanced, .counts, .position, .size, .minting-stats
   display: flex

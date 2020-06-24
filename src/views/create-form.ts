@@ -1,12 +1,12 @@
-export const sections: any = [
+export const sections: Array<object> = [
   {
-    title: 'Counts',
+    title: "Counts",
     rand: true,
     options: [
       {
-        label: 'Colors',
-        key: 'colors',
-        type: 'slider',
+        label: "Colors",
+        key: "colors",
+        type: "slider",
         rand: {
           min: 1,
           max: 50,
@@ -17,9 +17,9 @@ export const sections: any = [
         },
       },
       {
-        label: 'Shapes',
-        key: 'shapes',
-        type: 'slider',
+        label: "Shapes",
+        key: "shapes",
+        type: "slider",
         rand: {
           min: 1,
           max: 55,
@@ -32,22 +32,22 @@ export const sections: any = [
     ],
   },
   {
-    title: 'Size',
+    title: "Size",
     rand: true,
     options: [
       {
-        label: 'Width',
-        key: 'width',
-        type: 'range-slider',
+        label: "Width",
+        key: "width",
+        type: "range-slider",
         range: {
           min: 1,
           max: 500,
         },
       },
       {
-        label: 'Height',
-        key: 'height',
-        type: 'range-slider',
+        label: "Height",
+        key: "height",
+        type: "range-slider",
         range: {
           min: 1,
           max: 500,
@@ -56,31 +56,31 @@ export const sections: any = [
     ],
   },
   {
-    title: 'Position',
+    title: "Position",
     rand: true,
     options: [
       {
-        label: 'X Spread',
-        key: 'x',
-        type: 'slider',
+        label: "X Spread",
+        key: "x",
+        type: "slider",
         range: {
           min: 1,
           max: 500,
         },
       },
       {
-        label: 'Y Spread',
-        key: 'y',
-        type: 'slider',
+        label: "Y Spread",
+        key: "y",
+        type: "slider",
         range: {
           min: 1,
           max: 500,
         },
       },
       {
-        label: 'Columns',
-        key: 'xSeg',
-        type: 'slider',
+        label: "Columns",
+        key: "xSeg",
+        type: "slider",
         rand: {
           min: 1,
           max: 20,
@@ -91,9 +91,9 @@ export const sections: any = [
         },
       },
       {
-        label: 'Rows',
-        key: 'ySeg',
-        type: 'slider',
+        label: "Rows",
+        key: "ySeg",
+        type: "slider",
         rand: {
           min: 1,
           max: 20,
@@ -106,18 +106,18 @@ export const sections: any = [
     ],
   },
   {
-    title: 'Mirror',
+    title: "Mirror",
     options: [
       {
-        label: 'Level 1',
-        key: 'mirror1',
-        type: 'switch',
+        label: "Level 1",
+        key: "mirror1",
+        type: "switch",
       },
       {
-        label: 'Position 1',
-        key: 'mirrorPos1',
-        type: 'slider',
-        hide: 'mirror1',
+        label: "Position 1",
+        key: "mirrorPos1",
+        type: "slider",
+        hide: "mirror1",
         step: 25,
         range: {
           min: 0,
@@ -125,15 +125,15 @@ export const sections: any = [
         },
       },
       {
-        label: 'Level 2',
-        key: 'mirror2',
-        type: 'switch',
+        label: "Level 2",
+        key: "mirror2",
+        type: "switch",
       },
       {
-        label: 'Position 2',
-        key: 'mirrorPos2',
-        type: 'slider',
-        hide: 'mirror2',
+        label: "Position 2",
+        key: "mirrorPos2",
+        type: "slider",
+        hide: "mirror2",
         step: 25,
         range: {
           min: 0,
@@ -141,15 +141,15 @@ export const sections: any = [
         },
       },
       {
-        label: 'Level 3',
-        key: 'mirror3',
-        type: 'switch',
+        label: "Level 3",
+        key: "mirror3",
+        type: "switch",
       },
       {
-        label: 'Position 3',
-        key: 'mirrorPos3',
-        type: 'slider',
-        hide: 'mirror3',
+        label: "Position 3",
+        key: "mirrorPos3",
+        type: "slider",
+        hide: "mirror3",
         step: 25,
         range: {
           min: 0,
@@ -159,30 +159,30 @@ export const sections: any = [
     ],
   },
   {
-    title: 'Advanced',
+    title: "Advanced",
     options: [
       {
-        label: 'RNG Seed',
-        key: 'seed',
-        type: 'slider',
+        label: "RNG Seed",
+        key: "seed",
+        type: "slider",
         range: {
           min: 0,
           max: 2 ** 53,
         },
       },
       {
-        label: 'Hatching Mod',
-        key: 'hatchMod',
-        type: 'slider',
+        label: "Hatching Mod",
+        key: "hatchMod",
+        type: "slider",
         range: {
           min: 0,
           max: 1000,
         },
       },
       {
-        label: 'Scale %',
-        key: 'scale',
-        type: 'slider',
+        label: "Scale %",
+        key: "scale",
+        type: "slider",
         step: 10,
         range: {
           min: 10,
@@ -191,4 +191,4 @@ export const sections: any = [
       },
     ],
   },
-]
+];

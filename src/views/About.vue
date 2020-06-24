@@ -10,3 +10,4 @@ export default Vue.extend({
   name: "About"
 });
 </script>
+ 
