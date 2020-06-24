@@ -92,41 +92,13 @@ exports.handler = async (event, context) => {
     let formData = new FormData()
     formData.append('file', artStream)
 
-    //You'll need to make sure that the metadata is in the form of a JSON object that's been convered to a string
-    //metadata is optional
-    const pinataMetadata = JSON.stringify({
-      name: 'testname',
-      keyvalues: {
-        exampleKey: 'exampleValue',
-      },
-    })
-    formData.append('pinataMetadata', pinataMetadata)
-
-    //pinataOptions are optional
-    const pinataOptions = JSON.stringify({
-      cidVersion: 0,
-      customPinPolicy: {
-        regions: [
-          {
-            id: 'FRA1',
-            desiredReplicationCount: 1,
-          },
-          {
-            id: 'NYC1',
-            desiredReplicationCount: 2,
-          },
-        ],
-      },
-    })
-    formData.append('pinataOptions', pinataOptions)
-
     axios
       .post(url, formData, {
         maxContentLength: 'Infinity', //this is needed to prevent axios from erroring out with large files
         headers: {
           'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
-          pinata_api_key: pinataApiKey,
-          pinata_secret_api_key: pinataSecretApiKey,
+          pinata_api_key: PINATA_API_KEY,
+          pinata_secret_api_key: PINATA_API_SECRET,
         },
       })
       .then(function (response) {
