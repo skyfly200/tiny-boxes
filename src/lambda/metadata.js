@@ -85,9 +85,9 @@ exports.handler = async (event, context) => {
     console.log('Uploading art to IPFS...')
     console.log(typeof str(art))
 
-    //readable.on("data", (chunk) => {
-    const imageHash = await pinata.pinFileToIPFS(artStream)
-    //})
+    artStream.on("readable", (chunk) => {
+      const imageHash = await pinata.pinFileToIPFS(artStream)
+    })
     const animationHash = ''
     //const animationHash = await pinata.pinFileToIPFS(mp4Stream)
     console.log('IPFS Hash: ')
