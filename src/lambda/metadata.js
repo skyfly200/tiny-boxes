@@ -72,6 +72,8 @@ exports.handler = async (event, context) => {
     const art = await artPromise
 
     // generate readable stream of the SVG art markup
+    console.log(typeof art)
+
     const artStream = Readable.from([art])
     //const artStream = str(art)
 
