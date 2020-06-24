@@ -75,28 +75,13 @@ exports.handler = async (event, context) => {
       return generateResponse('Token ' + id + " dosn't exist", 204)
     }
 
-    // TODO: make these next three lookups happen async
-    // lookup token data and art
-    const data = await tinyboxesContract.methods.tokenData(id).call()
-    const art = await tinyboxesContract.methods.tokenArt(id).call()
+    // concurently lookup token data and art
+    const dataPromise = tinyboxesContract.methods.tokenData(id).call()
+    const artPromise = tinyboxesContract.methods.tokenArt(id).call()
 
-    // lookup token minted timestamp
-    let minted = 1546360800
-    await web3.eth
-      .subscribe('logs', {
-        address: CONTRACT_ADDRESS,
-        fromBlock: 0,
-        topics: [
-          '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
-          '0x0000000000000000000000000000000000000000000000000000000000000000',
-          null,
-          '0x' + id.toString(16).padStart(64, '0'),
-        ],
-      })
-      .on('data', async (result) => {
-        const block = await web3.eth.getBlock(result.blockNumber)
-        minted = block.timestamp
-      })
+    // await token data
+    const data = await dataPromise
+    const art = await artPromise
 
     // generate readable stream of the SVG art markup
     let artFile = fs.createWriteStream('./art.svg')
@@ -126,6 +111,24 @@ exports.handler = async (event, context) => {
     //const animationHash = await pinata.pinFileToIPFS(mp4Stream)
     console.log('IPFS Hash: ')
     console.log(imageHash)
+
+    // lookup token minted timestamp
+    let minted = 1546360800
+    await web3.eth
+      .subscribe('logs', {
+        address: CONTRACT_ADDRESS,
+        fromBlock: 0,
+        topics: [
+          '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+          '0x0000000000000000000000000000000000000000000000000000000000000000',
+          null,
+          '0x' + id.toString(16).padStart(64, '0'),
+        ],
+      })
+      .on('data', async (result) => {
+        const block = await web3.eth.getBlock(result.blockNumber)
+        minted = block.timestamp
+      })
 
     // build the metadata object from the token data and IPFS hashes
     let metadata = {
@@ -192,12 +195,9 @@ exports.handler = async (event, context) => {
     // upload metadata JSON object to IPFS
     const metadataHash = await pinata.pinJSONToIPFS(metadata)
 
-    // on internal error return this
-    //generateResponse('Server Error', 500)
-
     return generateResponse(metadata, 200)
   } catch (err) {
     console.log(err)
-    return generateResponse('Server Error: pinata upload', 500)
+    return generateResponse('Server Error', 500)
   }
 }
