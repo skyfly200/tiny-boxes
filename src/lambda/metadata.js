@@ -84,10 +84,11 @@ exports.handler = async (event, context) => {
     // upload image and video to IPFS
     console.log('Uploading art to IPFS...')
 
-    artStream.on("readable", (chunk) => {
-      console.log("Stream is Readable");
-      const imageHash = await pinata.pinFileToIPFS(artStream)
+    artStream.on('readable', (chunk) => {
+      console.log('Stream is Readable')
+      //const imageHash = await pinata.pinFileToIPFS(artStream)
     })
+    const imageHash = ''
     const animationHash = ''
     //const animationHash = await pinata.pinFileToIPFS(mp4Stream)
     console.log('IPFS Hash: ')
@@ -174,7 +175,9 @@ exports.handler = async (event, context) => {
     console.log(metadata)
 
     // upload metadata JSON object to IPFS
+    console.log('Writing metadata to IPFS')
     const metadataHash = await pinata.pinJSONToIPFS(metadata)
+    console.log(metadataHash)
 
     return generateResponse(metadata, 200)
   } catch (err) {
