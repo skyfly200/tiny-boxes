@@ -1,10 +1,12 @@
 import dotenv from 'dotenv'
+import querystring from 'querystring'
 import fs from 'fs'
 import { Readable } from 'stream'
-import querystring from 'querystring'
+import str from 'string-to-stream'
 import Web3 from 'web3'
 import pinataSDK from '@pinata/sdk'
-import str from 'string-to-stream'
+import axios from 'axios'
+import FormData from 'form-data'
 // import ffmpegExec from '@ffmpeg-installer/ffmpeg'
 // console.log('FFMPEG Path: ')
 // console.log(ffmpegExec.path)
@@ -84,9 +86,62 @@ exports.handler = async (event, context) => {
     // upload image and video to IPFS
     console.log('Uploading art to IPFS...')
 
+    // direct appreach
+    const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`
+
+    // build form data with any valid readStream source
+    let data = new FormData()
+    data.append('file', artStream)
+
+    //You'll need to make sure that the metadata is in the form of a JSON object that's been convered to a string
+    //metadata is optional
+    const metadata = JSON.stringify({
+      name: 'testname',
+      keyvalues: {
+        exampleKey: 'exampleValue',
+      },
+    })
+    data.append('pinataMetadata', metadata)
+
+    //pinataOptions are optional
+    const pinataOptions = JSON.stringify({
+      cidVersion: 0,
+      customPinPolicy: {
+        regions: [
+          {
+            id: 'FRA1',
+            desiredReplicationCount: 1,
+          },
+          {
+            id: 'NYC1',
+            desiredReplicationCount: 2,
+          },
+        ],
+      },
+    })
+    data.append('pinataOptions', pinataOptions)
+
+    axios
+      .post(url, data, {
+        maxContentLength: 'Infinity', //this is needed to prevent axios from erroring out with large files
+        headers: {
+          'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
+          pinata_api_key: pinataApiKey,
+          pinata_secret_api_key: pinataSecretApiKey,
+        },
+      })
+      .then(function (response) {
+        //handle response here
+        console.log(response)
+      })
+      .catch(function (error) {
+        //handle error here
+        console.error(error)
+      })
+
     artStream.on('readable', (chunk) => {
       console.log('Stream is Readable')
-      //const imageHash = await pinata.pinFileToIPFS(artStream)
+      //const imageHash = (await pinata.pinFileToIPFS(artStream)).IpfsHash
     })
     const imageHash = ''
     const animationHash = ''
@@ -119,6 +174,7 @@ exports.handler = async (event, context) => {
         'A scattering of tiny boxes, Aranged in patterns ranging from mundane to magnificent.',
       external_url: EXTERNAL_URL_BASE + id,
       image: imageHash,
+      image_data: art,
       background_color: '121212',
       animation_url: animationHash,
       attributes: [
@@ -176,7 +232,7 @@ exports.handler = async (event, context) => {
 
     // upload metadata JSON object to IPFS
     console.log('Writing metadata to IPFS')
-    const metadataHash = await pinata.pinJSONToIPFS(metadata)
+    const metadataHash = (await pinata.pinJSONToIPFS(metadata)).IpfsHash
     console.log(metadataHash)
 
     return generateResponse(metadata, 200)

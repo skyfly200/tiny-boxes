@@ -12,8 +12,10 @@
     "@ffmpeg-installer/ffmpeg": "^1.0.20",
     "@ffmpeg-installer/linux-x64": "^4.1.0",
     "@pinata/sdk": "^1.1.10",
+    "axios": "^0.19.2",
     "dotenv": "^8.2.0",
     "fluent-ffmpeg": "^2.1.2",
+    "form-data": "^3.0.0",
     "string-to-stream": "^3.0.1",
     "web3": "^1.2.9"
   },
