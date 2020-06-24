@@ -20,6 +20,23 @@ const {
 
 import { tinyboxesABI } from '../tinyboxes-contract'
 
+class ReadableString extends Readable {
+  sent = false
+
+  constructor(str) {
+    super()
+  }
+
+  _read() {
+    if (!this.sent) {
+      this.push(Buffer.from(this.str))
+      this.sent = true
+    } else {
+      this.push(null)
+    }
+  }
+}
+
 const generateResponse = (body, statusCode) => {
   return {
     statusCode: statusCode,
@@ -81,7 +98,11 @@ exports.handler = async (event, context) => {
       })
 
     // generate readable stream of the SVG art markup
-    const artStream = Readable.from([art])
+    const artStream = new ReadableString(art)
+    // const artStream = Readable.from([art])
+    // readable.on('data', (chunk) => {
+    //   console.log(chunk) // will be called once with `"input string"`
+    // })
 
     // convert art stream from SVG to PNG
 
