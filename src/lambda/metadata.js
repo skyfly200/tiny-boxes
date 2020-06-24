@@ -70,9 +70,9 @@ exports.handler = async (event, context) => {
     const art = await artPromise
 
     // generate readable stream of the SVG art markup
-    let artFile = fs.createWriteStream('./art.svg')
-    artFile.write(art)
-    let artStream = fs.createReadStream('./art.svg')
+    // let artFile = fs.createWriteStream('./art.svg')
+    // artFile.write(art)
+    // let artStream = fs.createReadStream('./art.svg')
     const artStream = Readable.from([art])
 
     // convert art stream from SVG to PNG
