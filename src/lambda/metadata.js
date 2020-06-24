@@ -101,7 +101,7 @@ exports.handler = async (event, context) => {
     console.log(err)
     generateResponse('Server Error: pinata upload', 500)
   }
-  const imageHash = await pinata.pinFileToIPFS(artStream, options)
+  const imageHash = await pinata.pinFileToIPFS(artStream)
   // pinata.pinFileToIPFS(mp4Stream, options).then((result) => {
   //   //handle results here
   //   console.log(result);
