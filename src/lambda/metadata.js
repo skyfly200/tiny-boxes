@@ -89,18 +89,18 @@ exports.handler = async (event, context) => {
     const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`
 
     // build form data with any valid readStream source
-    let data = new FormData()
-    data.append('file', artStream)
+    let formData = new FormData()
+    formData.append('file', artStream)
 
     //You'll need to make sure that the metadata is in the form of a JSON object that's been convered to a string
     //metadata is optional
-    const metadata = JSON.stringify({
+    const pinataMetadata = JSON.stringify({
       name: 'testname',
       keyvalues: {
         exampleKey: 'exampleValue',
       },
     })
-    data.append('pinataMetadata', metadata)
+    formData.append('pinataMetadata', pinataMetadata)
 
     //pinataOptions are optional
     const pinataOptions = JSON.stringify({
@@ -118,13 +118,13 @@ exports.handler = async (event, context) => {
         ],
       },
     })
-    data.append('pinataOptions', pinataOptions)
+    formData.append('pinataOptions', pinataOptions)
 
     axios
-      .post(url, data, {
+      .post(url, formData, {
         maxContentLength: 'Infinity', //this is needed to prevent axios from erroring out with large files
         headers: {
-          'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
+          'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
           pinata_api_key: pinataApiKey,
           pinata_secret_api_key: pinataSecretApiKey,
         },
