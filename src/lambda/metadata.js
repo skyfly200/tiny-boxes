@@ -98,7 +98,7 @@ exports.handler = async (event, context) => {
       })
 
     // generate readable stream of the SVG art markup
-    const artStream = new ReadableString(art)
+    const artStream = new ReadableString([art])
     // const artStream = Readable.from([art])
     // readable.on('data', (chunk) => {
     //   console.log(chunk) // will be called once with `"input string"`
@@ -185,16 +185,7 @@ exports.handler = async (event, context) => {
     console.log(metadata)
 
     // upload metadata JSON object to IPFS
-    pinata
-      .pinJSONToIPFS(metadata)
-      .then((result) => {
-        console.log(result)
-        // save IPFS hash to token URI
-      })
-      .catch((err) => {
-        //handle error here
-        console.log(err)
-      })
+    const metadataHash = await pinata.pinJSONToIPFS(metadata)
 
     // on internal error return this
     //generateResponse('Server Error', 500)
