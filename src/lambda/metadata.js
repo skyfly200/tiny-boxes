@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 import querystring from 'querystring'
 import fs from 'fs'
 import { Readable } from 'stream'
+import streamifier from 'streamifier'
 import Web3 from 'web3'
 import pinataSDK from '@pinata/sdk'
 import axios from 'axios'
@@ -71,7 +72,7 @@ exports.handler = async (event, context) => {
     const art = await artPromise
 
     // generate readable stream of the SVG art markup
-    const artStream = Readable.from(art.toString())
+    const artStream = streamifier.createReadStream(art)
 
     // convert art stream from SVG to PNG
 

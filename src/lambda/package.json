@@ -16,7 +16,7 @@
     "dotenv": "^8.2.0",
     "fluent-ffmpeg": "^2.1.2",
     "form-data": "^3.0.0",
-    "string-to-stream": "^3.0.1",
+    "streamifier": "^0.1.1",
     "web3": "^1.2.9"
   },
   "devDependencies": {
