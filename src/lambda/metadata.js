@@ -75,6 +75,7 @@ exports.handler = async (event, context) => {
       return generateResponse('Token ' + id + " dosn't exist", 204)
     }
 
+    // TODO: make these next three lookups happen async
     // lookup token data and art
     const data = await tinyboxesContract.methods.tokenData(id).call()
     const art = await tinyboxesContract.methods.tokenArt(id).call()
@@ -98,7 +99,11 @@ exports.handler = async (event, context) => {
       })
 
     // generate readable stream of the SVG art markup
-    const artStream = new ReadableString([art])
+    let artFile = fs.createWriteStream('./art.svg')
+    artFile.write(art)
+    let artStream = fs.createReadStream('./art.svg')
+
+    //const artStream = new ReadableString([art])
     // const artStream = Readable.from([art])
     // readable.on('data', (chunk) => {
     //   console.log(chunk) // will be called once with `"input string"`
