@@ -1,13 +1,16 @@
-require('dotenv').config()
+import dotenv from 'dotenv'
 import fs from 'fs'
 import { Readable } from 'stream'
 import querystring from 'querystring'
 import Web3 from 'web3'
+import pinataSDK from '@pinata/sdk'
 // import ffmpegExec from '@ffmpeg-installer/ffmpeg'
 // console.log('FFMPEG Path: ')
 // console.log(ffmpegExec.path)
 //import ffmpeg from 'fluent-ffmpeg'
 //ffmpeg.setFfmpegPath(ffmpegExec.path)
+
+dotenv.config()
 
 const {
   PINATA_API_KEY,
@@ -19,23 +22,6 @@ const {
 } = process.env
 
 import { tinyboxesABI } from '../tinyboxes-contract'
-
-class ReadableString extends Readable {
-  sent = false
-
-  constructor(str) {
-    super()
-  }
-
-  _read() {
-    if (!this.sent) {
-      this.push(Buffer.from(this.str))
-      this.sent = true
-    } else {
-      this.push(null)
-    }
-  }
-}
 
 const generateResponse = (body, statusCode) => {
   return {
@@ -87,26 +73,22 @@ exports.handler = async (event, context) => {
     let artFile = fs.createWriteStream('./art.svg')
     artFile.write(art)
     let artStream = fs.createReadStream('./art.svg')
-
-    //const artStream = new ReadableString([art])
-    // const artStream = Readable.from([art])
-    // readable.on('data', (chunk) => {
-    //   console.log(chunk) // will be called once with `"input string"`
-    // })
+    const artStream = Readable.from([art])
 
     // convert art stream from SVG to PNG
 
     // build MP4 stream of animation from frames
 
     // load Pinata SDK
-    const pinataSDK = require('@pinata/sdk')
     const pinata = pinataSDK(PINATA_API_KEY, PINATA_API_SECRET)
 
     // upload image and video to IPFS
     console.log('Uploading art to IPFS...')
     console.log(typeof artStream)
 
-    const imageHash = await pinata.pinFileToIPFS(artStream)
+    readable.on("data", (chunk) => {
+      const imageHash = await pinata.pinFileToIPFS(artStream)
+    })
     const animationHash = ''
     //const animationHash = await pinata.pinFileToIPFS(mp4Stream)
     console.log('IPFS Hash: ')
