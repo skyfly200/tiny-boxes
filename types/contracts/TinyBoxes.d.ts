@@ -34,10 +34,10 @@ export class TinyBoxes extends Contract {
     baseURI(): TransactionObject<string>;
 
     createBox(
-      seed: string,
+      _seed: string,
       counts: (number | string)[],
       dials: (number | string)[],
-      switches: boolean[]
+      mirrors: boolean[]
     ): TransactionObject<void>;
 
     creator(): TransactionObject<string>;
@@ -57,11 +57,18 @@ export class TinyBoxes extends Contract {
 
     perpetualRenderer(
       _id: number | string,
-      seed: string,
-      counts: (number | string)[],
-      dials: (number | string)[],
-      switches: boolean[],
-      animation: number | string,
+      box: {
+        seed: number | string;
+        animation: number | string;
+        shapes: number | string;
+        colors: number | string;
+        hatching: number | string;
+        scale: number | string;
+        mirrorPositions: (number | string)[];
+        size: (number | string)[];
+        spacing: (number | string)[];
+        mirrors: boolean[];
+      },
       frame: number | string
     ): TransactionObject<string>;
 
@@ -90,24 +97,30 @@ export class TinyBoxes extends Contract {
 
     tokenByIndex(index: number | string): TransactionObject<string>;
 
-    tokenCounts(_id: number | string): TransactionObject<string[]>;
-
     tokenData(
       _id: number | string
     ): TransactionObject<{
       seed: string;
       animation: string;
-      counts: string[];
-      dials: string[];
-      switches: boolean[];
+      colors: string;
+      shapes: string;
+      hatching: string;
+      size: string[];
+      spacing: string[];
+      mirrorPositions: string[];
+      mirrors: boolean[];
+      scale: string;
       0: string;
       1: string;
-      2: string[];
-      3: string[];
-      4: boolean[];
+      2: string;
+      3: string;
+      4: string;
+      5: string[];
+      6: string[];
+      7: string[];
+      8: boolean[];
+      9: string;
     }>;
-
-    tokenDials(_id: number | string): TransactionObject<string[]>;
 
     tokenFrame(
       _id: number | string,
@@ -120,8 +133,6 @@ export class TinyBoxes extends Contract {
     ): TransactionObject<string>;
 
     tokenSeed(_id: number | string): TransactionObject<string>;
-
-    tokenSwitches(_id: number | string): TransactionObject<boolean[]>;
 
     tokenURI(tokenId: number | string): TransactionObject<string>;
 

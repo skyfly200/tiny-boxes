@@ -8,227 +8,8 @@ pragma experimental ABIEncoderV2;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-//import "@openzeppelin/contracts/math/SafeMath.sol";
-
-library Buffer {
-    function hasCapacityFor(bytes memory buffer, uint256 needed)
-        internal
-        pure
-        returns (bool)
-    {
-        uint256 size;
-        uint256 used;
-
-        assembly {
-            size := mload(buffer)
-            used := mload(add(buffer, 32))
-        }
-        return size >= 32 && used <= size - 32 && used + needed <= size - 32;
-    }
-
-    function toString(bytes memory buffer)
-        internal
-        pure
-        returns (string memory)
-    {
-        require(hasCapacityFor(buffer, 0), "Buffer.toString: invalid buffer");
-        string memory ret;
-        assembly {
-            ret := add(buffer, 32)
-        }
-        return ret;
-    }
-
-    function append(bytes memory buffer, string memory str) internal view {
-        require(
-            hasCapacityFor(buffer, bytes(str).length),
-            "Buffer.append: no capacity"
-        );
-        assembly {
-            let len := mload(add(buffer, 32))
-            pop(
-                staticcall(
-                    gas(),
-                    0x4,
-                    add(str, 32),
-                    mload(str),
-                    add(len, add(buffer, 64)),
-                    mload(str)
-                )
-            )
-            mstore(add(buffer, 32), add(len, mload(str)))
-        }
-    }
-
-    function rect(
-        bytes memory buffer,
-        int256[2] memory positions,
-        uint256[2] memory size,
-        uint256 rgb
-    ) internal pure {
-        require(hasCapacityFor(buffer, 102), "Buffer.rect: no capacity");
-        int256 xpos = positions[0];
-        int256 ypos = positions[1];
-        uint256 width = size[0];
-        uint256 height = size[1];
-        assembly {
-            function numbx1(x, v) -> y {
-                // v must be in the closed interval [0, 9]
-                // otherwise it outputs junk
-                mstore8(x, add(v, 48))
-                y := add(x, 1)
-            }
-            function numbx2(x, v) -> y {
-                // v must be in the closed interval [0, 99]
-                // otherwise it outputs junk
-                y := numbx1(numbx1(x, div(v, 10)), mod(v, 10))
-            }
-            function numbu3(x, v) -> y {
-                // v must be in the closed interval [0, 999]
-                // otherwise only the last 3 digits will be converted
-                switch lt(v, 100)
-                    case 0 {
-                        // without input value sanitation: y := numbx2(numbx1(x, div(v, 100)), mod(v, 100))
-                        y := numbx2(
-                            numbx1(x, mod(div(v, 100), 10)),
-                            mod(v, 100)
-                        )
-                    }
-                    default {
-                        switch lt(v, 10)
-                            case 0 {
-                                y := numbx2(x, v)
-                            }
-                            default {
-                                y := numbx1(x, v)
-                            }
-                    }
-            }
-            function numbi3(x, v) -> y {
-                // v must be in the closed interval [-999, 999]
-                // otherwise only the last 3 digits will be converted
-                if slt(v, 0) {
-                    v := add(not(v), 1)
-                    mstore8(x, 45) // minus sign
-                    x := add(x, 1)
-                }
-                y := numbu3(x, v)
-            }
-            function hexrgb(x, v) -> y {
-                let blo := and(v, 0xf)
-                let bhi := and(shr(4, v), 0xf)
-                let glo := and(shr(8, v), 0xf)
-                let ghi := and(shr(12, v), 0xf)
-                let rlo := and(shr(16, v), 0xf)
-                let rhi := and(shr(20, v), 0xf)
-                mstore8(x, add(add(rhi, mul(div(rhi, 10), 39)), 48))
-                mstore8(add(x, 1), add(add(rlo, mul(div(rlo, 10), 39)), 48))
-                mstore8(add(x, 2), add(add(ghi, mul(div(ghi, 10), 39)), 48))
-                mstore8(add(x, 3), add(add(glo, mul(div(glo, 10), 39)), 48))
-                mstore8(add(x, 4), add(add(bhi, mul(div(bhi, 10), 39)), 48))
-                mstore8(add(x, 5), add(add(blo, mul(div(blo, 10), 39)), 48))
-                y := add(x, 6)
-            }
-            function append(x, str, len) -> y {
-                mstore(x, str)
-                y := add(x, len)
-            }
-            let strIdx := add(mload(add(buffer, 32)), add(buffer, 64))
-            strIdx := append(strIdx, '<rect x="', 9)
-            strIdx := numbi3(strIdx, xpos)
-            strIdx := append(strIdx, '" y="', 5)
-            strIdx := numbi3(strIdx, ypos)
-            strIdx := append(strIdx, '" width="', 9)
-            strIdx := numbu3(strIdx, width)
-            strIdx := append(strIdx, '" height="', 10)
-            strIdx := numbu3(strIdx, height)
-            strIdx := append(strIdx, '" style="fill:#', 15)
-            strIdx := hexrgb(strIdx, rgb)
-            strIdx := append(strIdx, '; fill-opacity:1.0;"/>\n', 23)
-            mstore(add(buffer, 32), sub(sub(strIdx, buffer), 64))
-        }
-    }
-}
-
-library Random {
-    /**
-     * Initialize the pool with the entropy of the blockhashes of the blocks in the closed interval [earliestBlock, latestBlock]
-     * The argument "seed" is optional and can be left zero in most cases.
-     * This extra seed allows you to select a different sequence of random numbers for the same block range.
-     */
-    function init(
-        uint256 earliestBlock,
-        uint256 latestBlock,
-        uint256 seed
-    ) internal view returns (bytes32[] memory) {
-        //require(block.number-1 >= latestBlock && latestBlock >= earliestBlock && earliestBlock >= block.number-256, "Random.init: invalid block interval");
-        require(
-            block.number - 1 >= latestBlock && latestBlock >= earliestBlock,
-            "Random.init: invalid block interval"
-        );
-        bytes32[] memory pool = new bytes32[](latestBlock - earliestBlock + 2);
-        bytes32 salt = keccak256(abi.encodePacked(earliestBlock, seed));
-        for (uint256 i = 0; i <= latestBlock - earliestBlock; i++) {
-            // Add some salt to each blockhash so that we don't reuse those hash chains
-            // when this function gets called again in another block.
-            pool[i + 1] = keccak256(
-                abi.encodePacked(blockhash(earliestBlock + i), salt)
-            );
-        }
-        return pool;
-    }
-
-    /**
-     * Initialize the pool from the latest "num" blocks.
-     */
-    function initLatest(uint256 num, uint256 seed)
-        internal
-        view
-        returns (bytes32[] memory)
-    {
-        return init(block.number - num, block.number - 1, seed);
-    }
-
-    /**
-     * Advances to the next 256-bit random number in the pool of hash chains.
-     */
-    function next(bytes32[] memory pool) internal pure returns (uint256) {
-        require(pool.length > 1, "Random.next: invalid pool");
-        uint256 roundRobinIdx = (uint256(pool[0]) % (pool.length - 1)) + 1;
-        bytes32 hash = keccak256(abi.encodePacked(pool[roundRobinIdx]));
-        pool[0] = bytes32(uint256(pool[0]) + 1);
-        pool[roundRobinIdx] = hash;
-        return uint256(hash);
-    }
-
-    function stringToUint(string memory s)
-        internal
-        pure
-        returns (uint256 result)
-    {
-        bytes memory b = bytes(s);
-        uint256 i;
-        result = 0;
-        for (i = 0; i < b.length; i++) {
-            uint256 c = uint256(uint8(b[i]));
-            if (c >= 48 && c <= 57) {
-                result = result * 10 + (c - 48);
-            }
-        }
-    }
-
-    /**
-     * Produces random integer values, uniformly distributed on the closed interval [a, b]
-     */
-    function uniform(
-        bytes32[] memory pool,
-        int256 a,
-        int256 b
-    ) internal pure returns (int256) {
-        require(a <= b, "Random.uniform: invalid interval");
-        return int256(next(pool) % uint256(b - a + 1)) + a;
-    }
-}
+import "./Buffer.sol";
+import "./Random.sol";
 
 contract TinyBoxes is ERC721 {
     //using SafeMath for uint256;
@@ -242,16 +23,14 @@ contract TinyBoxes is ERC721 {
 
     struct TinyBox {
         uint256 seed;
-        uint256 animation;
-        uint256 shapes;
-        uint256 colors;
-        uint256 hatching;
-        uint256 scale;
-        uint256[2] widthRange;
-        uint256[2] heightRange;
-        uint256[2] segments;
-        uint256[2] spacing;
-        int256[3] mirrorPositions;
+        uint8 animation;
+        uint8 shapes;
+        uint8 colors;
+        uint16 hatching;
+        uint16 scale;
+        int16[3] mirrorPositions;
+        uint16[4] size;
+        uint16[4] spacing;
         bool[3] mirrors;
     }
 
@@ -311,32 +90,28 @@ contract TinyBoxes is ERC721 {
     /**
      * @dev generate a shape
      * @param pool randomn numbers
-     * @param spacing for segments
-     * @param segments of shape positions
-     * @param widthRange for shapes
-     * @param heightRange for shapes
+     * @param spacing for shapes
+     * @param size of shapes
      * @param hatch mode on
      * @return positions of shape
      */
     function _generateShape(
         bytes32[] memory pool,
-        uint256[2] memory spacing,
-        uint256[2] memory segments,
-        uint256[2] memory widthRange,
-        uint256[2] memory heightRange,
+        uint16[4] memory spacing,
+        uint16[4] memory size,
         bool hatch
     )
         internal
         view
-        returns (int256[2] memory positions, uint256[2] memory size)
+        returns (int256[2] memory positions, uint256[2] memory dimensions)
     {
         positions = [
             Random.uniform(pool, -(int256(spacing[0])), int256(spacing[0])) +
-                ((Random.uniform(pool, 0, int256(segments[0]) - 1) * 800) /
-                    int256(segments[0])),
+                ((Random.uniform(pool, 0, int256(spacing[2]) - 1) * 800) /
+                    int256(spacing[2])),
             Random.uniform(pool, -(int256(spacing[1])), int256(spacing[1])) +
-                ((Random.uniform(pool, 0, int256(segments[1]) - 1) * 800) /
-                    int256(segments[1]))
+                ((Random.uniform(pool, 0, int256(spacing[3]) - 1) * 800) /
+                    int256(spacing[3]))
         ];
         if (hatch) {
             uint256 horizontal = uint256(Random.uniform(pool, 0, 1));
@@ -344,26 +119,14 @@ contract TinyBoxes is ERC721 {
             //      size[1] = uint(dials[6]) + uint(dials[5])  - size[0] + uint256(Random.uniform(pool, dials[7], dials[4]));
             uint256 width = uint256(Random.uniform(pool, 25, 40)) +
                 uint256(700 * horizontal);
-            size = [
+            dimensions = [
                 width,
                 uint256(Random.uniform(pool, 10, 25)) + uint256(740 - width)
             ];
         } else
-            size = [
-                uint256(
-                    Random.uniform(
-                        pool,
-                        int256(widthRange[0]),
-                        int256(widthRange[1])
-                    )
-                ),
-                uint256(
-                    Random.uniform(
-                        pool,
-                        int256(heightRange[0]),
-                        int256(heightRange[1])
-                    )
-                )
+            dimensions = [
+                uint256(Random.uniform(pool, int256(size[0]), int256(size[1]))),
+                uint256(Random.uniform(pool, int256(size[2]), int256(size[3])))
             ];
     }
 
@@ -376,8 +139,8 @@ contract TinyBoxes is ERC721 {
      */
     function _generateFooter(
         bool[3] memory switches,
-        int256[3] memory mirrorPositions,
-        uint256 scale
+        int16[3] memory mirrorPositions,
+        uint16 scale
     ) internal view returns (string memory footer) {
         bytes memory buffer = new bytes(8192);
 
@@ -432,8 +195,8 @@ contract TinyBoxes is ERC721 {
             }
         }
         // add final scaling
-        string memory scaleWhole = Strings.toString(scale.div(100));
-        string memory scaleDecimals = Strings.toString(scale.mod(100));
+        string memory scaleWhole = Strings.toString(uint256(scale).div(100));
+        string memory scaleDecimals = Strings.toString(uint256(scale).mod(100));
         Buffer.append(buffer, template[6]);
         Buffer.append(buffer, template[1]);
         Buffer.append(buffer, scaleWhole);
@@ -478,20 +241,13 @@ contract TinyBoxes is ERC721 {
         // generate shapes
         for (uint256 i = 0; i < box.shapes; i++) {
             uint256 colorRand = uint256(
-                Random.uniform(pool, 0, int256(box.shapes.sub(1)))
+                Random.uniform(pool, 0, int256(uint256(box.shapes).sub(1)))
             );
             bool hatched = (box.hatching > 0 && i.mod(box.hatching) == 0); // hatching mod. 1 in hybrid shapes will be hatching type
             (
                 int256[2] memory positions,
                 uint256[2] memory size
-            ) = _generateShape(
-                pool,
-                box.spacing,
-                box.segments,
-                box.widthRange,
-                box.heightRange,
-                hatched
-            );
+            ) = _generateShape(pool, box.spacing, box.size, hatched);
             Buffer.rect(buffer, positions, size, colorValues[colorRand]);
         }
 
@@ -507,29 +263,15 @@ contract TinyBoxes is ERC721 {
     /**
      * @dev Create a new TinyBox Token
      * @param _seed of token
-     * @param shapes of token
-     * @param colors of token
-     * @param hatching of token
-     * @param widthRange of token
-     * @param heightRange of token
-     * @param segments of token
-     * @param spacing of token
-     * @param mirrorPositions of token
-     * @param mirrors of token
-     * @param scale of token
+     * @param counts of token colors & shapes
+     * @param dials of token renderer
+     * @param mirrors active boolean of token
      */
     function createBox(
         string calldata _seed,
-        uint256 shapes,
-        uint256 colors,
-        uint256 hatching,
-        uint256[2] calldata widthRange,
-        uint256[2] calldata heightRange,
-        uint256[2] calldata segments,
-        uint256[2] calldata spacing,
-        int256[3] calldata mirrorPositions,
-        bool[3] calldata mirrors,
-        uint256 scale
+        uint8[2] calldata counts,
+        int16[13] calldata dials,
+        bool[3] calldata mirrors
     ) external payable {
         require(
             msg.sender != address(0),
@@ -564,16 +306,24 @@ contract TinyBoxes is ERC721 {
         // maybe use log base 2 of a number in a range 2 to the animation counts
         boxes[id] = TinyBox({
             seed: seed,
-            animation: uint256(Random.uniform(pool, 0, ANIMATION_COUNT - 1)),
-            shapes: shapes,
-            colors: colors,
-            hatching: hatching,
-            scale: scale,
-            widthRange: widthRange,
-            heightRange: heightRange,
-            segments: segments,
-            spacing: spacing,
-            mirrorPositions: mirrorPositions,
+            animation: uint8(Random.uniform(pool, 0, ANIMATION_COUNT - 1)),
+            shapes: counts[1],
+            colors: counts[0],
+            spacing: [
+                uint16(dials[0]),
+                uint16(dials[1]),
+                uint16(dials[2]),
+                uint16(dials[3])
+            ],
+            size: [
+                uint16(dials[4]),
+                uint16(dials[5]),
+                uint16(dials[6]),
+                uint16(dials[7])
+            ],
+            hatching: uint16(dials[8]),
+            mirrorPositions: [dials[9], dials[10], dials[11]],
+            scale: uint16(dials[12]),
             mirrors: mirrors
         });
 
@@ -624,9 +374,7 @@ contract TinyBoxes is ERC721 {
      * @return colors of token
      * @return shapes of token
      * @return hatching of token
-     * @return widthRange of token
-     * @return heightRange of token
-     * @return segments of token
+     * @return size of token
      * @return spacing of token
      * @return mirrorPositions of token
      * @return mirrors of token
@@ -637,17 +385,15 @@ contract TinyBoxes is ERC721 {
         view
         returns (
             uint256 seed,
-            uint256 animation,
-            uint256 colors,
-            uint256 shapes,
-            uint256 hatching,
-            uint256[2] memory widthRange,
-            uint256[2] memory heightRange,
-            uint256[2] memory segments,
-            uint256[2] memory spacing,
-            int256[3] memory mirrorPositions,
+            uint8 animation,
+            uint8 colors,
+            uint8 shapes,
+            uint16 hatching,
+            uint16[4] memory size,
+            uint16[4] memory spacing,
+            int16[3] memory mirrorPositions,
             bool[3] memory mirrors,
-            uint256 scale
+            uint16 scale
         )
     {
         TinyBox memory box = boxes[_id];
@@ -656,9 +402,7 @@ contract TinyBoxes is ERC721 {
         colors = box.colors;
         shapes = box.shapes;
         hatching = box.hatching;
-        widthRange = box.widthRange;
-        heightRange = box.heightRange;
-        segments = box.segments;
+        size = box.size;
         spacing = box.spacing;
         mirrorPositions = box.mirrorPositions;
         mirrors = box.mirrors;
