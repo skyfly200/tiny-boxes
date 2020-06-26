@@ -5,6 +5,7 @@ pragma solidity ^0.6.4;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+
 //import "@openzeppelin/contracts/math/SafeMath.sol";
 
 library Buffer {
@@ -232,11 +233,27 @@ contract TinyBoxes is ERC721 {
 
     uint256 public constant TOKEN_LIMIT = 1024;
     uint256 public constant ARTIST_PRINTS = 0;
-    int public constant ANIMATION_COUNT = 1;
+    int256 public constant ANIMATION_COUNT = 1;
     address public creator;
     string header = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2600 2600" style="stroke-width:0; background-color:#121212;">\n\n<symbol id="upperleftquad4">\n<symbol id="upperleftquad3">\n<symbol id="upperleftquad2">\n<symbol id="upperleftquad">\n\n';
     address payable artmuseum = 0x027Fb48bC4e3999DCF88690aEbEBCC3D1748A0Eb; //lolz
 
+    struct TinyBox {
+        uint256 seed;
+        uint256 animation;
+        uint256 shapes;
+        uint256 colors;
+        uint256 hatching;
+        uint256 scale;
+        uint256[] widthRange;
+        uint256[] heightRange;
+        uint256[] segments;
+        uint256[] spacing;
+        int256[] mirrorPositions;
+        bool[] mirrors;
+    }
+
+    mapping(uint256 => TinyBox) internal boxes;
     mapping(uint256 => uint256) internal idToSeed;
     mapping(uint256 => uint256) internal idToAnimation;
     mapping(uint256 => uint256[]) internal idToCounts;
@@ -430,8 +447,8 @@ contract TinyBoxes is ERC721 {
         uint256[2] memory counts,
         int256[13] memory dials,
         bool[3] memory switches,
-        uint animation,
-        uint frame
+        uint256 animation,
+        uint256 frame
     ) public view returns (string memory) {
         bytes memory buffer = new bytes(8192);
         Buffer.append(buffer, header);
@@ -513,10 +530,26 @@ contract TinyBoxes is ERC721 {
         // TODO - generate animation with RNG weighted non uniformly for varying rarity
         // maybe use log base 2 of a number in a range 2 to the animation counts
         idToSeed[id] = Random.stringToUint(seed);
-        idToAnimation[id] = uint(Random.uniform(pool, 0, ANIMATION_COUNT-1));
+        idToAnimation[id] = uint256(
+            Random.uniform(pool, 0, ANIMATION_COUNT - 1)
+        );
         idToCounts[id] = counts;
         idToDials[id] = dials;
         idToSwitches[id] = switches;
+        boxes[id] = TinyBox({
+            seed: Random.stringToUint(seed),
+            animation: uint256(Random.uniform(pool, 0, ANIMATION_COUNT - 1)),
+            shapes: counts[1],
+            colors: counts[0],
+            hatching: dials[8],
+            scale: dials[12],
+            widthRange: [dials[4], dials[5]],
+            heightRange: [dials[6], dials[7]],
+            segments: [dials[2], dials[3]],
+            spacing: [dials[0], dials[1]],
+            mirrorPositions: [dials[9], dials[10], dials[11]],
+            mirrors: switches
+        });
 
         _safeMint(msg.sender, id);
     }
@@ -593,13 +626,17 @@ contract TinyBoxes is ERC721 {
      * @return dials of token
      * @return switches of token
      */
-    function tokenData(uint256 _id) external view returns (
-        uint256 seed,
-        uint256 animation,
-        uint256[] memory counts,
-        int256[] memory dials,
-        bool[] memory switches
-    ) {
+    function tokenData(uint256 _id)
+        external
+        view
+        returns (
+            uint256 seed,
+            uint256 animation,
+            uint256[] memory counts,
+            int256[] memory dials,
+            bool[] memory switches
+        )
+    {
         seed = idToSeed[_id];
         animation = idToAnimation[_id];
         counts = idToCounts[_id];
@@ -613,9 +650,13 @@ contract TinyBoxes is ERC721 {
      * @param _frame for which we want art
      * @return animated SVG art of token _id at _frame.
      */
-    function tokenFrame(uint256 _id, uint _frame) public view returns (string memory) {
+    function tokenFrame(uint256 _id, uint256 _frame)
+        public
+        view
+        returns (string memory)
+    {
         string memory seed = Strings.toString(idToSeed[_id]);
-        uint animation = idToAnimation[_id];
+        uint256 animation = idToAnimation[_id];
         uint256[2] memory counts = [idToCounts[_id][0], idToCounts[_id][1]];
         int256[13] memory dials = [
             idToDials[_id][0],
@@ -637,7 +678,16 @@ contract TinyBoxes is ERC721 {
             idToSwitches[_id][1],
             idToSwitches[_id][2]
         ];
-        return perpetualRenderer(_id, seed, counts, dials, switches, animation, _frame);
+        return
+            perpetualRenderer(
+                _id,
+                seed,
+                counts,
+                dials,
+                switches,
+                animation,
+                _frame
+            );
     }
 
     /**
