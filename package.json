@@ -5,6 +5,7 @@
   "scripts": {
     "production": "npm run build && npm run lambda",
     "dev": "npm run lambda && npm run serve",
+    "contract": "nodemon --exec 'npx oz compile' -e sol --verbose",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lambda": "netlify-lambda build ./src/lambda -c ./webpack.functions.js",
@@ -63,6 +64,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "ganache-cli": "^6.9.1",
     "json-loader": "^0.5.7",
+    "nodemon": "^2.0.4",
     "prettier": "^1.19.1",
     "pug": "^2.0.4",
     "pug-plain-loader": "^1.0.0",
