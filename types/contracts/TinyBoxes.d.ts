@@ -132,6 +132,14 @@ export class TinyBoxes extends Contract {
       index: number | string
     ): TransactionObject<string>;
 
+    tokenPreview(
+      _id: number | string,
+      _seed: string,
+      counts: (number | string)[],
+      dials: (number | string)[],
+      mirrors: boolean[]
+    ): TransactionObject<string>;
+
     tokenSeed(_id: number | string): TransactionObject<string>;
 
     tokenURI(tokenId: number | string): TransactionObject<string>;

@@ -18,8 +18,19 @@ contract TinyBoxes is ERC721 {
     uint256 public constant ARTIST_PRINTS = 0;
     int256 public constant ANIMATION_COUNT = 1;
     address public creator;
-    string header = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2600 2600" style="stroke-width:0; background-color:#121212;">\n\n<symbol id="upperleftquad4">\n<symbol id="upperleftquad3">\n<symbol id="upperleftquad2">\n<symbol id="upperleftquad">\n\n';
     address payable artmuseum = 0x027Fb48bC4e3999DCF88690aEbEBCC3D1748A0Eb; //lolz
+
+    string header = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2600 2600" style="stroke-width:0; background-color:#121212;">\n\n<symbol id="upperleftquad4">\n<symbol id="upperleftquad3">\n<symbol id="upperleftquad2">\n<symbol id="upperleftquad">\n\n';
+    string[3] scales = ["-1 1", "-1 -1", "1 -1"];
+    string[7] template = [
+        "\n<g>",
+        '\n<g transform="scale(',
+        ") translate(",
+        ')">',
+        '\n<use xlink:href="#upperleftquad',
+        '"/>\n</g>',
+        "\n</symbol>"
+    ];
 
     struct TinyBox {
         uint256 seed;
@@ -143,17 +154,6 @@ contract TinyBoxes is ERC721 {
         uint16 scale
     ) internal view returns (string memory footer) {
         bytes memory buffer = new bytes(8192);
-
-        string[3] memory scales = ["-1 1", "-1 -1", "1 -1"];
-        string[7] memory template = [
-            "\n<g>",
-            '\n<g transform="scale(',
-            ") translate(",
-            ')">',
-            '\n<use xlink:href="#upperleftquad',
-            '"/>\n</g>',
-            "\n</symbol>"
-        ];
 
         for (uint8 s = 0; s < 3; s++) {
             // loop through mirroring effects
@@ -407,6 +407,46 @@ contract TinyBoxes is ERC721 {
         mirrorPositions = box.mirrorPositions;
         mirrors = box.mirrors;
         scale = box.scale;
+    }
+
+    /**
+     * @dev Generate the token SVG art preview for given parameters
+     * @param _seed for renderer RNG
+     * @param counts for colors and shapes
+     * @param dials for perpetual renderer
+     * @param mirrors switches
+     * @return preview SVG art
+     */
+    function tokenPreview(
+        uint256 _id,
+        string memory _seed,
+        uint8[2] memory counts,
+        int16[13] memory dials,
+        bool[3] memory mirrors
+    ) public view returns (string memory) {
+        TinyBox memory box = TinyBox({
+            seed: Random.stringToUint(_seed),
+            animation: 0,
+            shapes: counts[1],
+            colors: counts[0],
+            spacing: [
+                uint16(dials[0]),
+                uint16(dials[1]),
+                uint16(dials[2]),
+                uint16(dials[3])
+            ],
+            size: [
+                uint16(dials[4]),
+                uint16(dials[5]),
+                uint16(dials[6]),
+                uint16(dials[7])
+            ],
+            hatching: uint16(dials[8]),
+            mirrorPositions: [dials[9], dials[10], dials[11]],
+            scale: uint16(dials[12]),
+            mirrors: mirrors
+        });
+        return perpetualRenderer(_id, box, 0);
     }
 
     /**
