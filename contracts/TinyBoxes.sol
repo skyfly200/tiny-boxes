@@ -250,15 +250,11 @@ contract TinyBoxes is ERC721 {
         uint256[] segments;
         uint256[] spacing;
         int256[] mirrorPositions;
+        int256[] dials;
         bool[] mirrors;
     }
 
     mapping(uint256 => TinyBox) internal boxes;
-    mapping(uint256 => uint256) internal idToSeed;
-    mapping(uint256 => uint256) internal idToAnimation;
-    mapping(uint256 => uint256[]) internal idToCounts;
-    mapping(uint256 => int256[]) internal idToDials;
-    mapping(uint256 => bool[]) internal idToSwitches;
 
     /**
      * @dev Contract constructor.
@@ -529,13 +525,6 @@ contract TinyBoxes is ERC721 {
 
         // TODO - generate animation with RNG weighted non uniformly for varying rarity
         // maybe use log base 2 of a number in a range 2 to the animation counts
-        idToSeed[id] = Random.stringToUint(seed);
-        idToAnimation[id] = uint256(
-            Random.uniform(pool, 0, ANIMATION_COUNT - 1)
-        );
-        idToCounts[id] = counts;
-        idToDials[id] = dials;
-        idToSwitches[id] = switches;
         boxes[id] = TinyBox({
             seed: Random.stringToUint(seed),
             animation: uint256(Random.uniform(pool, 0, ANIMATION_COUNT - 1)),
@@ -548,6 +537,7 @@ contract TinyBoxes is ERC721 {
             segments: [dials[2], dials[3]],
             spacing: [dials[0], dials[1]],
             mirrorPositions: [dials[9], dials[10], dials[11]],
+            dials: dials,
             mirrors: switches
         });
 
@@ -578,7 +568,7 @@ contract TinyBoxes is ERC721 {
      * @return seed value of _id.
      */
     function tokenSeed(uint256 _id) external view returns (uint256) {
-        return idToSeed[_id];
+        return boxes[_id].seed;
     }
 
     /**
@@ -587,7 +577,7 @@ contract TinyBoxes is ERC721 {
      * @return animation value of _id.
      */
     function tokenAnimation(uint256 _id) external view returns (uint256) {
-        return idToAnimation[_id];
+        return boxes[_id].animation;
     }
 
     /**
@@ -596,7 +586,7 @@ contract TinyBoxes is ERC721 {
      * @return colorCount of _id.
      */
     function tokenCounts(uint256 _id) external view returns (uint256[] memory) {
-        return idToCounts[_id];
+        return [boxes[_id].colors, boxes[_id].shapes];
     }
 
     /**
@@ -605,7 +595,7 @@ contract TinyBoxes is ERC721 {
      * @return dial values of _id.
      */
     function tokenDials(uint256 _id) external view returns (int256[] memory) {
-        return idToDials[_id];
+        return boxes[_id].dials;
     }
 
     /**
@@ -614,7 +604,7 @@ contract TinyBoxes is ERC721 {
      * @return switch values of _id.
      */
     function tokenSwitches(uint256 _id) external view returns (bool[] memory) {
-        return idToSwitches[_id];
+        return boxes[_id].mirrors;
     }
 
     /**
@@ -637,11 +627,12 @@ contract TinyBoxes is ERC721 {
             bool[] memory switches
         )
     {
-        seed = idToSeed[_id];
-        animation = idToAnimation[_id];
-        counts = idToCounts[_id];
-        dials = idToDials[_id];
-        switches = idToSwitches[_id];
+        TinyBox memory box = boxes[_id];
+        seed = box.seed;
+        animation = box.animation;
+        counts = [box.colors, box.shapes];
+        dials = box.dials;
+        switches = box.mirrors;
     }
 
     /**
@@ -655,28 +646,29 @@ contract TinyBoxes is ERC721 {
         view
         returns (string memory)
     {
-        string memory seed = Strings.toString(idToSeed[_id]);
-        uint256 animation = idToAnimation[_id];
-        uint256[2] memory counts = [idToCounts[_id][0], idToCounts[_id][1]];
+        TinyBox memory box = boxes[_id];
+        string memory seed = Strings.toString(box.seed);
+        uint256 animation = box.animation;
+        uint256[2] memory counts = [box.colors, box.shapes];
         int256[13] memory dials = [
-            idToDials[_id][0],
-            idToDials[_id][1],
-            idToDials[_id][2],
-            idToDials[_id][3],
-            idToDials[_id][4],
-            idToDials[_id][5],
-            idToDials[_id][6],
-            idToDials[_id][7],
-            idToDials[_id][8],
-            idToDials[_id][9],
-            idToDials[_id][10],
-            idToDials[_id][11],
-            idToDials[_id][12]
+            box.dials[0],
+            box.dials[1],
+            box.dials[2],
+            box.dials[3],
+            box.dials[4],
+            box.dials[5],
+            box.dials[6],
+            box.dials[7],
+            box.dials[8],
+            box.dials[9],
+            box.dials[10],
+            box.dials[11],
+            box.dials[12]
         ];
         bool[3] memory switches = [
-            idToSwitches[_id][0],
-            idToSwitches[_id][1],
-            idToSwitches[_id][2]
+            box.mirrors[_id][0],
+            box.mirrors[_id][1],
+            box.mirrors[_id][2]
         ];
         return
             perpetualRenderer(
@@ -696,6 +688,7 @@ contract TinyBoxes is ERC721 {
      * @return URI of _id.
      */
     function tokenArt(uint256 _id) external view returns (string memory) {
+        // render frame 0 of the token animation
         return tokenFrame(_id, 0);
     }
 }
