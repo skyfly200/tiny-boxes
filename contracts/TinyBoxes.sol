@@ -1,4 +1,6 @@
+//SPDX-License-Identifier: Unlicensed
 pragma solidity ^0.6.4;
+pragma experimental ABIEncoderV2;
 
 // needed for upgradability
 //import "@openzeppelin/upgrades/contracts/Initializable.sol";
@@ -245,13 +247,12 @@ contract TinyBoxes is ERC721 {
         uint256 colors;
         uint256 hatching;
         uint256 scale;
-        uint256[] widthRange;
-        uint256[] heightRange;
-        uint256[] segments;
-        uint256[] spacing;
-        int256[] mirrorPositions;
-        int256[] dials;
-        bool[] mirrors;
+        uint256[2] widthRange;
+        uint256[2] heightRange;
+        uint256[2] segments;
+        uint256[2] spacing;
+        int256[3] mirrorPositions;
+        bool[3] mirrors;
     }
 
     mapping(uint256 => TinyBox) internal boxes;
@@ -310,13 +311,19 @@ contract TinyBoxes is ERC721 {
     /**
      * @dev generate a shape
      * @param pool randomn numbers
-     * @param dials for generator settings
+     * @param spacing for segments
+     * @param segments of shape positions
+     * @param widthRange for shapes
+     * @param heightRange for shapes
      * @param hatch mode on
      * @return positions of shape
      */
     function _generateShape(
         bytes32[] memory pool,
-        int256[13] memory dials,
+        uint256[2] memory spacing,
+        uint256[2] memory segments,
+        uint256[2] memory widthRange,
+        uint256[2] memory heightRange,
         bool hatch
     )
         internal
@@ -324,10 +331,12 @@ contract TinyBoxes is ERC721 {
         returns (int256[2] memory positions, uint256[2] memory size)
     {
         positions = [
-            Random.uniform(pool, -(dials[0]), dials[0]) +
-                ((Random.uniform(pool, 0, dials[2] - 1) * 800) / (dials[2])),
-            Random.uniform(pool, -(dials[1]), dials[1]) +
-                ((Random.uniform(pool, 0, dials[3] - 1) * 800) / (dials[3]))
+            Random.uniform(pool, -(int256(spacing[0])), int256(spacing[0])) +
+                ((Random.uniform(pool, 0, int256(segments[0]) - 1) * 800) /
+                    int256(segments[0])),
+            Random.uniform(pool, -(int256(spacing[1])), int256(spacing[1])) +
+                ((Random.uniform(pool, 0, int256(segments[1]) - 1) * 800) /
+                    int256(segments[1]))
         ];
         if (hatch) {
             uint256 horizontal = uint256(Random.uniform(pool, 0, 1));
@@ -341,20 +350,34 @@ contract TinyBoxes is ERC721 {
             ];
         } else
             size = [
-                uint256(Random.uniform(pool, dials[4], dials[5])),
-                uint256(Random.uniform(pool, dials[6], dials[7]))
+                uint256(
+                    Random.uniform(
+                        pool,
+                        int256(widthRange[0]),
+                        int256(widthRange[1])
+                    )
+                ),
+                uint256(
+                    Random.uniform(
+                        pool,
+                        int256(heightRange[0]),
+                        int256(heightRange[1])
+                    )
+                )
             ];
     }
 
     /**
      * @dev render the footer string for mirring effects
      * @param switches for each mirroring stage
-     * @param mirrorDials for generator settings
+     * @param mirrorPositions for generator settings
+     * @param scale for each mirroring stage
      * @return footer string
      */
     function _generateFooter(
         bool[3] memory switches,
-        int256[4] memory mirrorDials
+        int256[3] memory mirrorPositions,
+        uint256 scale
     ) internal view returns (string memory footer) {
         bytes memory buffer = new bytes(8192);
 
@@ -383,7 +406,9 @@ contract TinyBoxes is ERC721 {
                     Buffer.append(buffer, Strings.toString(uint256(s + 1)));
                 Buffer.append(buffer, template[5]);
             } else {
-                string memory value = Strings.toString(uint256(mirrorDials[s]));
+                string memory value = Strings.toString(
+                    uint256(mirrorPositions[s])
+                );
                 for (uint8 i = 0; i < 4; i++) {
                     // loop through transforms
                     if (i == 0) Buffer.append(buffer, template[0]);
@@ -407,9 +432,8 @@ contract TinyBoxes is ERC721 {
             }
         }
         // add final scaling
-        uint256 scaleDial = uint256(mirrorDials[3]);
-        string memory scaleWhole = Strings.toString(scaleDial.div(100));
-        string memory scaleDecimals = Strings.toString(scaleDial.mod(100));
+        string memory scaleWhole = Strings.toString(scale.div(100));
+        string memory scaleDecimals = Strings.toString(scale.mod(100));
         Buffer.append(buffer, template[6]);
         Buffer.append(buffer, template[1]);
         Buffer.append(buffer, scaleWhole);
@@ -431,70 +455,81 @@ contract TinyBoxes is ERC721 {
     /**
      * @dev render a token's art
      * @param _id of token
-     * @param seed for randomness
-     * @param counts of colors and shapes
-     * @param dials for shape generator
-     * @param switches for renderer options
+     * @param box TinyBox data structure
+     * @param frame number to render
      * @return the SVG graphiccs of the token
      */
     function perpetualRenderer(
         uint256 _id,
-        string memory seed,
-        uint256[2] memory counts,
-        int256[13] memory dials,
-        bool[3] memory switches,
-        uint256 animation,
+        TinyBox memory box,
         uint256 frame
     ) public view returns (string memory) {
         bytes memory buffer = new bytes(8192);
         Buffer.append(buffer, header);
 
         // initilized RNG with the seed and blocks 0 through 1
-        bytes32[] memory pool = Random.init(0, 1, Random.stringToUint(seed));
+        bytes32[] memory pool = Random.init(0, 1, box.seed);
 
         // generate colors
-        uint256[] memory colorValues = new uint256[](counts[0]);
-        for (uint256 i = 0; i < counts[0]; i++)
+        uint256[] memory colorValues = new uint256[](box.colors);
+        for (uint256 i = 0; i < box.colors; i++)
             colorValues[i] = _generateColor(pool, _id);
 
         // generate shapes
-        for (uint256 i = 0; i < counts[1]; i++) {
+        for (uint256 i = 0; i < box.shapes; i++) {
             uint256 colorRand = uint256(
-                Random.uniform(pool, 0, int256(counts[0].sub(1)))
+                Random.uniform(pool, 0, int256(box.shapes.sub(1)))
             );
-            uint256 hybrid = 2; //uint256(dials[8]);
-            bool hatched = (hybrid > 0 && i.mod(hybrid) == 0); // hatching mod. 1 in hybrid shapes will be hatching type
+            bool hatched = (box.hatching > 0 && i.mod(box.hatching) == 0); // hatching mod. 1 in hybrid shapes will be hatching type
             (
                 int256[2] memory positions,
                 uint256[2] memory size
-            ) = _generateShape(pool, dials, hatched);
+            ) = _generateShape(
+                pool,
+                box.spacing,
+                box.segments,
+                box.widthRange,
+                box.heightRange,
+                hatched
+            );
             Buffer.rect(buffer, positions, size, colorValues[colorRand]);
         }
 
-        // generate the footer with mirroring transforms
-        int256[4] memory mirrorDials = [
-            dials[9],
-            dials[10],
-            dials[11],
-            dials[12]
-        ];
-        Buffer.append(buffer, _generateFooter(switches, mirrorDials));
+        // generate the footer with mirroring and scale transforms
+        Buffer.append(
+            buffer,
+            _generateFooter(box.mirrors, box.mirrorPositions, box.scale)
+        );
 
         return Buffer.toString(buffer);
     }
 
     /**
      * @dev Create a new TinyBox Token
-     * @param seed for the string
-     * @param counts of colors and shapes
-     * @param dials for settings of the renderer
-     * @param switches for renderer settings
+     * @param _seed of token
+     * @param shapes of token
+     * @param colors of token
+     * @param hatching of token
+     * @param widthRange of token
+     * @param heightRange of token
+     * @param segments of token
+     * @param spacing of token
+     * @param mirrorPositions of token
+     * @param mirrors of token
+     * @param scale of token
      */
     function createBox(
-        string calldata seed,
-        uint256[2] calldata counts,
-        int256[13] calldata dials,
-        bool[3] calldata switches
+        string calldata _seed,
+        uint256 shapes,
+        uint256 colors,
+        uint256 hatching,
+        uint256[2] calldata widthRange,
+        uint256[2] calldata heightRange,
+        uint256[2] calldata segments,
+        uint256[2] calldata spacing,
+        int256[3] calldata mirrorPositions,
+        bool[3] calldata mirrors,
+        uint256 scale
     ) external payable {
         require(
             msg.sender != address(0),
@@ -504,7 +539,6 @@ contract TinyBoxes is ERC721 {
             totalSupply() < TOKEN_LIMIT,
             "ART SALE IS OVER. Tinyboxes are now only available on the secondary market."
         );
-        //require(block.timestamp < 1574711999, "ART SALE IS OVER. Tinyboxes are now only available on the secondary market.");
 
         if (totalSupply() < ARTIST_PRINTS) {
             require(
@@ -518,27 +552,29 @@ contract TinyBoxes is ERC721 {
             artmuseum.transfer(amount); // send the payment amount to the artmuseum account
         }
 
+        // convert seed from string to uint
+        uint256 seed = Random.stringToUint(_seed);
+
         // initilized RNG with the seed and blocks 0 through 1
-        bytes32[] memory pool = Random.init(0, 1, Random.stringToUint(seed));
+        bytes32[] memory pool = Random.init(0, 1, seed);
 
         uint256 id = totalSupply();
 
         // TODO - generate animation with RNG weighted non uniformly for varying rarity
         // maybe use log base 2 of a number in a range 2 to the animation counts
         boxes[id] = TinyBox({
-            seed: Random.stringToUint(seed),
+            seed: seed,
             animation: uint256(Random.uniform(pool, 0, ANIMATION_COUNT - 1)),
-            shapes: counts[1],
-            colors: counts[0],
-            hatching: dials[8],
-            scale: dials[12],
-            widthRange: [dials[4], dials[5]],
-            heightRange: [dials[6], dials[7]],
-            segments: [dials[2], dials[3]],
-            spacing: [dials[0], dials[1]],
-            mirrorPositions: [dials[9], dials[10], dials[11]],
-            dials: dials,
-            mirrors: switches
+            shapes: shapes,
+            colors: colors,
+            hatching: hatching,
+            scale: scale,
+            widthRange: widthRange,
+            heightRange: heightRange,
+            segments: segments,
+            spacing: spacing,
+            mirrorPositions: mirrorPositions,
+            mirrors: mirrors
         });
 
         _safeMint(msg.sender, id);
@@ -581,40 +617,20 @@ contract TinyBoxes is ERC721 {
     }
 
     /**
-     * @dev Lookup the counts
-     * @param _id for which we want a count
-     * @return colorCount of _id.
-     */
-    function tokenCounts(uint256 _id) external view returns (uint256[] memory) {
-        return [boxes[_id].colors, boxes[_id].shapes];
-    }
-
-    /**
-     * @dev Lookup the dials
-     * @param _id for which we want the dials
-     * @return dial values of _id.
-     */
-    function tokenDials(uint256 _id) external view returns (int256[] memory) {
-        return boxes[_id].dials;
-    }
-
-    /**
-     * @dev Lookup the switches
-     * @param _id for which we want the dials
-     * @return switch values of _id.
-     */
-    function tokenSwitches(uint256 _id) external view returns (bool[] memory) {
-        return boxes[_id].mirrors;
-    }
-
-    /**
      * @dev Lookup all token data in one call
      * @param _id for which we want token data
      * @return seed of token
      * @return animation of token
-     * @return counts of token
-     * @return dials of token
-     * @return switches of token
+     * @return colors of token
+     * @return shapes of token
+     * @return hatching of token
+     * @return widthRange of token
+     * @return heightRange of token
+     * @return segments of token
+     * @return spacing of token
+     * @return mirrorPositions of token
+     * @return mirrors of token
+     * @return scale of token
      */
     function tokenData(uint256 _id)
         external
@@ -622,17 +638,31 @@ contract TinyBoxes is ERC721 {
         returns (
             uint256 seed,
             uint256 animation,
-            uint256[] memory counts,
-            int256[] memory dials,
-            bool[] memory switches
+            uint256 colors,
+            uint256 shapes,
+            uint256 hatching,
+            uint256[2] memory widthRange,
+            uint256[2] memory heightRange,
+            uint256[2] memory segments,
+            uint256[2] memory spacing,
+            int256[3] memory mirrorPositions,
+            bool[3] memory mirrors,
+            uint256 scale
         )
     {
         TinyBox memory box = boxes[_id];
         seed = box.seed;
         animation = box.animation;
-        counts = [box.colors, box.shapes];
-        dials = box.dials;
-        switches = box.mirrors;
+        colors = box.colors;
+        shapes = box.shapes;
+        hatching = box.hatching;
+        widthRange = box.widthRange;
+        heightRange = box.heightRange;
+        segments = box.segments;
+        spacing = box.spacing;
+        mirrorPositions = box.mirrorPositions;
+        mirrors = box.mirrors;
+        scale = box.scale;
     }
 
     /**
@@ -647,39 +677,7 @@ contract TinyBoxes is ERC721 {
         returns (string memory)
     {
         TinyBox memory box = boxes[_id];
-        string memory seed = Strings.toString(box.seed);
-        uint256 animation = box.animation;
-        uint256[2] memory counts = [box.colors, box.shapes];
-        int256[13] memory dials = [
-            box.dials[0],
-            box.dials[1],
-            box.dials[2],
-            box.dials[3],
-            box.dials[4],
-            box.dials[5],
-            box.dials[6],
-            box.dials[7],
-            box.dials[8],
-            box.dials[9],
-            box.dials[10],
-            box.dials[11],
-            box.dials[12]
-        ];
-        bool[3] memory switches = [
-            box.mirrors[_id][0],
-            box.mirrors[_id][1],
-            box.mirrors[_id][2]
-        ];
-        return
-            perpetualRenderer(
-                _id,
-                seed,
-                counts,
-                dials,
-                switches,
-                animation,
-                _frame
-            );
+        return perpetualRenderer(_id, box, _frame);
     }
 
     /**
