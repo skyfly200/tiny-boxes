@@ -62,7 +62,7 @@ contract TinyBoxes is ERC721 {
      */
     function _generateColor(bytes32[] memory pool, uint256 _id)
         internal
-        view
+        pure
         returns (uint256)
     {
         uint256 red = uint256(Random.uniform(pool, 0x000012, 0x0000ff));
@@ -113,7 +113,7 @@ contract TinyBoxes is ERC721 {
         bool hatch
     )
         internal
-        view
+        pure
         returns (int256[2] memory positions, uint256[2] memory dimensions)
     {
         positions = [
@@ -343,7 +343,7 @@ contract TinyBoxes is ERC721 {
      * @param _id of the token
      * @return price in wei of that token
      */
-    function priceAt(uint256 _id) public view returns (uint256 price) {
+    function priceAt(uint256 _id) public pure returns (uint256 price) {
         uint256 tokeninflation = (_id / 2) * 1000000000000000; // add .001 eth inflation per token
         price = tokeninflation + 160000000000000000; // in wei, starting price .16 eth, ending price .2 eth
     }

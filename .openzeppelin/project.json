@@ -1,15 +1,12 @@
 {
   "manifestVersion": "2.2",
   "contracts": {},
-  "dependencies": {
-    "@openzeppelin/contracts-ethereum-package": "^3.0.0"
-  },
   "name": "tiny-boxes",
   "version": "0.1.0",
   "compiler": {
     "compilerSettings": {
       "optimizer": {
-        "enabled": false,
+        "enabled": true,
         "runs": "200"
       }
     },
@@ -23,5 +20,6 @@
     "artifactsDir": "build/contracts",
     "contractsDir": "contracts"
   },
-  "telemetryOptIn": true
+  "telemetryOptIn": true,
+  "dependencies": {}
 }
