@@ -99,21 +99,12 @@ export default Vue.extend({
         this.data.art = await this.$store.state.contracts.tinyboxes.methods
           .tokenArt(this.id)
           .call();
-        this.data.seed = await this.$store.state.contracts.tinyboxes.methods
-          .tokenSeed(this.id)
+        this.data.data = await this.$store.state.contracts.tinyboxes.methods
+          .tokenData(this.id)
           .call();
-        this.data.price = await this.$store.state.contracts.tinyboxes.methods
-          .priceAt(this.id)
-          .call();
-        this.data.counts = await this.$store.state.contracts.tinyboxes.methods
-          .tokenCounts(this.id)
-          .call();
-        this.data.dials = await this.$store.state.contracts.tinyboxes.methods
-          .tokenDials(this.id)
-          .call();
-        this.data.switches = await this.$store.state.contracts.tinyboxes.methods
-          .tokenSwitches(this.id)
-          .call();
+        this.data.price = await this.$store.state.contracts.tinyboxes.methods.priceAt(
+          this.id
+        );
         this.data.block = await this.$store.state.web3.eth.getBlock(
           this.data.creation.blockNumber
         );

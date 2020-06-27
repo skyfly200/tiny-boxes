@@ -126,7 +126,7 @@ export default Vue.extend({
     soldOut: function() {
       return parseInt((this as any).id) >= parseInt((this as any).limit);
     },
-    ...mapGetters(["currentAccount"])
+    ...mapGetters(["currentAccount"]),
   },
   mounted: async function() {
     const t = this as any;
@@ -175,7 +175,7 @@ export default Vue.extend({
                 break;
               case "range-slider":
                 randomSettings[o.key] = [range, range]
-                  .map(r => t.between(r))
+                  .map((r) => t.between(r))
                   .sort();
                 break;
               default:
@@ -210,19 +210,11 @@ export default Vue.extend({
         v.mirrorPos1,
         v.mirrorPos2,
         v.mirrorPos3,
-        v.scale
+        v.scale,
       ];
       const switches = [v.mirror1, v.mirror2, v.mirror3];
       t.data = await this.$store.state.contracts.tinyboxes.methods
-        .perpetualRenderer(
-          t.id,
-          v.seed.toString(),
-          counts,
-          dials,
-          switches,
-          0,
-          0
-        )
+        .tokenPreview(t.id, v.seed.toString(), counts, dials, switches)
         .call()
         .catch((err: any) => {
           console.error(err, t.id, v.seed);
@@ -246,7 +238,7 @@ export default Vue.extend({
         v.mirrorPos1,
         v.mirrorPos2,
         v.mirrorPos3,
-        v.scale
+        v.scale,
       ];
       const switches = [v.mirror1, v.mirror2, v.mirror3];
       t.price = await t.getPrice();
@@ -259,7 +251,7 @@ export default Vue.extend({
           value: t.price,
           data: this.$store.state.contracts.tinyboxes.methods
             .createBox(v.seed.toString(), counts, dials, switches)
-            .encodeABI()
+            .encodeABI(),
         },
         (err: any, txHash: string) => {
           const t = this as any;
@@ -275,8 +267,8 @@ export default Vue.extend({
           topics: [
             "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
             "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "0x000000000000000000000000" + this.currentAccount.slice(2)
-          ]
+            "0x000000000000000000000000" + this.currentAccount.slice(2),
+          ],
         })
         .on("data", async (log: any) => {
           const t = this as any;
@@ -293,13 +285,13 @@ export default Vue.extend({
           address: tinyboxesAddress,
           topics: [
             "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-            "0x0000000000000000000000000000000000000000000000000000000000000000"
-          ]
+            "0x0000000000000000000000000000000000000000000000000000000000000000",
+          ],
         })
         .on("data", (log: any) => {
           (this as any).update();
         });
-    }
+    },
   },
   data: function() {
     return {
@@ -311,7 +303,7 @@ export default Vue.extend({
       limit: null as number | null,
       form: {
         section: 0,
-        valid: true
+        valid: true,
       },
       minted: {} as any,
       values: {} as any,
@@ -332,11 +324,11 @@ export default Vue.extend({
         mirrorPos1: 750,
         mirrorPos2: 1300,
         mirrorPos3: 2600,
-        scale: 100
+        scale: 100,
       },
-      sections: sections
+      sections: sections,
     };
-  }
+  },
 });
 </script>
 

@@ -1,4 +1,4 @@
-export const tinyboxesAddress = "0x7050789c5e51E3D0c6c5528b396A3F8318be5B58";
+export const tinyboxesAddress = "0xA9Ab579520B084e368821318339294c883eA460c";
 export const tinyboxesABI: any = [
   {
     inputs: [],
@@ -173,22 +173,22 @@ export const tinyboxesABI: any = [
     inputs: [
       {
         internalType: "string",
-        name: "seed",
+        name: "_seed",
         type: "string",
       },
       {
-        internalType: "uint256[2]",
+        internalType: "uint8[2]",
         name: "counts",
-        type: "uint256[2]",
+        type: "uint8[2]",
       },
       {
-        internalType: "int256[13]",
+        internalType: "int16[13]",
         name: "dials",
-        type: "int256[13]",
+        type: "int16[13]",
       },
       {
         internalType: "bool[3]",
-        name: "switches",
+        name: "mirrors",
         type: "bool[3]",
       },
     ],
@@ -306,29 +306,61 @@ export const tinyboxesABI: any = [
         type: "uint256",
       },
       {
-        internalType: "string",
-        name: "seed",
-        type: "string",
-      },
-      {
-        internalType: "uint256[2]",
-        name: "counts",
-        type: "uint256[2]",
-      },
-      {
-        internalType: "int256[13]",
-        name: "dials",
-        type: "int256[13]",
-      },
-      {
-        internalType: "bool[3]",
-        name: "switches",
-        type: "bool[3]",
-      },
-      {
-        internalType: "uint256",
-        name: "animation",
-        type: "uint256",
+        components: [
+          {
+            internalType: "uint256",
+            name: "seed",
+            type: "uint256",
+          },
+          {
+            internalType: "uint8",
+            name: "animation",
+            type: "uint8",
+          },
+          {
+            internalType: "uint8",
+            name: "shapes",
+            type: "uint8",
+          },
+          {
+            internalType: "uint8",
+            name: "colors",
+            type: "uint8",
+          },
+          {
+            internalType: "uint16",
+            name: "hatching",
+            type: "uint16",
+          },
+          {
+            internalType: "uint16",
+            name: "scale",
+            type: "uint16",
+          },
+          {
+            internalType: "int16[3]",
+            name: "mirrorPositions",
+            type: "int16[3]",
+          },
+          {
+            internalType: "uint16[4]",
+            name: "size",
+            type: "uint16[4]",
+          },
+          {
+            internalType: "uint16[4]",
+            name: "spacing",
+            type: "uint16[4]",
+          },
+          {
+            internalType: "bool[3]",
+            name: "mirrors",
+            type: "bool[3]",
+          },
+        ],
+        internalType: "struct TinyBoxes.TinyBox",
+        name: "box",
+        type: "tuple",
       },
       {
         internalType: "uint256",
@@ -363,7 +395,7 @@ export const tinyboxesABI: any = [
         type: "uint256",
       },
     ],
-    stateMutability: "view",
+    stateMutability: "pure",
     type: "function",
   },
   {
@@ -532,25 +564,6 @@ export const tinyboxesABI: any = [
         type: "uint256",
       },
     ],
-    name: "tokenCounts",
-    outputs: [
-      {
-        internalType: "uint256[]",
-        name: "",
-        type: "uint256[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_id",
-        type: "uint256",
-      },
-    ],
     name: "tokenData",
     outputs: [
       {
@@ -559,43 +572,49 @@ export const tinyboxesABI: any = [
         type: "uint256",
       },
       {
-        internalType: "uint256",
+        internalType: "uint8",
         name: "animation",
-        type: "uint256",
+        type: "uint8",
       },
       {
-        internalType: "uint256[]",
-        name: "counts",
-        type: "uint256[]",
+        internalType: "uint8",
+        name: "colors",
+        type: "uint8",
       },
       {
-        internalType: "int256[]",
-        name: "dials",
-        type: "int256[]",
+        internalType: "uint8",
+        name: "shapes",
+        type: "uint8",
       },
       {
-        internalType: "bool[]",
-        name: "switches",
-        type: "bool[]",
+        internalType: "uint16",
+        name: "hatching",
+        type: "uint16",
       },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
       {
-        internalType: "uint256",
-        name: "_id",
-        type: "uint256",
+        internalType: "uint16[4]",
+        name: "size",
+        type: "uint16[4]",
       },
-    ],
-    name: "tokenDials",
-    outputs: [
       {
-        internalType: "int256[]",
-        name: "",
-        type: "int256[]",
+        internalType: "uint16[4]",
+        name: "spacing",
+        type: "uint16[4]",
+      },
+      {
+        internalType: "int16[3]",
+        name: "mirrorPositions",
+        type: "int16[3]",
+      },
+      {
+        internalType: "bool[3]",
+        name: "mirrors",
+        type: "bool[3]",
+      },
+      {
+        internalType: "uint16",
+        name: "scale",
+        type: "uint16",
       },
     ],
     stateMutability: "view",
@@ -656,13 +675,33 @@ export const tinyboxesABI: any = [
         name: "_id",
         type: "uint256",
       },
+      {
+        internalType: "string",
+        name: "_seed",
+        type: "string",
+      },
+      {
+        internalType: "uint8[2]",
+        name: "counts",
+        type: "uint8[2]",
+      },
+      {
+        internalType: "int16[13]",
+        name: "dials",
+        type: "int16[13]",
+      },
+      {
+        internalType: "bool[3]",
+        name: "mirrors",
+        type: "bool[3]",
+      },
     ],
-    name: "tokenSeed",
+    name: "tokenPreview",
     outputs: [
       {
-        internalType: "uint256",
+        internalType: "string",
         name: "",
-        type: "uint256",
+        type: "string",
       },
     ],
     stateMutability: "view",
@@ -676,12 +715,12 @@ export const tinyboxesABI: any = [
         type: "uint256",
       },
     ],
-    name: "tokenSwitches",
+    name: "tokenSeed",
     outputs: [
       {
-        internalType: "bool[]",
+        internalType: "uint256",
         name: "",
-        type: "bool[]",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
