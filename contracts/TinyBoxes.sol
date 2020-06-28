@@ -45,6 +45,12 @@ contract TinyBoxes is ERC721 {
         bool[3] mirrors;
     }
 
+    struct Shape {
+        uint256 color;
+        uint256[2] size;
+        int256[2] position;
+    }
+
     mapping(uint256 => TinyBox) internal boxes;
 
     /**
@@ -227,11 +233,35 @@ contract TinyBoxes is ERC721 {
         TinyBox memory box,
         uint256 frame
     ) public view returns (string memory) {
+        // initialize an empty buffer
         bytes memory buffer = new bytes(8192);
+
+        // write the document header to the SVG buffer
         Buffer.append(buffer, header);
 
-        // initilized RNG with the seed and blocks 0 through 1
+        // initilize RNG with the specified seed and blocks 0 through 1
         bytes32[] memory pool = Random.init(0, 1, box.seed);
+
+        // set animation modifiers to default
+        uint256 colorShift = 0;
+        uint256 hatchShift = 0;
+        uint256 stackShift = 0;
+        uint256[4] memory spacingShift = 0;
+        uint256[4] memory sizeRangeShift = 0;
+        uint256[2] memory positionShift = 0;
+        uint256[2] memory sizeShift = 0;
+        uint256[3] memory mirrorShift = [0, 0, 0];
+
+        // modulate the animation modifiers based on frames and animation id
+        if (box.animation == 0) {
+            colorShift = frame;
+        } else if (box.animation == 1) {
+            hatchMod = frame;
+        } else if (box.animation == 2) {
+            stackShift = frame;
+        } else if (box.animation == 3) {
+            mirrorShift[0] = frame;
+        }
 
         // generate colors
         uint256[] memory colorValues = new uint256[](box.colors);
@@ -239,17 +269,52 @@ contract TinyBoxes is ERC721 {
             colorValues[i] = _generateColor(pool, _id);
 
         // generate shapes
+        Shape[box.shapes] memory shapes;
         for (uint256 i = 0; i < box.shapes; i++) {
-            uint256 colorRand = uint256(
-                Random.uniform(pool, 0, int256(uint256(box.shapes).sub(1)))
-            );
-            bool hatched = (box.hatching > 0 && i.mod(box.hatching) == 0); // hatching mod. 1 in hybrid shapes will be hatching type
+            // hatching mod. 1 in hybrid shapes will be hatching type
+            // offset hatching mod start by hatchMod
+            bool hatched = (box.hatching > 0 &&
+                i.add(hatchShift).mod(box.hatching) == 0);
+            // modulate shape generator input parameters
+            for (uint256 j = 0; j < 4; j++) {
+                box.spacing[j] = box.spacing[j].add(spacingShift[j]);
+                box.size[j] = box.size[j].add(sizeRangeShift[j]);
+            }
+            // generate a shapes position and size using box parameters
             (
-                int256[2] memory positions,
+                int256[2] memory position,
                 uint256[2] memory size
             ) = _generateShape(pool, box.spacing, box.size, hatched);
-            Buffer.rect(buffer, positions, size, colorValues[colorRand]);
+            // modulate the shape position and size
+            position[0] = position[0].add(positionShift[0]);
+            position[1] = position[1].add(positionShift[1]);
+            size[0] = size[0].add(sizeShift[0]);
+            size[1] = size[1].add(sizeShift[1]);
+            // pick a random color from the generated colors list
+            int256 randomColorSelection = Random.uniform(
+                pool,
+                0,
+                int256(uint256(box.shapes).sub(1))
+            );
+            // modulate colors by colorShift
+            uint256 color = colorValues[uint256(randomColorSelection)
+                .add(colorShift)
+                .mod(box.shapes)];
+            // create a new shape and add it to the shapes list
+            shapes.push(Shape(position, size, color));
         }
+
+        // add shapes
+        for (uint256 i = 0; i < box.shapes; i++) {
+            Shape shape = shapes[i.add(stackShift).mod(box.shapes)];
+            // add a rectangle with given position, size and color to the SVG markup
+            Buffer.rect(buffer, shape.position, shape.size, shape.color);
+        }
+
+        // modulate mirroring and scaling transforms
+        box.mirrorPositions[0] = box.mirrorPositions[0].add(mirrorShift[0]);
+        box.mirrorPositions[1] = box.mirrorPositions[1].add(mirrorShift[1]);
+        box.mirrorPositions[2] = box.mirrorPositions[2].add(mirrorShift[2]);
 
         // generate the footer with mirroring and scale transforms
         Buffer.append(
@@ -257,6 +322,7 @@ contract TinyBoxes is ERC721 {
             _generateFooter(box.mirrors, box.mirrorPositions, box.scale)
         );
 
+        // return an SVG file as string
         return Buffer.toString(buffer);
     }
 
