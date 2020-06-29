@@ -27,8 +27,8 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
     address constant VRF_COORDINATOR = 0xc1031337fe8E75Cf25CAe9828F3BF734d83732e4; // Rinkeby
     address constant LINK_TOKEN_ADDRESS = 0x01BE23585060835E02B77ef475b0Cc51aA1e0709; // Rinkeby
     //address public constant LINK_TOKEN_ADDRESS = 0x514910771af9ca656af840dff83e8264ecf986ca; // Mainnet
-    bytes32 internal keyHash;
-    uint256 internal fee;
+    bytes32 constant KEY_HASH = 0xcad496b9d0416369213648a32b4975fff8707f05dfb43603961b58f3ac6617a7; // Rinkeby details
+    uint256 constant fee = 10**18;
     uint256[] public d20Results;
 
     string header = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2600 2600" style="stroke-width:0; background-color:#121212;">\n\n<symbol id="upperleftquad4">\n<symbol id="upperleftquad3">\n<symbol id="upperleftquad2">\n<symbol id="upperleftquad">\n\n';
@@ -74,10 +74,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
         VRFConsumerBase(VRF_COORDINATOR, LINK_TOKEN_ADDRESS)
     {
         creator = msg.sender;
-        vrfCoordinator = VRF_COORDINATOR;
         LINK = LinkTokenInterface(LINK_TOKEN_ADDRESS);
-        keyHash = 0xcad496b9d0416369213648a32b4975fff8707f05dfb43603961b58f3ac6617a7; // Rinkeby details
-        fee = 10**18; // Rinkeby details - aka 1 LINK
     }
 
     /**
@@ -85,7 +82,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
      */
     modifier onlyVRFCoordinator {
         require(
-            msg.sender == vrfCoordinator,
+            msg.sender == VRF_COORDINATOR,
             "Fulfillment only allowed by VRFCoordinator"
         );
         _;
@@ -126,7 +123,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
         uint256 seed = uint256(
             keccak256(abi.encode(userProvidedSeed, blockhash(block.number)))
         ); // Hash user seed and blockhash
-        bytes32 _requestId = requestRandomness(keyHash, fee, seed);
+        bytes32 _requestId = requestRandomness(KEY_HASH, fee, seed);
         return _requestId;
     }
 
