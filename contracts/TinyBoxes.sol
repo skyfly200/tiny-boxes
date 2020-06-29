@@ -62,7 +62,17 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
         uint256 color;
     }
 
+    struct Request {
+        address owner;
+        uint8 id;
+        uint256 seed;
+        uint256[2] counts;
+        int256[13] dials;
+        bool[3] mirrors;
+    }
+
     mapping(uint256 => TinyBox) internal boxes;
+    mapping(bytes32 => Request) internal requests;
 
     /**
      * @dev Contract constructor.
@@ -89,6 +99,64 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
     }
 
     /**
+     * @dev Create a new TinyBox Token
+     * @param _seed of token
+     * @param counts of token colors & shapes
+     * @param dials of token renderer
+     * @param mirrors active boolean of token
+     */
+    function createBox(
+        string calldata _seed,
+        uint8[2] calldata counts,
+        int16[13] calldata dials,
+        bool[3] calldata mirrors
+    ) external payable {
+        require(
+            msg.sender != address(0),
+            "token recipient man not be the zero address"
+        );
+        require(
+            totalSupply() < TOKEN_LIMIT,
+            "ART SALE IS OVER. Tinyboxes are now only available on the secondary market."
+        );
+
+        if (totalSupply() < ARTIST_PRINTS) {
+            require(
+                msg.sender == address(creator),
+                "Only the creator can mint the alpha token. Wait your turn FFS"
+            );
+        } else {
+            uint256 amount = currentPrice();
+            require(msg.value >= amount, "insuficient payment"); // return if they dont pay enough
+            if (msg.value > amount) msg.sender.transfer(msg.value - amount); // give change if they over pay
+            artmuseum.transfer(amount); // send the payment amount to the artmuseum account
+        }
+
+        require(
+            LINK.balanceOf(address(this)) > fee,
+            "Not enough LINK for a VRF request"
+        );
+
+        // convert seed from string to uint
+        uint256 seed = Random.stringToUint(_seed);
+
+        // Hash user seed and blockhash for VRFSeed
+        uint256 seedVRF = uint256(
+            keccak256(abi.encode(userProvidedSeed, blockhash(block.number)))
+        );
+        bytes32 _requestId = requestRandomness(KEY_HASH, fee, seedVRF);
+        // TODO: reserve this id befor minting
+        requests[_requestId] = Request({
+            owner: msg.sender,
+            id: totalSupply(),
+            seed: seed,
+            counts: count,
+            dials: dials,
+            mirrors: mirrors
+        });
+    }
+
+    /**
      * @notice Callback function used by VRF Coordinator
      * @dev Important! Add a modifier to only allow this function to be called by the VRFCoordinator
      * @dev This is where you do something with randomness!
@@ -100,38 +168,64 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
         override
         onlyVRFCoordinator
     {
-        uint256 d20Result = randomness.mod(20).add(1);
-        d20Results.push(d20Result);
+        // need to move minting here with saved data from a request
+        // TODO: add the Request struct tyoe
+        Request creation = requests[requestId];
+
+        // initilized RNG with the provided varifiable randomness and blocks 0 through 1
+        bytes32[] memory pool = Random.init(0, 1, randomness);
+
+        // TODO - generate animation with RNG weighted non uniformly for varying rarity
+        // maybe use log base 2 of a number in a range 2 to the animation counts
+        // TODO: add randomness to TinyBox struct type
+        boxes[id] = TinyBox({
+            seed: creation.seed,
+            randomness: randomness,
+            animation: uint8(Random.uniform(pool, 0, ANIMATION_COUNT - 1)),
+            shapes: creation.counts[1],
+            colors: creation.counts[0],
+            spacing: [
+                uint16(creation.dials[0]),
+                uint16(creation.dials[1]),
+                uint16(creation.dials[2]),
+                uint16(creation.dials[3])
+            ],
+            size: [
+                uint16(creation.dials[4]),
+                uint16(creation.dials[5]),
+                uint16(creation.dials[6]),
+                uint16(creation.dials[7])
+            ],
+            hatching: uint16(creation.dials[8]),
+            mirrorPositions: [
+                creation.dials[9],
+                creation.dials[10],
+                creation.dials[11]
+            ],
+            scale: uint16(creation.dials[12]),
+            mirrors: creation.mirrors
+        });
+
+        // mint a token
+        _safeMint(creation.owner, creation.id);
     }
 
     /**
-     * @notice Requests randomness from a user-provided seed
-     * @dev The user-provided seed is hashed with the current blockhash as an additional precaution.
-     * @dev   1. In case of block re-orgs, the revealed answers will not be re-used again.
-     * @dev   2. In case of predictable user-provided seeds, the seed is mixed with the less predictable blockhash.
-     * @dev This is only an example implementation and not necessarily suitable for mainnet.
-     * @dev You must review your implementation details with extreme care.
+     * @dev Get the current price of a token
+     * @return price in wei of a token currently
      */
-    function rollDice(uint256 userProvidedSeed)
-        public
-        returns (bytes32 requestId)
-    {
-        require(
-            LINK.balanceOf(address(this)) > fee,
-            "Not enough LINK - fill contract with faucet"
-        );
-        uint256 seed = uint256(
-            keccak256(abi.encode(userProvidedSeed, blockhash(block.number)))
-        ); // Hash user seed and blockhash
-        bytes32 _requestId = requestRandomness(KEY_HASH, fee, seed);
-        return _requestId;
+    function currentPrice() public view returns (uint256 price) {
+        price = priceAt(totalSupply());
     }
 
     /**
-     * @notice Convenience function to show the latest roll
+     * @dev Get the price of a specific token id
+     * @param _id of the token
+     * @return price in wei of that token
      */
-    function latestRoll() public view returns (uint256 d20result) {
-        return d20Results[d20Results.length - 1];
+    function priceAt(uint256 _id) public pure returns (uint256 price) {
+        uint256 tokeninflation = (_id / 2) * 1000000000000000; // add .001 eth inflation per token
+        price = tokeninflation + 160000000000000000; // in wei, starting price .16 eth, ending price .2 eth
     }
 
     /**
@@ -402,94 +496,6 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
 
         // return an SVG file as string
         return Buffer.toString(buffer);
-    }
-
-    /**
-     * @dev Create a new TinyBox Token
-     * @param _seed of token
-     * @param counts of token colors & shapes
-     * @param dials of token renderer
-     * @param mirrors active boolean of token
-     */
-    function createBox(
-        string calldata _seed,
-        uint8[2] calldata counts,
-        int16[13] calldata dials,
-        bool[3] calldata mirrors
-    ) external payable {
-        require(
-            msg.sender != address(0),
-            "token recipient man not be the zero address"
-        );
-        require(
-            totalSupply() < TOKEN_LIMIT,
-            "ART SALE IS OVER. Tinyboxes are now only available on the secondary market."
-        );
-
-        if (totalSupply() < ARTIST_PRINTS) {
-            require(
-                msg.sender == address(creator),
-                "Only the creator can mint the alpha token. Wait your turn FFS"
-            );
-        } else {
-            uint256 amount = currentPrice();
-            require(msg.value >= amount, "insuficient payment"); // return if they dont pay enough
-            if (msg.value > amount) msg.sender.transfer(msg.value - amount); // give change if they over pay
-            artmuseum.transfer(amount); // send the payment amount to the artmuseum account
-        }
-
-        // convert seed from string to uint
-        uint256 seed = Random.stringToUint(_seed);
-
-        // initilized RNG with the seed and blocks 0 through 1
-        bytes32[] memory pool = Random.init(0, 1, seed);
-
-        uint256 id = totalSupply();
-
-        // TODO - generate animation with RNG weighted non uniformly for varying rarity
-        // maybe use log base 2 of a number in a range 2 to the animation counts
-        boxes[id] = TinyBox({
-            seed: seed,
-            animation: uint8(Random.uniform(pool, 0, ANIMATION_COUNT - 1)),
-            shapes: counts[1],
-            colors: counts[0],
-            spacing: [
-                uint16(dials[0]),
-                uint16(dials[1]),
-                uint16(dials[2]),
-                uint16(dials[3])
-            ],
-            size: [
-                uint16(dials[4]),
-                uint16(dials[5]),
-                uint16(dials[6]),
-                uint16(dials[7])
-            ],
-            hatching: uint16(dials[8]),
-            mirrorPositions: [dials[9], dials[10], dials[11]],
-            scale: uint16(dials[12]),
-            mirrors: mirrors
-        });
-
-        _safeMint(msg.sender, id);
-    }
-
-    /**
-     * @dev Get the current price of a token
-     * @return price in wei of a token currently
-     */
-    function currentPrice() public view returns (uint256 price) {
-        price = priceAt(totalSupply());
-    }
-
-    /**
-     * @dev Get the price of a specific token id
-     * @param _id of the token
-     * @return price in wei of that token
-     */
-    function priceAt(uint256 _id) public pure returns (uint256 price) {
-        uint256 tokeninflation = (_id / 2) * 1000000000000000; // add .001 eth inflation per token
-        price = tokeninflation + 160000000000000000; // in wei, starting price .16 eth, ending price .2 eth
     }
 
     /**
