@@ -269,7 +269,7 @@ contract TinyBoxes is ERC721 {
             colorValues[i] = _generateColor(pool, _id);
 
         // generate shapes
-        Shape[] memory shapes;
+        Shape[box.shapes] memory shapes;
         for (uint256 i = 0; i < box.shapes; i++) {
             // hatching mod. 1 in hybrid shapes will be hatching type
             // offset hatching mod start by hatchMod
@@ -305,12 +305,12 @@ contract TinyBoxes is ERC721 {
                 .add(colorShift)
                 .mod(box.shapes)];
             // create a new shape and add it to the shapes list
-            shapes.push(Shape(color, size, position));
+            shapes.push(Shape(position, size, color));
         }
 
         // add shapes
         for (uint256 i = 0; i < box.shapes; i++) {
-            Shape memory shape = shapes[i.add(stackShift).mod(box.shapes)];
+            Shape shape = shapes[i.add(stackShift).mod(box.shapes)];
             // add a rectangle with given position, size and color to the SVG markup
             Buffer.rect(buffer, shape.position, shape.size, shape.color);
         }
