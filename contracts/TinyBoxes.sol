@@ -20,6 +20,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
     uint256 public constant TOKEN_LIMIT = 1024;
     uint256 public constant ARTIST_PRINTS = 0;
     int256 public constant ANIMATION_COUNT = 1;
+    address public animator;
     address public creator;
     address payable artmuseum = 0x027Fb48bC4e3999DCF88690aEbEBCC3D1748A0Eb; //lolz
 
@@ -45,6 +46,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
 
     struct TinyBox {
         uint256 seed;
+        uint256 randomness;
         uint8 animation;
         uint8 shapes;
         uint8 colors;
@@ -63,12 +65,8 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
     }
 
     struct Request {
-        address owner;
-        uint8 id;
-        uint256 seed;
-        uint256[2] counts;
-        int256[13] dials;
-        bool[3] mirrors;
+        address creator;
+        uint256 id;
     }
 
     mapping(uint256 => TinyBox) internal boxes;
@@ -78,23 +76,32 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
      * @dev Contract constructor.
      * @notice Constructor inherits VRFConsumerBase
      */
-    constructor()
+    constructor(address _animator)
         public
         ERC721("TinyBoxes", "[#][#]")
         VRFConsumerBase(VRF_COORDINATOR, LINK_TOKEN_ADDRESS)
     {
         creator = msg.sender;
+        animator = _animator;
         LINK = LinkTokenInterface(LINK_TOKEN_ADDRESS);
     }
 
     /**
-     * @notice Modifier to only allow updates by the VRFCoordinator contract
+     * @notice Modifier to only allow randomness fulfillment by the VRFCoordinator contract
      */
     modifier onlyVRFCoordinator {
         require(
             msg.sender == VRF_COORDINATOR,
             "Fulfillment only allowed by VRFCoordinator"
         );
+        _;
+    }
+
+    /**
+     * @notice Modifier to only allow URI updates by the Animator address
+     */
+    modifier onlyAnimator {
+        require(msg.sender == animator, "URI update only allowed by Animator");
         _;
     }
 
@@ -132,26 +139,50 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
             artmuseum.transfer(amount); // send the payment amount to the artmuseum account
         }
 
+        // ensure we have enough LINK token in the contract to pay for VRF
         require(
             LINK.balanceOf(address(this)) > fee,
             "Not enough LINK for a VRF request"
         );
 
-        // convert seed from string to uint
+        // TODO: reserve this id before minting, with a seperate id counter
+        uint256 id = totalSupply();
+
+        // convert user seed from string to uint
         uint256 seed = Random.stringToUint(_seed);
 
         // Hash user seed and blockhash for VRFSeed
         uint256 seedVRF = uint256(
-            keccak256(abi.encode(userProvidedSeed, blockhash(block.number)))
+            keccak256(abi.encode(seed, blockhash(block.number)))
         );
+        // send VRF request
         bytes32 _requestId = requestRandomness(KEY_HASH, fee, seedVRF);
-        // TODO: reserve this id befor minting
-        requests[_requestId] = Request({
-            owner: msg.sender,
-            id: totalSupply(),
+
+        // map requestId to id and sender
+        requests[_requestId] = Request(msg.sender, id);
+
+        // register the new box data
+        boxes[id] = TinyBox({
             seed: seed,
-            counts: count,
-            dials: dials,
+            randomness: 0,
+            animation: 0,
+            shapes: counts[1],
+            colors: counts[0],
+            spacing: [
+                uint16(dials[0]),
+                uint16(dials[1]),
+                uint16(dials[2]),
+                uint16(dials[3])
+            ],
+            size: [
+                uint16(dials[4]),
+                uint16(dials[5]),
+                uint16(dials[6]),
+                uint16(dials[7])
+            ],
+            hatching: uint16(dials[8]),
+            mirrorPositions: [dials[9], dials[10], dials[11]],
+            scale: uint16(dials[12]),
             mirrors: mirrors
         });
     }
@@ -169,45 +200,21 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
         onlyVRFCoordinator
     {
         // need to move minting here with saved data from a request
-        // TODO: add the Request struct tyoe
-        Request creation = requests[requestId];
+        Request memory creation = requests[requestId];
 
         // initilized RNG with the provided varifiable randomness and blocks 0 through 1
         bytes32[] memory pool = Random.init(0, 1, randomness);
 
         // TODO - generate animation with RNG weighted non uniformly for varying rarity
         // maybe use log base 2 of a number in a range 2 to the animation counts
-        // TODO: add randomness to TinyBox struct type
-        boxes[id] = TinyBox({
-            seed: creation.seed,
-            randomness: randomness,
-            animation: uint8(Random.uniform(pool, 0, ANIMATION_COUNT - 1)),
-            shapes: creation.counts[1],
-            colors: creation.counts[0],
-            spacing: [
-                uint16(creation.dials[0]),
-                uint16(creation.dials[1]),
-                uint16(creation.dials[2]),
-                uint16(creation.dials[3])
-            ],
-            size: [
-                uint16(creation.dials[4]),
-                uint16(creation.dials[5]),
-                uint16(creation.dials[6]),
-                uint16(creation.dials[7])
-            ],
-            hatching: uint16(creation.dials[8]),
-            mirrorPositions: [
-                creation.dials[9],
-                creation.dials[10],
-                creation.dials[11]
-            ],
-            scale: uint16(creation.dials[12]),
-            mirrors: creation.mirrors
-        });
+        uint8 animation = uint8(Random.uniform(pool, 0, ANIMATION_COUNT - 1));
 
-        // mint a token
-        _safeMint(creation.owner, creation.id);
+        // update box data relying on randomness
+        boxes[creation.id].randomness = randomness;
+        boxes[creation.id].animation = animation;
+
+        // mint the token to the creator
+        _safeMint(creation.creator, creation.id);
     }
 
     /**
