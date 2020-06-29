@@ -8,17 +8,28 @@ pragma experimental ABIEncoderV2;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
+// Chainlink VRF Base
+import "./chainlink/VRFConsumerBase.sol";
+
 import "./Buffer.sol";
 import "./Random.sol";
 
-contract TinyBoxes is ERC721 {
-    //using SafeMath for uint256;
+contract TinyBoxes is ERC721, VRFConsumerBase {
+    using SafeMath for uint256;
 
     uint256 public constant TOKEN_LIMIT = 1024;
     uint256 public constant ARTIST_PRINTS = 0;
     int256 public constant ANIMATION_COUNT = 1;
     address public creator;
     address payable artmuseum = 0x027Fb48bC4e3999DCF88690aEbEBCC3D1748A0Eb; //lolz
+
+    // Chainlink VRF Stuff
+    address constant VRF_COORDINATOR = 0xc1031337fe8E75Cf25CAe9828F3BF734d83732e4; // Rinkeby
+    address constant LINK = 0x01BE23585060835E02B77ef475b0Cc51aA1e0709; // Rinkeby
+    //address public constant LINK = 0x514910771af9ca656af840dff83e8264ecf986ca; // Mainnet
+    bytes32 internal keyHash;
+    uint256 internal fee;
+    uint256[] public d20Results;
 
     string header = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2600 2600" style="stroke-width:0; background-color:#121212;">\n\n<symbol id="upperleftquad4">\n<symbol id="upperleftquad3">\n<symbol id="upperleftquad2">\n<symbol id="upperleftquad">\n\n';
     string[3] scales = ["-1 1", "-1 -1", "1 -1"];
@@ -46,18 +57,84 @@ contract TinyBoxes is ERC721 {
     }
 
     struct Shape {
-        uint256 color;
-        uint256[2] size;
         int256[2] position;
+        uint256[2] size;
+        uint256 color;
     }
 
     mapping(uint256 => TinyBox) internal boxes;
 
     /**
      * @dev Contract constructor.
+     * @notice Constructor inherits VRFConsumerBase
      */
-    constructor() public ERC721("TinyBoxes", "[#][#]") {
+    constructor()
+        public
+        ERC721("TinyBoxes", "[#][#]")
+        VRFConsumerBase(_vrfCoordinator, _link)
+    {
         creator = msg.sender;
+        vrfCoordinator = VRF_COORDINATOR;
+        LINK = LinkTokenInterface(LINK);
+        keyHash = 0xcad496b9d0416369213648a32b4975fff8707f05dfb43603961b58f3ac6617a7; // Rinkeby details
+        fee = 10**18; // Rinkeby details - aka 1 LINK
+    }
+
+    /**
+     * @notice Modifier to only allow updates by the VRFCoordinator contract
+     */
+    modifier onlyVRFCoordinator {
+        require(
+            msg.sender == vrfCoordinator,
+            "Fulfillment only allowed by VRFCoordinator"
+        );
+        _;
+    }
+
+    /**
+     * @notice Callback function used by VRF Coordinator
+     * @dev Important! Add a modifier to only allow this function to be called by the VRFCoordinator
+     * @dev This is where you do something with randomness!
+     * @dev The VRF Coordinator will only send this function verified responses.
+     * @dev The VRF Coordinator will not pass randomness that could not be verified.
+     */
+    function fulfillRandomness(bytes32 requestId, uint256 randomness)
+        external
+        override
+        onlyVRFCoordinator
+    {
+        uint256 d20Result = randomness.mod(20).add(1);
+        //d20Results.push(d20Result);
+    }
+
+    /**
+     * @notice Requests randomness from a user-provided seed
+     * @dev The user-provided seed is hashed with the current blockhash as an additional precaution.
+     * @dev   1. In case of block re-orgs, the revealed answers will not be re-used again.
+     * @dev   2. In case of predictable user-provided seeds, the seed is mixed with the less predictable blockhash.
+     * @dev This is only an example implementation and not necessarily suitable for mainnet.
+     * @dev You must review your implementation details with extreme care.
+     */
+    function rollDice(uint256 userProvidedSeed)
+        public
+        returns (bytes32 requestId)
+    {
+        require(
+            LINK.balanceOf(address(this)) > fee,
+            "Not enough LINK - fill contract with faucet"
+        );
+        uint256 seed = uint256(
+            keccak256(abi.encode(userProvidedSeed, blockhash(block.number)))
+        ); // Hash user seed and blockhash
+        bytes32 _requestId = requestRandomness(keyHash, fee, seed);
+        return _requestId;
+    }
+
+    /**
+     * @notice Convenience function to show the latest roll
+     */
+    function latestRoll() public view returns (uint256 d20result) {
+        return d20Results[d20Results.length - 1];
     }
 
     /**
@@ -269,7 +346,7 @@ contract TinyBoxes is ERC721 {
             colorValues[i] = _generateColor(pool, _id);
 
         // generate shapes
-        Shape[box.shapes] memory shapes;
+        Shape[] memory shapes = new Shape[](box.shapes);
         for (uint256 i = 0; i < box.shapes; i++) {
             // hatching mod. 1 in hybrid shapes will be hatching type
             // offset hatching mod start by hatchMod
@@ -310,7 +387,7 @@ contract TinyBoxes is ERC721 {
 
         // add shapes
         for (uint256 i = 0; i < box.shapes; i++) {
-            Shape shape = shapes[i.add(stackShift).mod(box.shapes)];
+            Shape memory shape = shapes[i.add(stackShift).mod(box.shapes)];
             // add a rectangle with given position, size and color to the SVG markup
             Buffer.rect(buffer, shape.position, shape.size, shape.color);
         }
