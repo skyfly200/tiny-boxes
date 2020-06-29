@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: Unlicensed
-pragma solidity ^0.6.4;
+pragma solidity ^0.6.8;
 pragma experimental ABIEncoderV2;
 
 // needed for upgradability
@@ -25,8 +25,8 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
 
     // Chainlink VRF Stuff
     address constant VRF_COORDINATOR = 0xc1031337fe8E75Cf25CAe9828F3BF734d83732e4; // Rinkeby
-    address constant LINK = 0x01BE23585060835E02B77ef475b0Cc51aA1e0709; // Rinkeby
-    //address public constant LINK = 0x514910771af9ca656af840dff83e8264ecf986ca; // Mainnet
+    address constant LINK_TOKEN_ADDRESS = 0x01BE23585060835E02B77ef475b0Cc51aA1e0709; // Rinkeby
+    //address public constant LINK_TOKEN_ADDRESS = 0x514910771af9ca656af840dff83e8264ecf986ca; // Mainnet
     bytes32 internal keyHash;
     uint256 internal fee;
     uint256[] public d20Results;
@@ -71,11 +71,11 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
     constructor()
         public
         ERC721("TinyBoxes", "[#][#]")
-        VRFConsumerBase(_vrfCoordinator, _link)
+        VRFConsumerBase(VRF_COORDINATOR, LINK_TOKEN_ADDRESS)
     {
         creator = msg.sender;
         vrfCoordinator = VRF_COORDINATOR;
-        LINK = LinkTokenInterface(LINK);
+        LINK = LinkTokenInterface(LINK_TOKEN_ADDRESS);
         keyHash = 0xcad496b9d0416369213648a32b4975fff8707f05dfb43603961b58f3ac6617a7; // Rinkeby details
         fee = 10**18; // Rinkeby details - aka 1 LINK
     }
