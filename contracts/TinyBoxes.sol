@@ -418,6 +418,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
         bytes32[] memory pool = Random.init(0, 1, box.seed);
 
         // set animation modifiers to default
+        // TODO: move all modifiers into a struct
         uint256 colorShift = 0;
         uint256 hatchShift = 0;
         uint256 stackShift = 0;
@@ -427,17 +428,6 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
         uint8[2] memory sizeShift = [0, 0];
         uint8[3] memory mirrorShift = [0, 0, 0];
 
-        // modulate the animation modifiers based on frames and animation id
-        if (box.animation == 0) {
-            colorShift = uint8(frame);
-        } else if (box.animation == 1) {
-            hatchShift = uint8(frame);
-        } else if (box.animation == 2) {
-            stackShift = uint8(frame);
-        } else if (box.animation == 3) {
-            mirrorShift[0] = uint8(frame);
-        }
-
         // generate colors
         uint256[] memory colorValues = new uint256[](box.colors);
         for (uint256 i = 0; i < box.colors; i++)
@@ -446,6 +436,17 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
         // generate shapes
         Shape[] memory shapes = new Shape[](box.shapes);
         for (uint256 i = 0; i < box.shapes; i++) {
+            // modulate the animation modifiers based on frames and animation id
+            // TODO: move animation logic to seperate function returning modifiers
+            if (box.animation == 0) {
+                colorShift = uint8(frame);
+            } else if (box.animation == 1) {
+                hatchShift = uint8(frame);
+            } else if (box.animation == 2) {
+                stackShift = uint8(frame);
+            } else if (box.animation == 3) {
+                mirrorShift[0] = uint8(frame);
+            }
             // hatching mod. 1 in hybrid shapes will be hatching type
             // offset hatching mod start by hatchMod
             bool hatched = (box.hatching > 0 &&
@@ -480,7 +481,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
                 .add(colorShift)
                 .mod(box.shapes)];
             // create a new shape and add it to the shapes list
-            shapes.push(Shape(position, size, color));
+            shapes[i] = Shape(position, size, color);
         }
 
         // add shapes
@@ -491,9 +492,15 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
         }
 
         // modulate mirroring and scaling transforms
-        box.mirrorPositions[0] = box.mirrorPositions[0].add(mirrorShift[0]);
-        box.mirrorPositions[1] = box.mirrorPositions[1].add(mirrorShift[1]);
-        box.mirrorPositions[2] = box.mirrorPositions[2].add(mirrorShift[2]);
+        box.mirrorPositions[0] = int16(
+            uint256(box.mirrorPositions[0]).add(mirrorShift[0])
+        );
+        box.mirrorPositions[1] = int16(
+            uint256(box.mirrorPositions[1]).add(mirrorShift[1])
+        );
+        box.mirrorPositions[2] = int16(
+            uint256(box.mirrorPositions[2]).add(mirrorShift[2])
+        );
 
         // generate the footer with mirroring and scale transforms
         Buffer.append(
@@ -583,6 +590,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
     ) public view returns (string memory) {
         TinyBox memory box = TinyBox({
             seed: Random.stringToUint(_seed),
+            randomness: Random.stringToUint(_seed),
             animation: 0,
             shapes: counts[1],
             colors: counts[0],
