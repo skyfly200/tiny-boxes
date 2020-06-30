@@ -187,6 +187,17 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
     }
 
     /**
+     * @dev Update the token URI field
+     * @dev Only the animator role can call this
+     */
+    function updateURI(uint256 _id, string calldata _uri)
+        external
+        onlyAnimator
+    {
+        _setTokenURI(_id, _uri);
+    }
+
+    /**
      * @dev Get the current price of a token
      * @return price in wei of a token currently
      */
