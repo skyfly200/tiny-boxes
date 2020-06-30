@@ -69,6 +69,17 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
         uint256 id;
     }
 
+    struct Modulation {
+        uint256 color;
+        uint256 hatch;
+        uint256 stack;
+        uint8[4] spacing;
+        uint8[4] sizeRange;
+        uint8[2] position;
+        uint8[2] size;
+        uint8[3] mirror;
+    }
+
     mapping(uint256 => TinyBox) internal boxes;
     mapping(bytes32 => Request) internal requests;
 
@@ -397,6 +408,39 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
     }
 
     /**
+     * @dev calculate the animation modulators for a shape
+     * @param animation randomn numbers
+     * @param frame of token to render
+     * @return color value
+     */
+    function _calculateMods(
+        uint256 animation,
+        uint256 frame,
+        uint256 shape
+    ) internal pure returns (Modulation mod) {
+        // set animation modifiers to default
+        Modulation mod = new Modulation({
+            color: 0,
+            hatch: 0,
+            stack: 0,
+            spacing: [0, 0, 0, 0],
+            sizeRange: [0, 0, 0, 0],
+            position: [0, 0],
+            size: [0, 0],
+            mirror: [0, 0, 0]
+        });
+        if (animation == 0) {
+            mod.color = uint8(frame);
+        } else if (animation == 1) {
+            mod.hatch = uint8(frame);
+        } else if (animation == 2) {
+            mod.stack = uint8(frame);
+        } else if (animation == 3) {
+            mod.mirror[0] = uint8(frame);
+        }
+    }
+
+    /**
      * @dev render a token's art
      * @param _id of token
      * @param box TinyBox data structure
@@ -417,17 +461,6 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
         // initilize RNG with the specified seed and blocks 0 through 1
         bytes32[] memory pool = Random.init(0, 1, box.seed);
 
-        // set animation modifiers to default
-        // TODO: move all modifiers into a struct
-        uint256 colorShift = 0;
-        uint256 hatchShift = 0;
-        uint256 stackShift = 0;
-        uint8[4] memory spacingShift = [0, 0, 0, 0];
-        uint8[4] memory sizeRangeShift = [0, 0, 0, 0];
-        uint8[2] memory positionShift = [0, 0];
-        uint8[2] memory sizeShift = [0, 0];
-        uint8[3] memory mirrorShift = [0, 0, 0];
-
         // generate colors
         uint256[] memory colorValues = new uint256[](box.colors);
         for (uint256 i = 0; i < box.colors; i++)
@@ -436,28 +469,19 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
         // generate shapes
         Shape[] memory shapes = new Shape[](box.shapes);
         for (uint256 i = 0; i < box.shapes; i++) {
-            // modulate the animation modifiers based on frames and animation id
-            // TODO: move animation logic to seperate function returning modifiers
-            if (box.animation == 0) {
-                colorShift = uint8(frame);
-            } else if (box.animation == 1) {
-                hatchShift = uint8(frame);
-            } else if (box.animation == 2) {
-                stackShift = uint8(frame);
-            } else if (box.animation == 3) {
-                mirrorShift[0] = uint8(frame);
-            }
-            // hatching mod. 1 in hybrid shapes will be hatching type
-            // offset hatching mod start by hatchMod
+            // calculate the animation modulators based on frames and animation id
+            Modulation mod = _calculateMods(box.animation, frame, i);
+
+            // offset hatching index start by hatch modulator
             bool hatched = (box.hatching > 0 &&
-                i.add(hatchShift).mod(box.hatching) == 0);
+                i.add(mod.hatch).mod(box.hatching) == 0);
             // modulate shape generator input parameters
             for (uint256 j = 0; j < 4; j++) {
                 box.spacing[j] = uint16(
-                    uint256(box.spacing[j]).add(spacingShift[j])
+                    uint256(box.spacing[j]).add(mod.spacing[j])
                 );
                 box.size[j] = uint16(
-                    uint256(box.size[j]).add(sizeRangeShift[j])
+                    uint256(box.size[j]).add(mod.sizeRange[j])
                 );
             }
             // generate a shapes position and size using box parameters
@@ -466,10 +490,10 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
                 uint256[2] memory size
             ) = _generateShape(pool, box.spacing, box.size, hatched);
             // modulate the shape position and size
-            position[0] = int256(uint256(position[0]).add(positionShift[0]));
-            position[1] = int256(uint256(position[1]).add(positionShift[1]));
-            size[0] = size[0].add(sizeShift[0]);
-            size[1] = size[1].add(sizeShift[1]);
+            position[0] = int256(uint256(position[0]).add(mod.position[0]));
+            position[1] = int256(uint256(position[1]).add(mod.position[1]));
+            size[0] = size[0].add(mod.size[0]);
+            size[1] = size[1].add(mod.size[1]);
             // pick a random color from the generated colors list
             int256 randomColorSelection = Random.uniform(
                 pool,
@@ -478,7 +502,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
             );
             // modulate colors by colorShift
             uint256 color = colorValues[uint256(randomColorSelection)
-                .add(colorShift)
+                .add(mod.color)
                 .mod(box.shapes)];
             // create a new shape and add it to the shapes list
             shapes[i] = Shape(position, size, color);
@@ -486,20 +510,20 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
 
         // add shapes
         for (uint256 i = 0; i < box.shapes; i++) {
-            Shape memory shape = shapes[i.add(stackShift).mod(box.shapes)];
+            Shape memory shape = shapes[i.add(mod.stack).mod(box.shapes)];
             // add a rectangle with given position, size and color to the SVG markup
             Buffer.rect(buffer, shape.position, shape.size, shape.color);
         }
 
         // modulate mirroring and scaling transforms
         box.mirrorPositions[0] = int16(
-            uint256(box.mirrorPositions[0]).add(mirrorShift[0])
+            uint256(box.mirrorPositions[0]).add(mod.mirror[0])
         );
         box.mirrorPositions[1] = int16(
-            uint256(box.mirrorPositions[1]).add(mirrorShift[1])
+            uint256(box.mirrorPositions[1]).add(mod.mirror[1])
         );
         box.mirrorPositions[2] = int16(
-            uint256(box.mirrorPositions[2]).add(mirrorShift[2])
+            uint256(box.mirrorPositions[2]).add(mod.mirror[2])
         );
 
         // generate the footer with mirroring and scale transforms
