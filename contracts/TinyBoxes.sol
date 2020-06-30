@@ -6,6 +6,7 @@ pragma experimental ABIEncoderV2;
 //import "@openzeppelin/upgrades/contracts/Initializable.sol";
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "./TinyBoxesRenderer.sol";
 
@@ -14,6 +15,9 @@ import "./chainlink/VRFConsumerBase.sol";
 
 contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
     using SafeMath for uint256;
+    using Counters for Counters.Counter;
+
+    Counters.Counter private _tokenIds;
 
     uint256 public constant TOKEN_LIMIT = 1024;
     uint256 public constant ARTIST_PRINTS = 0;
@@ -110,9 +114,6 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
             "Not enough LINK for a VRF request"
         );
 
-        // TODO: reserve this id before minting, with a seperate id counter
-        uint256 id = totalSupply();
-
         // convert user seed from string to uint
         uint256 seed = Random.stringToUint(_seed);
 
@@ -123,11 +124,11 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
         // send VRF request
         bytes32 _requestId = requestRandomness(KEY_HASH, fee, seedVRF);
 
-        // map requestId to id and sender
-        requests[_requestId] = Request(msg.sender, id);
+        // map requestId to next token id and owner
+        requests[_requestId] = Request(msg.sender, _tokenIds.current());
 
         // register the new box data
-        boxes[id] = TinyBox({
+        boxes[_tokenIds.current()] = TinyBox({
             seed: seed,
             randomness: 0,
             animation: 0,
@@ -150,6 +151,9 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
             scale: uint16(dials[12]),
             mirrors: mirrors
         });
+
+        // increment the id counter
+        _tokenIds.increment();
     }
 
     /**
