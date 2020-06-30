@@ -250,6 +250,12 @@ abstract contract TinyBoxesRenderer {
         } else if (animation == 3) {
             // shift mirror position 0
             mod.mirror[0] = uint8(frame);
+        } else if (animation == 4) {
+            // squash and squeze
+            // transfer height to width and vice versa
+            // TODO: change to an inverted ralationship once signed modulation is implemented
+            mod.size[0] = uint8(frame + shape);
+            mod.size[1] = uint8(frame + shape);
         }
     }
 
