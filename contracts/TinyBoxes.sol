@@ -411,15 +411,15 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
      * @dev calculate the animation modulators for a shape
      * @param animation randomn numbers
      * @param frame of token to render
-     * @return color value
+     * @return mod struct of modulator values
      */
     function _calculateMods(
         uint256 animation,
         uint256 frame,
         uint256 shape
-    ) internal pure returns (Modulation mod) {
+    ) internal pure returns (Modulation memory mod) {
         // set animation modifiers to default
-        Modulation mod = new Modulation({
+        Modulation memory mod = Modulation({
             color: 0,
             hatch: 0,
             stack: 0,
@@ -467,10 +467,12 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
             colorValues[i] = _generateColor(pool, _id);
 
         // generate shapes
+        Modulation memory modStatic;
         Shape[] memory shapes = new Shape[](box.shapes);
         for (uint256 i = 0; i < box.shapes; i++) {
             // calculate the animation modulators based on frames and animation id
-            Modulation mod = _calculateMods(box.animation, frame, i);
+            Modulation memory mod = _calculateMods(box.animation, frame, i);
+            modStatic = mod;
 
             // offset hatching index start by hatch modulator
             bool hatched = (box.hatching > 0 &&
@@ -510,20 +512,20 @@ contract TinyBoxes is ERC721, VRFConsumerBase {
 
         // add shapes
         for (uint256 i = 0; i < box.shapes; i++) {
-            Shape memory shape = shapes[i.add(mod.stack).mod(box.shapes)];
+            Shape memory shape = shapes[i.add(modStatic.stack).mod(box.shapes)];
             // add a rectangle with given position, size and color to the SVG markup
             Buffer.rect(buffer, shape.position, shape.size, shape.color);
         }
 
         // modulate mirroring and scaling transforms
         box.mirrorPositions[0] = int16(
-            uint256(box.mirrorPositions[0]).add(mod.mirror[0])
+            uint256(box.mirrorPositions[0]).add(modStatic.mirror[0])
         );
         box.mirrorPositions[1] = int16(
-            uint256(box.mirrorPositions[1]).add(mod.mirror[1])
+            uint256(box.mirrorPositions[1]).add(modStatic.mirror[1])
         );
         box.mirrorPositions[2] = int16(
-            uint256(box.mirrorPositions[2]).add(mod.mirror[2])
+            uint256(box.mirrorPositions[2]).add(modStatic.mirror[2])
         );
 
         // generate the footer with mirroring and scale transforms
