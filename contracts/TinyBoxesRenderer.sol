@@ -253,7 +253,7 @@ abstract contract TinyBoxesRenderer {
      * @param _id of token
      * @param box TinyBox data structure
      * @param frame number to render
-     * @return the SVG graphiccs of the token
+     * @return buffer of the SVG graphics markup of the token
      */
     function perpetualRenderer(
         uint256 _id,
