@@ -237,13 +237,18 @@ abstract contract TinyBoxesRenderer {
             size: [0, 0],
             mirror: [0, 0, 0]
         });
+        // apply animation based on animation, frame and shape values
         if (animation == 0) {
+            // shift the shapes color indexes
             mod.color = uint8(frame);
         } else if (animation == 1) {
+            // shift the starting index of hatched shapes
             mod.hatch = uint8(frame);
         } else if (animation == 2) {
+            // shift the stacking order of the shapes
             mod.stack = uint8(frame);
         } else if (animation == 3) {
+            // shift mirror position 0
             mod.mirror[0] = uint8(frame);
         }
     }
