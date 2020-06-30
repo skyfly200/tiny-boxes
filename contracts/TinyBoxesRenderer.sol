@@ -275,6 +275,7 @@ abstract contract TinyBoxesRenderer {
             colorValues[i] = _generateColor(pool, _id);
 
         // generate an array of shapes
+        uint256 shapeCount = box.shapes;
         Modulation memory mod;
         Shape[] memory shapes = new Shape[](box.shapes);
         for (uint256 i = 0; i < box.shapes; i++) {
@@ -290,29 +291,26 @@ abstract contract TinyBoxesRenderer {
                     uint256(box.size[j]).add(mod.sizeRange[j])
                 );
             }
+            // pick a random color from the generated colors list
+            // modulate colors by colorShift
+            uint256 color = colorValues[uint256(
+                Random.uniform(pool, 0, int256(uint256(shapeCount).sub(1)))
+            )
+                .add(mod.color)
+                .mod(shapeCount)];
             // offset hatching index start by hatch modulator
-            bool hatched = (box.hatching > 0 &&
+            bool hatching = (box.hatching > 0 &&
                 i.add(mod.hatch).mod(box.hatching) == 0);
             // generate a shapes position and size using box parameters
             (
                 int256[2] memory position,
                 uint256[2] memory size
-            ) = _generateShape(pool, box.spacing, box.size, hatched);
+            ) = _generateShape(pool, box.spacing, box.size, hatching);
             // modulate the shape position and size
             position[0] = int256(uint256(position[0]).add(mod.position[0]));
             position[1] = int256(uint256(position[1]).add(mod.position[1]));
             size[0] = size[0].add(mod.size[0]);
             size[1] = size[1].add(mod.size[1]);
-            // pick a random color from the generated colors list
-            int256 randomColorSelection = Random.uniform(
-                pool,
-                0,
-                int256(uint256(box.shapes).sub(1))
-            );
-            // modulate colors by colorShift
-            uint256 color = colorValues[uint256(randomColorSelection)
-                .add(mod.color)
-                .mod(box.shapes)];
             // create a new shape and add it to the shapes list
             shapes[i] = Shape(position, size, color);
         }

@@ -27,6 +27,8 @@ export class TinyBoxes extends Contract {
 
     TOKEN_LIMIT(): TransactionObject<string>;
 
+    animator(): TransactionObject<string>;
+
     approve(to: string, tokenId: number | string): TransactionObject<void>;
 
     balanceOf(owner: string): TransactionObject<string>;
@@ -44,6 +46,11 @@ export class TinyBoxes extends Contract {
 
     currentPrice(): TransactionObject<string>;
 
+    fulfillRandomness(
+      requestId: string | number[],
+      randomness: number | string
+    ): TransactionObject<void>;
+
     getApproved(tokenId: number | string): TransactionObject<string>;
 
     isApprovedForAll(
@@ -53,12 +60,15 @@ export class TinyBoxes extends Contract {
 
     name(): TransactionObject<string>;
 
+    nonces(arg0: string | number[]): TransactionObject<string>;
+
     ownerOf(tokenId: number | string): TransactionObject<string>;
 
     perpetualRenderer(
       _id: number | string,
       box: {
         seed: number | string;
+        randomness: number | string;
         animation: number | string;
         shapes: number | string;
         colors: number | string;
@@ -73,6 +83,12 @@ export class TinyBoxes extends Contract {
     ): TransactionObject<string>;
 
     priceAt(_id: number | string): TransactionObject<string>;
+
+    requestRandomness(
+      _keyHash: string | number[],
+      _fee: number | string,
+      _seed: number | string
+    ): TransactionObject<string>;
 
     safeTransferFrom(
       from: string,
@@ -151,6 +167,8 @@ export class TinyBoxes extends Contract {
       to: string,
       tokenId: number | string
     ): TransactionObject<void>;
+
+    updateURI(_id: number | string, _uri: string): TransactionObject<void>;
   };
   events: {
     Approval: ContractEvent<{
