@@ -259,9 +259,9 @@ abstract contract TinyBoxesRenderer {
         uint256 _id,
         TinyBox memory box,
         uint256 frame
-    ) public view returns (string memory) {
-        // initialize an empty buffer
-        bytes memory buffer = new bytes(8192);
+    ) public view returns (bytes memory buffer) {
+        // initialize an empty buffer for the SVG markup
+        buffer = new bytes(8192);
 
         // write the document header to the SVG buffer
         Buffer.append(buffer, header);
@@ -274,17 +274,13 @@ abstract contract TinyBoxesRenderer {
         for (uint256 i = 0; i < box.colors; i++)
             colorValues[i] = _generateColor(pool, _id);
 
-        // generate shapes
-        Modulation memory modStatic;
+        // generate an array of shapes
+        Modulation memory mod;
         Shape[] memory shapes = new Shape[](box.shapes);
         for (uint256 i = 0; i < box.shapes; i++) {
             // calculate the animation modulators based on frames and animation id
-            Modulation memory mod = _calculateMods(box.animation, frame, i);
-            modStatic = mod;
+            mod = _calculateMods(box.animation, frame, i);
 
-            // offset hatching index start by hatch modulator
-            bool hatched = (box.hatching > 0 &&
-                i.add(mod.hatch).mod(box.hatching) == 0);
             // modulate shape generator input parameters
             for (uint256 j = 0; j < 4; j++) {
                 box.spacing[j] = uint16(
@@ -294,6 +290,9 @@ abstract contract TinyBoxesRenderer {
                     uint256(box.size[j]).add(mod.sizeRange[j])
                 );
             }
+            // offset hatching index start by hatch modulator
+            bool hatched = (box.hatching > 0 &&
+                i.add(mod.hatch).mod(box.hatching) == 0);
             // generate a shapes position and size using box parameters
             (
                 int256[2] memory position,
@@ -320,20 +319,20 @@ abstract contract TinyBoxesRenderer {
 
         // add shapes
         for (uint256 i = 0; i < box.shapes; i++) {
-            Shape memory shape = shapes[i.add(modStatic.stack).mod(box.shapes)];
+            Shape memory shape = shapes[i.add(mod.stack).mod(box.shapes)];
             // add a rectangle with given position, size and color to the SVG markup
             Buffer.rect(buffer, shape.position, shape.size, shape.color);
         }
 
         // modulate mirroring and scaling transforms
         box.mirrorPositions[0] = int16(
-            uint256(box.mirrorPositions[0]).add(modStatic.mirror[0])
+            uint256(box.mirrorPositions[0]).add(mod.mirror[0])
         );
         box.mirrorPositions[1] = int16(
-            uint256(box.mirrorPositions[1]).add(modStatic.mirror[1])
+            uint256(box.mirrorPositions[1]).add(mod.mirror[1])
         );
         box.mirrorPositions[2] = int16(
-            uint256(box.mirrorPositions[2]).add(modStatic.mirror[2])
+            uint256(box.mirrorPositions[2]).add(mod.mirror[2])
         );
 
         // generate the footer with mirroring and scale transforms
@@ -342,7 +341,7 @@ abstract contract TinyBoxesRenderer {
             _generateFooter(box.mirrors, box.mirrorPositions, box.scale)
         );
 
-        // return an SVG file as string
-        return Buffer.toString(buffer);
+        // return the SVG markup buffer
+        return buffer;
     }
 }

@@ -314,7 +314,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
             scale: uint16(dials[12]),
             mirrors: mirrors
         });
-        return perpetualRenderer(_id, box, 0);
+        return Buffer.toString(perpetualRenderer(_id, box, 0));
     }
 
     /**
@@ -329,7 +329,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
         returns (string memory)
     {
         TinyBox memory box = boxes[_id];
-        return perpetualRenderer(_id, box, _frame);
+        return Buffer.toString(perpetualRenderer(_id, box, _frame));
     }
 
     /**
