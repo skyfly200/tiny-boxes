@@ -154,6 +154,8 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
 
         // increment the id counter
         _tokenIds.increment();
+
+        return _requestId;
     }
 
     /**
