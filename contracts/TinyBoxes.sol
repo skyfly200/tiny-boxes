@@ -163,7 +163,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
         }
 
         // convert user seed from string to uint
-        uint256 seed = Random.stringToUint(_seed);
+        //uint256 seed = Random.stringToUint(_seed);
 
         // create a new box object
         TinyBox memory box = TinyBox(); /*{
