@@ -98,21 +98,6 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
     }
 
     /**
-     * @dev Accept incoming LINK ERC20+677 tokens, unpack bytes data and run create with results
-     * @param from address of token sender
-     * @param amount of tokens transfered
-     * @param data of token to create
-     * @return success (token recieved) boolean value
-     */
-    function onTokenTransfer(
-        address from,
-        uint256 amount,
-        bytes data
-    ) external onlyLINK returns (bool) {
-        return true;
-    }
-
-    /**
      * @dev Withdraw LINK tokens from the contract balance to contract owner
      * @param amount of link to withdraw (in smallest divisions of 10**18)
      */
@@ -141,6 +126,29 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
     }
 
     /**
+     * @dev Accept incoming LINK ERC20+677 tokens, unpack bytes data and run create with results
+     * @param from address of token sender
+     * @param amount of tokens transfered
+     * @param data of token to create
+     * @return success (token recieved) boolean value
+     */
+    function onTokenTransfer(
+        address from,
+        uint256 amount,
+        bytes data
+    ) external onlyLINK returns (bool) {
+        /** TODO:
+            - get currentPrice for a token 
+            - retrieve ETH/LINK price feed
+            - require amount >= LINK/ETH price * token price in ETH
+            - return any tokens overpayed
+            - unpack parameters from bytes data into a 
+            - call createBox (needs to be a nonpayable internal version)
+        */
+        return true;
+    }
+
+    /**
      * @dev Create a new TinyBox Token
      * @param _seed of token
      * @param counts of token colors & shapes
@@ -153,21 +161,26 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
         int16[13] calldata dials,
         bool[3] calldata mirrors
     ) external payable {
+        // make sure caller is never the 0 address
         require(
             msg.sender != address(0),
             "token recipient man not be the zero address"
         );
+        // ensure we still have not reached the cap
         require(
-            totalSupply() < TOKEN_LIMIT,
+            _tokenIds.current() < TOKEN_LIMIT,
             "ART SALE IS OVER. Tinyboxes are now only available on the secondary market."
         );
 
-        if (totalSupply() < ARTIST_PRINTS) {
+        // if still minting the first
+        if (_tokenIds.current() < ARTIST_PRINTS) {
+            // check creator is authorized
             require(
                 msg.sender == address(creator),
                 "Only the creator can mint the alpha token. Wait your turn FFS"
             );
         } else {
+            // make sure all later calls pay enough and get change
             uint256 amount = currentPrice();
             require(msg.value >= amount, "insuficient payment"); // return if they dont pay enough
             if (msg.value > amount) msg.sender.transfer(msg.value - amount); // give change if they over pay
@@ -187,6 +200,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
         uint256 seedVRF = uint256(
             keccak256(abi.encode(seed, blockhash(block.number)))
         );
+
         // send VRF request
         bytes32 _requestId = requestRandomness(KEY_HASH, fee, seedVRF);
 
