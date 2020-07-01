@@ -155,23 +155,17 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
      * @param dials of token renderer
      * @param mirrors active boolean of token
      */
-    function createBox(
+    function buy(
         string calldata _seed,
         uint8[2] calldata counts,
         int16[13] calldata dials,
         bool[3] calldata mirrors
     ) external payable {
-        // make sure caller is never the 0 address
-        require(
-            msg.sender != address(0),
-            "token recipient man not be the zero address"
-        );
         // ensure we still have not reached the cap
         require(
             _tokenIds.current() < TOKEN_LIMIT,
             "ART SALE IS OVER. Tinyboxes are now only available on the secondary market."
         );
-
         // if still minting the first
         if (_tokenIds.current() < ARTIST_PRINTS) {
             // check creator is authorized
@@ -187,28 +181,11 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
             artmuseum.transfer(amount); // send the payment amount to the artmuseum account
         }
 
-        // ensure we have enough LINK token in the contract to pay for VRF
-        require(
-            LINK.balanceOf(address(this)) > fee,
-            "Not enough LINK for a VRF request"
-        );
-
         // convert user seed from string to uint
         uint256 seed = Random.stringToUint(_seed);
 
-        // Hash user seed and blockhash for VRFSeed
-        uint256 seedVRF = uint256(
-            keccak256(abi.encode(seed, blockhash(block.number)))
-        );
-
-        // send VRF request
-        bytes32 _requestId = requestRandomness(KEY_HASH, fee, seedVRF);
-
-        // map requestId to next token id and owner
-        requests[_requestId] = Request(msg.sender, _tokenIds.current());
-
-        // register the new box data
-        boxes[_tokenIds.current()] = TinyBox({
+        // create a new box object
+        TinyBox box = TinyBox({
             seed: seed,
             randomness: 0,
             animation: 0,
@@ -232,7 +209,41 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
             mirrors: mirrors
         });
 
-        // increment the id counter
+        // register the new box
+        createBox(box);
+    }
+
+    /**
+     * @dev Create a new TinyBox Token
+     * @param box object of token data
+     */
+    function createBox(TinyBox box) internal {
+        // make sure caller is never the 0 address
+        require(
+            msg.sender != address(0),
+            "token recipient man not be the zero address"
+        );
+        // ensure we have enough LINK token in the contract to pay for VRF
+        require(
+            LINK.balanceOf(address(this)) > fee,
+            "Not enough LINK for a VRF request"
+        );
+
+        // register the new box data
+        boxes[_tokenIds.current()] = box;
+
+        // Hash user seed and blockhash for VRFSeed
+        uint256 seedVRF = uint256(
+            keccak256(abi.encode(box.seed, blockhash(block.number)))
+        );
+
+        // send VRF request
+        bytes32 _requestId = requestRandomness(KEY_HASH, fee, seedVRF);
+
+        // map VRF requestId to next token id and owner
+        requests[_requestId] = Request(msg.sender, _tokenIds.current());
+
+        // increment the id counter for the next call
         _tokenIds.increment();
 
         return _requestId;
