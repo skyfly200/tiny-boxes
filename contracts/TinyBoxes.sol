@@ -23,7 +23,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
     uint256 public constant ARTIST_PRINTS = 0;
     int256 public constant ANIMATION_COUNT = 1;
     address public animator;
-    address public creator;
+    address public deployer;
     address payable artmuseum = 0x027Fb48bC4e3999DCF88690aEbEBCC3D1748A0Eb; //lolz
 
     // Chainlink VRF Stuff
@@ -51,7 +51,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
         ERC721("TinyBoxes", "[#][#]")
         VRFConsumerBase(VRF_COORDINATOR, LINK_TOKEN_ADDRESS)
     {
-        creator = msg.sender;
+        deployer = msg.sender;
         animator = _animator;
         LINK = LinkTokenInterface(LINK_TOKEN_ADDRESS);
     }
@@ -76,12 +76,12 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
     }
 
     /**
-     * @notice Modifier to only allow owner to call a function
+     * @notice Modifier to only allow contract deployer to call a function
      */
-    modifier onlyOwner {
+    modifier onlyDeployer {
         require(
-            msg.sender == owner,
-            "Only the contract owner may call this function"
+            msg.sender == deployer,
+            "Only the contract deployer may call this function"
         );
         _;
     }
@@ -104,7 +104,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
     function withdrawLINK(uint256 amount) external returns (bool) {
         // ensure the address is approved for withdraws
         require(
-            msg.sender == owner || mayWithdraw[msg.sender],
+            msg.sender == deployer || mayWithdraw[msg.sender],
             "Only the contract owner may withdraw LINK"
         );
         // ensure we have at least that much LINK
@@ -112,15 +112,15 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
             LINK.balanceOf(address(this)) >= amount,
             "Not enough LINK for requested withdraw"
         );
-        // send amount of LINK tokens to owner address
-        return LINK.transfer(owner, amount);
+        // send amount of LINK tokens to the transaction sender
+        return LINK.transfer(msg.sender, amount);
     }
 
     /**
      * @dev Approve an address for LINK withdraws
-     * @param from address of token sender
+     * @param account address to approve
      */
-    function aproveForWithdraw(address account) external onlyOwner {
+    function aproveForWithdraw(address account) external onlyDeployer {
         // set account address to true in witdraw aproval mapping
         mayWithdraw[account] = true;
     }
@@ -135,7 +135,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
     function onTokenTransfer(
         address from,
         uint256 amount,
-        bytes data
+        bytes calldata data
     ) external onlyLINK returns (bool) {
         /** TODO:
             - get currentPrice for a token 
@@ -154,13 +154,14 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
      * @param counts of token colors & shapes
      * @param dials of token renderer
      * @param mirrors active boolean of token
+     * @return _requestId of the VRF call
      */
     function buy(
         string calldata _seed,
         uint8[2] calldata counts,
         int16[13] calldata dials,
         bool[3] calldata mirrors
-    ) external payable {
+    ) external payable returns (bytes32) {
         // ensure we still have not reached the cap
         require(
             _tokenIds.current() < TOKEN_LIMIT,
@@ -168,9 +169,9 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
         );
         // if still minting the first
         if (_tokenIds.current() < ARTIST_PRINTS) {
-            // check creator is authorized
+            // check the address is authorized
             require(
-                msg.sender == address(creator),
+                msg.sender == deployer,
                 "Only the creator can mint the alpha token. Wait your turn FFS"
             );
         } else {
@@ -185,7 +186,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
         uint256 seed = Random.stringToUint(_seed);
 
         // create a new box object
-        TinyBox box = TinyBox({
+        TinyBox memory box = TinyBox({
             seed: seed,
             randomness: 0,
             animation: 0,
@@ -210,14 +211,15 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
         });
 
         // register the new box
-        createBox(box);
+        return createBox(box);
     }
 
     /**
      * @dev Create a new TinyBox Token
      * @param box object of token data
+     * @return _requestId of the VRF call
      */
-    function createBox(TinyBox box) internal {
+    function createBox(TinyBox memory box) internal returns (bytes32) {
         // make sure caller is never the 0 address
         require(
             msg.sender != address(0),
