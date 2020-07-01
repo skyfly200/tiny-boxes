@@ -162,11 +162,31 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
             if (amount > price) LINK.transfer(from, amount - price); // give change if they over pay
         }
 
+        // create variables to unpack data into
+        uint256 seed = 0;
+        uint256[2] counts = [1, 1];
+        int256[13] dials = [
+            100,
+            100,
+            3,
+            3,
+            100,
+            200,
+            100,
+            200,
+            3,
+            750,
+            1200,
+            2400,
+            100
+        ];
+        bool[3] mirrors = [true, true, true];
+
         // convert user seed from string to uint
         //uint256 seed = Random.stringToUint(_seed);
 
         // create a new box object
-        TinyBox memory box = TinyBox(); /*{
+        TinyBox memory box = TinyBox({
             seed: seed,
             randomness: 0,
             animation: 0,
@@ -189,7 +209,6 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
             scale: uint16(dials[12]),
             mirrors: mirrors
         });
-        */
 
         // register the new box
         createBox(box);
