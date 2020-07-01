@@ -40,6 +40,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
 
     mapping(uint256 => TinyBox) internal boxes;
     mapping(bytes32 => Request) internal requests;
+    mapping(address => bool) internal mayWithdraw;
 
     /**
      * @dev Contract constructor.
@@ -75,6 +76,17 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
     }
 
     /**
+     * @notice Modifier to only allow owner to call a function
+     */
+    modifier onlyOwner {
+        require(
+            msg.sender == owner,
+            "Only the contract owner may call this function"
+        );
+        _;
+    }
+
+    /**
      * @notice Modifier to only calls from the LINK token address
      */
     modifier onlyLINK {
@@ -105,8 +117,9 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
      * @param amount of link to withdraw (in smallest divisions of 10**18)
      */
     function withdrawLINK(uint256 amount) external returns (bool) {
+        // ensure the address is approved for withdraws
         require(
-            msg.sender == owner,
+            msg.sender == owner || mayWithdraw[msg.sender],
             "Only the contract owner may withdraw LINK"
         );
         // ensure we have at least that much LINK
@@ -116,6 +129,15 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
         );
         // send amount of LINK tokens to owner address
         return LINK.transfer(owner, amount);
+    }
+
+    /**
+     * @dev Approve an address for LINK withdraws
+     * @param from address of token sender
+     */
+    function aproveForWithdraw(address account) external onlyOwner {
+        // set account address to true in witdraw aproval mapping
+        mayWithdraw[account] = true;
     }
 
     /**
