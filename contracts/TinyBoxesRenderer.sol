@@ -278,7 +278,7 @@ abstract contract TinyBoxesRenderer {
         Buffer.append(buffer, header);
 
         // initilize RNG with the specified seed and blocks 0 through 1
-        bytes32[] memory pool = Random.init(0, 1, box.seed);
+        bytes32[] memory pool = Random.init(0, 1, box.randomness);
 
         // generate colors
         uint256[] memory colorValues = new uint256[](box.colors);
