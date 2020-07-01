@@ -138,13 +138,62 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
         bytes calldata data
     ) external onlyLINK returns (bool) {
         /** TODO:
-            - get currentPrice for a token 
             - retrieve ETH/LINK price feed
-            - require amount >= LINK/ETH price * token price in ETH
-            - return any tokens overpayed
-            - unpack parameters from bytes data into a 
-            - call createBox (needs to be a nonpayable internal version)
+            - use SafeMath
+            - unpack parameters from bytes data into a struct
         */
+        // ensure we still have not reached the cap
+        require(
+            _tokenIds.current() < TOKEN_LIMIT,
+            "ART SALE IS OVER. Tinyboxes are now only available on the secondary market."
+        );
+        // if still minting the first
+        if (_tokenIds.current() < ARTIST_PRINTS) {
+            // check the address is authorized
+            require(
+                msg.sender == deployer,
+                "Only the creator can mint the alpha token. Wait your turn FFS"
+            );
+        } else {
+            // make sure all later calls pay enough and get change
+            uint256 conversion = 49; // LINK/ETH price feed
+            uint256 price = currentPrice() * conversion;
+            require(amount >= price, "insuficient payment"); // return if they dont pay enough
+            if (amount > price) LINK.transfer(from, amount - price); // give change if they over pay
+        }
+
+        // convert user seed from string to uint
+        uint256 seed = Random.stringToUint(_seed);
+
+        // create a new box object
+        TinyBox memory box = TinyBox(); /*{
+            seed: seed,
+            randomness: 0,
+            animation: 0,
+            shapes: counts[1],
+            colors: counts[0],
+            spacing: [
+                uint16(dials[0]),
+                uint16(dials[1]),
+                uint16(dials[2]),
+                uint16(dials[3])
+            ],
+            size: [
+                uint16(dials[4]),
+                uint16(dials[5]),
+                uint16(dials[6]),
+                uint16(dials[7])
+            ],
+            hatching: uint16(dials[8]),
+            mirrorPositions: [dials[9], dials[10], dials[11]],
+            scale: uint16(dials[12]),
+            mirrors: mirrors
+        });
+        */
+
+        // register the new box
+        createBox(box);
+
         return true;
     }
 
