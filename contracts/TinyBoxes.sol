@@ -75,6 +75,32 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
     }
 
     /**
+     * @notice Modifier to only calls from the LINK token address
+     */
+    modifier onlyLINK {
+        require(
+            msg.sender == LINK_TOKEN_ADDRESS,
+            "URI update only allowed by Animator"
+        );
+        _;
+    }
+
+    /**
+     * @dev Accept incoming LINK ERC20+677 tokens, unpack bytes data and run create with results
+     * @param from address of token sender
+     * @param amount of tokens transfered
+     * @param data of token to create
+     * @return success (token recieved) boolean value
+     */
+    function onTokenTransfer(
+        address from,
+        uint256 amount,
+        bytes data
+    ) external onlyLINK returns (bool success) {
+        return true;
+    }
+
+    /**
      * @dev Create a new TinyBox Token
      * @param _seed of token
      * @param counts of token colors & shapes
