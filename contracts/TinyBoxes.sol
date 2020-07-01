@@ -96,8 +96,26 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
         address from,
         uint256 amount,
         bytes data
-    ) external onlyLINK returns (bool success) {
+    ) external onlyLINK returns (bool) {
         return true;
+    }
+
+    /**
+     * @dev Withdraw LINK tokens from the contract balance to contract owner
+     * @param amount of link to withdraw (in smallest divisions of 10**18)
+     */
+    function withdrawLINK(uint256 amount) external returns (bool) {
+        require(
+            msg.sender == owner,
+            "Only the contract owner may withdraw LINK"
+        );
+        // ensure we have at least that much LINK
+        require(
+            LINK.balanceOf(address(this)) >= amount,
+            "Not enough LINK for requested withdraw"
+        );
+        // send amount of LINK tokens to owner address
+        return LINK.transfer(owner, amount);
     }
 
     /**
