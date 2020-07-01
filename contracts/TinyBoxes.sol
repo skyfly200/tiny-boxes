@@ -239,6 +239,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
      * @dev Lookup all token data in one call
      * @param _id for which we want token data
      * @return seed of token
+     * @return randomness provided by Chainlink VRF
      * @return animation of token
      * @return colors of token
      * @return shapes of token
@@ -254,6 +255,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
         view
         returns (
             uint256 seed,
+            uint256 randomness,
             uint8 animation,
             uint8 colors,
             uint8 shapes,
@@ -267,6 +269,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
     {
         TinyBox memory box = boxes[_id];
         seed = box.seed;
+        randomness = box.randomness;
         animation = box.animation;
         colors = box.colors;
         shapes = box.shapes;
