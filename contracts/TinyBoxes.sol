@@ -164,23 +164,23 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
 
         // create variables to unpack data into
         uint256 seed = 0;
-        uint256[2] counts = [1, 1];
-        int256[13] dials = [
-            100,
-            100,
-            3,
-            3,
-            100,
-            200,
-            100,
-            200,
-            3,
-            750,
-            1200,
-            2400,
-            100
+        uint8[2] memory counts = [1, 1];
+        int16[13] memory dials = [
+            int16(100),
+            int16(100),
+            int16(3),
+            int16(3),
+            int16(100),
+            int16(200),
+            int16(100),
+            int16(200),
+            int16(3),
+            int16(750),
+            int16(1200),
+            int16(2400),
+            int16(100)
         ];
-        bool[3] mirrors = [true, true, true];
+        bool[3] memory mirrors = [true, true, true];
 
         // convert user seed from string to uint
         //uint256 seed = Random.stringToUint(_seed);
