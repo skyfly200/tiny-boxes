@@ -22,6 +22,10 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
     AggregatorInterface internal refLink;
     AggregatorInterface internal refEth;
 
+    uint256 public linkPremium = 2000; // in percent * 1000
+    uint256 public startPrice = 160000000000000000; // in wei
+    uint256 public priceIncrease = 1000000000000000; // in wei
+
     uint256 public constant TOKEN_LIMIT = 1024;
     uint256 public constant ARTIST_PRINTS = 0;
     int256 public constant ANIMATION_COUNT = 1;
@@ -111,6 +115,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
      * @dev Withdraw LINK tokens from the contract balance to contract owner
      * @param amount of link to withdraw (in smallest divisions of 10**18)
      */
+    // TODO: make a version that checks to see we have enough link to fullfill randomness for remaining unminted tokens
     function withdrawLINK(uint256 amount) external returns (bool) {
         // ensure the address is approved for withdraws
         require(
@@ -397,7 +402,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
         uint256 rateLink = refLink.latestAnswer();
         // TODO: figure out correct algo for conversion
         // TODO: switch to a single LINK/ETH feed on Ropsten
-        priceLink = priceEth * rateEth * rateLink;
+        priceLink = priceEth * rateEth * rateLink * linkPremium;
     }
 
     /**
@@ -414,8 +419,8 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
      * @return price in wei of token id
      */
     function priceAt(uint256 _id) public pure returns (uint256 price) {
-        uint256 tokeninflation = (_id / 2) * 1000000000000000; // add .001 eth inflation per token
-        price = tokeninflation + 160000000000000000; // in wei, starting price .16 eth, ending price .2 eth
+        uint256 tokeninflation = (_id / 2) * priceIncrease; // add .001 eth to price per 2 tokens minted
+        price = startPrice + tokeninflation;
     }
 
     /**
