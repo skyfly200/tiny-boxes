@@ -31,20 +31,22 @@ export class TinyBoxes extends Contract {
 
     approve(to: string, tokenId: number | string): TransactionObject<void>;
 
+    aproveForWithdraw(account: string): TransactionObject<void>;
+
     balanceOf(owner: string): TransactionObject<string>;
 
     baseURI(): TransactionObject<string>;
 
-    createBox(
+    buy(
       _seed: string,
       counts: (number | string)[],
       dials: (number | string)[],
       mirrors: boolean[]
-    ): TransactionObject<void>;
-
-    creator(): TransactionObject<string>;
+    ): TransactionObject<string>;
 
     currentPrice(): TransactionObject<string>;
+
+    deployer(): TransactionObject<string>;
 
     fulfillRandomness(
       requestId: string | number[],
@@ -61,6 +63,12 @@ export class TinyBoxes extends Contract {
     name(): TransactionObject<string>;
 
     nonces(arg0: string | number[]): TransactionObject<string>;
+
+    onTokenTransfer(
+      from: string,
+      amount: number | string,
+      data: string | number[]
+    ): TransactionObject<boolean>;
 
     ownerOf(tokenId: number | string): TransactionObject<string>;
 
@@ -117,6 +125,7 @@ export class TinyBoxes extends Contract {
       _id: number | string
     ): TransactionObject<{
       seed: string;
+      randomness: string;
       animation: string;
       colors: string;
       shapes: string;
@@ -131,11 +140,12 @@ export class TinyBoxes extends Contract {
       2: string;
       3: string;
       4: string;
-      5: string[];
+      5: string;
       6: string[];
       7: string[];
-      8: boolean[];
-      9: string;
+      8: string[];
+      9: boolean[];
+      10: string;
     }>;
 
     tokenFrame(
@@ -169,6 +179,8 @@ export class TinyBoxes extends Contract {
     ): TransactionObject<void>;
 
     updateURI(_id: number | string, _uri: string): TransactionObject<void>;
+
+    withdrawLINK(amount: number | string): TransactionObject<boolean>;
   };
   events: {
     Approval: ContractEvent<{
