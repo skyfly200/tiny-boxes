@@ -10,7 +10,8 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "./TinyBoxesRenderer.sol";
 
-// Chainlink VRF Base
+// Chainlink Contracts
+import "./chainlink/interfaces/AggregatorInterface.sol";
 import "./chainlink/VRFConsumerBase.sol";
 
 contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
@@ -18,6 +19,8 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIds;
+    AggregatorInterface internal refLink;
+    AggregatorInterface internal refEth;
 
     uint256 public constant TOKEN_LIMIT = 1024;
     uint256 public constant ARTIST_PRINTS = 0;
@@ -46,7 +49,11 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
      * @dev Contract constructor.
      * @notice Constructor inherits VRFConsumerBase
      */
-    constructor(address _animator)
+    constructor(
+        address _feedLink,
+        address _feedEth,
+        address _animator
+    )
         public
         ERC721("TinyBoxes", "[#][#]")
         VRFConsumerBase(VRF_COORDINATOR, LINK_TOKEN_ADDRESS)
@@ -54,6 +61,9 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
         deployer = msg.sender;
         animator = _animator;
         LINK = LinkTokenInterface(LINK_TOKEN_ADDRESS);
+        //TODO: change to one aggrigator for ETH/LINK once on Rosten and for Mainnet
+        refLink = AggregatorInterface(_feedLink); // init LINK/USD aggrigator contract address
+        refEth = AggregatorInterface(_feedEth); // init ETH/USD aggrigator contract address
     }
 
     /**
@@ -361,17 +371,49 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
     }
 
     /**
+     * @dev Get the current price of a token in LINK (Chainlink Token)
+     * @return price in LINK of a token currently
+     */
+    function currentLinkPrice() public view returns (uint256 price) {
+        price = linkPriceAt(_tokenIds.current());
+    }
+
+    /**
+     * @dev Get the price of token number _id in LINK (Chainlink Token)
+     * @return price in LINK of a token currently
+     */
+    function linkPriceAt(uint256 _id) public view returns (uint256 price) {
+        price = ethToLink(priceAt(_id));
+    }
+
+    /**
+     * @dev Convert a price in Eth to one in LINK (Chainlink Token)
+     * @return price in LINK eqivalent to the provided Eth price
+     */
+    function ethToLink(uint256 priceEth)
+        public
+        view
+        returns (uint256 priceLink)
+    {
+        uint256 rateEth = refEth.latestAnswer();
+        uint256 rateLink = refLink.latestAnswer();
+        // TODO: figure out correct algo for conversion
+        // TODO: switch to a single LINK/ETH feed on Ropsten
+        priceLink = priceEth * rateEth * rateLink;
+    }
+
+    /**
      * @dev Get the current price of a token
      * @return price in wei of a token currently
      */
     function currentPrice() public view returns (uint256 price) {
-        price = priceAt(totalSupply());
+        price = priceAt(_tokenIds.current());
     }
 
     /**
      * @dev Get the price of a specific token id
      * @param _id of the token
-     * @return price in wei of that token
+     * @return price in wei of token id
      */
     function priceAt(uint256 _id) public pure returns (uint256 price) {
         uint256 tokeninflation = (_id / 2) * 1000000000000000; // add .001 eth inflation per token
