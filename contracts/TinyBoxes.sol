@@ -148,7 +148,6 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
         bytes calldata data
     ) external onlyLINK returns (bool) {
         /** TODO:
-            - retrieve ETH/LINK price feed
             - use SafeMath
             - unpack parameters from bytes data into a struct
         */
@@ -166,8 +165,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
             );
         } else {
             // make sure all later calls pay enough and get change
-            uint256 conversion = 49; // LINK/ETH price feed
-            uint256 price = currentPrice() * conversion;
+            uint256 price = currentLinkPrice();
             require(amount >= price, "insuficient payment"); // return if they dont pay enough
             if (amount > price) LINK.transfer(from, amount - price); // give change if they over pay
         }
