@@ -34,7 +34,7 @@ contract TinyBoxes is
 
     uint256 public constant TOKEN_LIMIT = 1024;
     uint256 public constant ARTIST_PRINTS = 0;
-    int256 public constant ANIMATION_COUNT = 5;
+    uint256 public constant ANIMATION_COUNT = 5;
     address public animator;
     address public deployer;
     address payable artmuseum = 0x027Fb48bC4e3999DCF88690aEbEBCC3D1748A0Eb; //lolz
@@ -366,7 +366,9 @@ contract TinyBoxes is
 
         // TODO - generate animation with RNG weighted non uniformly for varying rarity
         // maybe use log base 2 of a number in a range 2 to the animation counts
-        uint8 animation = uint8(Random.uniform(pool, 0, ANIMATION_COUNT - 1));
+        uint8 animation = uint8(
+            Random.uniform(pool, 0, int256(ANIMATION_COUNT) - 1)
+        );
 
         // update box data relying on randomness
         boxes[creation.id].randomness = randomness;
