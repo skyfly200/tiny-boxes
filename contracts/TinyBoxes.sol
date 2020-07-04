@@ -27,6 +27,7 @@ contract TinyBoxes is
     Counters.Counter private _tokenIds;
     AggregatorInterface internal refLink;
     AggregatorInterface internal refEth;
+    LinkTokenInterface internal LINK_TOKEN;
 
     uint256 public linkPremium = 2000; // in percent * 1000
     uint256 public startPrice = 160000000000000000; // in wei
@@ -405,16 +406,14 @@ contract TinyBoxes is
      * @dev Convert a price in Eth to one in LINK (Chainlink Token)
      * @return price in LINK eqivalent to the provided Eth price
      */
-    function ethToLink(uint256 priceEth)
-        public
-        view
-        returns (uint256 priceLink)
-    {
+    function ethToLink(uint256 priceEth) public view returns (uint256 price) {
         // TODO: switch to a single LINK/ETH feed on Ropsten
-        uint256 rateEth = refEth.latestAnswer();
-        uint256 rateLink = refLink.latestAnswer();
-        uint256 conversion = (rateEth / rateLink);
-        priceLink = (priceEth * conversion * (100000 + linkPremium)) / 100000;
+        int256 rateEth = refEth.latestAnswer();
+        int256 rateLink = refLink.latestAnswer();
+        int256 conversion = (rateEth / rateLink);
+        price =
+            (priceEth * uint256(conversion) * (100000 + linkPremium)) /
+            100000;
     }
 
     /**
@@ -430,7 +429,7 @@ contract TinyBoxes is
      * @param _id of the token
      * @return price in wei of token id
      */
-    function priceAt(uint256 _id) public pure returns (uint256 price) {
+    function priceAt(uint256 _id) public view returns (uint256 price) {
         uint256 tokeninflation = (_id / 2) * priceIncrease; // add .001 eth to price per 2 tokens minted
         price = startPrice + tokeninflation;
     }

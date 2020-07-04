@@ -44,9 +44,13 @@ export class TinyBoxes extends Contract {
       mirrors: boolean[]
     ): TransactionObject<string>;
 
+    currentLinkPrice(): TransactionObject<string>;
+
     currentPrice(): TransactionObject<string>;
 
     deployer(): TransactionObject<string>;
+
+    ethToLink(priceEth: number | string): TransactionObject<string>;
 
     fulfillRandomness(
       requestId: string | number[],
@@ -59,6 +63,10 @@ export class TinyBoxes extends Contract {
       owner: string,
       operator: string
     ): TransactionObject<boolean>;
+
+    linkPremium(): TransactionObject<string>;
+
+    linkPriceAt(_id: number | string): TransactionObject<string>;
 
     name(): TransactionObject<string>;
 
@@ -92,6 +100,8 @@ export class TinyBoxes extends Contract {
 
     priceAt(_id: number | string): TransactionObject<string>;
 
+    priceIncrease(): TransactionObject<string>;
+
     requestRandomness(
       _keyHash: string | number[],
       _fee: number | string,
@@ -108,6 +118,8 @@ export class TinyBoxes extends Contract {
       operator: string,
       approved: boolean
     ): TransactionObject<void>;
+
+    startPrice(): TransactionObject<string>;
 
     supportsInterface(
       interfaceId: string | number[]
@@ -199,6 +211,9 @@ export class TinyBoxes extends Contract {
       1: string;
       2: boolean;
     }>;
+    ChainlinkCancelled: ContractEvent<string>;
+    ChainlinkFulfilled: ContractEvent<string>;
+    ChainlinkRequested: ContractEvent<string>;
     Transfer: ContractEvent<{
       from: string;
       to: string;
