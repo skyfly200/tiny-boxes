@@ -1,0 +1,14 @@
+{
+  "contracts": {},
+  "solidityLibs": {},
+  "proxies": {
+    "tiny-boxes/TinyBoxes": [
+      {
+        "address": "0x6B9b7F4752182A41c16c2C35e4d3be6336E83073",
+        "kind": "NonProxy",
+        "bytecodeHash": "b453d7844f55731d1636921acd0de038062c40239919eba079268e1ac6020f50"
+      }
+    ]
+  },
+  "manifestVersion": "2.2"
+}
