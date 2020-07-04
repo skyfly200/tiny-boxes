@@ -18,7 +18,7 @@ module.exports = {
           `https://ropsten.infura.io/v3/${projectId}`,
         ),
       gasPrice: 10e9,
-      gasLimit: 750000,
+      gasLimit: 1000000,
       networkId: '3',
     },
     rinkeby: {

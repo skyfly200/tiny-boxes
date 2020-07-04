@@ -50,8 +50,6 @@ export class TinyBoxes extends Contract {
 
     deployer(): TransactionObject<string>;
 
-    ethToLink(priceEth: number | string): TransactionObject<string>;
-
     fulfillRandomness(
       requestId: string | number[],
       randomness: number | string

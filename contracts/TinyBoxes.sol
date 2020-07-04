@@ -407,11 +407,9 @@ contract TinyBoxes is
      * @dev Convert a price in Eth to one in LINK (Chainlink Token)
      * @return price in LINK eqivalent to the provided Eth price
      */
-    function ethToLink(uint256 priceEth) public view returns (uint256 price) {
-        int256 rateLinkEth = refFeed.latestAnswer();
-        price =
-            ((priceEth / uint256(rateLinkEth)) * (100000 + linkPremium)) /
-            100000;
+    function ethToLink(uint256 priceEth) internal view returns (uint256 price) {
+        price = ((((priceEth * 10**18) / uint256(refFeed.latestAnswer())) *
+            ((10**5 + linkPremium))) / 10**5);
     }
 
     /**
