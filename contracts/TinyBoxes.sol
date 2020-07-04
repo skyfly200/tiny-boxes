@@ -34,7 +34,7 @@ contract TinyBoxes is
 
     uint256 public constant TOKEN_LIMIT = 1024;
     uint256 public constant ARTIST_PRINTS = 0;
-    int256 public constant ANIMATION_COUNT = 1;
+    int256 public constant ANIMATION_COUNT = 5;
     address public animator;
     address public deployer;
     address payable artmuseum = 0x027Fb48bC4e3999DCF88690aEbEBCC3D1748A0Eb; //lolz
