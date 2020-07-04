@@ -11,10 +11,16 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "./TinyBoxesRenderer.sol";
 
 // Chainlink Contracts
-import "./chainlink/interfaces/AggregatorInterface.sol";
+import "./chainlink/ChainlinkClient.sol";
 import "./chainlink/VRFConsumerBase.sol";
+import "./chainlink/interfaces/AggregatorInterface.sol";
 
-contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
+contract TinyBoxes is
+    ERC721,
+    VRFConsumerBase,
+    ChainlinkClient,
+    TinyBoxesRenderer
+{
     using SafeMath for uint256;
     using Counters for Counters.Counter;
 
@@ -54,9 +60,10 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
      * @notice Constructor inherits VRFConsumerBase
      */
     constructor(
+        address _animator,
+        address _link,
         address _feedLink,
-        address _feedEth,
-        address _animator
+        address _feedEth
     )
         public
         ERC721("TinyBoxes", "[#][#]")
@@ -64,10 +71,15 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
     {
         deployer = msg.sender;
         animator = _animator;
-        LINK = LinkTokenInterface(LINK_TOKEN_ADDRESS);
         //TODO: change to one aggrigator for ETH/LINK once on Rosten and for Mainnet
         refLink = AggregatorInterface(_feedLink); // init LINK/USD aggrigator contract address
         refEth = AggregatorInterface(_feedEth); // init ETH/USD aggrigator contract address
+        // Set the address for the LINK token to the public network address
+        // or use an address provided as a parameter if set
+        if (_link == address(0)) setPublicChainlinkToken();
+        else setChainlinkToken(_link);
+        // Init LINK token interface
+        LINK_TOKEN = LinkTokenInterface(chainlinkTokenAddress());
     }
 
     /**
@@ -124,11 +136,11 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
         );
         // ensure we have at least that much LINK
         require(
-            LINK.balanceOf(address(this)) >= amount,
+            LINK_TOKEN.balanceOf(address(this)) >= amount,
             "Not enough LINK for requested withdraw"
         );
         // send amount of LINK tokens to the transaction sender
-        return LINK.transfer(msg.sender, amount);
+        return LINK_TOKEN.transfer(msg.sender, amount);
     }
 
     /**
@@ -172,7 +184,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
             // make sure all later calls pay enough and get change
             uint256 price = currentLinkPrice();
             require(amount >= price, "insuficient payment"); // return if they dont pay enough
-            if (amount > price) LINK.transfer(from, amount - price); // give change if they over pay
+            if (amount > price) LINK_TOKEN.transfer(from, amount - price); // give change if they over pay
         }
 
         // create variables to unpack data into
@@ -308,7 +320,7 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
         );
         // ensure we have enough LINK token in the contract to pay for VRF
         require(
-            LINK.balanceOf(address(this)) > fee,
+            LINK_TOKEN.balanceOf(address(this)) > fee,
             "Not enough LINK for a VRF request"
         );
 
