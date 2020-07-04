@@ -43,6 +43,7 @@ abstract contract TinyBoxesRenderer {
         int256[2] position;
         uint256[2] size;
         uint256 color;
+        uint256 opacity;
     }
 
     struct Modulation {
@@ -325,14 +326,20 @@ abstract contract TinyBoxesRenderer {
             size[0] = size[0].add(mod.size[0]);
             size[1] = size[1].add(mod.size[1]);
             // create a new shape and add it to the shapes list
-            shapes[i] = Shape(position, size, color);
+            shapes[i] = Shape(position, size, color, 1000);
         }
 
-        // add shapes
+        // add shapes to markup
         for (uint256 i = 0; i < box.shapes; i++) {
             Shape memory shape = shapes[i.add(mod.stack).mod(box.shapes)];
             // add a rectangle with given position, size and color to the SVG markup
-            Buffer.rect(buffer, shape.position, shape.size, shape.color);
+            Buffer.rect(
+                buffer,
+                shape.position,
+                shape.size,
+                shape.color,
+                shape.opacity
+            );
         }
 
         // modulate mirroring and scaling transforms

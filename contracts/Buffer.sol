@@ -55,13 +55,14 @@ library Buffer {
         bytes memory buffer,
         int256[2] memory positions,
         uint256[2] memory size,
-        uint256 rgb
+        uint256 rgb,
+        uint256 opacity
     ) internal pure {
         require(hasCapacityFor(buffer, 102), "Buffer.rect: no capacity");
-        int256 xpos = positions[0];
-        int256 ypos = positions[1];
-        uint256 width = size[0];
-        uint256 height = size[1];
+        int256 {xpos, ypos} = positions;
+        uint256 {width, height} = size;
+        uint256 opacityWhole = opacity / 1000;
+        uint256 opacityDecimal = opacity % 1000;
         assembly {
             function numbx1(x, v) -> y {
                 // v must be in the closed interval [0, 9]
@@ -135,7 +136,11 @@ library Buffer {
             strIdx := numbu3(strIdx, height)
             strIdx := append(strIdx, '" style="fill:#', 15)
             strIdx := hexrgb(strIdx, rgb)
-            strIdx := append(strIdx, '; fill-opacity:1.0;"/>\n', 23)
+            strIdx := append(strIdx, '; fill-opacity:', 15)
+            strIdx := numbu3(strIdx, opacityWhole)
+            strIdx := append(strIdx, '.', 1)
+            strIdx := numbu3(strIdx, opacityDecimal)
+            strIdx := append(strIdx, ';"/>\n', 6)
             mstore(add(buffer, 32), sub(sub(strIdx, buffer), 64))
         }
     }
