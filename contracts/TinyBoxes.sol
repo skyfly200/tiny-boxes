@@ -398,11 +398,11 @@ contract TinyBoxes is ERC721, VRFConsumerBase, TinyBoxesRenderer {
         view
         returns (uint256 priceLink)
     {
+        // TODO: switch to a single LINK/ETH feed on Ropsten
         uint256 rateEth = refEth.latestAnswer();
         uint256 rateLink = refLink.latestAnswer();
-        // TODO: figure out correct algo for conversion
-        // TODO: switch to a single LINK/ETH feed on Ropsten
-        priceLink = priceEth * rateEth * rateLink * linkPremium;
+        uint256 conversion = (rateEth / rateLink);
+        priceLink = (priceEth * conversion * (100000 + linkPremium)) / 100000;
     }
 
     /**
