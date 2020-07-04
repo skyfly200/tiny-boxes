@@ -48,6 +48,7 @@ abstract contract TinyBoxesRenderer {
 
     struct Modulation {
         uint256 color;
+        uint256 opacity;
         uint256 hatch;
         uint256 stack;
         uint8[4] spacing;
@@ -232,6 +233,7 @@ abstract contract TinyBoxesRenderer {
         // set animation modifiers to default
         mod = Modulation({
             color: 0,
+            opacity: 0,
             hatch: 0,
             stack: 0,
             spacing: [0, 0, 0, 0],
@@ -325,14 +327,13 @@ abstract contract TinyBoxesRenderer {
             position[1] = int256(uint256(position[1]).add(mod.position[1]));
             size[0] = size[0].add(mod.size[0]);
             size[1] = size[1].add(mod.size[1]);
-            // create a new shape and add it to the shapes list
-            shapes[i] = Shape(position, size, color, 1000);
+            // modulate the opacity
+            uint256 opacity = 1000.add(mod.opacity);
+            shapes[i] = Shape(position, size, color, opacity);
         }
 
-        // add shapes to markup
         for (uint256 i = 0; i < box.shapes; i++) {
             Shape memory shape = shapes[i.add(mod.stack).mod(box.shapes)];
-            // add a rectangle with given position, size and color to the SVG markup
             Buffer.rect(
                 buffer,
                 shape.position,
@@ -342,7 +343,6 @@ abstract contract TinyBoxesRenderer {
             );
         }
 
-        // modulate mirroring and scaling transforms
         box.mirrorPositions[0] = int16(
             uint256(box.mirrorPositions[0]).add(mod.mirror[0])
         );
@@ -353,13 +353,11 @@ abstract contract TinyBoxesRenderer {
             uint256(box.mirrorPositions[2]).add(mod.mirror[2])
         );
 
-        // generate the footer with mirroring and scale transforms
         Buffer.append(
             buffer,
             _generateFooter(box.mirrors, box.mirrorPositions, box.scale)
         );
 
-        // return the SVG markup buffer
         return buffer;
     }
 }
