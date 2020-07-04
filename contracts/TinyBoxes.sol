@@ -407,12 +407,12 @@ contract TinyBoxes is
      * @return price in LINK eqivalent to the provided Eth price
      */
     function ethToLink(uint256 priceEth) public view returns (uint256 price) {
-        // TODO: switch to a single LINK/ETH feed on Ropsten
+        // TODO: switch to a single LINK/ETH feed on Ropsten vs using two USD feeds
         int256 rateEth = refEth.latestAnswer();
         int256 rateLink = refLink.latestAnswer();
-        int256 conversion = (rateEth / rateLink);
+        int256 conversion = (rateLink / rateEth) * 10**10;
         price =
-            (priceEth * uint256(conversion) * (100000 + linkPremium)) /
+            ((priceEth / uint256(conversion)) * (100000 + linkPremium)) /
             100000;
     }
 
