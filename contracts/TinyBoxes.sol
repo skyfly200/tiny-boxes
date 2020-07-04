@@ -25,8 +25,7 @@ contract TinyBoxes is
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIds;
-    AggregatorInterface internal refLink;
-    AggregatorInterface internal refEth;
+    AggregatorInterface internal refFeed;
     LinkTokenInterface internal LINK_TOKEN;
 
     uint256 public linkPremium = 2000; // in percent * 1000
@@ -40,11 +39,12 @@ contract TinyBoxes is
     address public deployer;
     address payable artmuseum = 0x027Fb48bC4e3999DCF88690aEbEBCC3D1748A0Eb; //lolz
 
-    // Chainlink VRF Stuff
-    address constant VRF_COORDINATOR = 0xc1031337fe8E75Cf25CAe9828F3BF734d83732e4; // Rinkeby
-    address constant LINK_TOKEN_ADDRESS = 0x01BE23585060835E02B77ef475b0Cc51aA1e0709; // Rinkeby
-    //address public constant LINK_TOKEN_ADDRESS = 0x514910771af9ca656af840dff83e8264ecf986ca; // Mainnet
-    bytes32 constant KEY_HASH = 0xcad496b9d0416369213648a32b4975fff8707f05dfb43603961b58f3ac6617a7; // Rinkeby details
+    // Chainlink VRF and Feed Stuff
+    address constant DEFAULT_FEED_ADDRESS = 0xb8c99b98913bE2ca4899CdcaF33a3e519C20EeEc; // Ropsten
+    address constant VRF_COORDINATOR = 0xf720CF1B963e0e7bE9F58fd471EFa67e7bF00cfb; // Ropsten
+    bytes32 constant KEY_HASH = 0xced103054e349b8dfb51352f0f8fa9b5d20dde3d06f9f43cb2b85bc64b238205; // Ropsten
+    // address constant VRF_COORDINATOR = 0xc1031337fe8E75Cf25CAe9828F3BF734d83732e4; // Rinkeby
+    //bytes32 constant KEY_HASH = 0xcad496b9d0416369213648a32b4975fff8707f05dfb43603961b58f3ac6617a7; // Rinkeby
     uint256 constant fee = 10**18;
 
     struct Request {
@@ -63,24 +63,25 @@ contract TinyBoxes is
     constructor(
         address _animator,
         address _link,
-        address _feedLink,
-        address _feedEth
+        address _feed
     )
         public
         ERC721("TinyBoxes", "[#][#]")
-        VRFConsumerBase(VRF_COORDINATOR, LINK_TOKEN_ADDRESS)
+        VRFConsumerBase(VRF_COORDINATOR, chainlinkTokenAddress())
     {
         deployer = msg.sender;
         animator = _animator;
-        //TODO: change to one aggrigator for ETH/LINK once on Rosten and for Mainnet
-        refLink = AggregatorInterface(_feedLink); // init LINK/USD aggrigator contract address
-        refEth = AggregatorInterface(_feedEth); // init ETH/USD aggrigator contract address
+
         // Set the address for the LINK token to the public network address
         // or use an address provided as a parameter if set
         if (_link == address(0)) setPublicChainlinkToken();
         else setChainlinkToken(_link);
         // Init LINK token interface
         LINK_TOKEN = LinkTokenInterface(chainlinkTokenAddress());
+        // set the feed address and init the interface
+        if (_feed == address(0))
+            refFeed = AggregatorInterface(DEFAULT_FEED_ADDRESS); // init LINK/ETH with default aggrigator contract address
+        else refFeed = AggregatorInterface(_feed); // init LINK/ETH with custom aggrigator contract address
     }
 
     /**
@@ -118,7 +119,7 @@ contract TinyBoxes is
      */
     modifier onlyLINK {
         require(
-            msg.sender == LINK_TOKEN_ADDRESS,
+            msg.sender == chainlinkTokenAddress(),
             "URI update only allowed by Animator"
         );
         _;
@@ -407,12 +408,9 @@ contract TinyBoxes is
      * @return price in LINK eqivalent to the provided Eth price
      */
     function ethToLink(uint256 priceEth) public view returns (uint256 price) {
-        // TODO: switch to a single LINK/ETH feed on Ropsten vs using two USD feeds
-        int256 rateEth = refEth.latestAnswer();
-        int256 rateLink = refLink.latestAnswer();
-        int256 conversion = (rateLink / rateEth) * 10**10;
+        int256 rateLinkEth = refFeed.latestAnswer();
         price =
-            ((priceEth / uint256(conversion)) * (100000 + linkPremium)) /
+            ((priceEth / uint256(rateLinkEth)) * (100000 + linkPremium)) /
             100000;
     }
 
