@@ -2,14 +2,16 @@
 pragma solidity ^0.6.8;
 pragma experimental ABIEncoderV2;
 
-import "@openzeppelin/contracts/math/SafeMath.sol";
+import {
+    SafeMath as SafeMath_TinyBoxes
+} from "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "./Buffer.sol";
 import "./Random.sol";
 
 abstract contract TinyBoxesRenderer {
-    using SafeMath for uint256;
+    using SafeMath_TinyBoxes for uint256;
 
     string header = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2600 2600" style="stroke-width:0; background-color:#121212;">\n\n<symbol id="upperleftquad4">\n<symbol id="upperleftquad3">\n<symbol id="upperleftquad2">\n<symbol id="upperleftquad">\n\n';
     string[3] scales = ["-1 1", "-1 -1", "1 -1"];

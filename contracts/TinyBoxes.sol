@@ -21,7 +21,7 @@ contract TinyBoxes is
     ChainlinkClient,
     TinyBoxesRenderer
 {
-    using SafeMath for uint256;
+    using SafeMath_TinyBoxes for uint256;
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIds;
