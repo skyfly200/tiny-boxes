@@ -181,7 +181,7 @@ contract TinyBoxes is
             - use SafeMath
             - unpack parameters from bytes data into a struct
         */
-        // if still minting the first
+        // if still minting the beta sale
         if (_tokenIds.current() < ARTIST_PRINTS) {
             // check the address is authorized
             require(
@@ -263,7 +263,7 @@ contract TinyBoxes is
         int16[13] calldata dials,
         bool[3] calldata mirrors
     ) external payable notSoldOut returns (bytes32) {
-        // if still minting the first
+        // if still minting the beta sale
         if (_tokenIds.current() < ARTIST_PRINTS) {
             // check the address is authorized
             require(
