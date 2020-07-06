@@ -155,7 +155,7 @@ abstract contract TinyBoxesRenderer {
     function _generateFooter(
         bool[3] memory switches,
         int16[3] memory mirrorPositions,
-        uint16 scale
+        Decimal memory scale
     ) internal view returns (string memory footer) {
         bytes memory buffer = new bytes(8192);
 
@@ -199,8 +199,12 @@ abstract contract TinyBoxesRenderer {
             }
         }
         // add final scaling
-        string memory scaleWhole = Strings.toString(uint256(scale).div(100));
-        string memory scaleDecimals = Strings.toString(uint256(scale).mod(100));
+        string memory scaleWhole = Strings.toString(
+            uint256(scale.value).div(scale.decimals)
+        );
+        string memory scaleDecimals = Strings.toString(
+            uint256(scale.value).mod(scale.decimals)
+        );
         Buffer.append(buffer, template[6]);
         Buffer.append(buffer, template[1]);
         Buffer.append(buffer, scaleWhole);
@@ -355,7 +359,11 @@ abstract contract TinyBoxesRenderer {
 
         Buffer.append(
             buffer,
-            _generateFooter(box.mirrors, box.mirrorPositions, box.scale)
+            _generateFooter(
+                box.mirrors,
+                box.mirrorPositions,
+                Decimal(box.scale, 100)
+            )
         );
 
         return buffer;
