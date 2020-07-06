@@ -25,6 +25,11 @@ abstract contract TinyBoxesRenderer {
         "\n</symbol>"
     ];
 
+    struct Decimal {
+        int256 value;
+        uint8 decimals;
+    }
+
     struct TinyBox {
         uint256 seed;
         uint256 randomness;
@@ -61,10 +66,9 @@ abstract contract TinyBoxesRenderer {
     /**
      * @dev generate a color
      * @param pool randomn numbers
-     * @param _id of token to render
      * @return color value
      */
-    function _generateColor(bytes32[] memory pool, uint256 _id)
+    function _generateColor(bytes32[] memory pool)
         internal
         pure
         returns (uint256)
@@ -76,11 +80,7 @@ abstract contract TinyBoxesRenderer {
         );
         uint256 colorscheme = uint256(Random.uniform(pool, 0, 99));
 
-        if (_id == 0) {
-            return 0x000000; // all black
-        } else if (_id > 73 && _id < 80) {
-            return uint256(0xffffff); // all white
-        } else if (colorscheme < 7) {
+        if (colorscheme < 7) {
             return blue;
         } else if (colorscheme < 14) {
             return green;
@@ -288,7 +288,7 @@ abstract contract TinyBoxesRenderer {
         // generate colors
         uint256[] memory colorValues = new uint256[](box.colors);
         for (uint256 i = 0; i < box.colors; i++)
-            colorValues[i] = _generateColor(pool, _id);
+            colorValues[i] = _generateColor(pool);
 
         // generate an array of shapes
         uint256 shapeCount = box.shapes;

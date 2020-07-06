@@ -177,10 +177,7 @@ contract TinyBoxes is
         uint256 amount,
         bytes calldata data
     ) external onlyLINK notSoldOut returns (bool) {
-        /** TODO:
-            - use SafeMath
-            - unpack parameters from bytes data into a struct
-        */
+        // TODO: unpack parameters from bytes data
         // if still minting the beta sale
         if (_tokenIds.current() < ARTIST_PRINTS) {
             // check the address is authorized
@@ -214,9 +211,6 @@ contract TinyBoxes is
             int16(100)
         ];
         bool[3] memory mirrors = [true, true, true];
-
-        // convert user seed from string to uint
-        //uint256 seed = Random.stringToUint(_seed);
 
         // create a new box object
         TinyBox memory box = TinyBox({
