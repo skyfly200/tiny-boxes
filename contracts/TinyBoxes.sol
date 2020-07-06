@@ -126,6 +126,17 @@ contract TinyBoxes is
     }
 
     /**
+     * @notice Modifier to check if tokens are sold out
+     */
+    modifier notSoldOut {
+        // ensure we still have not reached the cap
+        require(
+            _tokenIds.current() < TOKEN_LIMIT,
+            "ART SALE IS OVER. Tinyboxes are now only available on the secondary market."
+        );
+    }
+
+    /**
      * @dev Withdraw LINK tokens from the contract balance to contract owner
      * @param amount of link to withdraw (in smallest divisions of 10**18)
      */
@@ -165,16 +176,11 @@ contract TinyBoxes is
         address from,
         uint256 amount,
         bytes calldata data
-    ) external onlyLINK returns (bool) {
+    ) external onlyLINK notSoldOut returns (bool) {
         /** TODO:
             - use SafeMath
             - unpack parameters from bytes data into a struct
         */
-        // ensure we still have not reached the cap
-        require(
-            _tokenIds.current() < TOKEN_LIMIT,
-            "ART SALE IS OVER. Tinyboxes are now only available on the secondary market."
-        );
         // if still minting the first
         if (_tokenIds.current() < ARTIST_PRINTS) {
             // check the address is authorized
@@ -256,12 +262,7 @@ contract TinyBoxes is
         uint8[2] calldata counts,
         int16[13] calldata dials,
         bool[3] calldata mirrors
-    ) external payable returns (bytes32) {
-        // ensure we still have not reached the cap
-        require(
-            _tokenIds.current() < TOKEN_LIMIT,
-            "ART SALE IS OVER. Tinyboxes are now only available on the secondary market."
-        );
+    ) external payable notSoldOut returns (bytes32) {
         // if still minting the first
         if (_tokenIds.current() < ARTIST_PRINTS) {
             // check the address is authorized
