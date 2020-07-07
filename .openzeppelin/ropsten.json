@@ -18,6 +18,13 @@
         "kind": "NonProxy",
         "bytecodeHash": "f66342969539b6b1a5170ac75e7ff05bde6573255ab366db82aa5f0b496458dc"
       }
+    ],
+    "tiny-boxes/TinyBoxesToken": [
+      {
+        "address": "0x1a6198C171DAc6eBD6f412Bfb44AfA3d59D914a4",
+        "kind": "NonProxy",
+        "bytecodeHash": "5c5778c8df36607d561f2fdf536a82e67133b955bb7dbcf1e6d7ab4485b2084a"
+      }
     ]
   },
   "manifestVersion": "2.2"

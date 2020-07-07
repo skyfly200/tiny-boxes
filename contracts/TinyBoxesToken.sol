@@ -15,7 +15,7 @@ import "./chainlink/ChainlinkClient.sol";
 import "./chainlink/VRFConsumerBase.sol";
 import "./chainlink/interfaces/AggregatorInterface.sol";
 
-contract TinyBoxes is
+contract TinyBoxesToken is
     ERC721,
     VRFConsumerBase,
     ChainlinkClient,
@@ -40,6 +40,7 @@ contract TinyBoxes is
     address payable artmuseum = 0x027Fb48bC4e3999DCF88690aEbEBCC3D1748A0Eb; //lolz
 
     // Chainlink VRF and Feed Stuff
+    // LINK Ropstein Address: 0x20fE562d797A42Dcb3399062AE9546cd06f63280
     address constant DEFAULT_FEED_ADDRESS = 0xb8c99b98913bE2ca4899CdcaF33a3e519C20EeEc; // Ropsten
     address constant VRF_COORDINATOR = 0xf720CF1B963e0e7bE9F58fd471EFa67e7bF00cfb; // Ropsten
     bytes32 constant KEY_HASH = 0xced103054e349b8dfb51352f0f8fa9b5d20dde3d06f9f43cb2b85bc64b238205; // Ropsten
