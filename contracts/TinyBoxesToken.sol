@@ -507,7 +507,6 @@ contract TinyBoxes is
      * @return preview SVG art
      */
     function tokenPreview(
-        uint256 _id,
         string memory _seed,
         uint8[2] memory counts,
         int16[13] memory dials,
