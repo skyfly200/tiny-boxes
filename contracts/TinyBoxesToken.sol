@@ -134,6 +134,7 @@ contract TinyBoxes is
             _tokenIds.current() < TOKEN_LIMIT,
             "ART SALE IS OVER. Tinyboxes are now only available on the secondary market."
         );
+        _;
     }
 
     /**

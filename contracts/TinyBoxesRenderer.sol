@@ -331,7 +331,8 @@ abstract contract TinyBoxesRenderer {
             size[0] = size[0].add(mod.size[0]);
             size[1] = size[1].add(mod.size[1]);
             // modulate the opacity
-            uint256 opacity = 1000.add(mod.opacity);
+            uint256 opacity = 10**3;
+            opacity = opacity.add(mod.opacity);
             shapes[i] = Shape(position, size, color, opacity);
         }
 

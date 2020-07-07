@@ -22,7 +22,6 @@ export class TinyBoxesRenderer extends Contract {
   clone(): TinyBoxesRenderer;
   methods: {
     perpetualRenderer(
-      _id: number | string,
       box: {
         seed: number | string;
         randomness: number | string;

@@ -79,7 +79,6 @@ export class TinyBoxes extends Contract {
     ownerOf(tokenId: number | string): TransactionObject<string>;
 
     perpetualRenderer(
-      _id: number | string,
       box: {
         seed: number | string;
         randomness: number | string;
