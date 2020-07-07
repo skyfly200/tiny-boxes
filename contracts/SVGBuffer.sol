@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: Unlicensed
 pragma solidity ^0.6.4;
 
-library Buffer {
+library SVGBuffer {
     function hasCapacityFor(bytes memory buffer, uint256 needed)
         internal
         pure

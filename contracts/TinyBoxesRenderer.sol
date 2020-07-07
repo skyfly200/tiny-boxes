@@ -7,7 +7,7 @@ import {
 } from "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "./Buffer.sol";
+import "./SVGBuffer.sol";
 import "./Random.sol";
 
 abstract contract TinyBoxesRenderer {
@@ -163,40 +163,43 @@ abstract contract TinyBoxesRenderer {
 
         for (uint8 s = 0; s < 3; s++) {
             // loop through mirroring effects
-            Buffer.append(buffer, template[6]);
+            SVGBuffer.append(buffer, template[6]);
 
             if (!switches[s]) {
                 // turn off this level of mirroring
                 // add a scale transform
-                Buffer.append(buffer, template[0]);
+                SVGBuffer.append(buffer, template[0]);
                 // denote what quad the transform should be used for
-                Buffer.append(buffer, template[4]);
+                SVGBuffer.append(buffer, template[4]);
                 if (s > 0)
-                    Buffer.append(buffer, Strings.toString(uint256(s + 1)));
-                Buffer.append(buffer, template[5]);
+                    SVGBuffer.append(buffer, Strings.toString(uint256(s + 1)));
+                SVGBuffer.append(buffer, template[5]);
             } else {
                 string memory value = Strings.toString(
                     uint256(mirrorPositions[s])
                 );
                 for (uint8 i = 0; i < 4; i++) {
                     // loop through transforms
-                    if (i == 0) Buffer.append(buffer, template[0]);
+                    if (i == 0) SVGBuffer.append(buffer, template[0]);
                     else {
-                        Buffer.append(buffer, template[1]);
-                        Buffer.append(buffer, scales[i - 1]);
-                        Buffer.append(buffer, template[2]);
-                        if (i <= 2) Buffer.append(buffer, "-");
-                        Buffer.append(buffer, i <= 2 ? value : "0");
-                        Buffer.append(buffer, " ");
-                        if (i >= 2) Buffer.append(buffer, "-");
-                        Buffer.append(buffer, i >= 2 ? value : "0");
-                        Buffer.append(buffer, template[3]);
+                        SVGBuffer.append(buffer, template[1]);
+                        SVGBuffer.append(buffer, scales[i - 1]);
+                        SVGBuffer.append(buffer, template[2]);
+                        if (i <= 2) SVGBuffer.append(buffer, "-");
+                        SVGBuffer.append(buffer, i <= 2 ? value : "0");
+                        SVGBuffer.append(buffer, " ");
+                        if (i >= 2) SVGBuffer.append(buffer, "-");
+                        SVGBuffer.append(buffer, i >= 2 ? value : "0");
+                        SVGBuffer.append(buffer, template[3]);
                     }
                     // denote what quad the transformsshould be used for
-                    Buffer.append(buffer, template[4]);
+                    SVGBuffer.append(buffer, template[4]);
                     if (s > 0)
-                        Buffer.append(buffer, Strings.toString(uint256(s + 1)));
-                    Buffer.append(buffer, template[5]);
+                        SVGBuffer.append(
+                            buffer,
+                            Strings.toString(uint256(s + 1))
+                        );
+                    SVGBuffer.append(buffer, template[5]);
                 }
             }
         }
@@ -207,22 +210,22 @@ abstract contract TinyBoxesRenderer {
         string memory scaleDecimals = Strings.toString(
             uint256(scale.value).mod(scale.decimals)
         );
-        Buffer.append(buffer, template[6]);
-        Buffer.append(buffer, template[1]);
-        Buffer.append(buffer, scaleWhole);
-        Buffer.append(buffer, ".");
-        Buffer.append(buffer, scaleDecimals);
-        Buffer.append(buffer, " ");
-        Buffer.append(buffer, scaleWhole);
-        Buffer.append(buffer, ".");
-        Buffer.append(buffer, scaleDecimals);
-        Buffer.append(buffer, template[3]);
-        Buffer.append(buffer, template[4]);
-        Buffer.append(buffer, "4");
-        Buffer.append(buffer, template[5]);
+        SVGBuffer.append(buffer, template[6]);
+        SVGBuffer.append(buffer, template[1]);
+        SVGBuffer.append(buffer, scaleWhole);
+        SVGBuffer.append(buffer, ".");
+        SVGBuffer.append(buffer, scaleDecimals);
+        SVGBuffer.append(buffer, " ");
+        SVGBuffer.append(buffer, scaleWhole);
+        SVGBuffer.append(buffer, ".");
+        SVGBuffer.append(buffer, scaleDecimals);
+        SVGBuffer.append(buffer, template[3]);
+        SVGBuffer.append(buffer, template[4]);
+        SVGBuffer.append(buffer, "4");
+        SVGBuffer.append(buffer, template[5]);
 
-        Buffer.append(buffer, "\n</svg>"); // add closing svg tag
-        return Buffer.toString(buffer);
+        SVGBuffer.append(buffer, "\n</svg>"); // add closing svg tag
+        return SVGBuffer.toString(buffer);
     }
 
     /**
@@ -285,9 +288,9 @@ abstract contract TinyBoxesRenderer {
         buffer = new bytes(8192);
 
         // write the document header to the SVG buffer
-        Buffer.append(buffer, doctype);
-        Buffer.append(buffer, openingTag);
-        Buffer.append(buffer, symbols);
+        SVGBuffer.append(buffer, doctype);
+        SVGBuffer.append(buffer, openingTag);
+        SVGBuffer.append(buffer, symbols);
 
         // initilize RNG with the specified seed and blocks 0 through 1
         bytes32[] memory pool = Random.init(0, 1, box.randomness);
@@ -342,7 +345,7 @@ abstract contract TinyBoxesRenderer {
 
         for (uint256 i = 0; i < box.shapes; i++) {
             Shape memory shape = shapes[i.add(mod.stack).mod(box.shapes)];
-            Buffer.rect(
+            SVGBuffer.rect(
                 buffer,
                 shape.position,
                 shape.size,
@@ -361,7 +364,7 @@ abstract contract TinyBoxesRenderer {
             uint256(box.mirrorPositions[2]).add(mod.mirror[2])
         );
 
-        Buffer.append(
+        SVGBuffer.append(
             buffer,
             _generateFooter(
                 box.mirrors,

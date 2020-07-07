@@ -168,7 +168,6 @@ export class TinyBoxes extends Contract {
     ): TransactionObject<string>;
 
     tokenPreview(
-      _id: number | string,
       _seed: string,
       counts: (number | string)[],
       dials: (number | string)[],
