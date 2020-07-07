@@ -401,20 +401,19 @@ contract TinyBoxesToken is
     }
 
     /**
-     * @dev Get the price of token number _id in LINK (Chainlink Token)
+     * @dev Get the price of token number _id in LINK (Chainlink Token) including the premium
      * @return price in LINK of a token currently
      */
     function linkPriceAt(uint256 _id) public view returns (uint256 price) {
-        price = ethToLink(priceAt(_id));
+        price = (ethToLink(priceAt(_id)) * (10**5 + linkPremium)) / 10**5;
     }
 
     /**
-     * @dev Convert a price in Eth to one in LINK (Chainlink Token)
-     * @return price in LINK eqivalent to the provided Eth price
+     * @dev Convert a value in Eth to one in LINK (Chainlink Token)
+     * @return value in LINK eqivalent to the provided Eth value
      */
-    function ethToLink(uint256 priceEth) internal view returns (uint256 price) {
-        price = ((((priceEth * 10**18) / uint256(refFeed.latestAnswer())) *
-            ((10**5 + linkPremium))) / 10**5);
+    function ethToLink(uint256 priceEth) internal view returns (uint256 value) {
+        value = ((priceEth * 10**18) / uint256(refFeed.latestAnswer()));
     }
 
     /**
