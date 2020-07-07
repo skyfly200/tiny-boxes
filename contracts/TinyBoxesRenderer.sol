@@ -13,7 +13,9 @@ import "./Random.sol";
 abstract contract TinyBoxesRenderer {
     using SafeMath_TinyBoxes for uint256;
 
-    string header = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2600 2600" style="stroke-width:0; background-color:#121212;">\n\n<symbol id="upperleftquad4">\n<symbol id="upperleftquad3">\n<symbol id="upperleftquad2">\n<symbol id="upperleftquad">\n\n';
+    string doctype = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n';
+    string openingTag = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2600 2600" style="stroke-width:0; background-color:#121212;">\n\n';
+    string symbols = '<symbol id="upperleftquad4">\n<symbol id="upperleftquad3">\n<symbol id="upperleftquad2">\n<symbol id="upperleftquad">\n\n';
     string[3] scales = ["-1 1", "-1 -1", "1 -1"];
     string[7] template = [
         "\n<g>",
@@ -283,7 +285,9 @@ abstract contract TinyBoxesRenderer {
         buffer = new bytes(8192);
 
         // write the document header to the SVG buffer
-        Buffer.append(buffer, header);
+        Buffer.append(buffer, doctype);
+        Buffer.append(buffer, openingTag);
+        Buffer.append(buffer, symbols);
 
         // initilize RNG with the specified seed and blocks 0 through 1
         bytes32[] memory pool = Random.init(0, 1, box.randomness);
