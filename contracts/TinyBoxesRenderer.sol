@@ -270,16 +270,15 @@ abstract contract TinyBoxesRenderer {
 
     /**
      * @dev render a token's art
-     * @param _id of token
      * @param box TinyBox data structure
      * @param frame number to render
      * @return buffer of the SVG graphics markup of the token
      */
-    function perpetualRenderer(
-        uint256 _id,
-        TinyBox memory box,
-        uint256 frame
-    ) public view returns (bytes memory buffer) {
+    function perpetualRenderer(TinyBox memory box, uint256 frame)
+        public
+        view
+        returns (bytes memory buffer)
+    {
         // initialize an empty buffer for the SVG markup
         buffer = new bytes(8192);
 

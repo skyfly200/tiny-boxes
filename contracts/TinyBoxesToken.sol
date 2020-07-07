@@ -535,7 +535,7 @@ contract TinyBoxes is
             scale: uint16(dials[12]),
             mirrors: mirrors
         });
-        return Buffer.toString(perpetualRenderer(_id, box, 0));
+        return Buffer.toString(perpetualRenderer(box, 0));
     }
 
     /**
@@ -550,7 +550,7 @@ contract TinyBoxes is
         returns (string memory)
     {
         TinyBox memory box = boxes[_id];
-        return Buffer.toString(perpetualRenderer(_id, box, _frame));
+        return Buffer.toString(perpetualRenderer(box, _frame));
     }
 
     /**
