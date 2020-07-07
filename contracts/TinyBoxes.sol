@@ -353,24 +353,30 @@ contract TinyBoxes is
         override
         onlyVRFCoordinator
     {
-        // need to move minting here with saved data from a request
-        Request memory creation = requests[requestId];
+        // lookup saved data from the requestId
+        Request memory req = requests[requestId];
+
+        // store the randomness in the token data
+        boxes[req.id].randomness = randomness;
+
+        // --- Use The Provided Randomness ---
 
         // initilized RNG with the provided varifiable randomness and blocks 0 through 1
         bytes32[] memory pool = Random.init(0, 1, randomness);
 
-        // TODO - generate animation with RNG weighted non uniformly for varying rarity
+        // TODO - generate animation with RNG weighted non uniformly for varying rarity types
         // maybe use log base 2 of a number in a range 2 to the animation counts
         uint8 animation = uint8(
             Random.uniform(pool, 0, int256(ANIMATION_COUNT) - 1)
         );
 
+        // --- Save data to storage ---
+
         // update box data relying on randomness
-        boxes[creation.id].randomness = randomness;
-        boxes[creation.id].animation = animation;
+        boxes[req.id].animation = animation;
 
         // mint the token to the creator
-        _safeMint(creation.creator, creation.id);
+        _safeMint(req.creator, req.id);
     }
 
     /**
