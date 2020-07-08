@@ -5,43 +5,23 @@ pragma experimental ABIEncoderV2;
 // needed for upgradability
 //import "@openzeppelin/upgrades/contracts/Initializable.sol";
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
-
+import "./TinyBoxesBase.sol";
 import "./TinyBoxesRenderer.sol";
+import "./TinyBoxesPricing.sol";
 
 // Chainlink Contracts
-import "./chainlink/ChainlinkClient.sol";
 import "./chainlink/VRFConsumerBase.sol";
-import "./chainlink/interfaces/AggregatorInterface.sol";
 
-contract TinyBoxesToken is
-    ERC721,
-    VRFConsumerBase,
-    ChainlinkClient,
-    TinyBoxesRenderer
+abstract contract TinyBoxesFull is
+    TinyBoxesBase,
+    TinyBoxesRenderer,
+    TinyBoxesPricing,
+    VRFConsumerBase
 {
     using SafeMath_TinyBoxes for uint256;
-    using Counters for Counters.Counter;
-
-    Counters.Counter private _tokenIds;
-    AggregatorInterface internal refFeed;
-    LinkTokenInterface internal LINK_TOKEN;
-
-    uint256 public linkPremium = 2000; // in percent * 1000
-    uint256 public startPrice = 160000000000000000; // in wei
-    uint256 public priceIncrease = 1000000000000000; // in wei
-
-    uint256 public constant TOKEN_LIMIT = 1024;
-    uint256 public constant ARTIST_PRINTS = 0;
-    uint256 public constant ANIMATION_COUNT = 5;
-    address public animator;
-    address public deployer;
-    address payable artmuseum = 0x027Fb48bC4e3999DCF88690aEbEBCC3D1748A0Eb; //lolz
 
     // Chainlink VRF and Feed Stuff
     // LINK Ropstein Address: 0x20fE562d797A42Dcb3399062AE9546cd06f63280
-    address constant DEFAULT_FEED_ADDRESS = 0xb8c99b98913bE2ca4899CdcaF33a3e519C20EeEc; // Ropsten
     address constant VRF_COORDINATOR = 0xf720CF1B963e0e7bE9F58fd471EFa67e7bF00cfb; // Ropsten
     bytes32 constant KEY_HASH = 0xced103054e349b8dfb51352f0f8fa9b5d20dde3d06f9f43cb2b85bc64b238205; // Ropsten
     // address constant VRF_COORDINATOR = 0xc1031337fe8E75Cf25CAe9828F3BF734d83732e4; // Rinkeby
@@ -53,7 +33,6 @@ contract TinyBoxesToken is
         uint256 id;
     }
 
-    mapping(uint256 => TinyBox) internal boxes;
     mapping(bytes32 => Request) internal requests;
     mapping(address => bool) internal mayWithdraw;
 
@@ -67,22 +46,16 @@ contract TinyBoxesToken is
         address _feed
     )
         public
-        ERC721("TinyBoxes", "[#][#]")
+        TinyBoxesBase(_animator)
+        TinyBoxesPricing(_link, _feed)
         VRFConsumerBase(VRF_COORDINATOR, chainlinkTokenAddress())
     {
-        deployer = msg.sender;
-        animator = _animator;
-
         // Set the address for the LINK token to the public network address
         // or use an address provided as a parameter if set
         if (_link == address(0)) setPublicChainlinkToken();
         else setChainlinkToken(_link);
         // Init LINK token interface
         LINK_TOKEN = LinkTokenInterface(chainlinkTokenAddress());
-        // set the feed address and init the interface
-        if (_feed == address(0))
-            refFeed = AggregatorInterface(DEFAULT_FEED_ADDRESS); // init LINK/ETH with default aggrigator contract address
-        else refFeed = AggregatorInterface(_feed); // init LINK/ETH with custom aggrigator contract address
     }
 
     /**
@@ -401,101 +374,11 @@ contract TinyBoxesToken is
     }
 
     /**
-     * @dev Get the price of token number _id in LINK (Chainlink Token) including the premium
-     * @return price in LINK of a token currently
-     */
-    function linkPriceAt(uint256 _id) public view returns (uint256 price) {
-        price = (ethToLink(priceAt(_id)) * (10**5 + linkPremium)) / 10**5;
-    }
-
-    /**
-     * @dev Convert a value in Eth to one in LINK (Chainlink Token)
-     * @return value in LINK eqivalent to the provided Eth value
-     */
-    function ethToLink(uint256 priceEth) internal view returns (uint256 value) {
-        value = ((priceEth * 10**18) / uint256(refFeed.latestAnswer()));
-    }
-
-    /**
      * @dev Get the current price of a token
      * @return price in wei of a token currently
      */
     function currentPrice() public view returns (uint256 price) {
         price = priceAt(_tokenIds.current());
-    }
-
-    /**
-     * @dev Get the price of a specific token id
-     * @param _id of the token
-     * @return price in wei of token id
-     */
-    function priceAt(uint256 _id) public view returns (uint256 price) {
-        uint256 tokeninflation = (_id / 2) * priceIncrease; // add .001 eth to price per 2 tokens minted
-        price = startPrice + tokeninflation;
-    }
-
-    /**
-     * @dev Lookup the seed
-     * @param _id for which we want the seed
-     * @return seed value of _id.
-     */
-    function tokenSeed(uint256 _id) external view returns (uint256) {
-        return boxes[_id].seed;
-    }
-
-    /**
-     * @dev Lookup the animation
-     * @param _id for which we want the animation
-     * @return animation value of _id.
-     */
-    function tokenAnimation(uint256 _id) external view returns (uint256) {
-        return boxes[_id].animation;
-    }
-
-    /**
-     * @dev Lookup all token data in one call
-     * @param _id for which we want token data
-     * @return seed of token
-     * @return randomness provided by Chainlink VRF
-     * @return animation of token
-     * @return colors of token
-     * @return shapes of token
-     * @return hatching of token
-     * @return size of token
-     * @return spacing of token
-     * @return mirrorPositions of token
-     * @return mirrors of token
-     * @return scale of token
-     */
-    function tokenData(uint256 _id)
-        external
-        view
-        returns (
-            uint256 seed,
-            uint256 randomness,
-            uint8 animation,
-            uint8 colors,
-            uint8 shapes,
-            uint16 hatching,
-            uint16[4] memory size,
-            uint16[4] memory spacing,
-            int16[3] memory mirrorPositions,
-            bool[3] memory mirrors,
-            uint16 scale
-        )
-    {
-        TinyBox memory box = boxes[_id];
-        seed = box.seed;
-        randomness = box.randomness;
-        animation = box.animation;
-        colors = box.colors;
-        shapes = box.shapes;
-        hatching = box.hatching;
-        size = box.size;
-        spacing = box.spacing;
-        mirrorPositions = box.mirrorPositions;
-        mirrors = box.mirrors;
-        scale = box.scale;
     }
 
     /**

@@ -12,6 +12,8 @@ contract TinyBoxesPricing is ChainlinkClient {
     AggregatorInterface internal refFeed;
     LinkTokenInterface internal LINK_TOKEN;
 
+    address constant DEFAULT_FEED_ADDRESS = 0xb8c99b98913bE2ca4899CdcaF33a3e519C20EeEc; // Ropsten
+
     uint256 public linkPremium = 2000; // in percent * 1000
     uint256 public startPrice = 160000000000000000; // in wei
     uint256 public priceIncrease = 1000000000000000; // in wei
@@ -34,14 +36,6 @@ contract TinyBoxesPricing is ChainlinkClient {
     }
 
     /**
-     * @dev Get the current price of a token in LINK (Chainlink Token)
-     * @return price in LINK of a token currently
-     */
-    function currentLinkPrice() public view returns (uint256 price) {
-        price = linkPriceAt(_tokenIds.current());
-    }
-
-    /**
      * @dev Get the price of token number _id in LINK (Chainlink Token) including the premium
      * @return price in LINK of a token currently
      */
@@ -55,14 +49,6 @@ contract TinyBoxesPricing is ChainlinkClient {
      */
     function ethToLink(uint256 priceEth) internal view returns (uint256 value) {
         value = ((priceEth * 10**18) / uint256(refFeed.latestAnswer()));
-    }
-
-    /**
-     * @dev Get the current price of a token
-     * @return price in wei of a token currently
-     */
-    function currentPrice() public view returns (uint256 price) {
-        price = priceAt(_tokenIds.current());
     }
 
     /**
