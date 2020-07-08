@@ -16,7 +16,6 @@
     "make": "vue invoke generator"
   },
   "dependencies": {
-    "@chainlink/contracts": "0.0.7-beta",
     "@openzeppelin/contract-loader": "^0.6.1",
     "@openzeppelin/contracts": "^3.0.2",
     "@openzeppelin/contracts-ethereum-package": "^3.0.0",
