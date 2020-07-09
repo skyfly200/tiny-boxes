@@ -13,6 +13,7 @@ contract TinyBoxesPricing is ChainlinkClient {
     LinkTokenInterface internal LINK_TOKEN;
 
     address constant DEFAULT_FEED_ADDRESS = 0xb8c99b98913bE2ca4899CdcaF33a3e519C20EeEc; // Ropsten
+    //address constant DEFAULT_FEED_ADDRESS = 0xeCfA53A8bdA4F0c4dd39c55CC8deF3757aCFDD07; // Mainnet
 
     uint256 public linkPremium = 2000; // in percent * 1000
     uint256 public startPrice = 160000000000000000; // in wei
