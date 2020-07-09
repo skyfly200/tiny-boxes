@@ -115,35 +115,6 @@ abstract contract TinyBoxesFull is
     }
 
     /**
-     * @dev Withdraw LINK tokens from the contract balance to contract owner
-     * @param amount of link to withdraw (in smallest divisions of 10**18)
-     */
-    // TODO: make a version that checks to see we have enough link to fullfill randomness for remaining unminted tokens
-    function withdrawLINK(uint256 amount) external returns (bool) {
-        // ensure the address is approved for withdraws
-        require(
-            msg.sender == deployer || mayWithdraw[msg.sender],
-            "Only the contract owner may withdraw LINK"
-        );
-        // ensure we have at least that much LINK
-        require(
-            LINK_TOKEN.balanceOf(address(this)) >= amount,
-            "Not enough LINK for requested withdraw"
-        );
-        // send amount of LINK tokens to the transaction sender
-        return LINK_TOKEN.transfer(msg.sender, amount);
-    }
-
-    /**
-     * @dev Approve an address for LINK withdraws
-     * @param account address to approve
-     */
-    function aproveForWithdraw(address account) external onlyDeployer {
-        // set account address to true in witdraw aproval mapping
-        mayWithdraw[account] = true;
-    }
-
-    /**
      * @dev Accept incoming LINK ERC20+677 tokens, unpack bytes data and run create with results
      * @param from address of token sender
      * @param amount of tokens transfered
@@ -369,6 +340,14 @@ abstract contract TinyBoxesFull is
     }
 
     /**
+     * @dev Get the current price of a token
+     * @return price in wei of a token currently
+     */
+    function currentPrice() public view returns (uint256 price) {
+        price = priceAt(_tokenIds.current());
+    }
+
+    /**
      * @dev Get the current price of a token in LINK (Chainlink Token)
      * @return price in LINK of a token currently
      */
@@ -377,11 +356,32 @@ abstract contract TinyBoxesFull is
     }
 
     /**
-     * @dev Get the current price of a token
-     * @return price in wei of a token currently
+     * @dev Approve an address for LINK withdraws
+     * @param account address to approve
      */
-    function currentPrice() public view returns (uint256 price) {
-        price = priceAt(_tokenIds.current());
+    function aproveForWithdraw(address account) external onlyDeployer {
+        // set account address to true in witdraw aproval mapping
+        mayWithdraw[account] = true;
+    }
+
+    /**
+     * @dev Withdraw LINK tokens from the contract balance to contract owner
+     * @param amount of link to withdraw (in smallest divisions of 10**18)
+     */
+    // TODO: make a version that checks to see we have enough link to fullfill randomness for remaining unminted tokens
+    function withdrawLINK(uint256 amount) external returns (bool) {
+        // ensure the address is approved for withdraws
+        require(
+            msg.sender == deployer || mayWithdraw[msg.sender],
+            "Only the contract owner may withdraw LINK"
+        );
+        // ensure we have at least that much LINK
+        require(
+            LINK_TOKEN.balanceOf(address(this)) >= amount,
+            "Not enough LINK for requested withdraw"
+        );
+        // send amount of LINK tokens to the transaction sender
+        return LINK_TOKEN.transfer(msg.sender, amount);
     }
 
     /**
