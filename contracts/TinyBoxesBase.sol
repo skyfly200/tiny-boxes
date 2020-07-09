@@ -5,49 +5,39 @@ pragma solidity ^0.6.8;
 //import "@openzeppelin/upgrades/contracts/Initializable.sol";
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "./TinyBoxes.sol";
 
-contract TinyBoxesBase is ERC721 {
+contract TinyBoxesBase is ERC721, AccessControl  {
     using Counters for Counters.Counter;
 
     Counters.Counter internal _tokenIds;
 
+    // set contract config constants
     uint256 public constant TOKEN_LIMIT = 1024;
     uint256 public constant ARTIST_PRINTS = 0;
     uint256 public constant ANIMATION_COUNT = 5;
-    address public animator;
-    address public deployer;
-    address payable artmuseum = 0x027Fb48bC4e3999DCF88690aEbEBCC3D1748A0Eb; //lolz
+    address payable constant artmuseum = 0x027Fb48bC4e3999DCF88690aEbEBCC3D1748A0Eb; //lolz
 
+    // mapping to store all the boxes in
     mapping(uint256 => TinyBox) internal boxes;
+
+    // Create role identifiers
+    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+    bytes32 public constant ANIMATOR_ROLE = keccak256("ANIMATOR_ROLE");
+    bytes32 public constant TREASURER_ROLE = keccak256("TREASURER_ROLE");
 
     /**
      * @dev Contract constructor.
-     * @notice Constructor inherits VRFConsumerBase
+     * @notice Constructor inherits ERC721
      */
-    constructor(address _animator) public ERC721("TinyBoxes", "[#][#]") {
-        deployer = msg.sender;
-        animator = _animator;
-    }
-
-    /**
-     * @dev Lookup the seed
-     * @param _id for which we want the seed
-     * @return seed value of _id.
-     */
-    function tokenSeed(uint256 _id) external view returns (uint256) {
-        return boxes[_id].seed;
-    }
-
-    /**
-     * @dev Lookup the animation
-     * @param _id for which we want the animation
-     * @return animation value of _id.
-     */
-    function tokenAnimation(uint256 _id) external view returns (uint256) {
-        return boxes[_id].animation;
+    constructor() public ERC721("TinyBoxes", "[#][#]") {
+        // Grant all roles to the account deploying this contract
+        _setupRole(ADMIN_ROLE, msg.sender);
+        _setupRole(ANIMATOR_ROLE, msg.sender);
+        _setupRole(TREASURER_ROLE, msg.sender);
     }
 
     /**

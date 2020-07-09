@@ -39,66 +39,43 @@ abstract contract TinyBoxesFull is
     mapping(bytes32 => Request) internal requests;
     mapping(address => bool) internal mayWithdraw;
 
+    // Create role identifiers
+    bytes32 public constant LINK_ROLE = keccak256("LINK_ROLE");
+    bytes32 public constant VRF_ROLE = keccak256("VRF_ROLE");
+
+
     /**
      * @dev Contract constructor.
-     * @notice Constructor inherits VRFConsumerBase
+     * @notice Constructor inherits from TinyBoxesBase, TinyBoxesPricing & VRFConsumerBase
      */
     constructor(
-        address _animator,
         address _link,
         address _feed
     )
         public
-        TinyBoxesBase(_animator)
+        TinyBoxesBase()
         TinyBoxesPricing(_link, _feed)
         VRFConsumerBase(VRF_COORDINATOR, chainlinkTokenAddress())
     {
+        // Grant roles to the LINK and VRF_COORDINATOR contract
+        _setupRole(LINK_ROLE, chainlinkTokenAddress());
+        _setupRole(VRF_ROLE, VRF_COORDINATOR);
+
         // Set the address for the LINK token to the public network address
         // or use an address provided as a parameter if set
         if (_link == address(0)) setPublicChainlinkToken();
         else setChainlinkToken(_link);
+
         // Init LINK token interface
         LINK_TOKEN = LinkTokenInterface(chainlinkTokenAddress());
     }
-
+    
     /**
-     * @notice Modifier to only allow randomness fulfillment by the VRFCoordinator contract
+     * @notice Modifier to only allow acounts of a specified role to call a function
      */
-    modifier onlyVRFCoordinator {
-        require(
-            msg.sender == VRF_COORDINATOR,
-            "Fulfillment only allowed by VRFCoordinator"
-        );
-        _;
-    }
-
-    /**
-     * @notice Modifier to only allow URI updates by the Animator address
-     */
-    modifier onlyAnimator {
-        require(msg.sender == animator, "URI update only allowed by Animator");
-        _;
-    }
-
-    /**
-     * @notice Modifier to only allow contract deployer to call a function
-     */
-    modifier onlyDeployer {
-        require(
-            msg.sender == deployer,
-            "Only the contract deployer may call this function"
-        );
-        _;
-    }
-
-    /**
-     * @notice Modifier to only calls from the LINK token address
-     */
-    modifier onlyLINK {
-        require(
-            msg.sender == chainlinkTokenAddress(),
-            "URI update only allowed by Animator"
-        );
+    modifier onlyRole(bytes32 _role) {
+        // Check that the calling account has the required role
+        require(hasRole(_role, msg.sender), "Caller dosn't have permission to use this function");
         _;
     }
 
@@ -125,17 +102,16 @@ abstract contract TinyBoxesFull is
         address from,
         uint256 amount,
         bytes calldata data
-    ) external onlyLINK notSoldOut returns (bool) {
+    ) external onlyRole(LINK_ROLE) notSoldOut returns (bool) {
         // TODO: unpack parameters from bytes data
-        // if still minting the beta sale
+        // check if still minting the artist tokens
         if (_tokenIds.current() < ARTIST_PRINTS) {
-            // check the address is authorized
-            require(
-                msg.sender == deployer,
-                "Only the creator can mint the alpha token. Wait your turn FFS"
-            );
+            // Check that the calling account has the admin role
+            require(hasRole(ADMIN_ROLE, msg.sender), "Only the admin can mint the alpha tokens. Wait your turn FFS");
         } else {
-            // make sure all later calls pay enough and get change
+            // if still minting the beta sale
+            // else minting public release tokens
+            // make sure all calls pay enough and get change
             uint256 price = currentLinkPrice();
             require(amount >= price, "insuficient payment"); // return if they dont pay enough
             if (amount > price) LINK_TOKEN.transfer(from, amount - price); // give change if they over pay
@@ -208,11 +184,8 @@ abstract contract TinyBoxesFull is
     ) external payable notSoldOut returns (bytes32) {
         // if still minting the beta sale
         if (_tokenIds.current() < ARTIST_PRINTS) {
-            // check the address is authorized
-            require(
-                msg.sender == deployer,
-                "Only the creator can mint the alpha token. Wait your turn FFS"
-            );
+            // Check that the calling account has the admin role
+            require(hasRole(ADMIN_ROLE, msg.sender), "Only the admin can mint the alpha tokens. Wait your turn FFS");
         } else {
             // make sure all later calls pay enough and get change
             uint256 amount = currentPrice();
@@ -300,7 +273,7 @@ abstract contract TinyBoxesFull is
     function fulfillRandomness(bytes32 requestId, uint256 randomness)
         external
         override
-        onlyVRFCoordinator
+        onlyRole(VRF_ROLE)
     {
         // lookup saved data from the requestId
         Request memory req = requests[requestId];
@@ -334,7 +307,7 @@ abstract contract TinyBoxesFull is
      */
     function updateURI(uint256 _id, string calldata _uri)
         external
-        onlyAnimator
+        onlyRole(ANIMATOR_ROLE)
     {
         _setTokenURI(_id, _uri);
     }
@@ -359,9 +332,9 @@ abstract contract TinyBoxesFull is
      * @dev Approve an address for LINK withdraws
      * @param account address to approve
      */
-    function aproveLINKWithdraws(address account) external onlyDeployer {
+    function aproveLINKWithdraws(address account) external onlyRole(ADMIN_ROLE) {
         // set account address to true in witdraw aproval mapping
-        mayWithdraw[account] = true;
+        _setupRole(TREASURER_ROLE, account);
     }
 
     /**
@@ -369,12 +342,7 @@ abstract contract TinyBoxesFull is
      * @param amount of link to withdraw (in smallest divisions of 10**18)
      */
     // TODO: make a version that checks to see we have enough link to fullfill randomness for remaining unminted tokens
-    function withdrawLINK(uint256 amount) external returns (bool) {
-        // ensure the address is approved for withdraws
-        require(
-            msg.sender == deployer || mayWithdraw[msg.sender],
-            "Only the contract owner may withdraw LINK"
-        );
+    function withdrawLINK(uint256 amount) external onlyRole(TREASURER_ROLE) returns (bool) {
         // ensure we have at least that much LINK
         require(
             LINK_TOKEN.balanceOf(address(this)) >= amount,

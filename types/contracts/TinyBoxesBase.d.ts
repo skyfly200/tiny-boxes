@@ -21,13 +21,19 @@ export class TinyBoxesBase extends Contract {
   );
   clone(): TinyBoxesBase;
   methods: {
+    ADMIN_ROLE(): TransactionObject<string>;
+
     ANIMATION_COUNT(): TransactionObject<string>;
+
+    ANIMATOR_ROLE(): TransactionObject<string>;
 
     ARTIST_PRINTS(): TransactionObject<string>;
 
+    DEFAULT_ADMIN_ROLE(): TransactionObject<string>;
+
     TOKEN_LIMIT(): TransactionObject<string>;
 
-    animator(): TransactionObject<string>;
+    TREASURER_ROLE(): TransactionObject<string>;
 
     approve(to: string, tokenId: number | string): TransactionObject<void>;
 
@@ -35,9 +41,26 @@ export class TinyBoxesBase extends Contract {
 
     baseURI(): TransactionObject<string>;
 
-    deployer(): TransactionObject<string>;
-
     getApproved(tokenId: number | string): TransactionObject<string>;
+
+    getRoleAdmin(role: string | number[]): TransactionObject<string>;
+
+    getRoleMember(
+      role: string | number[],
+      index: number | string
+    ): TransactionObject<string>;
+
+    getRoleMemberCount(role: string | number[]): TransactionObject<string>;
+
+    grantRole(
+      role: string | number[],
+      account: string
+    ): TransactionObject<void>;
+
+    hasRole(
+      role: string | number[],
+      account: string
+    ): TransactionObject<boolean>;
 
     isApprovedForAll(
       owner: string,
@@ -47,6 +70,16 @@ export class TinyBoxesBase extends Contract {
     name(): TransactionObject<string>;
 
     ownerOf(tokenId: number | string): TransactionObject<string>;
+
+    renounceRole(
+      role: string | number[],
+      account: string
+    ): TransactionObject<void>;
+
+    revokeRole(
+      role: string | number[],
+      account: string
+    ): TransactionObject<void>;
 
     safeTransferFrom(
       from: string,
@@ -64,8 +97,6 @@ export class TinyBoxesBase extends Contract {
     ): TransactionObject<boolean>;
 
     symbol(): TransactionObject<string>;
-
-    tokenAnimation(_id: number | string): TransactionObject<string>;
 
     tokenByIndex(index: number | string): TransactionObject<string>;
 
@@ -101,8 +132,6 @@ export class TinyBoxesBase extends Contract {
       index: number | string
     ): TransactionObject<string>;
 
-    tokenSeed(_id: number | string): TransactionObject<string>;
-
     tokenURI(tokenId: number | string): TransactionObject<string>;
 
     totalSupply(): TransactionObject<string>;
@@ -129,6 +158,22 @@ export class TinyBoxesBase extends Contract {
       0: string;
       1: string;
       2: boolean;
+    }>;
+    RoleGranted: ContractEvent<{
+      role: string;
+      account: string;
+      sender: string;
+      0: string;
+      1: string;
+      2: string;
+    }>;
+    RoleRevoked: ContractEvent<{
+      role: string;
+      account: string;
+      sender: string;
+      0: string;
+      1: string;
+      2: string;
     }>;
     Transfer: ContractEvent<{
       from: string;
