@@ -1,9 +1,6 @@
 //SPDX-License-Identifier: Unlicensed
 pragma solidity ^0.6.8;
 
-// needed for upgradability
-//import "@openzeppelin/upgrades/contracts/Initializable.sol";
-
 // Chainlink Contracts
 import "./chainlink/ChainlinkClient.sol";
 import "./chainlink/interfaces/AggregatorInterface.sol";

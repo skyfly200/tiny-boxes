@@ -2,18 +2,16 @@
 pragma solidity ^0.6.8;
 pragma experimental ABIEncoderV2;
 
-import {
-    SafeMath as SafeMath_TinyBoxes
-} from "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/math/SignedSafeMath.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "./TinyBoxes.sol";
+import "./TinyBox.sol";
 import "./SVGBuffer.sol";
 import "./Random.sol";
 
 abstract contract TinyBoxesRenderer {
-    using SafeMath_TinyBoxes for uint256;
+    using SafeMath for uint256;
     using SignedSafeMath for int256;
 
     string doctype = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n';

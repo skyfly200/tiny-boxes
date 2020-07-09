@@ -31,6 +31,8 @@ export class TinyBoxesFull extends Contract {
 
     ARTIST_ROLE(): TransactionObject<string>;
 
+    BETA_SALE_CAP(): TransactionObject<string>;
+
     DEFAULT_ADMIN_ROLE(): TransactionObject<string>;
 
     LINK_ROLE(): TransactionObject<string>;

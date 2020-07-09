@@ -31,11 +31,17 @@ export class TinyBoxesStore extends Contract {
 
     ARTIST_ROLE(): TransactionObject<string>;
 
+    BETA_SALE_CAP(): TransactionObject<string>;
+
     DEFAULT_ADMIN_ROLE(): TransactionObject<string>;
+
+    LINK_ROLE(): TransactionObject<string>;
 
     TOKEN_LIMIT(): TransactionObject<string>;
 
     TREASURER_ROLE(): TransactionObject<string>;
+
+    VRF_ROLE(): TransactionObject<string>;
 
     approve(to: string, tokenId: number | string): TransactionObject<void>;
 
@@ -45,9 +51,21 @@ export class TinyBoxesStore extends Contract {
 
     baseURI(): TransactionObject<string>;
 
+    buy(
+      _seed: string,
+      counts: (number | string)[],
+      dials: (number | string)[],
+      mirrors: boolean[]
+    ): TransactionObject<string>;
+
     currentLinkPrice(): TransactionObject<string>;
 
     currentPrice(): TransactionObject<string>;
+
+    fulfillRandomness(
+      requestId: string | number[],
+      randomness: number | string
+    ): TransactionObject<void>;
 
     getApproved(tokenId: number | string): TransactionObject<string>;
 
@@ -81,6 +99,14 @@ export class TinyBoxesStore extends Contract {
 
     name(): TransactionObject<string>;
 
+    nonces(arg0: string | number[]): TransactionObject<string>;
+
+    onTokenTransfer(
+      from: string,
+      amount: number | string,
+      data: string | number[]
+    ): TransactionObject<boolean>;
+
     ownerOf(tokenId: number | string): TransactionObject<string>;
 
     priceAt(_id: number | string): TransactionObject<string>;
@@ -91,6 +117,12 @@ export class TinyBoxesStore extends Contract {
       role: string | number[],
       account: string
     ): TransactionObject<void>;
+
+    requestRandomness(
+      _keyHash: string | number[],
+      _fee: number | string,
+      _seed: number | string
+    ): TransactionObject<string>;
 
     revokeRole(
       role: string | number[],
