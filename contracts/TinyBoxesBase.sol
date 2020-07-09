@@ -26,6 +26,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
 
     // Create role identifiers
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+    bytes32 public constant ARTIST_ROLE = keccak256("ARTIST_ROLE");
     bytes32 public constant ANIMATOR_ROLE = keccak256("ANIMATOR_ROLE");
     bytes32 public constant TREASURER_ROLE = keccak256("TREASURER_ROLE");
 
@@ -34,8 +35,10 @@ contract TinyBoxesBase is ERC721, AccessControl  {
      * @notice Constructor inherits ERC721
      */
     constructor() public ERC721("TinyBoxes", "[#][#]") {
-        // Grant all roles to the account deploying this contract
+        // TODO: setup better roles befor launch
+        // Grant all roles to the account deploying this contract for testing
         _setupRole(ADMIN_ROLE, msg.sender);
+        _setupRole(ARTIST_ROLE, msg.sender);
         _setupRole(ANIMATOR_ROLE, msg.sender);
         _setupRole(TREASURER_ROLE, msg.sender);
     }

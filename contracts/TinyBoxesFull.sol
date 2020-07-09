@@ -92,6 +92,29 @@ abstract contract TinyBoxesFull is
     }
 
     /**
+     * @dev handle the payment for tokens
+     * @param withLink boolean flag for paying with link
+     */
+    function handlePayment(bool withLink, address from, uint256 amount) internal {
+        // check if still minting the artist tokens
+        if (_tokenIds.current() < ARTIST_PRINTS) {
+            // Check that the calling account has the artist role
+            require(hasRole(ARTIST_ROLE, from), "Only the admin can mint the alpha tokens. Wait your turn FFS");
+        } else {
+            // TODO: setup beta sale auction and pricing
+            // if still minting the beta sale
+            // else minting public release
+            uint256 price = withLink ? currentLinkPrice() : currentPrice();
+            require(amount >= price, "insuficient payment"); // return if they dont pay enough
+            // give change if they over pay
+            if (amount > price) { 
+                if (withLink) LINK_TOKEN.transfer(from, amount - price); // change in LINK
+                else msg.sender.transfer(amount - price); // change in ETH
+            }
+        }
+    }
+
+    /**
      * @dev Accept incoming LINK ERC20+677 tokens, unpack bytes data and run create with results
      * @param from address of token sender
      * @param amount of tokens transfered
@@ -103,20 +126,11 @@ abstract contract TinyBoxesFull is
         uint256 amount,
         bytes calldata data
     ) external onlyRole(LINK_ROLE) notSoldOut returns (bool) {
-        // TODO: unpack parameters from bytes data
-        // check if still minting the artist tokens
-        if (_tokenIds.current() < ARTIST_PRINTS) {
-            // Check that the calling account has the admin role
-            require(hasRole(ADMIN_ROLE, msg.sender), "Only the admin can mint the alpha tokens. Wait your turn FFS");
-        } else {
-            // if still minting the beta sale
-            // else minting public release tokens
-            // make sure all calls pay enough and get change
-            uint256 price = currentLinkPrice();
-            require(amount >= price, "insuficient payment"); // return if they dont pay enough
-            if (amount > price) LINK_TOKEN.transfer(from, amount - price); // give change if they over pay
-        }
+        // check payment amount is greaterthan or equal to current token price
+        // give change if over payed
+        handlePayment(true, from, amount);
 
+        // TODO: unpack parameters from bytes data
         // create variables to unpack data into
         uint256 seed = 0;
         uint8[2] memory counts = [1, 1];
@@ -182,17 +196,7 @@ abstract contract TinyBoxesFull is
         int16[13] calldata dials,
         bool[3] calldata mirrors
     ) external payable notSoldOut returns (bytes32) {
-        // if still minting the beta sale
-        if (_tokenIds.current() < ARTIST_PRINTS) {
-            // Check that the calling account has the admin role
-            require(hasRole(ADMIN_ROLE, msg.sender), "Only the admin can mint the alpha tokens. Wait your turn FFS");
-        } else {
-            // make sure all later calls pay enough and get change
-            uint256 amount = currentPrice();
-            require(msg.value >= amount, "insuficient payment"); // return if they dont pay enough
-            if (msg.value > amount) msg.sender.transfer(msg.value - amount); // give change if they over pay
-            artmuseum.transfer(amount); // send the payment amount to the artmuseum account
-        }
+        handlePayment(false, msg.sender, msg.value);
 
         // convert user seed from string to uint
         uint256 seed = _seed.stringToUint();

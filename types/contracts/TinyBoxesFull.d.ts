@@ -29,6 +29,8 @@ export class TinyBoxesFull extends Contract {
 
     ARTIST_PRINTS(): TransactionObject<string>;
 
+    ARTIST_ROLE(): TransactionObject<string>;
+
     DEFAULT_ADMIN_ROLE(): TransactionObject<string>;
 
     LINK_ROLE(): TransactionObject<string>;

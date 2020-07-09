@@ -29,6 +29,8 @@ export class TinyBoxesBase extends Contract {
 
     ARTIST_PRINTS(): TransactionObject<string>;
 
+    ARTIST_ROLE(): TransactionObject<string>;
+
     DEFAULT_ADMIN_ROLE(): TransactionObject<string>;
 
     TOKEN_LIMIT(): TransactionObject<string>;
