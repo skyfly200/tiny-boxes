@@ -12,6 +12,8 @@ import "./TinyBoxesPricing.sol";
 // Chainlink Contracts
 import "./chainlink/VRFConsumerBase.sol";
 
+import "./Utils.sol";
+
 abstract contract TinyBoxesFull is
     TinyBoxesBase,
     TinyBoxesRenderer,
@@ -19,6 +21,7 @@ abstract contract TinyBoxesFull is
     VRFConsumerBase
 {
     using SafeMath_TinyBoxes for uint256;
+    using Utils for string;
 
     // Chainlink VRF and Feed Stuff
     // LINK Ropstein Address: 0x20fE562d797A42Dcb3399062AE9546cd06f63280
@@ -248,7 +251,7 @@ abstract contract TinyBoxesFull is
         }
 
         // convert user seed from string to uint
-        uint256 seed = Random.stringToUint(_seed);
+        uint256 seed = _seed.stringToUint();
 
         // create a new box object
         TinyBox memory box = TinyBox({
@@ -396,8 +399,8 @@ abstract contract TinyBoxesFull is
         bool[3] memory mirrors
     ) public view returns (string memory) {
         TinyBox memory box = TinyBox({
-            seed: Random.stringToUint(_seed),
-            randomness: Random.stringToUint(_seed),
+            seed: _seed.stringToUint(),
+            randomness: _seed.stringToUint(),
             animation: 0,
             shapes: counts[1],
             colors: counts[0],
