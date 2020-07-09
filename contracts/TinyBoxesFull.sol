@@ -359,7 +359,7 @@ abstract contract TinyBoxesFull is
      * @dev Approve an address for LINK withdraws
      * @param account address to approve
      */
-    function aproveForWithdraw(address account) external onlyDeployer {
+    function aproveLINKWithdraws(address account) external onlyDeployer {
         // set account address to true in witdraw aproval mapping
         mayWithdraw[account] = true;
     }
