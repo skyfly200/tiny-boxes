@@ -44,6 +44,15 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     }
 
     /**
+     * @notice Modifier to only allow acounts of a specified role to call a function
+     */
+    modifier onlyRole(bytes32 _role) {
+        // Check that the calling account has the required role
+        require(hasRole(_role, msg.sender), "Caller dosn't have permission to use this function");
+        _;
+    }
+
+    /**
      * @dev Lookup all token data in one call
      * @param _id for which we want token data
      * @return seed of token

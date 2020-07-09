@@ -5,9 +5,8 @@ pragma experimental ABIEncoderV2;
 // needed for upgradability
 //import "@openzeppelin/upgrades/contracts/Initializable.sol";
 
-import "./TinyBoxesBase.sol";
+import "./TinyBoxesStore.sol";
 import "./TinyBoxesRenderer.sol";
-import "./TinyBoxesPricing.sol";
 
 // Chainlink Contracts
 import "./chainlink/VRFConsumerBase.sol";
@@ -15,9 +14,8 @@ import "./chainlink/VRFConsumerBase.sol";
 import "./Utils.sol";
 
 abstract contract TinyBoxesFull is
-    TinyBoxesBase,
+    TinyBoxesStore,
     TinyBoxesRenderer,
-    TinyBoxesPricing,
     VRFConsumerBase
 {
     using SafeMath_TinyBoxes for uint256;
@@ -69,50 +67,6 @@ abstract contract TinyBoxesFull is
         // Init LINK token interface
         LINK_TOKEN = LinkTokenInterface(chainlinkTokenAddress());
     }
-    
-    /**
-     * @notice Modifier to only allow acounts of a specified role to call a function
-     */
-    modifier onlyRole(bytes32 _role) {
-        // Check that the calling account has the required role
-        require(hasRole(_role, msg.sender), "Caller dosn't have permission to use this function");
-        _;
-    }
-
-    /**
-     * @notice Modifier to check if tokens are sold out
-     */
-    modifier notSoldOut {
-        // ensure we still have not reached the cap
-        require(
-            _tokenIds.current() < TOKEN_LIMIT,
-            "ART SALE IS OVER. Tinyboxes are now only available on the secondary market."
-        );
-        _;
-    }
-
-    /**
-     * @dev handle the payment for tokens
-     * @param withLink boolean flag for paying with link
-     */
-    function handlePayment(bool withLink, address from, uint256 amount) internal {
-        // check if still minting the artist tokens
-        if (_tokenIds.current() < ARTIST_PRINTS) {
-            // Check that the calling account has the artist role
-            require(hasRole(ARTIST_ROLE, from), "Only the admin can mint the alpha tokens. Wait your turn FFS");
-        } else {
-            // TODO: setup beta sale auction and pricing
-            // if still minting the beta sale
-            // else minting public release
-            uint256 price = withLink ? currentLinkPrice() : currentPrice();
-            require(amount >= price, "insuficient payment"); // return if they dont pay enough
-            // give change if they over pay
-            if (amount > price) { 
-                if (withLink) LINK_TOKEN.transfer(from, amount - price); // change in LINK
-                else msg.sender.transfer(amount - price); // change in ETH
-            }
-        }
-    }
 
     /**
      * @dev Accept incoming LINK ERC20+677 tokens, unpack bytes data and run create with results
@@ -128,7 +82,7 @@ abstract contract TinyBoxesFull is
     ) external onlyRole(LINK_ROLE) notSoldOut returns (bool) {
         // check payment amount is greaterthan or equal to current token price
         // give change if over payed
-        handlePayment(true, from, amount);
+        handlePayment(true, amount, from);
 
         // TODO: unpack parameters from bytes data
         // create variables to unpack data into
@@ -196,7 +150,7 @@ abstract contract TinyBoxesFull is
         int16[13] calldata dials,
         bool[3] calldata mirrors
     ) external payable notSoldOut returns (bytes32) {
-        handlePayment(false, msg.sender, msg.value);
+        handlePayment(false, msg.value, msg.sender);
 
         // convert user seed from string to uint
         uint256 seed = _seed.stringToUint();
@@ -314,46 +268,6 @@ abstract contract TinyBoxesFull is
         onlyRole(ANIMATOR_ROLE)
     {
         _setTokenURI(_id, _uri);
-    }
-
-    /**
-     * @dev Get the current price of a token
-     * @return price in wei of a token currently
-     */
-    function currentPrice() public view returns (uint256 price) {
-        price = priceAt(_tokenIds.current());
-    }
-
-    /**
-     * @dev Get the current price of a token in LINK (Chainlink Token)
-     * @return price in LINK of a token currently
-     */
-    function currentLinkPrice() public view returns (uint256 price) {
-        price = linkPriceAt(_tokenIds.current());
-    }
-
-    /**
-     * @dev Approve an address for LINK withdraws
-     * @param account address to approve
-     */
-    function aproveLINKWithdraws(address account) external onlyRole(ADMIN_ROLE) {
-        // set account address to true in witdraw aproval mapping
-        _setupRole(TREASURER_ROLE, account);
-    }
-
-    /**
-     * @dev Withdraw LINK tokens from the contract balance to contract owner
-     * @param amount of link to withdraw (in smallest divisions of 10**18)
-     */
-    // TODO: make a version that checks to see we have enough link to fullfill randomness for remaining unminted tokens
-    function withdrawLINK(uint256 amount) external onlyRole(TREASURER_ROLE) returns (bool) {
-        // ensure we have at least that much LINK
-        require(
-            LINK_TOKEN.balanceOf(address(this)) >= amount,
-            "Not enough LINK for requested withdraw"
-        );
-        // send amount of LINK tokens to the transaction sender
-        return LINK_TOKEN.transfer(msg.sender, amount);
     }
 
     /**
