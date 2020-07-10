@@ -8,7 +8,7 @@ import "./chainlink/VRFConsumerBase.sol";
 import "./TinyBoxesBase.sol";
 import "./TinyBoxesPricing.sol";
 
-import "./Random.sol";
+import "./libraries/Random.sol";
 
 abstract contract TinyBoxesStore is TinyBoxesBase, TinyBoxesPricing, VRFConsumerBase {
     using SafeMath for uint256;

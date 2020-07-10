@@ -6,9 +6,13 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/math/SignedSafeMath.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "./TinyBox.sol";
-import "./SVGBuffer.sol";
-import "./Random.sol";
+import "./structs/Decimal.sol";
+import "./structs/Shape.sol";
+import "./structs/Modulation.sol";
+import "./structs/TinyBox.sol";
+
+import "./libraries/SVGBuffer.sol";
+import "./libraries/Random.sol";
 
 abstract contract TinyBoxesRenderer {
     using SafeMath for uint256;
@@ -27,30 +31,6 @@ abstract contract TinyBoxesRenderer {
         '"/>\n</g>',
         "\n</symbol>"
     ];
-
-    struct Decimal {
-        int256 value;
-        uint8 decimals;
-    }
-
-    struct Shape {
-        int256[2] position;
-        uint256[2] size;
-        uint256 color;
-        uint256 opacity;
-    }
-
-    struct Modulation {
-        uint256 color;
-        uint256 opacity;
-        uint256 hatch;
-        uint256 stack;
-        uint8[4] spacing;
-        uint8[4] sizeRange;
-        uint8[2] position;
-        uint8[2] size;
-        uint8[3] mirror;
-    }
 
     /**
      * @dev generate a color

@@ -10,8 +10,8 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/math/SignedSafeMath.sol";
 
-import "./TinyBox.sol";
-import "./Utils.sol";
+import "./structs/TinyBox.sol";
+import "./libraries/Utils.sol";
 
 contract TinyBoxesBase is ERC721, AccessControl  {
     using Counters for Counters.Counter;
