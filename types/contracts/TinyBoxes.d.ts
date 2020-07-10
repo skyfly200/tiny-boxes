@@ -21,17 +21,31 @@ export class TinyBoxes extends Contract {
   );
   clone(): TinyBoxes;
   methods: {
+    ADMIN_ROLE(): TransactionObject<string>;
+
     ANIMATION_COUNT(): TransactionObject<string>;
+
+    ANIMATOR_ROLE(): TransactionObject<string>;
 
     ARTIST_PRINTS(): TransactionObject<string>;
 
+    ARTIST_ROLE(): TransactionObject<string>;
+
+    BETA_SALE_CAP(): TransactionObject<string>;
+
+    DEFAULT_ADMIN_ROLE(): TransactionObject<string>;
+
+    LINK_ROLE(): TransactionObject<string>;
+
     TOKEN_LIMIT(): TransactionObject<string>;
 
-    animator(): TransactionObject<string>;
+    TREASURER_ROLE(): TransactionObject<string>;
+
+    VRF_ROLE(): TransactionObject<string>;
 
     approve(to: string, tokenId: number | string): TransactionObject<void>;
 
-    aproveForWithdraw(account: string): TransactionObject<void>;
+    aproveLINKWithdraws(account: string): TransactionObject<void>;
 
     balanceOf(owner: string): TransactionObject<string>;
 
@@ -48,14 +62,31 @@ export class TinyBoxes extends Contract {
 
     currentPrice(): TransactionObject<string>;
 
-    deployer(): TransactionObject<string>;
-
     fulfillRandomness(
       requestId: string | number[],
       randomness: number | string
     ): TransactionObject<void>;
 
     getApproved(tokenId: number | string): TransactionObject<string>;
+
+    getRoleAdmin(role: string | number[]): TransactionObject<string>;
+
+    getRoleMember(
+      role: string | number[],
+      index: number | string
+    ): TransactionObject<string>;
+
+    getRoleMemberCount(role: string | number[]): TransactionObject<string>;
+
+    grantRole(
+      role: string | number[],
+      account: string
+    ): TransactionObject<void>;
+
+    hasRole(
+      role: string | number[],
+      account: string
+    ): TransactionObject<boolean>;
 
     isApprovedForAll(
       owner: string,
@@ -99,11 +130,21 @@ export class TinyBoxes extends Contract {
 
     priceIncrease(): TransactionObject<string>;
 
+    renounceRole(
+      role: string | number[],
+      account: string
+    ): TransactionObject<void>;
+
     requestRandomness(
       _keyHash: string | number[],
       _fee: number | string,
       _seed: number | string
     ): TransactionObject<string>;
+
+    revokeRole(
+      role: string | number[],
+      account: string
+    ): TransactionObject<void>;
 
     safeTransferFrom(
       from: string,
@@ -123,8 +164,6 @@ export class TinyBoxes extends Contract {
     ): TransactionObject<boolean>;
 
     symbol(): TransactionObject<string>;
-
-    tokenAnimation(_id: number | string): TransactionObject<string>;
 
     tokenArt(_id: number | string): TransactionObject<string>;
 
@@ -174,8 +213,6 @@ export class TinyBoxes extends Contract {
       mirrors: boolean[]
     ): TransactionObject<string>;
 
-    tokenSeed(_id: number | string): TransactionObject<string>;
-
     tokenURI(tokenId: number | string): TransactionObject<string>;
 
     totalSupply(): TransactionObject<string>;
@@ -210,6 +247,22 @@ export class TinyBoxes extends Contract {
     ChainlinkCancelled: ContractEvent<string>;
     ChainlinkFulfilled: ContractEvent<string>;
     ChainlinkRequested: ContractEvent<string>;
+    RoleGranted: ContractEvent<{
+      role: string;
+      account: string;
+      sender: string;
+      0: string;
+      1: string;
+      2: string;
+    }>;
+    RoleRevoked: ContractEvent<{
+      role: string;
+      account: string;
+      sender: string;
+      0: string;
+      1: string;
+      2: string;
+    }>;
     Transfer: ContractEvent<{
       from: string;
       to: string;

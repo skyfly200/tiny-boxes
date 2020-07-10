@@ -5,7 +5,7 @@ pragma solidity ^0.6.8;
 import "./chainlink/ChainlinkClient.sol";
 import "./chainlink/interfaces/AggregatorInterface.sol";
 
-contract TinyBoxesPricing is ChainlinkClient {
+abstract contract TinyBoxesPricing is ChainlinkClient {
     AggregatorInterface internal refFeed;
     LinkTokenInterface internal LINK_TOKEN;
 
