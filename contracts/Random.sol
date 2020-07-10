@@ -30,17 +30,6 @@ library Random {
     }
 
     /**
-     * Initialize the pool from the latest "num" blocks.
-     */
-    function initLatest(uint256 num, uint256 seed)
-        internal
-        view
-        returns (bytes32[] memory)
-    {
-        return init(block.number - num, block.number - 1, seed);
-    }
-
-    /**
      * Advances to the next 256-bit random number in the pool of hash chains.
      */
     function next(bytes32[] memory pool) internal pure returns (uint256) {
