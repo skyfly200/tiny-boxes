@@ -10,7 +10,7 @@ import "./TinyBoxesPricing.sol";
 
 import "./libraries/Random.sol";
 
-abstract contract TinyBoxesStore is TinyBoxesBase, TinyBoxesPricing, VRFConsumerBase {
+contract TinyBoxesStore is TinyBoxesBase, TinyBoxesPricing, VRFConsumerBase {
     using SafeMath for uint256;
     using Utils for string;
 
@@ -46,14 +46,6 @@ abstract contract TinyBoxesStore is TinyBoxesBase, TinyBoxesPricing, VRFConsumer
         TinyBoxesPricing(_link, _feed)
         VRFConsumerBase(VRF_COORDINATOR, chainlinkTokenAddress())
     {
-        // Set the address for the LINK token to the public network address
-        // or use an address provided as a parameter if set
-        if (_link == address(0)) setPublicChainlinkToken();
-        else setChainlinkToken(_link);
-
-        // Init LINK token interface
-        LINK_TOKEN = LinkTokenInterface(chainlinkTokenAddress());
-
         // Grant roles to the LINK and VRF_COORDINATOR contract addresses
         _setupRole(LINK_ROLE, chainlinkTokenAddress());
         _setupRole(VRF_ROLE, VRF_COORDINATOR);

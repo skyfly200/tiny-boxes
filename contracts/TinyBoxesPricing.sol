@@ -5,7 +5,7 @@ pragma solidity ^0.6.8;
 import "./chainlink/ChainlinkClient.sol";
 import "./chainlink/interfaces/AggregatorInterface.sol";
 
-abstract contract TinyBoxesPricing is ChainlinkClient {
+contract TinyBoxesPricing is ChainlinkClient {
     AggregatorInterface internal refFeed;
     LinkTokenInterface internal LINK_TOKEN;
 
@@ -25,8 +25,10 @@ abstract contract TinyBoxesPricing is ChainlinkClient {
         // or use an address provided as a parameter if set
         if (_link == address(0)) setPublicChainlinkToken();
         else setChainlinkToken(_link);
+
         // Init LINK token interface
         LINK_TOKEN = LinkTokenInterface(chainlinkTokenAddress());
+        
         // set the feed address and init the interface
         if (_feed == address(0))
             refFeed = AggregatorInterface(DEFAULT_FEED_ADDRESS); // init LINK/ETH with default aggrigator contract address

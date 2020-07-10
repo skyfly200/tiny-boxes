@@ -5,7 +5,19 @@ pragma experimental ABIEncoderV2;
 import "./TinyBoxesStore.sol";
 import "./TinyBoxesRenderer.sol";
 
-abstract contract TinyBoxes is TinyBoxesStore, TinyBoxesRenderer {
+contract TinyBoxes is TinyBoxesStore, TinyBoxesRenderer {
+    /**
+     * @dev Contract constructor.
+     * @notice Constructor inherits from TinyBoxesStore, TinyBoxesRenderer
+     */
+    constructor(
+        address _link,
+        address _feed
+    )
+        public
+        TinyBoxesStore(_link, _feed)
+    {}
+
     /**
      * @dev Update the token URI field
      * @dev Only the animator role can call this

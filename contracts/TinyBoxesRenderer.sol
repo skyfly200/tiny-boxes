@@ -14,7 +14,7 @@ import "./structs/TinyBox.sol";
 import "./libraries/SVGBuffer.sol";
 import "./libraries/Random.sol";
 
-abstract contract TinyBoxesRenderer {
+contract TinyBoxesRenderer {
     using SafeMath for uint256;
     using SignedSafeMath for int256;
 
