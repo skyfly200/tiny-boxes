@@ -80,13 +80,13 @@ contract TinyBoxesStore is TinyBoxesBase, TinyBoxesPricing, VRFConsumerBase {
             // Check that the calling account has the artist role
             require(hasRole(ARTIST_ROLE, from), "Only the admin can mint the alpha tokens. Wait your turn FFS");
         } else {
-            // TODO: setup beta sale auction and pricing
             // if still minting the beta sale
+            // TODO: setup beta sale auction and pricing
             // else minting public release
             uint256 price = withLink ? currentLinkPrice() : currentPrice();
             require(amount >= price, "insuficient payment"); // return if they dont pay enough
             // give change if they over pay
-            if (amount > price) { 
+            if (amount > price) {
                 if (withLink) LINK_TOKEN.transfer(from, amount - price); // change in LINK
                 else msg.sender.transfer(amount - price); // change in ETH
             }
@@ -125,10 +125,11 @@ contract TinyBoxesStore is TinyBoxesBase, TinyBoxesPricing, VRFConsumerBase {
     // TODO: make a version that checks to see we have enough link to fullfill randomness for remaining unminted tokens
     function withdrawLINK(uint256 amount) external onlyRole(TREASURER_ROLE) returns (bool) {
         // ensure we have at least that much LINK
-        require(
-            LINK_TOKEN.balanceOf(address(this)) >= amount,
-            "Not enough LINK for requested withdraw"
-        );
+        // not needed as it is already checked for in the LINK contract
+        // require(
+        //     LINK_TOKEN.balanceOf(address(this)) >= amount,
+        //     "Not enough LINK for requested withdraw"
+        // );
         // send amount of LINK tokens to the transaction sender
         return LINK_TOKEN.transfer(msg.sender, amount);
     }

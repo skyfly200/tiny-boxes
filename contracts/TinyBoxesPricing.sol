@@ -2,10 +2,12 @@
 pragma solidity ^0.6.8;
 
 // Chainlink Contracts
-import "./chainlink/ChainlinkClient.sol";
+import "./chainlink/ChainlinkClient.sol";  // includes SafeMath
 import "./chainlink/interfaces/AggregatorInterface.sol";
 
 contract TinyBoxesPricing is ChainlinkClient {
+    using SafeMath for uint256;
+
     AggregatorInterface internal refFeed;
     LinkTokenInterface internal LINK_TOKEN;
 
