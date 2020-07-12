@@ -1,4 +1,5 @@
 //SPDX-License-Identifier: Unlicensed
+
 pragma solidity ^0.6.4;
 
 library Random {
