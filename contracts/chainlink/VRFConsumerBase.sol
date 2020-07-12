@@ -1,10 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.6.8;
 
-// conflicts with openzeppelin ERC721 contract
-//import "./vendor/SafeMath.sol";
-// alias fixes issues
-import {SafeMath as SafeMath_Chainlink} from "./vendor/SafeMath.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
 
 import "./interfaces/LinkTokenInterface.sol";
 
@@ -86,7 +83,7 @@ import "./VRFRequestIDBase.sol";
  * @dev from publishing a block.)
  */
 abstract contract VRFConsumerBase is VRFRequestIDBase {
-    using SafeMath_Chainlink for uint256;
+    using SafeMath for uint256;
 
     /**
      * @notice fulfillRandomness handles the VRF response. Your contract must
