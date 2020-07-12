@@ -9,10 +9,14 @@ import "./TinyBoxesBase.sol";
 import "./TinyBoxesPricing.sol";
 
 import "./libraries/Random.sol";
+import "./libraries/SVGBuffer.sol";
+import "./libraries/StringUtilsLib.sol";
 
 contract TinyBoxesStore is TinyBoxesBase, TinyBoxesPricing, VRFConsumerBase {
     using SafeMath for uint256;
     using Utils for string;
+    using SVGBuffer for bytes;
+    using StringUtilsLib for *;
 
     // Chainlink VRF and Feed Stuff
     // LINK Ropstein Address: 0x20fE562d797A42Dcb3399062AE9546cd06f63280
@@ -21,6 +25,7 @@ contract TinyBoxesStore is TinyBoxesBase, TinyBoxesPricing, VRFConsumerBase {
     // address constant VRF_COORDINATOR = 0xc1031337fe8E75Cf25CAe9828F3BF734d83732e4; // Rinkeby
     //bytes32 constant KEY_HASH = 0xcad496b9d0416369213648a32b4975fff8707f05dfb43603961b58f3ac6617a7; // Rinkeby
     uint256 constant fee = 10**18;
+    uint256 constant DATA_PARAMETER_COUNT = 19;
 
     struct Request {
         address creator;
@@ -140,54 +145,49 @@ contract TinyBoxesStore is TinyBoxesBase, TinyBoxesPricing, VRFConsumerBase {
         uint256 amount,
         bytes calldata data
     ) external onlyRole(LINK_ROLE) notSoldOut returns (bool) {
-        // check payment amount is greaterthan or equal to current token price
+        // check payment amount is greater than or equal to current token price
         // give change if over payed
         handlePayment(true, amount, from);
 
-        // TODO: unpack parameters from bytes data
-        // create variables to unpack data into
-        uint256 seed = 0;
-        uint8[2] memory counts = [1, 1];
-        int16[13] memory dials = [
-            int16(100),
-            int16(100),
-            int16(3),
-            int16(3),
-            int16(100),
-            int16(200),
-            int16(100),
-            int16(200),
-            int16(3),
-            int16(750),
-            int16(1200),
-            int16(2400),
-            int16(100)
-        ];
-        bool[3] memory mirrors = [true, true, true];
+        // --- Unpack parameters from raw data bytes ---
+        // convert to a string
+        // split by a comma delimiter into a string array
+        // check correct number of parameters are available
+        StringUtilsLib.slice memory s = data.toString().toSlice();
+        StringUtilsLib.slice memory delim = ",".toSlice();
+        require(s.count(delim) + 1 == DATA_PARAMETER_COUNT,"Invalid number of data parameters");
+        string[] memory parts = new string[](s.count(delim) + 1);
+        for(uint i = 0; i < parts.length; i++) {
+            parts[i] = s.split(delim).toString();
+        }
 
-        // create a new box object
+        // create a new box object from the unpacked parameters
+        // Parmeters List and Types
+        // 0: Seed uint256, 1: shapes uint8, 2: colors: uint8, 3-6: spacing 0-3 uint16
+        // 7-10: size 0-3 uint16, 11: hatching uint16, 12-14: mirrorPositions 0-2 int16
+        // 15: scale uint16, 16-18: mirrors bool (int 0 == false)
         TinyBox memory box = TinyBox({
-            seed: seed,
+            seed: parts[0].stringToUint(),
             randomness: 0,
             animation: 0,
-            shapes: counts[1],
-            colors: counts[0],
+            shapes: uint8(parts[1].stringToUint()),
+            colors: uint8(parts[2].stringToUint()),
             spacing: [
-                uint16(dials[0]),
-                uint16(dials[1]),
-                uint16(dials[2]),
-                uint16(dials[3])
+                uint16(parts[3].stringToUint()),
+                uint16(parts[4].stringToUint()),
+                uint16(parts[5].stringToUint()),
+                uint16(parts[6].stringToUint())
             ],
             size: [
-                uint16(dials[4]),
-                uint16(dials[5]),
-                uint16(dials[6]),
-                uint16(dials[7])
+                uint16(parts[7].stringToUint()),
+                uint16(parts[8].stringToUint()),
+                uint16(parts[9].stringToUint()),
+                uint16(parts[10].stringToUint())
             ],
-            hatching: uint16(dials[8]),
-            mirrorPositions: [dials[9], dials[10], dials[11]],
-            scale: uint16(dials[12]),
-            mirrors: mirrors
+            hatching: uint16(parts[11].stringToUint()),
+            mirrorPositions: [int16(parts[12].stringToUint()), int16(parts[13].stringToUint()), int16(parts[14].stringToUint())],
+            scale: uint16(parts[15].stringToUint()),
+            mirrors: [parts[16].stringToUint() != 0, parts[17].stringToUint() != 0, parts[18].stringToUint() != 0]
         });
 
         // register the new box
