@@ -5,10 +5,12 @@ pragma experimental ABIEncoderV2;
 import "./TinyBoxesStore.sol";
 import "./TinyBoxesRenderer.sol";
 
-contract TinyBoxes is TinyBoxesStore, TinyBoxesRenderer {
+contract TinyBoxes is TinyBoxesStore {
+    using TinyBoxesRenderer for TinyBox;
+
     /**
      * @dev Contract constructor.
-     * @notice Constructor inherits from TinyBoxesStore, TinyBoxesRenderer
+     * @notice Constructor inherits from TinyBoxesStore
      */
     constructor(
         address _link,
@@ -66,7 +68,7 @@ contract TinyBoxes is TinyBoxesStore, TinyBoxesRenderer {
             scale: uint16(dials[12]),
             mirrors: mirrors
         });
-        return SVGBuffer.toString(perpetualRenderer(box, 0));
+        return SVGBuffer.toString(box.perpetualRenderer(0));
     }
 
     /**
@@ -81,7 +83,7 @@ contract TinyBoxes is TinyBoxesStore, TinyBoxesRenderer {
         returns (string memory)
     {
         TinyBox memory box = boxes[_id];
-        return SVGBuffer.toString(perpetualRenderer(box, _frame));
+        return SVGBuffer.toString(box.perpetualRenderer(_frame));
     }
 
     /**

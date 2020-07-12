@@ -109,23 +109,6 @@ export class TinyBoxes extends Contract {
 
     ownerOf(tokenId: number | string): TransactionObject<string>;
 
-    perpetualRenderer(
-      box: {
-        seed: number | string;
-        randomness: number | string;
-        animation: number | string;
-        shapes: number | string;
-        colors: number | string;
-        hatching: number | string;
-        scale: number | string;
-        mirrorPositions: (number | string)[];
-        size: (number | string)[];
-        spacing: (number | string)[];
-        mirrors: boolean[];
-      },
-      frame: number | string
-    ): TransactionObject<string>;
-
     priceAt(_id: number | string): TransactionObject<string>;
 
     priceIncrease(): TransactionObject<string>;

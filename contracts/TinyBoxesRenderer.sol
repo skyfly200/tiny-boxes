@@ -13,24 +13,12 @@ import "./structs/TinyBox.sol";
 
 import "./libraries/SVGBuffer.sol";
 import "./libraries/Random.sol";
+import "./libraries/StringUtilsLib.sol";
 
-contract TinyBoxesRenderer {
+library TinyBoxesRenderer {
     using SafeMath for uint256;
     using SignedSafeMath for int256;
-
-    string doctype = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n';
-    string openingTag = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2600 2600" style="stroke-width:0; background-color:#121212;">\n\n';
-    string symbols = '<symbol id="upperleftquad4">\n<symbol id="upperleftquad3">\n<symbol id="upperleftquad2">\n<symbol id="upperleftquad">\n\n';
-    string[3] scales = ["-1 1", "-1 -1", "1 -1"];
-    string[7] template = [
-        "\n<g>",
-        '\n<g transform="scale(',
-        ") translate(",
-        ')">',
-        '\n<use xlink:href="#upperleftquad',
-        '"/>\n</g>',
-        "\n</symbol>"
-    ];
+    using StringUtilsLib for *;
 
     /**
      * @dev generate a color
@@ -115,6 +103,24 @@ contract TinyBoxesRenderer {
     }
 
     /**
+     * @dev render the header of the SVG markup
+     * @return header string
+     */
+    function _generateHeader() internal pure returns (string memory header) {
+        string memory xmlVersion = '<?xml version="1.0" encoding="UTF-8"?>\n';
+        string memory doctype = '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n';
+        string memory openingTag = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2600 2600" style="stroke-width:0; background-color:#121212;">\n\n';
+        string memory symbols = '<symbol id="upperleftquad4">\n<symbol id="upperleftquad3">\n<symbol id="upperleftquad2">\n<symbol id="upperleftquad">\n\n';
+
+        StringUtilsLib.slice[] memory parts;
+        parts[0] = xmlVersion.toSlice();
+        parts[1] = doctype.toSlice();
+        parts[2] = openingTag.toSlice();
+        parts[3] = symbols.toSlice();
+        return StringUtilsLib.join((" ").toSlice(), parts);
+    }
+
+    /**
      * @dev render the footer string for mirring effects
      * @param switches for each mirroring stage
      * @param mirrorPositions for generator settings
@@ -127,6 +133,17 @@ contract TinyBoxesRenderer {
         Decimal memory scale
     ) internal view returns (string memory footer) {
         bytes memory buffer = new bytes(8192);
+
+        string[3] memory scales = ["-1 1", "-1 -1", "1 -1"];
+        string[7] memory template = [
+            "\n<g>",
+            '\n<g transform="scale(',
+            ") translate(",
+            ')">',
+            '\n<use xlink:href="#upperleftquad',
+            '"/>\n</g>',
+            "\n</symbol>"
+        ];
 
         for (uint8 s = 0; s < 3; s++) {
             // loop through mirroring effects
@@ -255,9 +272,7 @@ contract TinyBoxesRenderer {
         buffer = new bytes(8192);
 
         // write the document header to the SVG buffer
-        SVGBuffer.append(buffer, doctype);
-        SVGBuffer.append(buffer, openingTag);
-        SVGBuffer.append(buffer, symbols);
+        SVGBuffer.append(buffer, _generateHeader());
 
         // initilize RNG with the specified seed and blocks 0 through 1
         bytes32[] memory pool = Random.init(0, 1, box.randomness);
