@@ -265,7 +265,7 @@ library StringUtilsLib {
      * @param self The second slice to compare.
      * @return True if the slices are equal, false otherwise.
      */
-    function equals(slice memory self, slice memory other) internal view returns (bool) {
+    function equals(slice memory self, slice memory other) internal pure returns (bool) {
         return compare(self, other) == 0;
     }
 
