@@ -1,0 +1,47 @@
+Commands to Test Contract Code
+
+>>> Send TX
+
+Buy a box
+npx oz send-tx --method buy --args "12345, [7,11], [100,100,2,2,111,222,333,444,2,750,1200,2400,100], [true,true,true]" -n ropsten --value 160000000000000000
+
+Update URI of Token 5
+npx oz send-tx --method updateURI --args 5,<URI> -n ropsten
+
+Withdraw LINK
+npx oz send-tx --method withdrawLINK --args <Amount> -n ropsten
+
+>>> Call A Method
+
+Current Token Price in ETH
+npx oz call --method currentPrice -n ropsten
+
+Current Token Price in ETH
+npx oz call --method priceAt --args 500 -n ropsten
+
+Current Token Price in LINK
+npx oz call --method currentLinkPrice -n ropsten
+
+Current Token Price in LINK
+npx oz call --method linkPriceAt --args 500 -n ropsten
+
+LINK Premium
+npx oz call --method linkPremium -n ropsten
+
+Token Preview
+npx oz call --method tokenPreview --args "12345, [7,11], [100,100,2,2,111,222,333,444,2,750,1200,2400,100], [true,true,true]" -n ropsten
+
+Token 0 data
+npx oz call --method tokenData --args 0 -n ropsten
+
+Token 0 URI
+npx oz call --method tokenURI --args 0 -n ropsten
+
+Token 0 Art
+npx oz call --method tokenArt --args 0 -n ropsten
+
+Token 0 Frame 3
+npx oz call --method tokenFrame --args 0,3 -n ropsten
+
+Owner Of Token 0
+npx oz call --method ownerOf --args 0 -n ropsten
