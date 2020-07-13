@@ -68,7 +68,7 @@ contract TinyBoxes is TinyBoxesStore {
             scale: uint16(dials[12]),
             mirrors: mirrors
         });
-        return SVGBuffer.toString(box.perpetualRenderer(0));
+        return box.perpetualRenderer(0);
     }
 
     /**
@@ -83,7 +83,7 @@ contract TinyBoxes is TinyBoxesStore {
         returns (string memory)
     {
         TinyBox memory box = boxes[_id];
-        return SVGBuffer.toString(box.perpetualRenderer(_frame));
+        return box.perpetualRenderer(_frame);
     }
 
     /**

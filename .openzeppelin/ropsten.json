@@ -2,11 +2,11 @@
   "contracts": {},
   "solidityLibs": {
     "TinyBoxesRenderer": {
-      "address": "0x59fE957c738d3b13299EBc0A18db6D3De4dD8377",
-      "constructorCode": "612139610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "cdc616e1a19fd732a0c27737cdd623733ee133e350ccb52d34c51221c2e80511",
-      "localBytecodeHash": "40b8c1c805c49286e8f05f489c2d13853094d296a076d4e6d04d6be775fd51af",
-      "deployedBytecodeHash": "40b8c1c805c49286e8f05f489c2d13853094d296a076d4e6d04d6be775fd51af"
+      "address": "0x9C273f303Ca25775CC851814D8868FA67a401F01",
+      "constructorCode": "6120f1610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "4312de7e22656ae858af319f75ac218965a48d4088d4fb67b7ca189e069e0fda",
+      "localBytecodeHash": "ff7498294a780e107b0af62e922482a56aa0881abb14d0e1e64a9863ea300b16",
+      "deployedBytecodeHash": "ff7498294a780e107b0af62e922482a56aa0881abb14d0e1e64a9863ea300b16"
     }
   },
   "proxies": {
@@ -23,6 +23,26 @@
       },
       {
         "address": "0x5F1D3712c6a2dF57Bb9e976e6fC69300eF2814cD",
+        "kind": "NonProxy",
+        "bytecodeHash": "ea03790c8b9241001b1c19ddbcaaba0f6f0361f399e05119083be51cd044ec5a"
+      },
+      {
+        "address": "0xe9e9DE4B5F84372604919AD80561A8620e72C20a",
+        "kind": "NonProxy",
+        "bytecodeHash": "4b2afdbd98caa7b09e373b1b27e2bb03dc7bd29dd657e975af15792fef9cf080"
+      },
+      {
+        "address": "0x111a5a7469559a53AA234C97Ce1C14212ec35096",
+        "kind": "NonProxy",
+        "bytecodeHash": "670b3698d6a329e9d08f0b3b776c819b9ab7d79d542647d0df1f7d35111bd4e1"
+      },
+      {
+        "address": "0x3D6859B5213f4B1BF6Ad2f88f9894b42b38f07Ef",
+        "kind": "NonProxy",
+        "bytecodeHash": "ea03790c8b9241001b1c19ddbcaaba0f6f0361f399e05119083be51cd044ec5a"
+      },
+      {
+        "address": "0x399E585ea2D37E1E900f7E8518a829e1f3de4D10",
         "kind": "NonProxy",
         "bytecodeHash": "ea03790c8b9241001b1c19ddbcaaba0f6f0361f399e05119083be51cd044ec5a"
       }

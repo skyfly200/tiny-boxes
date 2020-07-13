@@ -19,6 +19,7 @@ library TinyBoxesRenderer {
     using SafeMath for uint256;
     using SignedSafeMath for int256;
     using StringUtilsLib for *;
+    using SVGBuffer for bytes;
 
     /**
      * @dev generate a color
@@ -261,19 +262,13 @@ library TinyBoxesRenderer {
      * @dev render a token's art
      * @param box TinyBox data structure
      * @param frame number to render
-     * @return buffer of the SVG graphics markup of the token
+     * @return markup of the SVG graphics of the token
      */
     function perpetualRenderer(TinyBox memory box, uint256 frame)
         public
         view
-        returns (bytes memory buffer)
+        returns (string memory)
     {
-        // initialize an empty buffer for the SVG markup
-        buffer = new bytes(8192);
-
-        // write the document header to the SVG buffer
-        SVGBuffer.append(buffer, _generateHeader());
-
         // initilize RNG with the specified seed and blocks 0 through 1
         bytes32[] memory pool = Random.init(0, 1, box.randomness);
 
@@ -325,6 +320,13 @@ library TinyBoxesRenderer {
             shapes[i] = Shape(position, size, color, opacity);
         }
 
+        // initialize an empty buffer for the SVG markup
+        bytes memory buffer = new bytes(8192);
+
+        // write the document header to the SVG buffer
+        SVGBuffer.append(buffer, _generateHeader());
+
+        // write shapes to the SVG buffer
         for (uint256 i = 0; i < box.shapes; i++) {
             Shape memory shape = shapes[i.add(mod.stack).mod(box.shapes)];
             SVGBuffer.rect(
@@ -355,6 +357,6 @@ library TinyBoxesRenderer {
             )
         );
 
-        return buffer;
+        return buffer.toString();
     }
 }
