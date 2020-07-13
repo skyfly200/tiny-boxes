@@ -110,15 +110,6 @@ contract TinyBoxesStore is TinyBoxesBase, TinyBoxesPricing, VRFConsumerBase {
     }
 
     /**
-     * @dev Approve an address for LINK withdraws
-     * @param account address to approve
-     */
-    function aproveLINKWithdraws(address account) external onlyRole(ADMIN_ROLE) {
-        // set account address to true in witdraw aproval mapping
-        _setupRole(TREASURER_ROLE, account);
-    }
-
-    /**
      * @dev Withdraw LINK tokens from the contract balance to contract owner
      * @param amount of link to withdraw (in smallest divisions of 10**18)
      */
@@ -256,7 +247,7 @@ contract TinyBoxesStore is TinyBoxesBase, TinyBoxesPricing, VRFConsumerBase {
             msg.sender != address(0),
             "token recipient man not be the zero address"
         );
-        // ensure we have enough LINK token in the contract to pay for VRF
+        // ensure we have enough LINK token in the contract to pay for VRF request fee
         require(
             LINK_TOKEN.balanceOf(address(this)) > fee,
             "Not enough LINK for a VRF request"
