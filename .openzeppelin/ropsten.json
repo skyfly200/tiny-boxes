@@ -12,36 +12,14 @@
   "proxies": {
     "tiny-boxes/TinyBoxes": [
       {
-        "address": "0x6B9b7F4752182A41c16c2C35e4d3be6336E83073",
+        "address": "0xCAcb591Cf802565E0663120B3b7aE3C95f3b24D6",
         "kind": "NonProxy",
-        "bytecodeHash": "b453d7844f55731d1636921acd0de038062c40239919eba079268e1ac6020f50"
+        "bytecodeHash": "49d457e18083c13871794900d9a1730706546e49896e39a545597ef111fc142a"
       },
       {
-        "address": "0xe05e0ef87390266E19CA816674123751f4E649cC",
+        "address": "0x155f730Ed5756ED10AfFf585762d1ac3acCB9977",
         "kind": "NonProxy",
-        "bytecodeHash": "866a64fd9de9645f265ac7650cb0868b1d8d61caa5a538044673e061c67b5287"
-      },
-      {
-        "address": "0x55d911f64d51D810c7B6D1e48b61De6305D6d9d9",
-        "kind": "NonProxy",
-        "bytecodeHash": "f66342969539b6b1a5170ac75e7ff05bde6573255ab366db82aa5f0b496458dc"
-      },
-      {
-        "address": "0x86795f17D08a8AA560668888d5F5D0dA2c0B8792",
-        "kind": "NonProxy",
-        "bytecodeHash": "675718437cdd390594b17266dd0bccc28a338ebef51b7fe7b5ae5ceb2b5a85e4"
-      },
-      {
-        "address": "0x69248237Ee1b083C1081fBcFfC0C07eF8F06051D",
-        "kind": "NonProxy",
-        "bytecodeHash": "0fc903b5b2f8796448f31258bb0df02fad705cca6ceb86f9dfc8ca3aaba941f2"
-      }
-    ],
-    "tiny-boxes/TinyBoxesToken": [
-      {
-        "address": "0x1a6198C171DAc6eBD6f412Bfb44AfA3d59D914a4",
-        "kind": "NonProxy",
-        "bytecodeHash": "5c5778c8df36607d561f2fdf536a82e67133b955bb7dbcf1e6d7ab4485b2084a"
+        "bytecodeHash": "aaa540ad6894aa6e5aea8c8fd33105e32eeacfa03273b37c16b7c2b77a82374a"
       }
     ]
   },
