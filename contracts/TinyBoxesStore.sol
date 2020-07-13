@@ -5,14 +5,13 @@ pragma experimental ABIEncoderV2;
 // Chainlink Contracts
 import "./chainlink/VRFConsumerBase.sol";
 
-import "./TinyBoxesBase.sol";
 import "./TinyBoxesPricing.sol";
 
 import "./libraries/Random.sol";
 import "./libraries/SVGBuffer.sol";
 import "./libraries/StringUtilsLib.sol";
 
-contract TinyBoxesStore is TinyBoxesBase, TinyBoxesPricing, VRFConsumerBase {
+contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     using SafeMath for uint256;
     using Utils for string;
     using SVGBuffer for bytes;
@@ -91,22 +90,6 @@ contract TinyBoxesStore is TinyBoxesBase, TinyBoxesPricing, VRFConsumerBase {
                 else msg.sender.transfer(amount - price); // change in ETH
             }
         }
-    }
-
-    /**
-     * @dev Get the current price of a token
-     * @return price in wei of a token currently
-     */
-    function currentPrice() public view returns (uint256 price) {
-        price = priceAt(_tokenIds.current());
-    }
-
-    /**
-     * @dev Get the current price of a token in LINK (Chainlink Token)
-     * @return price in LINK of a token currently
-     */
-    function currentLinkPrice() public view returns (uint256 price) {
-        price = linkPriceAt(_tokenIds.current());
     }
 
     /**

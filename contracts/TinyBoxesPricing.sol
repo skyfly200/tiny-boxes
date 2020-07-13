@@ -5,7 +5,9 @@ pragma solidity ^0.6.8;
 import "./chainlink/ChainlinkClient.sol";  // includes SafeMath
 import "./chainlink/interfaces/AggregatorInterface.sol";
 
-contract TinyBoxesPricing is ChainlinkClient {
+import "./TinyBoxesBase.sol";
+
+contract TinyBoxesPricing is TinyBoxesBase, ChainlinkClient {
     using SafeMath for uint256;
 
     AggregatorInterface internal refFeed;
@@ -61,5 +63,21 @@ contract TinyBoxesPricing is ChainlinkClient {
     function priceAt(uint256 _id) public view returns (uint256 price) {
         uint256 tokeninflation = (_id / 2) * priceIncrease; // add .001 eth to price per 2 tokens minted
         price = startPrice + tokeninflation;
+    }
+
+    /**
+     * @dev Get the current price of a token
+     * @return price in wei of a token currently
+     */
+    function currentPrice() public view returns (uint256 price) {
+        price = priceAt(_tokenIds.current());
+    }
+
+    /**
+     * @dev Get the current price of a token in LINK (Chainlink Token)
+     * @return price in LINK of a token currently
+     */
+    function currentLinkPrice() public view returns (uint256 price) {
+        price = linkPriceAt(_tokenIds.current());
     }
 }

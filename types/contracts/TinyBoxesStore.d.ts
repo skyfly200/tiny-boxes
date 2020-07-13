@@ -45,8 +45,6 @@ export class TinyBoxesStore extends Contract {
 
     approve(to: string, tokenId: number | string): TransactionObject<void>;
 
-    aproveLINKWithdraws(account: string): TransactionObject<void>;
-
     balanceOf(owner: string): TransactionObject<string>;
 
     baseURI(): TransactionObject<string>;
