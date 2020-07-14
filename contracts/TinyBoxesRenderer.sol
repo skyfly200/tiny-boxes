@@ -267,7 +267,7 @@ library TinyBoxesRenderer {
     function perpetualRenderer(TinyBox memory box, uint256 frame)
         public
         view
-        returns (string memory)
+        returns (bytes memory)
     {
         // initilize RNG with the specified seed and blocks 0 through 1
         bytes32[] memory pool = Random.init(0, 1, box.randomness);
@@ -357,6 +357,6 @@ library TinyBoxesRenderer {
             )
         );
 
-        return buffer.toString();
+        return buffer;
     }
 }
