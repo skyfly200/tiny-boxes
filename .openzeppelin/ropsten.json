@@ -2,11 +2,11 @@
   "contracts": {},
   "solidityLibs": {
     "TinyBoxesRenderer": {
-      "address": "0x9C273f303Ca25775CC851814D8868FA67a401F01",
-      "constructorCode": "6120f1610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "4312de7e22656ae858af319f75ac218965a48d4088d4fb67b7ca189e069e0fda",
-      "localBytecodeHash": "ff7498294a780e107b0af62e922482a56aa0881abb14d0e1e64a9863ea300b16",
-      "deployedBytecodeHash": "ff7498294a780e107b0af62e922482a56aa0881abb14d0e1e64a9863ea300b16"
+      "address": "0xEFC36A0d5e2F96B0F943409953afEe23DEF451C5",
+      "constructorCode": "612146610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "5bfb017d19c42fbf1b8d46cfe291eecf98053a206e709936d37e190476377a19",
+      "localBytecodeHash": "9a5b3820ae10eec4a3906e10c3aeb228fc57614dea3ebb78509653da2e4cd669",
+      "deployedBytecodeHash": "9a5b3820ae10eec4a3906e10c3aeb228fc57614dea3ebb78509653da2e4cd669"
     }
   },
   "proxies": {

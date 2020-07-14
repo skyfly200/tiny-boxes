@@ -60,11 +60,6 @@ export class TinyBoxesStore extends Contract {
 
     currentPrice(): TransactionObject<string>;
 
-    fulfillRandomness(
-      requestId: string | number[],
-      randomness: number | string
-    ): TransactionObject<void>;
-
     getApproved(tokenId: number | string): TransactionObject<string>;
 
     getRoleAdmin(role: string | number[]): TransactionObject<string>;
@@ -110,6 +105,11 @@ export class TinyBoxesStore extends Contract {
     priceAt(_id: number | string): TransactionObject<string>;
 
     priceIncrease(): TransactionObject<string>;
+
+    rawFulfillRandomness(
+      requestId: string | number[],
+      randomness: number | string
+    ): TransactionObject<void>;
 
     renounceRole(
       role: string | number[],

@@ -35,7 +35,6 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
 
     // Create role identifiers
     bytes32 public constant LINK_ROLE = keccak256("LINK_ROLE");
-    bytes32 public constant VRF_ROLE = keccak256("VRF_ROLE");
 
     /**
      * @dev Contract constructor.
@@ -50,9 +49,8 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         TinyBoxesPricing(_link, _feed)
         VRFConsumerBase(VRF_COORDINATOR, chainlinkTokenAddress())
     {
-        // Grant roles to the LINK and VRF_COORDINATOR contract addresses
+        // Grant role to the LINK contract addresses
         _setupRole(LINK_ROLE, chainlinkTokenAddress());
-        _setupRole(VRF_ROLE, VRF_COORDINATOR);
     }
 
     /**
@@ -239,13 +237,8 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         // register the new box data
         boxes[_tokenIds.current()] = box;
 
-        // Hash user seed and blockhash for VRFSeed
-        uint256 seedVRF = uint256(
-            keccak256(abi.encode(box.seed, blockhash(block.number)))
-        );
-
         // send VRF request
-        bytes32 _requestId = requestRandomness(KEY_HASH, fee, seedVRF);
+        bytes32 _requestId = requestRandomness(KEY_HASH, fee, box.seed);
 
         // map VRF requestId to next token id and owner
         requests[_requestId] = Request(msg.sender, _tokenIds.current());
@@ -264,9 +257,8 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
      * @dev The VRF Coordinator will not pass randomness that could not be verified.
      */
     function fulfillRandomness(bytes32 requestId, uint256 randomness)
-        external
+        internal
         override
-        onlyRole(VRF_ROLE)
     {
         // lookup saved data from the requestId
         Request memory req = requests[requestId];
