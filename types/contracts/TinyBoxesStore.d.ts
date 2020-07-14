@@ -41,8 +41,6 @@ export class TinyBoxesStore extends Contract {
 
     TREASURER_ROLE(): TransactionObject<string>;
 
-    VRF_ROLE(): TransactionObject<string>;
-
     approve(to: string, tokenId: number | string): TransactionObject<void>;
 
     balanceOf(owner: string): TransactionObject<string>;

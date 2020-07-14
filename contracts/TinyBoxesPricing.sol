@@ -11,7 +11,6 @@ contract TinyBoxesPricing is TinyBoxesBase, ChainlinkClient {
     using SafeMath for uint256;
 
     AggregatorInterface internal refFeed;
-    LinkTokenInterface internal LINK_TOKEN;
 
     address constant DEFAULT_FEED_ADDRESS = 0xb8c99b98913bE2ca4899CdcaF33a3e519C20EeEc; // Ropsten
     //address constant DEFAULT_FEED_ADDRESS = 0xeCfA53A8bdA4F0c4dd39c55CC8deF3757aCFDD07; // Mainnet
@@ -29,9 +28,6 @@ contract TinyBoxesPricing is TinyBoxesBase, ChainlinkClient {
         // or use an address provided as a parameter if set
         if (_link == address(0)) setPublicChainlinkToken();
         else setChainlinkToken(_link);
-
-        // Init LINK token interface
-        LINK_TOKEN = LinkTokenInterface(chainlinkTokenAddress());
         
         // set the feed address and init the interface
         if (_feed == address(0))
@@ -52,7 +48,7 @@ contract TinyBoxesPricing is TinyBoxesBase, ChainlinkClient {
      * @return value in LINK eqivalent to the provided Eth value
      */
     function ethToLink(uint256 priceEth) internal view returns (uint256 value) {
-        value = ((priceEth * 10**18) / uint256(refFeed.latestAnswer()));
+        value = ((priceEth * ONE_LINK) / uint256(refFeed.latestAnswer()));
     }
 
     /**

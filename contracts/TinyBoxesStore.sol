@@ -84,7 +84,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
             require(amount >= price, "insuficient payment"); // return if they dont pay enough
             // give change if they over pay
             if (amount > price) {
-                if (withLink) LINK_TOKEN.transfer(from, amount - price); // change in LINK
+                if (withLink) LINK.transfer(from, amount - price); // change in LINK
                 else msg.sender.transfer(amount - price); // change in ETH
             }
         }
@@ -99,11 +99,11 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         // ensure we have at least that much LINK
         // not needed as it is already checked for in the LINK contract
         // require(
-        //     LINK_TOKEN.balanceOf(address(this)) >= amount,
+        //     LINK.balanceOf(address(this)) >= amount,
         //     "Not enough LINK for requested withdraw"
         // );
         // send amount of LINK tokens to the transaction sender
-        return LINK_TOKEN.transfer(msg.sender, amount);
+        return LINK.transfer(msg.sender, amount);
     }
 
     /**
@@ -230,7 +230,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         );
         // ensure we have enough LINK token in the contract to pay for VRF request fee
         require(
-            LINK_TOKEN.balanceOf(address(this)) > fee,
+            LINK.balanceOf(address(this)) > fee,
             "Not enough LINK for a VRF request"
         );
 
