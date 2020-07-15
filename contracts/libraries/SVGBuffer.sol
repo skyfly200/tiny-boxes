@@ -55,15 +55,15 @@ library SVGBuffer {
     function rect(
         bytes memory buffer,
         int256[2] memory positions,
-        uint256[2] memory size,
+        int256[2] memory size,
         uint256 rgb,
         uint256 opacity
     ) internal pure {
         require(hasCapacityFor(buffer, 102), "Buffer.rect: no capacity");
         int256 xpos = positions[0];
         int256 ypos = positions[1];
-        uint256 width = size[0];
-        uint256 height = size[1];
+        int256 width = size[0];
+        int256 height = size[1];
         uint256 opacityWhole = opacity / 1000;
         uint256 opacityDecimal = opacity % 1000;
         assembly {

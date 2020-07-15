@@ -8,7 +8,7 @@ struct Modulation {
     uint256 stack;
     uint8[4] spacing;
     uint8[4] sizeRange;
-    uint8[2] position;
-    uint8[2] size;
-    uint8[3] mirror;
+    int8[2] position;
+    int8[2] size;
+    int8[3] mirror;
 }

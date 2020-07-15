@@ -39,22 +39,22 @@ library TinyBoxesRenderer {
         uint256 colorscheme = uint256(Random.uniform(pool, 0, 99));
 
         if (colorscheme < 7) {
-            return blue;
+            return blue; // blue
         } else if (colorscheme < 14) {
-            return green;
+            return green; // green
         } else if (colorscheme < 21) {
-            return red;
+            return red; // red
         } else if (colorscheme < 35) {
-            return green + blue;
+            return green.add(blue); // cyan
         } else if (colorscheme < 49) {
-            return red + blue;
+            return red.add(blue); // magenta
         } else if (colorscheme < 63) {
-            return red + green;
+            return red.add(green); // yellow
         } else if (colorscheme < 66) {
             uint256 brightness = uint256(
                 Random.uniform(pool, 0x000022, 0x0000ee)
             ); // random greys
-            return (brightness * 65536) + (brightness * 256) + brightness;
+            return brightness.mul(65536).add(brightness.mul(256)).add(brightness);
         } else {
             return blue;
         }
@@ -76,30 +76,29 @@ library TinyBoxesRenderer {
     )
         internal
         pure
-        returns (int256[2] memory positions, uint256[2] memory dimensions)
+        returns (int256[2] memory positions, int256[2] memory dimensions)
     {
         positions = [
             Random.uniform(pool, -(int256(spacing[0])), int256(spacing[0])) +
-                ((Random.uniform(pool, 0, int256(spacing[2]) - 1) * 800) /
-                    int256(spacing[2])),
+                ((Random.uniform(pool, 0, int256(spacing[2]).sub(1)).mul(800)).div(
+                    int256(spacing[2]))),
             Random.uniform(pool, -(int256(spacing[1])), int256(spacing[1])) +
-                ((Random.uniform(pool, 0, int256(spacing[3]) - 1) * 800) /
-                    int256(spacing[3]))
+                ((Random.uniform(pool, 0, int256(spacing[3]).sub(1)).mul(800)).div(
+                    int256(spacing[3])))
         ];
         if (hatch) {
-            uint256 horizontal = uint256(Random.uniform(pool, 0, 1));
+            int256 horizontal = Random.uniform(pool, 0, 1);
             // 		size[0] = uint(Random.uniform(pool, dials[4], dials[5])) + horizontal * uint(dials[6]);
             //      size[1] = uint(dials[6]) + uint(dials[5])  - size[0] + uint256(Random.uniform(pool, dials[7], dials[4]));
-            uint256 width = uint256(Random.uniform(pool, 25, 40)) +
-                uint256(700 * horizontal);
+            int256 width = Random.uniform(pool, 25, 40).add(int256(700).mul(horizontal));
             dimensions = [
                 width,
-                uint256(Random.uniform(pool, 10, 25)) + uint256(740 - width)
+                Random.uniform(pool, 10, 25).add(int256(740).sub(width))
             ];
         } else
             dimensions = [
-                uint256(Random.uniform(pool, int256(size[0]), int256(size[1]))),
-                uint256(Random.uniform(pool, int256(size[2]), int256(size[3])))
+                Random.uniform(pool, int256(size[0]), int256(size[1])),
+                Random.uniform(pool, int256(size[2]), int256(size[3]))
             ];
     }
 
@@ -156,7 +155,7 @@ library TinyBoxesRenderer {
                 SVGBuffer.append(buffer, template[0]);
                 // denote what quad the transform should be used for
                 SVGBuffer.append(buffer, template[4]);
-                if (s > 0)
+                if (s > 0) // TODO: remove and make quad names consistent
                     SVGBuffer.append(buffer, Strings.toString(uint256(s + 1)));
                 SVGBuffer.append(buffer, template[5]);
             } else {
@@ -177,7 +176,7 @@ library TinyBoxesRenderer {
                         SVGBuffer.append(buffer, i >= 2 ? value : "0");
                         SVGBuffer.append(buffer, template[3]);
                     }
-                    // denote what quad the transformsshould be used for
+                    // denote what quad the transforms should be used for
                     SVGBuffer.append(buffer, template[4]);
                     if (s > 0)
                         SVGBuffer.append(
@@ -232,9 +231,9 @@ library TinyBoxesRenderer {
             stack: 0,
             spacing: [0, 0, 0, 0],
             sizeRange: [0, 0, 0, 0],
-            position: [0, 0],
-            size: [0, 0],
-            mirror: [0, 0, 0]
+            position: [int8(0), int8(0)],
+            size: [int8(0), int8(0)],
+            mirror: [int8(0), int8(0), int8(0)]
         });
         // apply animation based on animation, frame and shape values
         if (animation == 0) {
@@ -248,13 +247,13 @@ library TinyBoxesRenderer {
             mod.stack = uint8(frame);
         } else if (animation == 3) {
             // shift mirror position 0
-            mod.mirror[0] = uint8(frame);
+            mod.mirror[0] = int8(frame);
         } else if (animation == 4) {
             // squash and squeze
             // transfer height to width and vice versa
             // TODO: change to an inverted ralationship once signed modulation is implemented
-            mod.size[0] = uint8(frame + shape);
-            mod.size[1] = uint8(frame + shape);
+            mod.size[0] = int8(frame.add(shape));
+            mod.size[1] = int8(frame.add(shape));
         }
     }
 
@@ -297,7 +296,7 @@ library TinyBoxesRenderer {
             // pick a random color from the generated colors list
             // modulate colors by colorShift
             uint256 color = colorValues[uint256(
-                Random.uniform(pool, 0, int256(uint256(shapeCount).sub(1)))
+                Random.uniform(pool, 0, int256(shapeCount.sub(1)))
             )
                 .add(mod.color)
                 .mod(shapeCount)];
@@ -307,11 +306,11 @@ library TinyBoxesRenderer {
             // generate a shapes position and size using box parameters
             (
                 int256[2] memory position,
-                uint256[2] memory size
+                int256[2] memory size
             ) = _generateShape(pool, box.spacing, box.size, hatching);
             // modulate the shape position and size
-            position[0] = int256(uint256(position[0]).add(mod.position[0]));
-            position[1] = int256(uint256(position[1]).add(mod.position[1]));
+            position[0] = position[0].add(mod.position[0]);
+            position[1] = position[1].add(mod.position[1]);
             size[0] = size[0].add(mod.size[0]);
             size[1] = size[1].add(mod.size[1]);
             // modulate the opacity
@@ -339,13 +338,13 @@ library TinyBoxesRenderer {
         }
 
         box.mirrorPositions[0] = int16(
-            uint256(box.mirrorPositions[0]).add(mod.mirror[0])
+            int256(box.mirrorPositions[0]).add(mod.mirror[0])
         );
         box.mirrorPositions[1] = int16(
-            uint256(box.mirrorPositions[1]).add(mod.mirror[1])
+            int256(box.mirrorPositions[1]).add(mod.mirror[1])
         );
         box.mirrorPositions[2] = int16(
-            uint256(box.mirrorPositions[2]).add(mod.mirror[2])
+            int256(box.mirrorPositions[2]).add(mod.mirror[2])
         );
 
         SVGBuffer.append(
