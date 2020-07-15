@@ -311,6 +311,8 @@ library TinyBoxesRenderer {
         view
         returns (bytes memory)
     {
+        // --- Calculate Generative Shape Data ---
+        
         // initilize RNG with the specified seed and blocks 0 through 1
         bytes32[] memory pool = Random.init(0, 1, box.randomness);
 
@@ -328,6 +330,8 @@ library TinyBoxesRenderer {
             // generate a new shape
             shapes[i] = _generateShape(int256(i), pool, colorValues, box, mod);
         }
+
+        // --- Render SVG Markup ---
 
         // initialize an empty buffer for the SVG markup
         bytes memory buffer = new bytes(8192);
