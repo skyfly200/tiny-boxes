@@ -320,10 +320,9 @@ library TinyBoxesRenderer {
             colorValues[i] = _generateColor(pool);
 
         // generate an array of shapes
-        uint256 shapeCount = box.shapes;
+        Shape[] memory shapes = new Shape[](box.shapes);
         Modulation memory mod;
-        Shape[] memory shapes = new Shape[](shapeCount);
-        for (uint256 i = 0; i < shapeCount; i++) {
+        for (uint256 i = 0; i < box.shapes; i++) {
             // calculate the animation modulators based on frames and animation id
             mod = _calculateMods(box.animation, frame, i);
             // generate a new shape
