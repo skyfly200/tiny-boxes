@@ -68,7 +68,7 @@ library TinyBoxesRenderer {
      * @param hatch mode on
      * @return positions of shape
      */
-    function _generateShape(
+    function _generateBox(
         bytes32[] memory pool,
         uint16[4] memory spacing,
         uint16[4] memory size,
@@ -282,7 +282,7 @@ library TinyBoxesRenderer {
             // calculate the animation modulators based on frames and animation id
             mod = _calculateMods(box.animation, frame, i);
 
-            // modulate shape generator input parameters
+            // modulate box generator input parameters
             for (uint256 j = 0; j < 4; j++) {
                 box.spacing[j] = uint16(
                     uint256(box.spacing[j]).add(mod.spacing[j])
@@ -304,7 +304,7 @@ library TinyBoxesRenderer {
             (
                 int256[2] memory position,
                 int256[2] memory size
-            ) = _generateShape(pool, box.spacing, box.size, hatching);
+            ) = _generateBox(pool, box.spacing, box.size, hatching);
             // modulate the shape position and size
             position[0] = position[0].add(mod.position[0]);
             position[1] = position[1].add(mod.position[1]);
