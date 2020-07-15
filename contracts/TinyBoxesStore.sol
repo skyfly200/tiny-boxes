@@ -72,14 +72,13 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
      * @param from address
      */
     function handlePayment(bool withLink, uint256 amount, address from) internal {
-        // check if still minting the artist tokens
-        if (_tokenIds.current() < ARTIST_PRINTS) {
+        // determine what portion of the sale we are in
+        if (_tokenIds.current() < ARTIST_PRINTS) { // check if still minting the artist tokens
             // Check that the calling account has the artist role
             require(hasRole(ARTIST_ROLE, from), "Only the admin can mint the alpha tokens. Wait your turn FFS");
-        } else {
-            // if still minting the beta sale
+        // } else if (_tokenIds.current() < BETA_SALE) { // check if still minting the beta sale
             // TODO: setup beta sale auction and pricing
-            // else minting public release
+        } else { // else minting public release
             uint256 price = withLink ? currentLinkPrice() : currentPrice();
             require(amount >= price, "insuficient payment"); // return if they dont pay enough
             // give change if they over pay
@@ -183,7 +182,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         int16[13] calldata dials,
         bool[3] calldata mirrors
     ) external payable notSoldOut returns (bytes32) {
-        handlePayment(false, msg.value, msg.sender);
+        //handlePayment(false, msg.value, msg.sender);
 
         // convert user seed from string to uint
         uint256 seed = _seed.stringToUint();
