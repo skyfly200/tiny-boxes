@@ -103,6 +103,51 @@ library TinyBoxesRenderer {
     }
 
     /**
+     * @dev create a shape from provided box and mod parameters
+     * @return shape struct
+     */
+    function _generateShape(
+        int256 index,
+        bytes32[] memory pool,
+        uint256[] memory colorValues,
+        TinyBox memory box,
+        Modulation memory mod
+    ) internal view returns (Shape memory) {
+        // modulate box generator input parameters
+            for (uint256 j = 0; j < 4; j++) {
+                box.spacing[j] = uint16(
+                    uint256(box.spacing[j]).add(mod.spacing[j])
+                );
+                box.size[j] = uint16(
+                    uint256(box.size[j]).add(mod.sizeRange[j])
+                );
+            }
+            // pick a random color from the generated colors list
+            // and modulate selected color indexes
+            int256 colorCount = int256(box.colors);
+            uint256 color = colorValues[
+                uint256(Random.uniform(pool, 0, colorCount.sub(1)).add(mod.color))
+                .mod(uint256(colorCount))];
+            // offset hatching index start by hatch modulator
+            bool hatching = (box.hatching > 0 &&
+                uint256(index.add(mod.hatch)).mod(box.hatching) == 0);
+            // generate a shapes position and size using box parameters
+            (
+                int256[2] memory position,
+                int256[2] memory size
+            ) = _generateBox(pool, box.spacing, box.size, hatching);
+            // modulate the shape position and size
+            position[0] = position[0].add(mod.position[0]);
+            position[1] = position[1].add(mod.position[1]);
+            size[0] = size[0].add(mod.size[0]);
+            size[1] = size[1].add(mod.size[1]);
+            // modulate the opacity
+            uint256 opacity = 10**3;
+            opacity = opacity.add(mod.opacity);
+            return Shape(position, size, color, opacity);
+    }
+
+    /**
      * @dev render the header of the SVG markup
      * @return header string
      */
@@ -281,39 +326,8 @@ library TinyBoxesRenderer {
         for (uint256 i = 0; i < shapeCount; i++) {
             // calculate the animation modulators based on frames and animation id
             mod = _calculateMods(box.animation, frame, i);
-
-            // modulate box generator input parameters
-            for (uint256 j = 0; j < 4; j++) {
-                box.spacing[j] = uint16(
-                    uint256(box.spacing[j]).add(mod.spacing[j])
-                );
-                box.size[j] = uint16(
-                    uint256(box.size[j]).add(mod.sizeRange[j])
-                );
-            }
-            // pick a random color from the generated colors list
-            // and modulate selected color indexes
-            int256 colorCount = int256(box.colors);
-            uint256 color = colorValues[
-                uint256(Random.uniform(pool, 0, colorCount.sub(1)).add(mod.color))
-                .mod(uint256(colorCount))];
-            // offset hatching index start by hatch modulator
-            bool hatching = (box.hatching > 0 &&
-                uint256(int256(i).add(mod.hatch)).mod(box.hatching) == 0);
-            // generate a shapes position and size using box parameters
-            (
-                int256[2] memory position,
-                int256[2] memory size
-            ) = _generateBox(pool, box.spacing, box.size, hatching);
-            // modulate the shape position and size
-            position[0] = position[0].add(mod.position[0]);
-            position[1] = position[1].add(mod.position[1]);
-            size[0] = size[0].add(mod.size[0]);
-            size[1] = size[1].add(mod.size[1]);
-            // modulate the opacity
-            uint256 opacity = 10**3;
-            opacity = opacity.add(mod.opacity);
-            shapes[i] = Shape(position, size, color, opacity);
+            // generate a new shape
+            shapes[i] = _generateShape(int256(i), pool, colorValues, box, mod);
         }
 
         // initialize an empty buffer for the SVG markup
