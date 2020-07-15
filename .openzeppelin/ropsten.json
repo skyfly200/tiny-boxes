@@ -2,11 +2,11 @@
   "contracts": {},
   "solidityLibs": {
     "TinyBoxesRenderer": {
-      "address": "0xEFC36A0d5e2F96B0F943409953afEe23DEF451C5",
-      "constructorCode": "612146610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "5bfb017d19c42fbf1b8d46cfe291eecf98053a206e709936d37e190476377a19",
-      "localBytecodeHash": "9a5b3820ae10eec4a3906e10c3aeb228fc57614dea3ebb78509653da2e4cd669",
-      "deployedBytecodeHash": "9a5b3820ae10eec4a3906e10c3aeb228fc57614dea3ebb78509653da2e4cd669"
+      "address": "0xCbAcC69d3A37be2e5034a0a33ECfC7c5bD202322",
+      "constructorCode": "61213c610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "96853f97ec00dafd57228adfe313d8234ba204c770a5cf97e9fb911a583ec67a",
+      "localBytecodeHash": "c258c04ad5e38d747baea5ac59b1bac0d6653ed4bdc7bc563b50a24cab03ef90",
+      "deployedBytecodeHash": "c258c04ad5e38d747baea5ac59b1bac0d6653ed4bdc7bc563b50a24cab03ef90"
     }
   },
   "proxies": {
@@ -45,6 +45,11 @@
         "address": "0x399E585ea2D37E1E900f7E8518a829e1f3de4D10",
         "kind": "NonProxy",
         "bytecodeHash": "ea03790c8b9241001b1c19ddbcaaba0f6f0361f399e05119083be51cd044ec5a"
+      },
+      {
+        "address": "0xaccF73217010Ed16Db6700b7637C501208700fb4",
+        "kind": "NonProxy",
+        "bytecodeHash": "570bce532662fddf48661661451842224f8b079193c54d705a678e079560d446"
       }
     ]
   },
