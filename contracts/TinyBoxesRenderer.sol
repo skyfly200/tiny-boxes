@@ -112,7 +112,7 @@ library TinyBoxesRenderer {
         uint256[] memory colorValues,
         TinyBox memory box,
         Modulation memory mod
-    ) internal view returns (Shape memory) {
+    ) internal pure returns (Shape memory) {
         // modulate box generator input parameters
             for (uint256 j = 0; j < 4; j++) {
                 box.spacing[j] = uint16(
