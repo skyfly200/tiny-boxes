@@ -133,7 +133,7 @@ library TinyBoxesRenderer {
         bool[3] memory switches,
         int16[3] memory mirrorPositions,
         Decimal memory scale
-    ) internal view returns (string memory footer) {
+    ) internal view returns (string memory) {
         bytes memory buffer = new bytes(8192);
 
         string[3] memory scales = ["-1 1", "-1 -1", "1 -1"];
@@ -149,39 +149,39 @@ library TinyBoxesRenderer {
 
         for (uint256 s = 0; s < 3; s++) {
             // loop through mirroring effects
-            SVGBuffer.append(buffer, template[6]);
+            buffer.append(template[6]);
 
             if (!switches[s]) {
                 // turn off this level of mirroring
                 // add a scale transform
-                SVGBuffer.append(buffer, template[0]);
+                buffer.append(template[0]);
                 // denote what quad the transform should be used for
-                SVGBuffer.append(buffer, template[4]);
+                buffer.append(template[4]);
                 if (s > 0) // TODO: remove and make quad names consistent
-                    SVGBuffer.append(buffer, Strings.toString(uint256(s + 1)));
-                SVGBuffer.append(buffer, template[5]);
+                    buffer.append(Strings.toString(uint256(s + 1)));
+                buffer.append(template[5]);
             } else {
                 string memory value = Strings.toString(
                     uint256(mirrorPositions[s])
                 );
                 for (uint8 i = 0; i < 4; i++) {
                     // loop through transforms
-                    if (i == 0) SVGBuffer.append(buffer, template[0]);
+                    if (i == 0) buffer.append(template[0]);
                     else {
-                        SVGBuffer.append(buffer, template[1]);
-                        SVGBuffer.append(buffer, scales[i - 1]);
-                        SVGBuffer.append(buffer, template[2]);
-                        if (i <= 2) SVGBuffer.append(buffer, "-");
-                        SVGBuffer.append(buffer, i <= 2 ? value : "0");
-                        SVGBuffer.append(buffer, " ");
-                        if (i >= 2) SVGBuffer.append(buffer, "-");
-                        SVGBuffer.append(buffer, i >= 2 ? value : "0");
-                        SVGBuffer.append(buffer, template[3]);
+                        buffer.append(template[1]);
+                        buffer.append(scales[i - 1]);
+                        buffer.append(template[2]);
+                        if (i <= 2) buffer.append("-");
+                        buffer.append(i <= 2 ? value : "0");
+                        buffer.append(" ");
+                        if (i >= 2) buffer.append("-");
+                        buffer.append(i >= 2 ? value : "0");
+                        buffer.append(template[3]);
                     }
                     // denote what quad the transforms should be used for
-                    SVGBuffer.append(buffer, template[4]);
-                    SVGBuffer.append(buffer, Strings.toString(s));
-                    SVGBuffer.append(buffer, template[5]);
+                    buffer.append(template[4]);
+                    buffer.append(Strings.toString(s));
+                    buffer.append(template[5]);
                 }
             }
         }
@@ -192,21 +192,21 @@ library TinyBoxesRenderer {
         string memory scaleDecimals = Strings.toString(
             uint256(scale.value).mod(scale.decimals)
         );
-        SVGBuffer.append(buffer, template[6]);
-        SVGBuffer.append(buffer, template[1]);
-        SVGBuffer.append(buffer, scaleWhole);
-        SVGBuffer.append(buffer, ".");
-        SVGBuffer.append(buffer, scaleDecimals);
-        SVGBuffer.append(buffer, " ");
-        SVGBuffer.append(buffer, scaleWhole);
-        SVGBuffer.append(buffer, ".");
-        SVGBuffer.append(buffer, scaleDecimals);
-        SVGBuffer.append(buffer, template[3]);
-        SVGBuffer.append(buffer, template[4]);
-        SVGBuffer.append(buffer, "4");
-        SVGBuffer.append(buffer, template[5]);
+        buffer.append(template[6]);
+        buffer.append(template[1]);
+        buffer.append(scaleWhole);
+        buffer.append(".");
+        buffer.append(scaleDecimals);
+        buffer.append(" ");
+        buffer.append(scaleWhole);
+        buffer.append(".");
+        buffer.append(scaleDecimals);
+        buffer.append(template[3]);
+        buffer.append(template[4]);
+        buffer.append("4");
+        buffer.append(template[5]);
 
-        SVGBuffer.append(buffer, "\n</svg>"); // add closing svg tag
+        buffer.append("\n</svg>"); // add closing svg tag
         return SVGBuffer.toString(buffer);
     }
 
@@ -321,7 +321,7 @@ library TinyBoxesRenderer {
         bytes memory buffer = new bytes(8192);
 
         // write the document header to the SVG buffer
-        SVGBuffer.append(buffer, _generateHeader());
+        buffer.append(_generateHeader());
 
         // write shapes to the SVG buffer
         for (uint256 i = 0; i < box.shapes; i++) {
