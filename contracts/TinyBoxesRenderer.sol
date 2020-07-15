@@ -178,7 +178,7 @@ library TinyBoxesRenderer {
                     }
                     // denote what quad the transforms should be used for
                     SVGBuffer.append(buffer, template[4]);
-                    SVGBuffer.append(buffer, Strings.toString(s);
+                    SVGBuffer.append(buffer, Strings.toString(s));
                     SVGBuffer.append(buffer, template[5]);
                 }
             }
