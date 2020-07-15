@@ -223,10 +223,10 @@ library TinyBoxesRenderer {
     ) internal pure returns (Modulation memory mod) {
         // set animation modifiers to default
         mod = Modulation({
-            color: 0,
+            color: int256(0),
+            hatch: int256(0),
+            stack: int256(0),
             opacity: 0,
-            hatch: 0,
-            stack: 0,
             spacing: [0, 0, 0, 0],
             sizeRange: [0, 0, 0, 0],
             position: [int8(0), int8(0)],
@@ -277,8 +277,8 @@ library TinyBoxesRenderer {
         // generate an array of shapes
         uint256 shapeCount = box.shapes;
         Modulation memory mod;
-        Shape[] memory shapes = new Shape[](box.shapes);
-        for (uint256 i = 0; i < box.shapes; i++) {
+        Shape[] memory shapes = new Shape[](shapeCount);
+        for (uint256 i = 0; i < shapeCount; i++) {
             // calculate the animation modulators based on frames and animation id
             mod = _calculateMods(box.animation, frame, i);
 
@@ -292,15 +292,14 @@ library TinyBoxesRenderer {
                 );
             }
             // pick a random color from the generated colors list
-            // modulate colors by colorShift
-            uint256 color = colorValues[uint256(
-                Random.uniform(pool, 0, int256(shapeCount.sub(1)))
-            )
-                .add(mod.color)
-                .mod(shapeCount)];
+            // and modulate selected color indexes
+            int256 colorCount = int256(box.colors);
+            uint256 color = colorValues[
+                uint256(Random.uniform(pool, 0, colorCount.sub(1)).add(mod.color))
+                .mod(uint256(colorCount))];
             // offset hatching index start by hatch modulator
             bool hatching = (box.hatching > 0 &&
-                i.add(mod.hatch).mod(box.hatching) == 0);
+                uint256(int256(i).add(mod.hatch)).mod(box.hatching) == 0);
             // generate a shapes position and size using box parameters
             (
                 int256[2] memory position,
@@ -324,8 +323,8 @@ library TinyBoxesRenderer {
         buffer.append(_generateHeader());
 
         // write shapes to the SVG buffer
-        for (uint256 i = 0; i < box.shapes; i++) {
-            Shape memory shape = shapes[i.add(mod.stack).mod(box.shapes)];
+        for (int256 i = 0; i < int256(shapeCount); i++) {
+            Shape memory shape = shapes[uint256(i.add(mod.stack)).mod(shapeCount)];
             SVGBuffer.rect(
                 buffer,
                 shape.position,

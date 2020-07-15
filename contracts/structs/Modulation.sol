@@ -2,10 +2,10 @@
 pragma solidity ^0.6.4;
 
 struct Modulation {
-    uint256 color;
+    int256 color;
+    int256 hatch;
+    int256 stack;
     uint256 opacity;
-    uint256 hatch;
-    uint256 stack;
     uint8[4] spacing;
     uint8[4] sizeRange;
     int8[2] position;
