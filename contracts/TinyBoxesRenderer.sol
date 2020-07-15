@@ -110,7 +110,7 @@ library TinyBoxesRenderer {
         string memory xmlVersion = '<?xml version="1.0" encoding="UTF-8"?>\n';
         string memory doctype = '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n';
         string memory openingTag = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2600 2600" style="stroke-width:0; background-color:#121212;">\n\n';
-        string memory symbols = '<symbol id="upperleftquad4">\n<symbol id="upperleftquad3">\n<symbol id="upperleftquad2">\n<symbol id="upperleftquad">\n\n';
+        string memory symbols = '<symbol id="quad3">\n<symbol id="quad2">\n<symbol id="quad1">\n<symbol id="quad0">\n\n';
 
         StringUtilsLib.slice[] memory parts;
         parts[0] = xmlVersion.toSlice();
@@ -140,12 +140,12 @@ library TinyBoxesRenderer {
             '\n<g transform="scale(',
             ") translate(",
             ')">',
-            '\n<use xlink:href="#upperleftquad',
+            '\n<use xlink:href="#quad',
             '"/>\n</g>',
             "\n</symbol>"
         ];
 
-        for (uint8 s = 0; s < 3; s++) {
+        for (uint256 s = 0; s < 3; s++) {
             // loop through mirroring effects
             SVGBuffer.append(buffer, template[6]);
 
@@ -178,11 +178,7 @@ library TinyBoxesRenderer {
                     }
                     // denote what quad the transforms should be used for
                     SVGBuffer.append(buffer, template[4]);
-                    if (s > 0)
-                        SVGBuffer.append(
-                            buffer,
-                            Strings.toString(uint256(s + 1))
-                        );
+                    SVGBuffer.append(buffer, Strings.toString(s);
                     SVGBuffer.append(buffer, template[5]);
                 }
             }
