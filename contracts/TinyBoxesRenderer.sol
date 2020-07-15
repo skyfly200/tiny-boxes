@@ -312,7 +312,7 @@ library TinyBoxesRenderer {
         returns (bytes memory)
     {
         // --- Calculate Generative Shape Data ---
-        
+
         // initilize RNG with the specified seed and blocks 0 through 1
         bytes32[] memory pool = Random.init(0, 1, box.randomness);
 
@@ -322,9 +322,10 @@ library TinyBoxesRenderer {
             colorValues[i] = _generateColor(pool);
 
         // generate an array of shapes
-        Shape[] memory shapes = new Shape[](box.shapes);
+        uint256 shapeCount = box.shapes;
+        Shape[] memory shapes = new Shape[](shapeCount);
         Modulation memory mod;
-        for (uint256 i = 0; i < box.shapes; i++) {
+        for (uint256 i = 0; i < shapeCount; i++) {
             // calculate the animation modulators based on frames and animation id
             mod = _calculateMods(box.animation, frame, i);
             // generate a new shape
