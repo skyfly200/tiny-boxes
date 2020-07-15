@@ -51,6 +51,43 @@
         "kind": "NonProxy",
         "bytecodeHash": "570bce532662fddf48661661451842224f8b079193c54d705a678e079560d446"
       }
+    ],
+    "tiny-boxes/LibTest": [
+      {
+        "address": "0xd26BDfeE7a8A5b8289eeAF19B23681a5e0d53e72",
+        "kind": "NonProxy",
+        "bytecodeHash": "b6da2e70025ba024d21388dfb385ced06111818472f51b8fa8de91f9d7ee2a45"
+      },
+      {
+        "address": "0x84a83B6Bf28Ad5714d2Deb199745614A07449aED",
+        "kind": "NonProxy",
+        "bytecodeHash": "06c2706cf2680de35e0a9028a37ae8c21e952eeaf600c41a7c7b95da84b82a33"
+      },
+      {
+        "address": "0x08A35604fd0Ae3505060bBcb63191491a230fABe",
+        "kind": "NonProxy",
+        "bytecodeHash": "f9d11ddeeac3fdd1752702fdc031a935962273c495dff8fcce1a50572446d033"
+      },
+      {
+        "address": "0xf54a933b38e143B346f294DBA9A68CD56C34CF16",
+        "kind": "NonProxy",
+        "bytecodeHash": "f9d11ddeeac3fdd1752702fdc031a935962273c495dff8fcce1a50572446d033"
+      },
+      {
+        "address": "0x785A88734458667828756AF1736Dd55b15aE7006",
+        "kind": "NonProxy",
+        "bytecodeHash": "07305d6838477fda9d4c29a96a22b2f97ad0f1c446458df230b9a4a4060bfd83"
+      },
+      {
+        "address": "0x78E54808c36e876a3FEEBe64751Ff5252849F9f3",
+        "kind": "NonProxy",
+        "bytecodeHash": "618e277e12085ceb4918f1efec8e936e36cdf79e49cb6cfa7c1e5dd8417cb8b9"
+      },
+      {
+        "address": "0x35E4f79246139957dD8B4a9c7D39F1A1C660C41d",
+        "kind": "NonProxy",
+        "bytecodeHash": "bfe7ec5fb4efcae0c5ae82876c872f38fbb91d6e5ecee6fbc71c4bb024e611df"
+      }
     ]
   },
   "manifestVersion": "2.2"
