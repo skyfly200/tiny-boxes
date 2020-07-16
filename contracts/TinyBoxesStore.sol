@@ -5,10 +5,10 @@ pragma experimental ABIEncoderV2;
 // Chainlink Contracts
 import "./chainlink/VRFConsumerBase.sol";
 
-import "./TinyBoxesPricing.sol";
-
 import "./libraries/SVGBuffer.sol";
 import "./libraries/StringUtilsLib.sol";
+
+import "./TinyBoxesPricing.sol";
 
 contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     using SafeMath for uint256;
