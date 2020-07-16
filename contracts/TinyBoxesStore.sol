@@ -185,7 +185,8 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         uint8[2] calldata counts,
         int16[13] calldata dials,
         bool[3] calldata mirrors
-    ) external payable notSoldOut returns (uint256) {
+    ) external payable notSoldOut returns (bytes32) {
+        // TODO: uncomment again for production
         //handlePayment(false, msg.value, msg.sender);
 
         // convert user seed from string to uint
@@ -225,7 +226,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
      * @param box object of token data
      * @return _requestId of the VRF call
      */
-    function createBox(TinyBox memory box) internal returns (uint256) {
+    function createBox(TinyBox memory box) internal returns (bytes32) {
         // make sure caller is never the 0 address
         require(
             msg.sender != address(0),
@@ -242,16 +243,15 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         boxes[_tokenIds.current()] = box;
 
         // send VRF request
-        // bytes32 _requestId = requestRandomness(KEY_HASH, fee, box.seed);
+        bytes32 _requestId = requestRandomness(KEY_HASH, fee, box.seed);
 
-        // // map VRF requestId to next token id and owner
-        // requests[_requestId] = Request(msg.sender, _tokenIds.current());
+        // map VRF requestId to next token id and owner
+        requests[_requestId] = Request(msg.sender, _tokenIds.current());
 
         // increment the id counter for the next call
         _tokenIds.increment();
 
-        //return _requestId;
-        return LINK_TOKEN.balanceOf(address(this));
+        return _requestId;
     }
 
     /**

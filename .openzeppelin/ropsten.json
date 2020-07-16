@@ -55,6 +55,16 @@
         "address": "0xdB0f913EfF26945D663772A8735bD22Be6f820D4",
         "kind": "NonProxy",
         "bytecodeHash": "8482c81314d6f163bded93afc9b28789d35c663265aab7bcc31576a73962eb8e"
+      },
+      {
+        "address": "0x93BeF06919CB8B8abB45ff4675840BDbdbB9B110",
+        "kind": "NonProxy",
+        "bytecodeHash": "69554cb06a7b1248deacb05df5e2f3c774648a0e0051555df8fdb7a48f450183"
+      },
+      {
+        "address": "0x67DE994E5e059c72fFf2B3547E73da68C8d647c5",
+        "kind": "NonProxy",
+        "bytecodeHash": "e98bac0bde85feaefee5d65f587256f4a522b9e8880fb8716ea03b45ece963c6"
       }
     ]
   },
