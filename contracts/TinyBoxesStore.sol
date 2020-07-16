@@ -228,7 +228,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         );
         // ensure we have enough LINK token in the contract to pay for VRF request fee
         uint256 balance = LINK_TOKEN.balanceOf(address(this));
-        uint256 remaining = TOKEN_LIMIT.sub(_tokenIds.current().add(1));
+        uint256 remaining = TOKEN_LIMIT - (_tokenIds.current() + 1);
         require(
             balance >= fee,
             "Not enough LINK for a VRF request"

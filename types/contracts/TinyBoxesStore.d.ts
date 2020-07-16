@@ -208,6 +208,12 @@ export class TinyBoxesStore extends Contract {
     ChainlinkCancelled: ContractEvent<string>;
     ChainlinkFulfilled: ContractEvent<string>;
     ChainlinkRequested: ContractEvent<string>;
+    LowLINK: ContractEvent<{
+      _balance: string;
+      _remaining: string;
+      0: string;
+      1: string;
+    }>;
     RoleGranted: ContractEvent<{
       role: string;
       account: string;
