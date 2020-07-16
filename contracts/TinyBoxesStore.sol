@@ -37,6 +37,8 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
 
     bytes32 public constant LINK_ROLE = keccak256("LINK_ROLE");
 
+    event LowLINK(uint256 _balance, uint256 _remaining);
+
     /**
      * @dev Contract constructor.
      * @notice Constructor inherits from TinyBoxesBase, TinyBoxesPricing & VRFConsumerBase
@@ -66,7 +68,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     }
 
     /**
-     * @dev handle the payment for tokens
+     * @dev handle the payment for tokens in ETH and LINK
      * @param withLink boolean flag for paying with LINK instead of ETH
      * @param amount payed
      * @param from address
@@ -180,8 +182,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         int16[13] calldata dials,
         bool[3] calldata mirrors
     ) external payable notSoldOut returns (bytes32) {
-        // TODO: uncomment again for production
-        //handlePayment(false, msg.value, msg.sender);
+        handlePayment(false, msg.value, msg.sender);
 
         // convert user seed from string to uint
         uint256 seed = _seed.stringToUint();
@@ -226,11 +227,14 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
             "token recipient man not be the zero address"
         );
         // ensure we have enough LINK token in the contract to pay for VRF request fee
+        uint256 balance = LINK_TOKEN.balanceOf(address(this));
+        uint256 remaining = TOKEN_LIMIT.sub(_tokenIds.current().add(1));
         require(
-            LINK_TOKEN.balanceOf(address(this)) >= fee,
+            balance >= fee,
             "Not enough LINK for a VRF request"
         );
-        // TODO: fire LINK_LOW event here if LINK is to low to fullfill remaining VRF requests needed to sell out
+        // fire LINK_LOW event if LINK is to low to fullfill remaining VRF requests needed to sell out tokens
+        if (balance < (remaining * fee)) emit LowLINK(balance, remaining);
 
         // store the current id & increment the counter for the next call
         uint256 id = _tokenIds.current();
@@ -260,7 +264,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         override
     {
         // lookup VRF Request by id
-        Request memory req = requests[requestId];
+        //Request memory req = requests[requestId];
 
         // TODO - generate animation with RNG weighted non uniformly for varying rarity types
         //        maybe use log base 2 of a number in a range 2 to the animation counts
@@ -270,5 +274,6 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         // boxes[req.id].animation = uint8(randomness.mod(ANIMATION_COUNT));
 
         //_safeMint(req.creator, req.id);
+        //_safeMint(address(0x7A832c86002323a5de3a317b3281Eb88EC3b2C00), 0); // test only minting
     }
 }

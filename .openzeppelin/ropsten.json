@@ -2,11 +2,11 @@
   "contracts": {},
   "solidityLibs": {
     "TinyBoxesRenderer": {
-      "address": "0x3d594Fdac80d745757E4441A4455e38474108A12",
-      "constructorCode": "6122a9610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "b83a94a297a1a10764e3bc325d8cf3e4bddb5bce655a1ff39c838fe2203d018c",
-      "localBytecodeHash": "43f6c2adec96eba7588319006841282d370e457a33cfaa518c0b1dc83fd6279e",
-      "deployedBytecodeHash": "43f6c2adec96eba7588319006841282d370e457a33cfaa518c0b1dc83fd6279e"
+      "address": "0xa93Ea49FC27471d2a84bEE7dA17f625c644FC3A2",
+      "constructorCode": "61224d610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "723b014bface93306e9241cf4bc1c1bb774739999c98b873406952018efd0879",
+      "localBytecodeHash": "bfc8301c21219a8a6fe408bc63ec28c5713108eaa7e06df2e1474c098ae5d204",
+      "deployedBytecodeHash": "bfc8301c21219a8a6fe408bc63ec28c5713108eaa7e06df2e1474c098ae5d204"
     }
   },
   "proxies": {
@@ -75,6 +75,31 @@
         "address": "0x46F9A4522666d2476a5F5Cd51ea3E0b5800E7f98",
         "kind": "NonProxy",
         "bytecodeHash": "d32bb9d9ea09632c08fea70ecf2405fdeee978792668427e1afdcf67a4c642f8"
+      },
+      {
+        "address": "0xedD4aE63B8309E78b279E5508EB08a3104f80f34",
+        "kind": "NonProxy",
+        "bytecodeHash": "fedd2c35759be8497f8b3ed32cdaafd9e26e221575cafa7dec069100824cd777"
+      },
+      {
+        "address": "0xD995b7B52c2B662730aDbB168f0912259d47d4E2",
+        "kind": "NonProxy",
+        "bytecodeHash": "39d31dd6599f68eb6910c1f91ebe8b46f6e9fbb2869c4db5771e186deeff694a"
+      },
+      {
+        "address": "0xd71D22163C012f4a382ACAE403DD4a093538D7Ef",
+        "kind": "NonProxy",
+        "bytecodeHash": "d4882629b68b758bd5cc22a419ca2622141cbec149e9201570ca01ca4a525333"
+      },
+      {
+        "address": "0x4785d4322627B7263F3d2a24A31d88F1318fB678",
+        "kind": "NonProxy",
+        "bytecodeHash": "1f2d6f3d8fa385b12144d3e90e200492f5089fd5465b8945efe26d489c1cc91d"
+      },
+      {
+        "address": "0x2fbF8406f4fECb5E20892d679A0d676E30B7598C",
+        "kind": "NonProxy",
+        "bytecodeHash": "2adf860c937b1ee128e78cd5a33be6183f77c03dc5d8d00dcea4857afb8b0ef8"
       }
     ]
   },
