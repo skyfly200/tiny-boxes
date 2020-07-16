@@ -19,6 +19,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
 
     // Chainlink VRF and Feed Stuff
     // LINK ropsten address: 0x20fE562d797A42Dcb3399062AE9546cd06f63280
+    LinkTokenInterface LINK_TOKEN;
     // feed ropsten address: 0xb8c99b98913bE2ca4899CdcaF33a3e519C20EeEc
     address constant VRF_COORDINATOR = 0xf720CF1B963e0e7bE9F58fd471EFa67e7bF00cfb; // Ropsten
     bytes32 constant KEY_HASH = 0xced103054e349b8dfb51352f0f8fa9b5d20dde3d06f9f43cb2b85bc64b238205; // Ropsten
@@ -26,8 +27,6 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     //bytes32 constant KEY_HASH = 0xcad496b9d0416369213648a32b4975fff8707f05dfb43603961b58f3ac6617a7; // Rinkeby
     uint256 constant fee = 10**17;
     uint256 constant DATA_PARAMETER_COUNT = 19;
-    
-    LinkTokenInterface LINK_TOKEN;
 
     struct Request {
         address creator;
@@ -36,7 +35,6 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
 
     mapping(bytes32 => Request) internal requests;
 
-    // Create role identifiers
     bytes32 public constant LINK_ROLE = keccak256("LINK_ROLE");
 
     /**
@@ -52,7 +50,6 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         TinyBoxesPricing(_link, _feed)
         VRFConsumerBase(VRF_COORDINATOR, _link)
     {
-        // Grant role to the LINK contract addresses
         _setupRole(LINK_ROLE, _link);
         LINK_TOKEN = LinkTokenInterface(_link);
     }
@@ -61,7 +58,6 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
      * @notice Modifier to check if tokens are sold out
      */
     modifier notSoldOut {
-        // ensure we still have not reached the cap
         require(
             _tokenIds.current() < TOKEN_LIMIT,
             "ART SALE IS OVER. Tinyboxes are now only available on the secondary market."
@@ -76,19 +72,18 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
      * @param from address
      */
     function handlePayment(bool withLink, uint256 amount, address from) internal {
-        // determine what portion of the sale we are in
-        if (_tokenIds.current() < ARTIST_PRINTS) { // check if still minting the artist tokens
-            // Check that the calling account has the artist role
+        // determine the current phase of the token sale
+        if (_tokenIds.current() < ARTIST_PRINTS) {
             require(hasRole(ARTIST_ROLE, from), "Only the admin can mint the alpha tokens. Wait your turn FFS");
-        // } else if (_tokenIds.current() < BETA_SALE) { // check if still minting the beta sale
+        // } else if (_tokenIds.current() < BETA_SALE) {
             // TODO: setup beta sale auction and pricing
-        } else { // else minting public release
+        } else {
             uint256 price = withLink ? currentLinkPrice() : currentPrice();
-            require(amount >= price, "insuficient payment"); // return if they dont pay enough
+            require(amount >= price, "insuficient payment");
             // give change if they over pay
             if (amount > price) {
-                if (withLink) LINK_TOKEN.transfer(from, amount - price); // change in LINK
-                else msg.sender.transfer(amount - price); // change in ETH
+                if (withLink) LINK_TOKEN.transfer(from, amount - price);
+                else msg.sender.transfer(amount - price);
             }
         }
     }
@@ -121,27 +116,24 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         uint256 amount,
         bytes calldata data
     ) external onlyRole(LINK_ROLE) notSoldOut returns (bool) {
-        // check payment amount is greater than or equal to current token price
-        // give change if over payed
         handlePayment(true, amount, from);
 
         // --- Unpack parameters from raw data bytes ---
-        // convert to a string
-        // split by a comma delimiter into a string array
-        // check correct number of parameters are available
+
+        // create data and delimiter slices
         StringUtilsLib.slice memory s = data.toString().toSlice();
         StringUtilsLib.slice memory delim = ",".toSlice();
+
+        // check correct number of parameters are available
         require(s.count(delim) + 1 == DATA_PARAMETER_COUNT,"Invalid number of data parameters");
+
+        // split by a comma delimiter into a string array
         string[] memory parts = new string[](s.count(delim) + 1);
         for(uint i = 0; i < parts.length; i++) {
             parts[i] = s.split(delim).toString();
         }
 
         // create a new box object from the unpacked parameters
-        // Parmeters List and Types
-        // 0: Seed uint256, 1: shapes uint8, 2: colors: uint8, 3-6: spacing 0-3 uint16
-        // 7-10: size 0-3 uint16, 11: hatching uint16, 12-14: mirrorPositions 0-2 int16
-        // 15: scale uint16, 16-18: mirrors bool (int 0 == false)
         TinyBox memory box = TinyBox({
             seed: parts[0].stringToUint(),
             randomness: 0,
@@ -169,6 +161,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         // register the new box
         createBox(box);
 
+        // pass back to the LINK contract with a success state
         return true;
     }
 
@@ -265,29 +258,16 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         internal
         override
     {
-        // --- Use The Provided Randomness ---
-
-        // initilized RNG with the provided varifiable randomness and blocks 0 through 1
-        bytes32[] memory pool = Random.init(0, 1, randomness);
-
-        // TODO - generate animation with RNG weighted non uniformly for varying rarity types
-        // maybe use log base 2 of a number in a range 2 to the animation counts
-        uint8 animation = uint8(
-            Random.uniform(pool, 0, int256(ANIMATION_COUNT) - 1)
-        );
-
-        // --- Save data to storage ---
-
-        // lookup saved data from the requestId
+        // lookup VRF Request by id
         Request memory req = requests[requestId];
 
-        // store the randomness in the token data
-        boxes[req.id].randomness = randomness;
+        // TODO - generate animation with RNG weighted non uniformly for varying rarity types
+        //        maybe use log base 2 of a number in a range 2 to the animation counts
 
-        // update box data relying on randomness
-        boxes[req.id].animation = animation;
+        // generate params with RNG & save to the box along with the randomness
+        // boxes[req.id].randomness = randomness;
+        // boxes[req.id].animation = uint8(randomness.mod(ANIMATION_COUNT));
 
-        // mint the token to the creator
         _safeMint(req.creator, req.id);
     }
 }
