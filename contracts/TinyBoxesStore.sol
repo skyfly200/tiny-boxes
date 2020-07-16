@@ -265,12 +265,6 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         internal
         override
     {
-        // lookup saved data from the requestId
-        Request memory req = requests[requestId];
-
-        // store the randomness in the token data
-        boxes[req.id].randomness = randomness;
-
         // --- Use The Provided Randomness ---
 
         // initilized RNG with the provided varifiable randomness and blocks 0 through 1
@@ -283,6 +277,12 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         );
 
         // --- Save data to storage ---
+
+        // lookup saved data from the requestId
+        Request memory req = requests[requestId];
+
+        // store the randomness in the token data
+        boxes[req.id].randomness = randomness;
 
         // update box data relying on randomness
         boxes[req.id].animation = animation;
