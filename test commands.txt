@@ -1,5 +1,10 @@
 Commands to Test Contract Code
 
+>>> Deploy
+
+Deploy to Ropsten
+npx oz deploy -k regular -n ropsten TinyBoxes 0x20fE562d797A42Dcb3399062AE9546cd06f63280 0xb8c99b98913bE2ca4899CdcaF33a3e519C20EeEc
+
 >>> Send TX
 
 Buy a box
