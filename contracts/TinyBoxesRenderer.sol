@@ -20,6 +20,7 @@ library TinyBoxesRenderer {
     using SignedSafeMath for int256;
     using StringUtilsLib for *;
     using SVGBuffer for bytes;
+    using Random for bytes32[];
 
     /**
      * @dev generate a color
@@ -31,12 +32,12 @@ library TinyBoxesRenderer {
         pure
         returns (uint256)
     {
-        uint256 red = uint256(Random.uniform(pool, 0x000012, 0x0000ff));
-        uint256 green = uint256(Random.uniform(pool, 0x000012, 0x0000ff) * 256);
+        uint256 red = uint256(pool.uniform(0x000012, 0x0000ff));
+        uint256 green = uint256(pool.uniform(0x000012, 0x0000ff) * 256);
         uint256 blue = uint256(
-            Random.uniform(pool, 0x000012, 0x0000ff) * 65536
+            pool.uniform(0x000012, 0x0000ff) * 65536
         );
-        uint256 colorscheme = uint256(Random.uniform(pool, 0, 99));
+        uint256 colorscheme = uint256(pool.uniform(0, 99));
 
         if (colorscheme < 7) {
             return blue; // blue
@@ -52,7 +53,7 @@ library TinyBoxesRenderer {
             return red.add(green); // yellow
         } else if (colorscheme < 66) {
             uint256 brightness = uint256(
-                Random.uniform(pool, 0x000022, 0x0000ee)
+                pool.uniform(0x000022, 0x0000ee)
             ); // random greys
             return brightness.mul(65536).add(brightness.mul(256)).add(brightness);
         } else {
@@ -79,26 +80,26 @@ library TinyBoxesRenderer {
         returns (int256[2] memory positions, int256[2] memory dimensions)
     {
         positions = [
-            Random.uniform(pool, -(int256(spacing[0])), int256(spacing[0])) +
-                ((Random.uniform(pool, 0, int256(spacing[2]).sub(1)).mul(800)).div(
+            pool.uniform(-(int256(spacing[0])), int256(spacing[0])) +
+                ((pool.uniform(0, int256(spacing[2]).sub(1)).mul(800)).div(
                     int256(spacing[2]))),
-            Random.uniform(pool, -(int256(spacing[1])), int256(spacing[1])) +
-                ((Random.uniform(pool, 0, int256(spacing[3]).sub(1)).mul(800)).div(
+            pool.uniform(-(int256(spacing[1])), int256(spacing[1])) +
+                ((pool.uniform(0, int256(spacing[3]).sub(1)).mul(800)).div(
                     int256(spacing[3])))
         ];
         if (hatch) {
-            int256 horizontal = Random.uniform(pool, 0, 1);
-            // 		size[0] = uint(Random.uniform(pool, dials[4], dials[5])) + horizontal * uint(dials[6]);
-            //      size[1] = uint(dials[6]) + uint(dials[5])  - size[0] + uint256(Random.uniform(pool, dials[7], dials[4]));
-            int256 width = Random.uniform(pool, 25, 40).add(int256(700).mul(horizontal));
+            int256 horizontal = pool.uniform(0, 1);
+            // 		size[0] = uint(pool.uniform(dials[4], dials[5])) + horizontal * uint(dials[6]);
+            //      size[1] = uint(dials[6]) + uint(dials[5])  - size[0] + uint256(pool.uniform(dials[7], dials[4]));
+            int256 width = pool.uniform(25, 40).add(int256(700).mul(horizontal));
             dimensions = [
                 width,
-                Random.uniform(pool, 10, 25).add(int256(740).sub(width))
+                pool.uniform(10, 25).add(int256(740).sub(width))
             ];
         } else
             dimensions = [
-                Random.uniform(pool, int256(size[0]), int256(size[1])),
-                Random.uniform(pool, int256(size[2]), int256(size[3]))
+                pool.uniform(int256(size[0]), int256(size[1])),
+                pool.uniform(int256(size[2]), int256(size[3]))
             ];
     }
 
@@ -126,7 +127,7 @@ library TinyBoxesRenderer {
             // and modulate selected color indexes
             int256 colorCount = int256(box.colors);
             uint256 color = colorValues[
-                uint256(Random.uniform(pool, 0, colorCount.sub(1)).add(mod.color))
+                uint256(pool.uniform(0, colorCount.sub(1)).add(mod.color))
                 .mod(uint256(colorCount))];
             // offset hatching index start by hatch modulator
             bool hatching = (box.hatching > 0 &&

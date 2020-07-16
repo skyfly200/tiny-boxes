@@ -7,7 +7,6 @@ import "./chainlink/VRFConsumerBase.sol";
 
 import "./TinyBoxesPricing.sol";
 
-import "./libraries/Random.sol";
 import "./libraries/SVGBuffer.sol";
 import "./libraries/StringUtilsLib.sol";
 
@@ -270,6 +269,6 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         // boxes[req.id].randomness = randomness;
         // boxes[req.id].animation = uint8(randomness.mod(ANIMATION_COUNT));
 
-        _safeMint(req.creator, req.id);
+        //_safeMint(req.creator, req.id);
     }
 }
