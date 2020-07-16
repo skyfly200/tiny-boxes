@@ -31,6 +31,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     struct Request {
         address creator;
         uint256 id;
+        uint256 seed;
     }
 
     mapping(bytes32 => Request) internal requests;
@@ -133,9 +134,11 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
             parts[i] = s.split(delim).toString();
         }
 
+        uint256 seed = parts[0].stringToUint();
+
         // create a new box object from the unpacked parameters
         TinyBox memory box = TinyBox({
-            seed: parts[0].stringToUint(),
+            seed: seed,
             randomness: 0,
             animation: 0,
             shapes: uint8(parts[1].stringToUint()),
@@ -159,7 +162,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         });
 
         // register the new box
-        createBox(box);
+        createBox(box, seed);
 
         // pass back to the LINK contract with a success state
         return true;
@@ -211,7 +214,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         });
 
         // register the new box
-        return createBox(box);
+        return createBox(box, seed);
     }
 
     /**
@@ -219,7 +222,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
      * @param box object of token data
      * @return _requestId of the VRF call
      */
-    function createBox(TinyBox memory box) internal returns (bytes32) {
+    function createBox(TinyBox memory box, uint256 seed) internal returns (bytes32) {
         // make sure caller is never the 0 address
         require(
             msg.sender != address(0),
@@ -232,17 +235,18 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         );
         // TODO: fire LINK_LOW event here if LINK is to low to fullfill remaining VRF requests needed to sell out
 
+        // store the current id & increment the counter for the next call
+        uint256 id = _tokenIds.current();
+        _tokenIds.increment();
+
         // register the new box data
-        boxes[_tokenIds.current()] = box;
+        boxes[id] = box;
 
         // send VRF request
-        bytes32 _requestId = requestRandomness(KEY_HASH, fee, box.seed);
+        bytes32 _requestId = requestRandomness(KEY_HASH, fee, seed);
 
         // map VRF requestId to next token id and owner
-        requests[_requestId] = Request(msg.sender, _tokenIds.current());
-
-        // increment the id counter for the next call
-        _tokenIds.increment();
+        requests[_requestId] = Request(msg.sender, id, seed);
 
         return _requestId;
     }
