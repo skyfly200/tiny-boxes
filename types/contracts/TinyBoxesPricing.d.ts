@@ -31,7 +31,7 @@ export class TinyBoxesPricing extends Contract {
 
     ARTIST_ROLE(): TransactionObject<string>;
 
-    BETA_SALE_CAP(): TransactionObject<string>;
+    BETA_SALE(): TransactionObject<string>;
 
     DEFAULT_ADMIN_ROLE(): TransactionObject<string>;
 

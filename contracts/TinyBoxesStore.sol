@@ -18,13 +18,16 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     using StringUtilsLib for *;
 
     // Chainlink VRF and Feed Stuff
-    // LINK Ropstein Address: 0x20fE562d797A42Dcb3399062AE9546cd06f63280
+    // LINK ropsten address: 0x20fE562d797A42Dcb3399062AE9546cd06f63280
+    // feed ropsten address: 0xb8c99b98913bE2ca4899CdcaF33a3e519C20EeEc
     address constant VRF_COORDINATOR = 0xf720CF1B963e0e7bE9F58fd471EFa67e7bF00cfb; // Ropsten
     bytes32 constant KEY_HASH = 0xced103054e349b8dfb51352f0f8fa9b5d20dde3d06f9f43cb2b85bc64b238205; // Ropsten
     // address constant VRF_COORDINATOR = 0xc1031337fe8E75Cf25CAe9828F3BF734d83732e4; // Rinkeby
     //bytes32 constant KEY_HASH = 0xcad496b9d0416369213648a32b4975fff8707f05dfb43603961b58f3ac6617a7; // Rinkeby
-    uint256 constant fee = 10**18;
+    uint256 constant fee = 10**17;
     uint256 constant DATA_PARAMETER_COUNT = 19;
+    
+    LinkTokenInterface LINK_TOKEN;
 
     struct Request {
         address creator;
@@ -47,10 +50,11 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         public
         TinyBoxesBase()
         TinyBoxesPricing(_link, _feed)
-        VRFConsumerBase(VRF_COORDINATOR, chainlinkTokenAddress())
+        VRFConsumerBase(VRF_COORDINATOR, _link)
     {
         // Grant role to the LINK contract addresses
-        _setupRole(LINK_ROLE, chainlinkTokenAddress());
+        _setupRole(LINK_ROLE, _link);
+        LINK_TOKEN = LinkTokenInterface(_link);
     }
 
     /**
@@ -83,7 +87,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
             require(amount >= price, "insuficient payment"); // return if they dont pay enough
             // give change if they over pay
             if (amount > price) {
-                if (withLink) LINK.transfer(from, amount - price); // change in LINK
+                if (withLink) LINK_TOKEN.transfer(from, amount - price); // change in LINK
                 else msg.sender.transfer(amount - price); // change in ETH
             }
         }
@@ -98,11 +102,11 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         // ensure we have at least that much LINK
         // not needed as it is already checked for in the LINK contract
         // require(
-        //     LINK.balanceOf(address(this)) >= amount,
+        //     LINK_TOKEN.balanceOf(address(this)) >= amount,
         //     "Not enough LINK for requested withdraw"
         // );
         // send amount of LINK tokens to the transaction sender
-        return LINK.transfer(msg.sender, amount);
+        return LINK_TOKEN.transfer(msg.sender, amount);
     }
 
     /**
@@ -181,7 +185,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         uint8[2] calldata counts,
         int16[13] calldata dials,
         bool[3] calldata mirrors
-    ) external payable notSoldOut returns (bytes32) {
+    ) external payable notSoldOut returns (uint256) {
         //handlePayment(false, msg.value, msg.sender);
 
         // convert user seed from string to uint
@@ -221,7 +225,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
      * @param box object of token data
      * @return _requestId of the VRF call
      */
-    function createBox(TinyBox memory box) internal returns (bytes32) {
+    function createBox(TinyBox memory box) internal returns (uint256) {
         // make sure caller is never the 0 address
         require(
             msg.sender != address(0),
@@ -229,23 +233,25 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         );
         // ensure we have enough LINK token in the contract to pay for VRF request fee
         require(
-            LINK.balanceOf(address(this)) > fee,
+            LINK_TOKEN.balanceOf(address(this)) >= fee,
             "Not enough LINK for a VRF request"
         );
+        // TODO: fire LINK_LOW event here if LINK is to low to fullfill remaining VRF requests needed to sell out
 
         // register the new box data
         boxes[_tokenIds.current()] = box;
 
         // send VRF request
-        bytes32 _requestId = requestRandomness(KEY_HASH, fee, box.seed);
+        // bytes32 _requestId = requestRandomness(KEY_HASH, fee, box.seed);
 
-        // map VRF requestId to next token id and owner
-        requests[_requestId] = Request(msg.sender, _tokenIds.current());
+        // // map VRF requestId to next token id and owner
+        // requests[_requestId] = Request(msg.sender, _tokenIds.current());
 
         // increment the id counter for the next call
         _tokenIds.increment();
 
-        return _requestId;
+        //return _requestId;
+        return LINK_TOKEN.balanceOf(address(this));
     }
 
     /**

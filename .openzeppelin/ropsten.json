@@ -15,6 +15,46 @@
         "address": "0xf2Beee4a40E47Af982dE544012caBBF1e89c6E90",
         "kind": "NonProxy",
         "bytecodeHash": "570bce532662fddf48661661451842224f8b079193c54d705a678e079560d446"
+      },
+      {
+        "address": "0x641A8883Dd0FE704d8c38aa7e6C31fB56a7B8Da3",
+        "kind": "NonProxy",
+        "bytecodeHash": "e122015d17c8c7352f6fa6ffef4bdf9e5e8597039480ba9651e94781b635f837"
+      },
+      {
+        "address": "0x292025BD54Bd61B46ca24983A6517692dA0D35aE",
+        "kind": "NonProxy",
+        "bytecodeHash": "a263e133a0c89344750e2ac39fd95e9726d0f42272a845998b5b486998577e95"
+      },
+      {
+        "address": "0x99F815153C32eE506928A428183d71af38a0443b",
+        "kind": "NonProxy",
+        "bytecodeHash": "a263e133a0c89344750e2ac39fd95e9726d0f42272a845998b5b486998577e95"
+      },
+      {
+        "address": "0x0d2225abbf36f9ACc84f1ddadc443CecD05aFc22",
+        "kind": "NonProxy",
+        "bytecodeHash": "fec81af0a0d041c7004c8fe923f52f36b66b9006fbba2a55f352c122fee50b68"
+      },
+      {
+        "address": "0x6ecee1C2CD0A26E0b26Db26f36ca39B918C4f2F5",
+        "kind": "NonProxy",
+        "bytecodeHash": "9da9923a13715431aa312f2eeb88f54be7c335c897678d4c3b3255c4f5f5e59f"
+      },
+      {
+        "address": "0xbAe8c133693b1bf70F043c66687Cb11bA440F7Be",
+        "kind": "NonProxy",
+        "bytecodeHash": "3f81b701bb74323487e1d0a4f82eb77b44d35f102354f04f5adb439927d29127"
+      },
+      {
+        "address": "0xA29A91A032B994EC834aFd56936d6Df2B61214e5",
+        "kind": "NonProxy",
+        "bytecodeHash": "119095fe00a2cd7cc3f69a99e81b9a3bfcb675461d7ba51382c31ec6b3782fbb"
+      },
+      {
+        "address": "0xdB0f913EfF26945D663772A8735bD22Be6f820D4",
+        "kind": "NonProxy",
+        "bytecodeHash": "8482c81314d6f163bded93afc9b28789d35c663265aab7bcc31576a73962eb8e"
       }
     ]
   },
