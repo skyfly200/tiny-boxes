@@ -2,7 +2,6 @@
 pragma solidity ^0.6.4;
 
 struct TinyBox {
-    uint256 seed;
     uint256 randomness;
     uint8 animation;
     uint8 shapes;

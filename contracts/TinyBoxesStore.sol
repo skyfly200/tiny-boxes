@@ -138,7 +138,6 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
 
         // create a new box object from the unpacked parameters
         TinyBox memory box = TinyBox({
-            seed: seed,
             randomness: 0,
             animation: 0,
             shapes: uint8(parts[1].stringToUint()),
@@ -190,7 +189,6 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
 
         // create a new box object
         TinyBox memory box = TinyBox({
-            seed: seed,
             randomness: 0,
             animation: 0,
             shapes: counts[1],

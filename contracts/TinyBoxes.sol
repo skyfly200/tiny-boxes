@@ -47,7 +47,6 @@ contract TinyBoxes is TinyBoxesStore {
         bool[3] memory mirrors
     ) public view returns (string memory) {
         TinyBox memory box = TinyBox({
-            seed: _seed.stringToUint(),
             randomness: _seed.stringToUint(),
             animation: 0,
             shapes: counts[1],

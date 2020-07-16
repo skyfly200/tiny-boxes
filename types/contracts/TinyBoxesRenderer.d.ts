@@ -23,7 +23,6 @@ export class TinyBoxesRenderer extends Contract {
   methods: {
     perpetualRenderer(
       box: {
-        seed: number | string;
         randomness: number | string;
         animation: number | string;
         shapes: number | string;

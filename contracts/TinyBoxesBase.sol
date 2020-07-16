@@ -57,7 +57,6 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     /**
      * @dev Lookup all token data in one call
      * @param _id for which we want token data
-     * @return seed of token
      * @return randomness provided by Chainlink VRF
      * @return animation of token
      * @return colors of token
@@ -73,7 +72,6 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         external
         view
         returns (
-            uint256 seed,
             uint256 randomness,
             uint8 animation,
             uint8 colors,
@@ -87,7 +85,6 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         )
     {
         TinyBox memory box = boxes[_id];
-        seed = box.seed;
         randomness = box.randomness;
         animation = box.animation;
         colors = box.colors;

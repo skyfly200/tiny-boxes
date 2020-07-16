@@ -107,7 +107,6 @@ export class TinyBoxesBase extends Contract {
     tokenData(
       _id: number | string
     ): TransactionObject<{
-      seed: string;
       randomness: string;
       animation: string;
       colors: string;
@@ -123,12 +122,11 @@ export class TinyBoxesBase extends Contract {
       2: string;
       3: string;
       4: string;
-      5: string;
+      5: string[];
       6: string[];
       7: string[];
-      8: string[];
-      9: boolean[];
-      10: string;
+      8: boolean[];
+      9: string;
     }>;
 
     tokenOfOwnerByIndex(
