@@ -314,8 +314,8 @@ library TinyBoxesRenderer {
     {
         // --- Calculate Generative Shape Data ---
 
-        // initilize RNG with the specified seed and blocks 0 through 1
-        bytes32[] memory pool = Random.init(0, 1, box.randomness);
+        // initilize RNG with the provided randomness
+        bytes32[] memory pool = Random.init(box.randomness);
 
         // generate colors
         uint256[] memory colorValues = new uint256[](box.colors);

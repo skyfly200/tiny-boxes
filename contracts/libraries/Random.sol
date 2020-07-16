@@ -2,29 +2,27 @@
 
 pragma solidity ^0.6.4;
 
+import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/math/SignedSafeMath.sol";
+
 library Random {
+    using SafeMath for uint256;
+    using SignedSafeMath for int256;
+
     /**
-     * Initialize the pool with the entropy of the blockhashes of the blocks in the closed interval [earliestBlock, latestBlock]
-     * The argument "seed" is optional and can be left zero in most cases.
-     * This extra seed allows you to select a different sequence of random numbers for the same block range.
+     * Initialize the pool with the entropy of the blockhashes of the num of blocks starting from 0
+     * The argument "seed" allows you to select a different sequence of random numbers for the same block range.
      */
     function init(
-        uint256 earliestBlock,
-        uint256 latestBlock,
         uint256 seed
     ) internal view returns (bytes32[] memory) {
-        //require(block.number-1 >= latestBlock && latestBlock >= earliestBlock && earliestBlock >= block.number-256, "Random.init: invalid block interval");
-        require(
-            block.number - 1 >= latestBlock && latestBlock >= earliestBlock,
-            "Random.init: invalid block interval"
-        );
-        bytes32[] memory pool = new bytes32[](latestBlock - earliestBlock + 2);
-        bytes32 salt = keccak256(abi.encodePacked(earliestBlock, seed));
-        for (uint256 i = 0; i <= latestBlock - earliestBlock; i++) {
-            // Add some salt to each blockhash so that we don't reuse those hash chains
-            // when this function gets called again in another block.
+        uint256 blocks = 2;
+        bytes32[] memory pool = new bytes32[](3);
+        bytes32 salt = keccak256(abi.encodePacked(uint256(0), seed));
+        for (uint256 i = 0; i < blocks; i++) {
+            // Add some salt to each blockhash
             pool[i + 1] = keccak256(
-                abi.encodePacked(blockhash(earliestBlock + i), salt)
+                abi.encodePacked(blockhash(i), salt)
             );
         }
         return pool;
