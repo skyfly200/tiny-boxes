@@ -143,7 +143,7 @@ library SVGBuffer {
             strIdx := numbu3(strIdx, opacityWhole)
             strIdx := append(strIdx, ".", 1)
             strIdx := numbu3(strIdx, opacityDecimal)
-            strIdx := append(strIdx, ';"/>\n', 6)
+            strIdx := append(strIdx, ';"/>', 4)
             mstore(add(buffer, 32), sub(sub(strIdx, buffer), 64))
         }
     }

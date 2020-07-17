@@ -155,10 +155,10 @@ library TinyBoxesRenderer {
     function _generateHeader() internal view returns (string memory) {
         bytes memory buffer = new bytes(8192);
 
-        string memory xmlVersion = '<?xml version="1.0" encoding="UTF-8"?>\n';
-        string memory doctype = '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n';
-        string memory openingTag = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2600 2600" style="stroke-width:0; background-color:#121212;">\n\n';
-        string memory symbols = '<symbol id="quad3">\n<symbol id="quad2">\n<symbol id="quad1">\n<symbol id="quad0">\n\n';
+        string memory xmlVersion = '<?xml version="1.0" encoding="UTF-8"?>';
+        string memory doctype = '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
+        string memory openingTag = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2600 2600" style="stroke-width:0; background-color:#121212;">';
+        string memory symbols = '<symbol id="quad3"><symbol id="quad2"><symbol id="quad1"><symbol id="quad0">';
 
         buffer.append(xmlVersion);
         buffer.append(doctype);
@@ -184,13 +184,13 @@ library TinyBoxesRenderer {
 
         string[3] memory scales = ["-1 1", "-1 -1", "1 -1"];
         string[7] memory template = [
-            "\n<g>",
-            '\n<g transform="scale(',
+            "<g>",
+            '<g transform="scale(',
             ") translate(",
             ')">',
-            '\n<use xlink:href="#quad',
-            '"/>\n</g>',
-            "\n</symbol>"
+            '<use xlink:href="#quad',
+            '"/></g>',
+            "</symbol>"
         ];
 
         for (uint256 s = 0; s < 3; s++) {
@@ -252,7 +252,7 @@ library TinyBoxesRenderer {
         buffer.append("4");
         buffer.append(template[5]);
 
-        buffer.append("\n</svg>"); // add closing svg tag
+        buffer.append("</svg>"); // add closing svg tag
         return SVGBuffer.toString(buffer);
     }
 
