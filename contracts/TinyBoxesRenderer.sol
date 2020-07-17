@@ -13,6 +13,7 @@ import "./structs/TinyBox.sol";
 
 import "./libraries/SVGBuffer.sol";
 import "./libraries/Random.sol";
+import "./libraries/Decimal.sol";
 import "./libraries/StringUtilsLib.sol";
 
 library TinyBoxesRenderer {
@@ -21,6 +22,7 @@ library TinyBoxesRenderer {
     using StringUtilsLib for *;
     using SVGBuffer for bytes;
     using Random for bytes32[];
+    using DecimalUtils for Decimal;
 
     /**
      * @dev generate a color
@@ -232,21 +234,11 @@ library TinyBoxesRenderer {
             }
         }
         // add final scaling
-        string memory scaleWhole = Strings.toString(
-            uint256(scale.value).div(scale.decimals)
-        );
-        string memory scaleDecimals = Strings.toString(
-            uint256(scale.value).mod(scale.decimals)
-        );
         buffer.append(template[6]);
         buffer.append(template[1]);
-        buffer.append(scaleWhole);
-        buffer.append('.');
-        buffer.append(scaleDecimals);
+        buffer.append(scale.toString());
         buffer.append(' ');
-        buffer.append(scaleWhole);
-        buffer.append('.');
-        buffer.append(scaleDecimals);
+        buffer.append(scale.toString());
         buffer.append(template[3]);
         buffer.append(template[4]);
         buffer.append('3');
@@ -272,7 +264,7 @@ library TinyBoxesRenderer {
             color: int256(0),
             hatch: int256(0),
             stack: int256(0),
-            opacity: 0,
+            opacity: uint256(100),
             spacing: [0, 0, 0, 0],
             sizeRange: [0, 0, 0, 0],
             position: [int8(0), int8(0)],
