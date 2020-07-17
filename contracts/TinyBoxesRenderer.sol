@@ -145,9 +145,7 @@ library TinyBoxesRenderer {
             size[0] = size[0].add(mod.size[0]);
             size[1] = size[1].add(mod.size[1]);
             // modulate the opacity
-            uint256 opacity = 10**3;
-            opacity = opacity.add(mod.opacity);
-            return Shape(position, size, color, opacity);
+            return Shape(position, size, color, mod.opacity);
     }
 
     /**
