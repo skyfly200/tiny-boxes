@@ -1,9 +1,11 @@
 //SPDX-License-Identifier: Unlicensed
 pragma solidity ^0.6.4;
 
+import "./Decimal.sol";
+
 struct Shape {
-    int256[2] position;
-    int256[2] size;
+    Decimal[2] position;
+    Decimal[2] size;
+    Decimal opacity;
     uint256 color;
-    uint256 opacity;
 }

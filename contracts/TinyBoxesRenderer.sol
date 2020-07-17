@@ -25,6 +25,102 @@ library TinyBoxesRenderer {
     using DecimalUtils for Decimal;
 
     /**
+     * @dev render the header of the SVG markup
+     * @return header string
+     */
+    function _generateHeader() internal view returns (string memory) {
+        bytes memory buffer = new bytes(8192);
+
+        string memory xmlVersion = '<?xml version="1.0" encoding="UTF-8"?>';
+        string memory doctype = '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
+        string memory openingTag = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2400 2400" style="stroke-width:0;background-color:#121212">';
+        string memory symbols = '<symbol id="quad3"><symbol id="quad2"><symbol id="quad1"><symbol id="quad0">';
+
+        buffer.append(xmlVersion);
+        buffer.append(doctype);
+        buffer.append(openingTag);
+        buffer.append(symbols);
+
+        return buffer.toString();
+    }
+
+    /**
+     * @dev render the footer string for mirring effects
+     * @param switches for each mirroring stage
+     * @param mirrorPositions for generator settings
+     * @param scale for each mirroring stage
+     * @return footer string
+     */
+    function _generateFooter(
+        bool[3] memory switches,
+        Decimal[3] memory mirrorPositions,
+        Decimal memory scale
+    ) internal view returns (string memory) {
+        bytes memory buffer = new bytes(8192);
+
+        string[3] memory scales = ['-1 1', '-1 -1', '1 -1'];
+        string[7] memory template = [
+            '<g>',
+            '<g transform="scale(',
+            ') translate(',
+            ')">',
+            '<use xlink:href="#quad',
+            '"/></g>',
+            '</symbol>'
+        ];
+
+        for (uint256 s = 0; s < 3; s++) {
+            // loop through mirroring effects
+            buffer.append(template[6]);
+
+            if (!switches[s]) {
+                // turn off this level of mirroring
+                // add a scale transform
+                buffer.append(template[0]);
+                // denote what quad the transform should be used for
+                buffer.append(template[4]);
+                if (s > 0) // TODO: remove and make quad names consistent
+                    buffer.append(Strings.toString(uint256(s + 1)));
+                buffer.append(template[5]);
+            } else {
+                string memory value = mirrorPositions[s].toString();
+                for (uint8 i = 0; i < 4; i++) {
+                    // loop through transforms
+                    if (i == 0) buffer.append(template[0]);
+                    else {
+                        buffer.append(template[1]);
+                        buffer.append(scales[i - 1]);
+                        buffer.append(template[2]);
+                        if (i <= 2) buffer.append('-');
+                        buffer.append(i <= 2 ? value : '0');
+                        buffer.append(' ');
+                        if (i >= 2) buffer.append('-');
+                        buffer.append(i >= 2 ? value : '0');
+                        buffer.append(template[3]);
+                    }
+                    // denote what quad the transforms should be used for
+                    buffer.append(template[4]);
+                    buffer.append(Strings.toString(s));
+                    buffer.append(template[5]);
+                }
+            }
+        }
+        // add final scaling
+        buffer.append(template[6]);
+        buffer.append(template[1]);
+        buffer.append(scale.toString());
+        buffer.append(' ');
+        buffer.append(scale.toString());
+        buffer.append(template[3]);
+        buffer.append(template[4]);
+        buffer.append('3');
+        buffer.append(template[5]);
+
+        buffer.append("</svg>"); // add closing svg tag
+        return SVGBuffer.toString(buffer);
+    }
+
+    /**
      * @dev generate a color
      * @param pool randomn numbers
      * @return color value
@@ -115,7 +211,7 @@ library TinyBoxesRenderer {
         uint256[] memory colorValues,
         TinyBox memory box,
         Modulation memory mod
-    ) internal pure returns (Shape memory) {
+    ) internal view returns (Shape memory) {
         // modulate box generator input parameters
             for (uint256 j = 0; j < 4; j++) {
                 box.spacing[j] = uint16(
@@ -136,124 +232,29 @@ library TinyBoxesRenderer {
                 uint256(index.add(mod.hatch)).mod(box.hatching) == 0);
             // generate a shapes position and size using box parameters
             (
-                int256[2] memory position,
-                int256[2] memory size
+                int256[2] memory positionGen,
+                int256[2] memory sizeGen
             ) = _generateBox(pool, box.spacing, box.size, hatching);
-            // modulate the shape position and size
-            position[0] = position[0].add(mod.position[0]);
-            position[1] = position[1].add(mod.position[1]);
-            size[0] = size[0].add(mod.size[0]);
-            size[1] = size[1].add(mod.size[1]);
+            // convert generated shape values to decimal and modulate the shape position and size
+            Decimal[2] memory position;
+            Decimal[2] memory size;
+            position[0] = Decimal(positionGen[0], 0).add(mod.position[0]);
+            position[1] = Decimal(positionGen[1], 0).add(mod.position[1]);
+            size[0] = Decimal(sizeGen[0], 0).add(mod.size[0]);
+            size[1] = Decimal(sizeGen[1], 0).add(mod.size[1]);
             // modulate the opacity
-            return Shape(position, size, color, mod.opacity);
-    }
-
-    /**
-     * @dev render the header of the SVG markup
-     * @return header string
-     */
-    function _generateHeader() internal view returns (string memory) {
-        bytes memory buffer = new bytes(8192);
-
-        string memory xmlVersion = '<?xml version="1.0" encoding="UTF-8"?>';
-        string memory doctype = '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
-        string memory openingTag = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2400 2400" style="stroke-width:0;background-color:#121212">';
-        string memory symbols = '<symbol id="quad3"><symbol id="quad2"><symbol id="quad1"><symbol id="quad0">';
-
-        buffer.append(xmlVersion);
-        buffer.append(doctype);
-        buffer.append(openingTag);
-        buffer.append(symbols);
-
-        return buffer.toString();
-    }
-
-    /**
-     * @dev render the footer string for mirring effects
-     * @param switches for each mirroring stage
-     * @param mirrorPositions for generator settings
-     * @param scale for each mirroring stage
-     * @return footer string
-     */
-    function _generateFooter(
-        bool[3] memory switches,
-        int16[3] memory mirrorPositions,
-        Decimal memory scale
-    ) internal view returns (string memory) {
-        bytes memory buffer = new bytes(8192);
-
-        string[3] memory scales = ['-1 1', '-1 -1', '1 -1'];
-        string[7] memory template = [
-            '<g>',
-            '<g transform="scale(',
-            ') translate(',
-            ')">',
-            '<use xlink:href="#quad',
-            '"/></g>',
-            '</symbol>'
-        ];
-
-        for (uint256 s = 0; s < 3; s++) {
-            // loop through mirroring effects
-            buffer.append(template[6]);
-
-            if (!switches[s]) {
-                // turn off this level of mirroring
-                // add a scale transform
-                buffer.append(template[0]);
-                // denote what quad the transform should be used for
-                buffer.append(template[4]);
-                if (s > 0) // TODO: remove and make quad names consistent
-                    buffer.append(Strings.toString(uint256(s + 1)));
-                buffer.append(template[5]);
-            } else {
-                string memory value = Strings.toString(
-                    uint256(mirrorPositions[s])
-                );
-                for (uint8 i = 0; i < 4; i++) {
-                    // loop through transforms
-                    if (i == 0) buffer.append(template[0]);
-                    else {
-                        buffer.append(template[1]);
-                        buffer.append(scales[i - 1]);
-                        buffer.append(template[2]);
-                        if (i <= 2) buffer.append('-');
-                        buffer.append(i <= 2 ? value : '0');
-                        buffer.append(' ');
-                        if (i >= 2) buffer.append('-');
-                        buffer.append(i >= 2 ? value : '0');
-                        buffer.append(template[3]);
-                    }
-                    // denote what quad the transforms should be used for
-                    buffer.append(template[4]);
-                    buffer.append(Strings.toString(s));
-                    buffer.append(template[5]);
-                }
-            }
-        }
-        // add final scaling
-        buffer.append(template[6]);
-        buffer.append(template[1]);
-        buffer.append(scale.toString());
-        buffer.append(' ');
-        buffer.append(scale.toString());
-        buffer.append(template[3]);
-        buffer.append(template[4]);
-        buffer.append('3');
-        buffer.append(template[5]);
-
-        buffer.append("</svg>"); // add closing svg tag
-        return SVGBuffer.toString(buffer);
+            return Shape(position, size, mod.opacity, color);
     }
 
     /**
      * @dev calculate the animation modulators for a shape
-     * @param animation randomn numbers
-     * @param frame of token to render
+     * @param box object to base modulations around
+     * @param frame number being rendered
+     * @param shape index being modulated
      * @return mod struct of modulator values
      */
     function _calculateMods(
-        uint256 animation,
+        TinyBox memory box,
         uint256 frame,
         uint256 shape
     ) internal pure returns (Modulation memory mod) {
@@ -262,14 +263,15 @@ library TinyBoxesRenderer {
             color: int256(0),
             hatch: int256(0),
             stack: int256(0),
-            opacity: uint256(100),
             spacing: [0, 0, 0, 0],
             sizeRange: [0, 0, 0, 0],
-            position: [int8(0), int8(0)],
-            size: [int8(0), int8(0)],
-            mirror: [int8(0), int8(0), int8(0)]
+            position: [Decimal(0, 5), Decimal(0, 5)],
+            size: [Decimal(0, 5), Decimal(0, 5)],
+            mirror: [Decimal(0, 2), Decimal(0, 2), Decimal(0, 2)],
+            opacity: Decimal(100, 2)
         });
         // apply animation based on animation, frame and shape values
+        uint256 animation = box.animation;
         if (animation == 0) {
             // shift the shapes color indexes
             mod.color = uint8(frame);
@@ -281,13 +283,12 @@ library TinyBoxesRenderer {
             mod.stack = uint8(frame);
         } else if (animation == 3) {
             // shift mirror position 0
-            mod.mirror[0] = int8(frame);
+            mod.mirror[0] = Decimal(int256(frame), 0);
         } else if (animation == 4) {
             // squash and squeze
             // transfer height to width and vice versa
-            // TODO: change to an inverted ralationship once signed modulation is implemented
-            mod.size[0] = int8(frame.add(shape));
-            mod.size[1] = int8(frame.add(shape));
+            mod.size[0] = Decimal(int256(frame.add(shape)), 0);
+            mod.size[1] = Decimal(int256(frame.add(shape)).mul(int256(-1)), 0);
         }
     }
 
@@ -318,47 +319,46 @@ library TinyBoxesRenderer {
         Modulation memory mod;
         for (uint256 i = 0; i < shapeCount; i++) {
             // calculate the animation modulators based on frames and animation id
-            mod = _calculateMods(box.animation, frame, i);
+            mod = _calculateMods(box, frame, i);
             // generate a new shape
             shapes[i] = _generateShape(int256(i), pool, colorValues, box, mod);
         }
 
         // --- Render SVG Markup ---
 
-        // initialize an empty buffer for the SVG markup
+        // empty buffer for the SVG markup
         bytes memory buffer = new bytes(8192);
 
-        // write the document header to the SVG buffer
+        // write the document header to the SVG
         buffer.append(_generateHeader());
 
-        // write shapes to the SVG buffer
+        // write shapes to the SVG
         for (int256 i = 0; i < int256(shapeCount); i++) {
             Shape memory shape = shapes[uint256(i.add(mod.stack)).mod(shapeCount)];
             SVGBuffer.rect(
                 buffer,
                 shape.position,
                 shape.size,
-                shape.color,
-                shape.opacity
+                shape.opacity,
+                shape.color
             );
         }
 
-        box.mirrorPositions[0] = int16(
-            int256(box.mirrorPositions[0]).add(mod.mirror[0])
-        );
-        box.mirrorPositions[1] = int16(
-            int256(box.mirrorPositions[1]).add(mod.mirror[1])
-        );
-        box.mirrorPositions[2] = int16(
-            int256(box.mirrorPositions[2]).add(mod.mirror[2])
-        );
+        // convert scale to decimal
+        Decimal memory scale = Decimal(box.scale, 100);
 
+        // modulate the mirror values
+        Decimal[3] memory mirrorPositions;
+        for (uint256 i = 0; i < 3; i++)
+            mirrorPositions[i] = Decimal(box.mirrorPositions[i], 0).add(mod.mirror[i]);
+
+        // write the footer to the SVG
         SVGBuffer.append(
             buffer,
             _generateFooter(
                 box.mirrors,
-                box.mirrorPositions,
-                Decimal(box.scale, 100)
+                mirrorPositions,
+                scale
             )
         );
 

@@ -2,7 +2,13 @@
 
 pragma solidity ^0.6.4;
 
+import "../structs/Decimal.sol";
+
+import "./Decimal.sol";
+
 library SVGBuffer {
+    using DecimalUtils for Decimal;
+
     function hasCapacityFor(bytes memory buffer, uint256 needed)
         internal
         pure
@@ -54,18 +60,17 @@ library SVGBuffer {
 
     function rect(
         bytes memory buffer,
-        int256[2] memory positions,
-        int256[2] memory size,
-        uint256 rgb,
-        uint256 opacity
-    ) internal pure {
+        Decimal[2] memory positions,
+        Decimal[2] memory size,
+        Decimal memory opacity,
+        uint256 rgb
+    ) internal view {
         require(hasCapacityFor(buffer, 102), "Buffer.rect: no capacity");
-        int256 xpos = positions[0];
-        int256 ypos = positions[1];
-        int256 width = size[0];
-        int256 height = size[1];
-        uint256 opacityWhole = opacity / 1000;
-        uint256 opacityDecimal = opacity % 1000;
+        string memory xpos = positions[0].toString();
+        string memory ypos = positions[1].toString();
+        string memory width = size[0].toString();
+        string memory height = size[1].toString();
+        string memory opacityString = opacity.toString();
         assembly {
             function numbx1(x, v) -> y {
                 // v must be in the closed interval [0, 9]
@@ -130,19 +135,17 @@ library SVGBuffer {
             }
             let strIdx := add(mload(add(buffer, 32)), add(buffer, 64))
             strIdx := append(strIdx, '<rect x="', 9)
-            strIdx := numbi3(strIdx, xpos)
+            strIdx := append(strIdx, xpos, 3)
             strIdx := append(strIdx, '" y="', 5)
-            strIdx := numbi3(strIdx, ypos)
+            strIdx := append(strIdx, ypos, 3)
             strIdx := append(strIdx, '" width="', 9)
-            strIdx := numbu3(strIdx, width)
+            strIdx := append(strIdx, width, 3)
             strIdx := append(strIdx, '" height="', 10)
-            strIdx := numbu3(strIdx, height)
+            strIdx := append(strIdx, height, 3)
             strIdx := append(strIdx, '" style="fill:#', 15)
             strIdx := hexrgb(strIdx, rgb)
             strIdx := append(strIdx, "; fill-opacity:", 14)
-            strIdx := numbu3(strIdx, opacityWhole)
-            strIdx := append(strIdx, ".", 1)
-            strIdx := numbu3(strIdx, opacityDecimal)
+            strIdx := append(strIdx, opacityString, 7)
             strIdx := append(strIdx, '"/>', 3)
             mstore(add(buffer, 32), sub(sub(strIdx, buffer), 64))
         }
