@@ -139,11 +139,11 @@ library SVGBuffer {
             strIdx := numbu3(strIdx, height)
             strIdx := append(strIdx, '" style="fill:#', 15)
             strIdx := hexrgb(strIdx, rgb)
-            strIdx := append(strIdx, "; fill-opacity:", 15)
+            strIdx := append(strIdx, "; fill-opacity:", 14)
             strIdx := numbu3(strIdx, opacityWhole)
             strIdx := append(strIdx, ".", 1)
             strIdx := numbu3(strIdx, opacityDecimal)
-            strIdx := append(strIdx, ';"/>', 4)
+            strIdx := append(strIdx, '"/>', 3)
             mstore(add(buffer, 32), sub(sub(strIdx, buffer), 64))
         }
     }
