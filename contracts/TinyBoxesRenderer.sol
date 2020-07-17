@@ -157,7 +157,7 @@ library TinyBoxesRenderer {
 
         string memory xmlVersion = '<?xml version="1.0" encoding="UTF-8"?>';
         string memory doctype = '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
-        string memory openingTag = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2600 2600" style="stroke-width:0;background-color:#121212">';
+        string memory openingTag = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2400 2400" style="stroke-width:0;background-color:#121212">';
         string memory symbols = '<symbol id="quad3"><symbol id="quad2"><symbol id="quad1"><symbol id="quad0">';
 
         buffer.append(xmlVersion);
@@ -182,15 +182,15 @@ library TinyBoxesRenderer {
     ) internal view returns (string memory) {
         bytes memory buffer = new bytes(8192);
 
-        string[3] memory scales = ["-1 1", "-1 -1", "1 -1"];
+        string[3] memory scales = ['-1 1', '-1 -1', '1 -1'];
         string[7] memory template = [
-            "<g>",
+            '<g>',
             '<g transform="scale(',
-            ") translate(",
+            ') translate(',
             ')">',
             '<use xlink:href="#quad',
             '"/></g>',
-            "</symbol>"
+            '</symbol>'
         ];
 
         for (uint256 s = 0; s < 3; s++) {
@@ -217,11 +217,11 @@ library TinyBoxesRenderer {
                         buffer.append(template[1]);
                         buffer.append(scales[i - 1]);
                         buffer.append(template[2]);
-                        if (i <= 2) buffer.append("-");
-                        buffer.append(i <= 2 ? value : "0");
-                        buffer.append(" ");
-                        if (i >= 2) buffer.append("-");
-                        buffer.append(i >= 2 ? value : "0");
+                        if (i <= 2) buffer.append('-');
+                        buffer.append(i <= 2 ? value : '0');
+                        buffer.append(' ');
+                        if (i >= 2) buffer.append('-');
+                        buffer.append(i >= 2 ? value : '0');
                         buffer.append(template[3]);
                     }
                     // denote what quad the transforms should be used for
@@ -241,15 +241,15 @@ library TinyBoxesRenderer {
         buffer.append(template[6]);
         buffer.append(template[1]);
         buffer.append(scaleWhole);
-        buffer.append(".");
+        buffer.append('.');
         buffer.append(scaleDecimals);
-        buffer.append(" ");
+        buffer.append(' ');
         buffer.append(scaleWhole);
-        buffer.append(".");
+        buffer.append('.');
         buffer.append(scaleDecimals);
         buffer.append(template[3]);
         buffer.append(template[4]);
-        buffer.append("4");
+        buffer.append('3');
         buffer.append(template[5]);
 
         buffer.append("</svg>"); // add closing svg tag

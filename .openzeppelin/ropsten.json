@@ -2,11 +2,11 @@
   "contracts": {},
   "solidityLibs": {
     "TinyBoxesRenderer": {
-      "address": "0xa93Ea49FC27471d2a84bEE7dA17f625c644FC3A2",
-      "constructorCode": "61224d610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "723b014bface93306e9241cf4bc1c1bb774739999c98b873406952018efd0879",
-      "localBytecodeHash": "bfc8301c21219a8a6fe408bc63ec28c5713108eaa7e06df2e1474c098ae5d204",
-      "deployedBytecodeHash": "bfc8301c21219a8a6fe408bc63ec28c5713108eaa7e06df2e1474c098ae5d204"
+      "address": "0x5A1281aDB7B7917B4d988FB97B6a14D21835A923",
+      "constructorCode": "612236610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "80edeb9ca7b2a65386bec3857c0b70408b1e8be84cc6f73e9a9d24eb19e698a7",
+      "localBytecodeHash": "ee564da5cc2be323e351df4e19baeda09da94badc0582d628bf88442870783fd",
+      "deployedBytecodeHash": "ee564da5cc2be323e351df4e19baeda09da94badc0582d628bf88442870783fd"
     }
   },
   "proxies": {
@@ -110,6 +110,21 @@
         "address": "0xBf66E5417f3936e1BBb6B1dD6572c14cC6F72d2a",
         "kind": "NonProxy",
         "bytecodeHash": "ea6ee04bd96cdaa724538b21126ac9104282196d5092c32c5e333fe829021fc9"
+      },
+      {
+        "address": "0xf47fdD34A906C9DA9C2310046A46eEB742505afA",
+        "kind": "NonProxy",
+        "bytecodeHash": "a295701b90404fe26914e54eb6a6953beca2273124c688e8037419336db5da48"
+      },
+      {
+        "address": "0x2CD7969C3D2e9c2D46ba6B64265a35e6287d7689",
+        "kind": "NonProxy",
+        "bytecodeHash": "a295701b90404fe26914e54eb6a6953beca2273124c688e8037419336db5da48"
+      },
+      {
+        "address": "0x5FF5260743a5A2E7B77f79f23c1746f191a0a983",
+        "kind": "NonProxy",
+        "bytecodeHash": "a295701b90404fe26914e54eb6a6953beca2273124c688e8037419336db5da48"
       }
     ]
   },
