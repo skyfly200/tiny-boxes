@@ -260,20 +260,19 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
      * @dev The VRF Coordinator will not pass randomness that could not be verified.
      */
     function fulfillRandomness(bytes32 requestId, uint256 randomness)
-        internal
+        external
         override
     {
         // lookup VRF Request by id
-        //Request memory req = requests[requestId];
+        Request memory req = requests[requestId];
 
         // TODO - generate animation with RNG weighted non uniformly for varying rarity types
         //        maybe use log base 2 of a number in a range 2 to the animation counts
 
         // generate params with RNG & save to the box along with the randomness
-        // boxes[req.id].randomness = randomness;
-        // boxes[req.id].animation = uint8(randomness.mod(ANIMATION_COUNT));
+        boxes[req.id].randomness = randomness;
+        boxes[req.id].animation = uint8(randomness.mod(ANIMATION_COUNT));
 
-        //_safeMint(req.creator, req.id);
-        //_safeMint(address(0x7A832c86002323a5de3a317b3281Eb88EC3b2C00), 0); // test only minting
+        _safeMint(req.creator, req.id);
     }
 }
