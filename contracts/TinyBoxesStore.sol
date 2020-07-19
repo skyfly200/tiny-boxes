@@ -12,7 +12,7 @@ import "./TinyBoxesPricing.sol";
 
 contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     using SafeMath for uint256;
-    using Utils for string;
+    using Utils for *;
     using SVGBuffer for bytes;
     using StringUtilsLib for *;
 
@@ -166,6 +166,46 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
 
         // pass back to the LINK contract with a success state
         return true;
+    }
+
+    /**
+     * @dev write token data to string for use when purchasing with LINK
+     * @param _seed for renderer RNG
+     * @param counts for colors and shapes
+     * @param dials for perpetual renderer
+     * @param mirrors switches
+     * @return preview SVG art
+     */
+    function dataForLINKPay(
+        string memory _seed,
+        uint8[2] memory counts,
+        int16[13] memory dials,
+        bool[3] memory mirrors
+    ) public view returns (string memory) {
+        // convert all values into a data string
+        bytes memory buffer = new bytes(8192);
+
+        buffer.append(_seed);
+        buffer.append(uint256(counts[0]).toString());
+        buffer.append(uint256(counts[1]).toString());
+        buffer.append(dials[0].toString());
+        buffer.append(dials[1].toString());
+        buffer.append(dials[2].toString());
+        buffer.append(dials[3].toString());
+        buffer.append(dials[4].toString());
+        buffer.append(dials[5].toString());
+        buffer.append(dials[6].toString());
+        buffer.append(dials[7].toString());
+        buffer.append(dials[8].toString());
+        buffer.append(dials[9].toString());
+        buffer.append(dials[10].toString());
+        buffer.append(dials[11].toString());
+        buffer.append(dials[12].toString());
+        buffer.append(mirrors[0] ? "true": "false");
+        buffer.append(mirrors[1] ? "true": "false");
+        buffer.append(mirrors[2] ? "true": "false");
+
+        return buffer.toString();
     }
 
     /**
