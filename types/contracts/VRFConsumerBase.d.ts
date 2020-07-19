@@ -21,12 +21,12 @@ export class VRFConsumerBase extends Contract {
   );
   clone(): VRFConsumerBase;
   methods: {
-    nonces(arg0: string | number[]): TransactionObject<string>;
-
-    rawFulfillRandomness(
+    fulfillRandomness(
       requestId: string | number[],
       randomness: number | string
     ): TransactionObject<void>;
+
+    nonces(arg0: string | number[]): TransactionObject<string>;
 
     requestRandomness(
       _keyHash: string | number[],

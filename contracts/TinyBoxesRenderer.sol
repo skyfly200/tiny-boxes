@@ -2,6 +2,7 @@
 pragma solidity ^0.6.8;
 pragma experimental ABIEncoderV2;
 
+import "@openzeppelin/contracts/math/Math.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/math/SignedSafeMath.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
@@ -17,12 +18,17 @@ import "./libraries/Decimal.sol";
 import "./libraries/StringUtilsLib.sol";
 
 library TinyBoxesRenderer {
+    using Math for uint256;
     using SafeMath for uint256;
     using SignedSafeMath for int256;
     using StringUtilsLib for *;
     using SVGBuffer for bytes;
     using Random for bytes32[];
     using DecimalUtils for Decimal;
+
+    uint256 public constant ANIMATION_FRAME_RATE = 12;
+    uint256 public constant ANIMATION_SECONDS = 10;
+    uint256 public constant ANIMATION_FRAMES = ANIMATION_FRAME_RATE * ANIMATION_SECONDS;
 
     /**
      * @dev render the header of the SVG markup
@@ -211,7 +217,7 @@ library TinyBoxesRenderer {
         uint256[] memory colorValues,
         TinyBox memory box,
         Modulation memory mod
-    ) internal view returns (Shape memory) {
+    ) internal pure returns (Shape memory) {
         // modulate box generator input parameters
             for (uint256 j = 0; j < 4; j++) {
                 box.spacing[j] = uint16(
@@ -287,8 +293,13 @@ library TinyBoxesRenderer {
         } else if (animation == 4) {
             // squash and squeze
             // transfer height to width and vice versa
-            mod.size[0] = Decimal(int256(frame.add(shape)), 0);
-            mod.size[1] = Decimal(int256(frame.add(shape)).mul(int256(-1)), 0);
+            int256 change;
+            if (frame < ANIMATION_FRAMES / 2)
+                change = int256(shape.add(frame).sub(uint256(box.shapes).div(2)).mod(uint256(box.shapes)));
+            else
+                change = int256(shape.add(uint256(box.shapes).div(2)).sub(frame.sub(ANIMATION_FRAMES / 2)).mod(uint256(box.shapes)));
+            mod.size[0] = Decimal(change, 0);
+            mod.size[1] = Decimal(change.mul(int256(-1)), 0);
         }
     }
 
