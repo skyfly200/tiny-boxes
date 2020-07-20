@@ -260,7 +260,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
      * @param box object of token data
      * @return _requestId of the VRF call
      */
-    function createBox(TinyBox memory box, uint256 seed) internal returns (bytes32) {
+    function createBox(TinyBox memory box, uint256 _seed) internal returns (bytes32) {
         // make sure caller is never the 0 address
         require(
             msg.sender != address(0),
@@ -282,6 +282,9 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
 
         // register the new box data
         boxes[id] = box;
+
+        // add block number and new token id anto seed
+        uint256 seed = _seed.add(block.number).add(id).mod(2**256);
 
         // send VRF request
         bytes32 _requestId = requestRandomness(KEY_HASH, fee, seed);
