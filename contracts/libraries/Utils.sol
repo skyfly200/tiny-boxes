@@ -28,7 +28,7 @@ library Utils {
         }
     }
 
-    // special toString for signed 8 bit ints
+    // special toString for signed 16 bit ints
     function toString(int16 val) public view returns (string memory) {
         bytes memory buffer = new bytes(8192);
         if (val >= 0) buffer.append(uint256(val).toString());

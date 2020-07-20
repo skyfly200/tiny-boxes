@@ -29,6 +29,7 @@ library DecimalUtils {
         bytes memory buffer = new bytes(8192);
         if (wholeComponent < 0) buffer.append("-");
         buffer.append(uint256(wholeComponent).toString());
+        buffer.append(".");
         buffer.append(decimalComponent.toString());
         return buffer.toString();
     }
