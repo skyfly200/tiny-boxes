@@ -18,8 +18,8 @@ library DecimalUtils {
     // compute decimal parts
     function decimalParts(Decimal memory number) internal pure returns (int256, uint256) {
         return (
-            int256(number.value).div(number.decimals),
-            uint256(number.value).mod(number.decimals)
+            int256(number.value).div(int256(10) ** number.decimals),
+            uint256(number.value).mod(uint256(10) ** number.decimals)
         );
     }
 
