@@ -7,5 +7,6 @@ struct Shape {
     Decimal[2] position;
     Decimal[2] size;
     Decimal opacity;
+    uint256 radius;
     uint256 color;
 }

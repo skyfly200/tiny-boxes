@@ -13,4 +13,5 @@ struct Modulation {
     Decimal[2] size;
     Decimal[3] mirror;
     Decimal opacity;
+    uint256 radius;
 }

@@ -2,12 +2,15 @@
 
 pragma solidity ^0.6.4;
 
+import "@openzeppelin/contracts/utils/Strings.sol";
+
 import "../structs/Decimal.sol";
 
 import "./Decimal.sol";
 
 library SVGBuffer {
     using DecimalUtils for Decimal;
+    using Strings for *;
 
     function hasCapacityFor(bytes memory buffer, uint256 needed)
         internal
@@ -63,6 +66,7 @@ library SVGBuffer {
         Decimal[2] memory positions,
         Decimal[2] memory size,
         Decimal memory opacity,
+        uint256 _radius,
         uint256 rgb
     ) internal view {
         require(hasCapacityFor(buffer, 102), "Buffer.rect: no capacity");
@@ -70,6 +74,7 @@ library SVGBuffer {
         string memory ypos = positions[1].toString();
         string memory width = size[0].toString();
         string memory height = size[1].toString();
+        string memory radius = _radius.toString();
         string memory opacityString = opacity.toString();
         assembly {
             function numbx1(x, v) -> y {
@@ -142,6 +147,8 @@ library SVGBuffer {
             strIdx := append(strIdx, width, 3)
             strIdx := append(strIdx, '" height="', 10)
             strIdx := append(strIdx, height, 3)
+            strIdx := append(strIdx, '" rx="', 6)
+            strIdx := append(strIdx, radius, 3)
             strIdx := append(strIdx, '" style="fill:#', 15)
             strIdx := hexrgb(strIdx, rgb)
             strIdx := append(strIdx, "; fill-opacity:", 14)

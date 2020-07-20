@@ -248,8 +248,10 @@ library TinyBoxesRenderer {
             position[1] = Decimal(positionGen[1], 0).add(mod.position[1]);
             size[0] = Decimal(sizeGen[0], 0).add(mod.size[0]);
             size[1] = Decimal(sizeGen[1], 0).add(mod.size[1]);
+            // modulate the corner radius
+            uint256 radius = mod.radius;
             // modulate the opacity
-            return Shape(position, size, mod.opacity, color);
+            return Shape(position, size, mod.opacity, radius, color);
     }
 
     /**
@@ -274,7 +276,8 @@ library TinyBoxesRenderer {
             position: [Decimal(0, 5), Decimal(0, 5)],
             size: [Decimal(0, 5), Decimal(0, 5)],
             mirror: [Decimal(0, 2), Decimal(0, 2), Decimal(0, 2)],
-            opacity: Decimal(100, 2)
+            opacity: Decimal(100, 2),
+            radius: uint256(0)
         });
         // apply animation based on animation, frame and shape values
         uint256 animation = box.animation;
@@ -351,6 +354,7 @@ library TinyBoxesRenderer {
                 shape.position,
                 shape.size,
                 shape.opacity,
+                shape.radius,
                 shape.color
             );
         }

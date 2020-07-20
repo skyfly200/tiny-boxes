@@ -284,7 +284,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         boxes[id] = box;
 
         // add block number and new token id anto seed
-        uint256 seed = _seed.add(block.number).add(id).mod(2**256);
+        uint256 seed = _seed.add(block.number).add(id).mod(uint256(2**64));
 
         // send VRF request
         bytes32 _requestId = requestRandomness(KEY_HASH, fee, seed);
