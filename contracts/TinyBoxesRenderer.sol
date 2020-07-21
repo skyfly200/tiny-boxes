@@ -25,6 +25,7 @@ library TinyBoxesRenderer {
     using SVGBuffer for bytes;
     using Random for bytes32[];
     using DecimalUtils for Decimal;
+    using Strings for *;
 
     uint256 public constant ANIMATION_FRAME_RATE = 12;
     uint256 public constant ANIMATION_SECONDS = 10;
@@ -252,6 +253,44 @@ library TinyBoxesRenderer {
             uint256 radius = mod.radius;
             // modulate the opacity
             return Shape(position, size, mod.opacity, radius, color);
+    }
+
+    /**
+     * @dev render a rectangle SVG tag
+     * @param position of the rectangle in the canvas
+     * @param size of the rectangle
+     * @param opacity of the rectangle
+     * @param radius of the rectangle corner
+     * @param rgb color of the rectangle
+     */
+    function _rect(
+        Decimal[2] memory position,
+        Decimal[2] memory size,
+        Decimal memory opacity,
+        uint256 radius,
+        uint256 rgb
+    ) internal view returns (string memory) {
+        // empty buffer for the SVG markup
+        bytes memory buffer = new bytes(8192);
+
+        // build the rect tag
+        buffer.append('<rect x="');
+        buffer.append(position[0].toString());
+        buffer.append('" y="');
+        buffer.append(position[1].toString());
+        buffer.append('" width="');
+        buffer.append(size[0].toString());
+        buffer.append('" height="');
+        buffer.append(size[1].toString());
+        buffer.append('" rx="');
+        buffer.append(radius.toString());
+        buffer.append('" style="fill:#');
+        buffer.append(rgb.toString()); // TODO: format uint value as a hex color string
+        buffer.append(";fill-opacity:");
+        buffer.append(opacity.toString());
+        buffer.append('"/>');
+
+        return buffer.toString();
     }
 
     /**
