@@ -393,18 +393,27 @@ library TinyBoxesRenderer {
         // write shapes to the SVG
         for (int256 i = 0; i < int256(shapeCount); i++) {
             Shape memory shape = shapes[uint256(i.add(mod.stack)).mod(shapeCount)];
-            SVGBuffer.rect(
-                buffer,
-                shape.position,
-                shape.size,
-                shape.opacity,
-                shape.radius,
-                shape.color
+            // SVGBuffer.rect(
+            //     buffer,
+            //     shape.position,
+            //     shape.size,
+            //     shape.opacity,
+            //     shape.radius,
+            //     shape.color
+            // );
+            buffer.append(
+                _rect(
+                    shape.position,
+                    shape.size,
+                    shape.opacity,
+                    shape.radius,
+                    shape.color
+                )
             );
         }
 
         // convert scale to decimal
-        Decimal memory scale = Decimal(box.scale, 100);
+        Decimal memory scale = Decimal(box.scale, 2);
 
         // modulate the mirror values
         Decimal[3] memory mirrorPositions;
@@ -412,8 +421,7 @@ library TinyBoxesRenderer {
             mirrorPositions[i] = Decimal(box.mirrorPositions[i], 0).add(mod.mirror[i]);
 
         // write the footer to the SVG
-        SVGBuffer.append(
-            buffer,
+        buffer.append(
             _generateFooter(
                 box.mirrors,
                 mirrorPositions,

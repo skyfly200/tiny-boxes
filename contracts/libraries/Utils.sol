@@ -42,7 +42,7 @@ library Utils {
     function toHexColor(
         uint256 rgb,
         bytes memory buffer
-    ) internal view {
+    ) internal pure {
         require(SVGBuffer.hasCapacityFor(buffer, 6), "Buffer.rect: no capacity for color");
         assembly {
             function hexrgb(x, v) -> y {
