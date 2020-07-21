@@ -14,6 +14,7 @@ import "./structs/TinyBox.sol";
 
 import "./libraries/SVGBuffer.sol";
 import "./libraries/Random.sol";
+import "./libraries/Utils.sol";
 import "./libraries/Decimal.sol";
 import "./libraries/StringUtilsLib.sol";
 
@@ -25,6 +26,7 @@ library TinyBoxesRenderer {
     using SVGBuffer for bytes;
     using Random for bytes32[];
     using DecimalUtils for Decimal;
+    using Utils for *;
     using Strings for *;
 
     uint256 public constant ANIMATION_FRAME_RATE = 12;
@@ -273,6 +275,9 @@ library TinyBoxesRenderer {
         // empty buffer for the SVG markup
         bytes memory buffer = new bytes(8192);
 
+        bytes memory colorBuffer = new bytes(3);
+        rgb.toHexColor(colorBuffer);
+
         // build the rect tag
         buffer.append('<rect x="');
         buffer.append(position[0].toString());
@@ -285,7 +290,7 @@ library TinyBoxesRenderer {
         buffer.append('" rx="');
         buffer.append(radius.toString());
         buffer.append('" style="fill:#');
-        buffer.append(rgb.toString()); // TODO: format uint value as a hex color string
+        buffer.append(colorBuffer.toString());
         buffer.append(";fill-opacity:");
         buffer.append(opacity.toString());
         buffer.append('"/>');
