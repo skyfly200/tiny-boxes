@@ -24,11 +24,16 @@ library DecimalUtils {
     }
 
     // convert a Decimal to a string
+    // TODO: fix overflow error
     function toString(Decimal memory number) internal view returns (string memory) {
         ( int256 wholeComponent, uint256 decimalComponent ) = decimalParts(number);
-        bytes memory buffer = new bytes(8192);
-        if (wholeComponent < 0) buffer.append("-");
-        buffer.append(uint256(wholeComponent).toString());
+        bytes memory buffer = new bytes(20);
+        if (wholeComponent < 0) {
+            buffer.append("-");
+            buffer.append(uint256(wholeComponent.mul(-1)).toString());
+        } else {
+            buffer.append(uint256(wholeComponent).toString());
+        }
         buffer.append(".");
         buffer.append(decimalComponent.toString());
         return buffer.toString();

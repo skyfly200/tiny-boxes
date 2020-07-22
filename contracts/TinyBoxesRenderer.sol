@@ -275,25 +275,26 @@ library TinyBoxesRenderer {
         // empty buffer for the SVG markup
         bytes memory buffer = new bytes(8192);
 
-        bytes memory colorBuffer = new bytes(3);
-        rgb.toHexColor(colorBuffer);
+        //bytes memory colorBuffer = new bytes(10);
+        //colorBuffer.toHexColor(rgb);
+        // colorBuffer.append("ffffff");
 
         // build the rect tag
-        buffer.append('<rect x="');
-        buffer.append(position[0].toString());
-        buffer.append('" y="');
-        buffer.append(position[1].toString());
-        buffer.append('" width="');
-        buffer.append(size[0].toString());
-        buffer.append('" height="');
-        buffer.append(size[1].toString());
-        buffer.append('" rx="');
-        buffer.append(radius.toString());
-        buffer.append('" style="fill:#');
-        buffer.append(colorBuffer.toString());
-        buffer.append(";fill-opacity:");
-        buffer.append(opacity.toString());
-        buffer.append('"/>');
+        // buffer.append('<rect x="');
+        // buffer.append(position[0].toString());
+        // buffer.append('" y="');
+        // buffer.append(position[1].toString());
+        // buffer.append('" width="');
+        // buffer.append(size[0].toString());
+        // buffer.append('" height="');
+        // buffer.append(size[1].toString());
+        // buffer.append('" rx="');
+        // buffer.append(radius.toString());
+        // buffer.append('" style="fill:#');
+        // buffer.append(colorBuffer.toString());
+        // buffer.append(";fill-opacity:");
+        // buffer.append(opacity.toString());
+        // buffer.append('"/>');
 
         return buffer.toString();
     }

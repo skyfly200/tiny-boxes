@@ -17,7 +17,7 @@ module.exports = {
           mnemonic,
           `https://ropsten.infura.io/v3/${projectId}`,
         ),
-      gasPrice: 10e9,
+      gasPrice: 5e10,
       gasLimit: 1000000,
       networkId: '3',
     },

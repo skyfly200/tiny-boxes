@@ -39,9 +39,10 @@ library Utils {
         return buffer.toString();
     }
 
+    // TODO: fix overflow error
     function toHexColor(
-        uint256 rgb,
-        bytes memory buffer
+        bytes memory buffer,
+        uint256 rgb
     ) internal pure {
         require(SVGBuffer.hasCapacityFor(buffer, 6), "Buffer.rect: no capacity for color");
         assembly {
