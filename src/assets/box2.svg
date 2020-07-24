@@ -1,0 +1,178 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="100%"
+  height="100%"
+  viewBox="0 0 2600 2600"
+  style="stroke-width:0; background-color:#121212;"
+>
+
+<symbol id="upperleftquad4">
+<symbol id="upperleftquad3">
+<symbol id="upperleftquad2">
+<symbol id="upperleftquad">
+
+<rect
+            x="-96"
+            y="534"
+            width="33"
+            height="725"
+            style="fill:#350000; fill-opacity:1.0;"
+          />
+<rect
+            x="347"
+            y="415"
+            width="290"
+            height="194"
+            style="fill:#009d9d; fill-opacity:1.0;"
+          />
+<rect
+            x="-53"
+            y="759"
+            width="27"
+            height="724"
+            style="fill:#009d9d; fill-opacity:1.0;"
+          />
+<rect
+            x="-164"
+            y="687"
+            width="265"
+            height="345"
+            style="fill:#410000; fill-opacity:1.0;"
+          />
+<rect
+            x="370"
+            y="41"
+            width="38"
+            height="725"
+            style="fill:#280053; fill-opacity:1.0;"
+          />
+<rect
+            x="-345"
+            y="650"
+            width="293"
+            height="306"
+            style="fill:#009d9d; fill-opacity:1.0;"
+          />
+<rect
+            x="229"
+            y="268"
+            width="31"
+            height="732"
+            style="fill:#4d0000; fill-opacity:1.0;"
+          />
+<rect
+            x="317"
+            y="113"
+            width="248"
+            height="186"
+            style="fill:#4d0000; fill-opacity:1.0;"
+          />
+<rect
+            x="-155"
+            y="732"
+            width="732"
+            height="25"
+            style="fill:#4d0000; fill-opacity:1.0;"
+          />
+<rect
+            x="149"
+            y="80"
+            width="257"
+            height="199"
+            style="fill:#4d0000; fill-opacity:1.0;"
+          />
+<rect
+            x="-111"
+            y="23"
+            width="732"
+            height="31"
+            style="fill:#980000; fill-opacity:1.0;"
+          />
+<rect
+            x="313"
+            y="59"
+            width="281"
+            height="186"
+            style="fill:#410000; fill-opacity:1.0;"
+          />
+<rect
+            x="-240"
+            y="736"
+            width="734"
+            height="25"
+            style="fill:#da0000; fill-opacity:1.0;"
+          />
+<rect
+            x="-364"
+            y="-105"
+            width="249"
+            height="287"
+            style="fill:#da0000; fill-opacity:1.0;"
+          />
+<rect
+            x="-69"
+            y="406"
+            width="39"
+            height="721"
+            style="fill:#410000; fill-opacity:1.0;"
+          />
+<rect
+            x="-161"
+            y="233"
+            width="296"
+            height="289"
+            style="fill:#ca0000; fill-opacity:1.0;"
+          />
+<rect
+            x="373"
+            y="778"
+            width="25"
+            height="725"
+            style="fill:#ca0000; fill-opacity:1.0;"
+          />
+
+</symbol>
+<g>
+<use xlink:href="#upperleftquad" />
+</g>
+<g transform="scale(-1 1) translate(-750 0)">
+<use xlink:href="#upperleftquad" />
+</g>
+<g transform="scale(-1 -1) translate(-750 -750)">
+<use xlink:href="#upperleftquad" />
+</g>
+<g transform="scale(1 -1) translate(0 -750)">
+<use xlink:href="#upperleftquad" />
+</g>
+</symbol>
+<g>
+<use xlink:href="#upperleftquad2" />
+</g>
+<g transform="scale(-1 1) translate(-1300 0)">
+<use xlink:href="#upperleftquad2" />
+</g>
+<g transform="scale(-1 -1) translate(-1300 -1300)">
+<use xlink:href="#upperleftquad2" />
+</g>
+<g transform="scale(1 -1) translate(0 -1300)">
+<use xlink:href="#upperleftquad2" />
+</g>
+</symbol>
+<g>
+<use xlink:href="#upperleftquad3" />
+</g>
+<g transform="scale(-1 1) translate(-2600 0)">
+<use xlink:href="#upperleftquad3" />
+</g>
+<g transform="scale(-1 -1) translate(-2600 -2600)">
+<use xlink:href="#upperleftquad3" />
+</g>
+<g transform="scale(1 -1) translate(0 -2600)">
+<use xlink:href="#upperleftquad3" />
+</g>
+</symbol>
+<g transform="scale(1.0 1.0)">
+<use xlink:href="#upperleftquad4" />
+</g>
+</svg>

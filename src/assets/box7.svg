@@ -1,0 +1,73 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="100%"
+  height="100%"
+  viewBox="0 0 2600 2600"
+  style="stroke-width:0; background-color:#121212;"
+>
+
+<symbol id="upperleftquad4">
+<symbol id="upperleftquad3">
+<symbol id="upperleftquad2">
+<symbol id="upperleftquad">
+
+<rect
+            x="541"
+            y="283"
+            width="27"
+            height="725"
+            style="fill:#007da8; fill-opacity:1.0;"
+          />
+<rect
+            x="168"
+            y="878"
+            width="284"
+            height="143"
+            style="fill:#001da3; fill-opacity:1.0;"
+          />
+
+</symbol>
+<g>
+<use xlink:href="#upperleftquad" />
+</g>
+<g transform="scale(-1 1) translate(-750 0)">
+<use xlink:href="#upperleftquad" />
+</g>
+<g transform="scale(-1 -1) translate(-750 -750)">
+<use xlink:href="#upperleftquad" />
+</g>
+<g transform="scale(1 -1) translate(0 -750)">
+<use xlink:href="#upperleftquad" />
+</g>
+</symbol>
+<g>
+<use xlink:href="#upperleftquad2" />
+</g>
+<g transform="scale(-1 1) translate(-1300 0)">
+<use xlink:href="#upperleftquad2" />
+</g>
+<g transform="scale(-1 -1) translate(-1300 -1300)">
+<use xlink:href="#upperleftquad2" />
+</g>
+<g transform="scale(1 -1) translate(0 -1300)">
+<use xlink:href="#upperleftquad2" />
+</g>
+</symbol>
+<g>
+<use xlink:href="#upperleftquad3" />
+</g>
+<g transform="scale(-1 1) translate(-2600 0)">
+<use xlink:href="#upperleftquad3" />
+</g>
+<g transform="scale(-1 -1) translate(-2600 -2600)">
+<use xlink:href="#upperleftquad3" />
+</g>
+<g transform="scale(1 -1) translate(0 -2600)">
+<use xlink:href="#upperleftquad3" />
+</g>
+</symbol>
+<g transform="scale(1.0 1.0)">
+<use xlink:href="#upperleftquad4" />
+</g>
+</svg>
