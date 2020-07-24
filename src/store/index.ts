@@ -4,7 +4,7 @@ import Web3 from "web3";
 import VuexPersist from "vuex-persist";
 
 //import TinyBoxes from 'Contracts/TinyBoxes.sol'
-//import { tinyboxesAddress, tinyboxesABI } from "@/tinyboxes-contract";
+import { tinyboxesAddress, tinyboxesABI } from "@/tinyboxes-contract";
 
 Vue.use(Vuex);
 
