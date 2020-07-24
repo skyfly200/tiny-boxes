@@ -7,7 +7,7 @@
           h1.title TinyBoxes
           h3 Boxes Upon Boxes
           h3 Fully on chain, animated NFTs
-          v-btn.btn(color="primary"large to="/about") Learn More
+          v-btn.btn(color="primary" large to="/about") Learn More
       v-row(cols=6)
         v-col(align="center")
           v-card
