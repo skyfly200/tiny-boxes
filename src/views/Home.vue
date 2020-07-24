@@ -3,6 +3,7 @@
     v-container(fluid)
       v-row(cols=6).landing
         v-col(align="center")
+          v-img(src="/assets/logo.png" min-width="20vw" max-height="50vh")
           h1.title TinyBoxes
           h3 Boxes Upon Boxes
           h3 Fully on chain, animated NFTs
@@ -79,10 +80,10 @@ export default {
         "579032",
         "16426533",
         "14842158",
-        "568390",
-      ],
-    },
-  }),
+        "568390"
+      ]
+    }
+  })
 };
 </script>
 
