@@ -3,8 +3,7 @@
     v-container(fluid)
       v-row(cols=6).landing
         v-col(align="center")
-          v-img(src="/img/logo.png" min-width="20vw" max-height="50vh")
-          h1.title TinyBoxes
+          v-img(src="/img/logo.png" width="40vw")
           h3 Boxes Upon Boxes
           h3 Fully on chain, animated NFTs
           #mc_embed_signup
