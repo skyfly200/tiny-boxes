@@ -7,8 +7,7 @@
           h1.title TinyBoxes
           h3 Boxes Upon Boxes
           h3 Fully on chain, animated NFTs
-          v-btn.btn(color="primary" large to="/list") Explore
-          v-btn.btn(color="tertiary" large to="/about") Learn More
+          v-btn.btn(color="primary"large to="/about") Learn More
       v-row(cols=6)
         v-col(align="center")
           v-card
@@ -80,10 +79,10 @@ export default {
         "579032",
         "16426533",
         "14842158",
-        "568390"
-      ]
-    }
-  })
+        "568390",
+      ],
+    },
+  }),
 };
 </script>
 
