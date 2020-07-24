@@ -7,7 +7,16 @@
           h1.title TinyBoxes
           h3 Boxes Upon Boxes
           h3 Fully on chain, animated NFTs
-          v-btn.btn(color="primary" large to="/about") Learn More
+          #mc_embed_signup
+                form#mc-embedded-subscribe-form.validate(action='https://shop.us17.list-manage.com/subscribe/post?u=81d0c7a7aabdc5c89bc737456&id=e8ca8b83a1' method='post' name='mc-embedded-subscribe-form' target='_blank' novalidate='')
+                  #mc_embed_signup_scroll
+                    label(for='mce-EMAIL') Subscribe to be the first to know when we launch!
+                    input#mce-EMAIL.email(type='email' value='' name='EMAIL' placeholder='email address' required='')
+                    // real people should not fill this in and expect good things - do not remove this or risk form bot signups
+                    div(style='position: absolute; left: -5000px;' aria-hidden='true')
+                      input(type='text' name='b_81d0c7a7aabdc5c89bc737456_e8ca8b83a1' tabindex='-1' value='')
+                    .clear
+                      v-btn(type='submit' name='subscribe') Subscribe
       v-row(cols=6)
         v-col(align="center")
           v-card
@@ -16,17 +25,6 @@
               h3 The Immutible Decentralized Perpetual Renderer 
               h3 That means art thats accesible forever and fully owned by you
             v-card-actions.call-to-action
-                #mc_embed_signup
-                  form#mc-embedded-subscribe-form.validate(action='https://shop.us17.list-manage.com/subscribe/post?u=81d0c7a7aabdc5c89bc737456&id=e8ca8b83a1' method='post' name='mc-embedded-subscribe-form' target='_blank' novalidate='')
-                    #mc_embed_signup_scroll
-                      label(for='mce-EMAIL') Subscribe to be the first to know when we launch!
-                      input#mce-EMAIL.email(type='email' value='' name='EMAIL' placeholder='email address' required='')
-                      // real people should not fill this in and expect good things - do not remove this or risk form bot signups
-                      div(style='position: absolute; left: -5000px;' aria-hidden='true')
-                        input(type='text' name='b_81d0c7a7aabdc5c89bc737456_e8ca8b83a1' tabindex='-1' value='')
-                      .clear
-                        input#mc-embedded-subscribe.button(type='submit' value='Subscribe' name='subscribe')
-
               v-btn.btn(color="primary" large to="/guide") The Perpetual Renderer
       v-row(cols=6)
         v-col(align="center")
