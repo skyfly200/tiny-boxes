@@ -20,9 +20,18 @@
         v-col(align="center")
           v-card
             v-card-text
-              h1.title On Chain Generative Art
+              h1.title Art Thats Forever
               h3 The Immutible Decentralized Perpetual Renderer 
               h3 That means art thats accesible forever and fully owned by you
+            v-card-actions.call-to-action
+              v-btn.btn(color="primary" large to="/guide") The Perpetual Renderer
+      v-row(cols=6)
+        v-col(align="center")
+          v-card
+            v-card-text
+              h1.title Animations
+              h3 Animation effects built into the on chain renderer
+              h3 Static and animated art on chain and saved to IPFS
             v-card-actions.call-to-action
               v-btn.btn(color="primary" large to="/guide") The Perpetual Renderer
       v-row(cols=6)
@@ -51,16 +60,7 @@
               h3 Our contract directly accepts LINK token to mint TinyBoxes
               h3 A first for NFT projects
             v-card-actions.call-to-action
-              v-btn.btn(color="primary" large to="/guide") Mint with LINK
-      v-row(cols=6)
-        v-col(align="center")
-          v-card
-            v-card-text
-              h1.title OpenSea Secondary Market
-              h3 Ready for OpenSea integration
-              h3 Featuring animations
-            v-card-actions.call-to-action
-              v-btn.btn(color="primary" large to="/guide") OpenSea
+              v-btn.btn(color="primary" large to="/guide") Mint with LINK 
 </template>
 
 <script>
