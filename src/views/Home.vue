@@ -1,9 +1,9 @@
 <template lang="pug">
   .home
-    v-container(fluid)
+    v-container
       v-row(cols=6).landing
         v-col(align="center")
-          v-img(src="/img/logo.png" width="40vw")
+          v-img(src="/img/logo.png" min-width="250px" max-width="400px")
           h3 Boxes Upon Boxes
           h3 Fully on chain, animated NFTs
           #mc_embed_signup
@@ -87,10 +87,10 @@ export default {
         "579032",
         "16426533",
         "14842158",
-        "568390",
-      ],
-    },
-  }),
+        "568390"
+      ]
+    }
+  })
 };
 </script>
 
