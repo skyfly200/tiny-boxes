@@ -17,7 +17,6 @@
   },
   "dependencies": {
     "@openzeppelin/contract-loader": "^0.6.1",
-    "@openzeppelin/contracts": "^3.0.2",
     "@openzeppelin/contracts-ethereum-package": "^3.0.0",
     "@openzeppelin/upgrades": "^2.8.0",
     "core-js": "^3.6.4",
@@ -38,6 +37,7 @@
   "devDependencies": {
     "@babel/preset-typescript": "^7.10.1",
     "@openzeppelin/cli": "^2.8.2",
+    "@openzeppelin/contracts": "^3.1.0",
     "@openzeppelin/solidity-loader": "^1.5.1",
     "@truffle/hdwallet-provider": "^1.0.35",
     "@types/aws-lambda": "^8.10.56",
