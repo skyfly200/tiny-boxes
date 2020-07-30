@@ -28,23 +28,20 @@ library Utils {
         }
     }
 
-    // special toString for signed 16 bit ints
-    function toString(int16 val) public view returns (string memory) {
+    // special toString for signed ints
+    function toString(int256 val) public view returns (string memory) {
         bytes memory buffer = new bytes(8192);
-        if (val >= 0) buffer.append(uint256(val).toString());
-        else {
-            buffer.append("-");
-            buffer.append(uint256(int256(val).mul(-1)).toString());
-        }
+        if (val >= 0) buffer.append("-");
+        buffer.append(uint256(val < 0 ? val.mul(-1) : val).toString());
         return buffer.toString();
     }
 
     // TODO: fix overflow error
-    function toHexColor(
-        bytes memory buffer,
-        uint256 rgb
-    ) internal pure {
-        require(SVGBuffer.hasCapacityFor(buffer, 6), "Buffer.rect: no capacity for color");
+    function toHexColor(bytes memory buffer, uint256 rgb) internal pure {
+        require(
+            SVGBuffer.hasCapacityFor(buffer, 6),
+            "Buffer.rect: no capacity for color"
+        );
         assembly {
             function hexrgb(x, v) -> y {
                 let blo := and(v, 0xf)

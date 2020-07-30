@@ -222,79 +222,90 @@ library TinyBoxesRenderer {
         Modulation memory mod
     ) internal pure returns (Shape memory) {
         // modulate box generator input parameters
-            for (uint256 j = 0; j < 4; j++) {
-                box.spacing[j] = uint16(
-                    uint256(box.spacing[j]).add(mod.spacing[j])
-                );
-                box.size[j] = uint16(
-                    uint256(box.size[j]).add(mod.sizeRange[j])
-                );
-            }
-            // pick a random color from the generated colors list
-            // and modulate selected color indexes
-            int256 colorCount = int256(box.colors);
-            uint256 color = colorValues[
-                uint256(pool.uniform(0, colorCount.sub(1)).add(mod.color))
-                .mod(uint256(colorCount))];
-            // offset hatching index start by hatch modulator
-            bool hatching = (box.hatching > 0 &&
-                uint256(index.add(mod.hatch)).mod(box.hatching) == 0);
-            // generate a shapes position and size using box parameters
-            (
-                int256[2] memory positionGen,
-                int256[2] memory sizeGen
-            ) = _generateBox(pool, box.spacing, box.size, hatching);
-            // convert generated shape values to decimal and modulate the shape position and size
-            Decimal[2] memory position;
-            Decimal[2] memory size;
-            position[0] = Decimal(positionGen[0], 0).add(mod.position[0]);
-            position[1] = Decimal(positionGen[1], 0).add(mod.position[1]);
-            size[0] = Decimal(sizeGen[0], 0).add(mod.size[0]);
-            size[1] = Decimal(sizeGen[1], 0).add(mod.size[1]);
-            // modulate the corner radius
-            uint256 radius = mod.radius;
-            // modulate the opacity
-            return Shape(position, size, mod.opacity, radius, color);
+        for (uint256 j = 0; j < 4; j++) {
+            box.spacing[j] = uint16(
+                uint256(box.spacing[j]).add(mod.spacing[j])
+            );
+            box.size[j] = uint16(
+                uint256(box.size[j]).add(mod.sizeRange[j])
+            );
+        }
+        // pick a random color from the generated colors list
+        // and modulate selected color indexes
+        int256 colorCount = int256(box.colors);
+        uint256 color = colorValues[
+            uint256(pool.uniform(0, colorCount.sub(1)).add(mod.color))
+            .mod(uint256(colorCount))];
+        // offset hatching index start by hatch modulator
+        bool hatching = (box.hatching > 0 &&
+            uint256(index.add(mod.hatch)).mod(box.hatching) == 0);
+        // generate a shapes position and size using box parameters
+        (
+            int256[2] memory position,
+            int256[2] memory size
+        ) = _generateBox(pool, box.spacing, box.size, hatching);
+        // Return a Shape Instance
+        // plus modulate the opacity, rotation, origin, offset, skew, scale & corner radius
+        return Shape({
+            position: position,
+            size: size,
+            opacity: mod.opacity,
+            rotation: mod.rotation,
+            origin: mod.origin,
+            offset: mod.offset,
+            skew: mod.skew,
+            scale: mod.scale,
+            radius: mod.radius,
+            color: color
+        });
     }
 
     /**
      * @dev render a rectangle SVG tag
-     * @param position of the rectangle in the canvas
-     * @param size of the rectangle
-     * @param opacity of the rectangle
-     * @param radius of the rectangle corner
-     * @param rgb color of the rectangle
+     * @param shape object
      */
-    function _rect(
-        Decimal[2] memory position,
-        Decimal[2] memory size,
-        Decimal memory opacity,
-        uint256 radius,
-        uint256 rgb
-    ) internal view returns (string memory) {
+    function _rect(Shape memory shape) internal view returns (string memory) {
         // empty buffer for the SVG markup
         bytes memory buffer = new bytes(8192);
 
-        //bytes memory colorBuffer = new bytes(10);
-        //colorBuffer.toHexColor(rgb);
-        // colorBuffer.append("ffffff");
+        bytes memory colorBuffer = new bytes(10);
+        colorBuffer.toHexColor(shape.color);
+        colorBuffer.append("ffffff");
 
         // build the rect tag
-        // buffer.append('<rect x="');
-        // buffer.append(position[0].toString());
-        // buffer.append('" y="');
-        // buffer.append(position[1].toString());
-        // buffer.append('" width="');
-        // buffer.append(size[0].toString());
-        // buffer.append('" height="');
-        // buffer.append(size[1].toString());
-        // buffer.append('" rx="');
-        // buffer.append(radius.toString());
-        // buffer.append('" style="fill:#');
-        // buffer.append(colorBuffer.toString());
-        // buffer.append(";fill-opacity:");
-        // buffer.append(opacity.toString());
-        // buffer.append('"/>');
+        buffer.append('<rect x="');
+        buffer.append(shape.position[0].toString());
+        buffer.append('" y="');
+        buffer.append(shape.position[1].toString());
+        buffer.append('" width="');
+        buffer.append(shape.size[0].toString());
+        buffer.append('" height="');
+        buffer.append(shape.size[1].toString());
+        buffer.append('" rx="');
+        buffer.append(shape.radius.toString());
+        buffer.append('" style="fill:#');
+        buffer.append(colorBuffer.toString());
+        buffer.append(";fill-opacity:");
+        buffer.append(shape.opacity.toString());
+        buffer.append('" transform="rotate(');
+        buffer.append(shape.rotation.toString());
+        buffer.append(' ');
+        buffer.append(shape.origin[0].toString());
+        buffer.append(' ');
+        buffer.append(shape.origin[1].toString());
+        buffer.append(')translate(');
+        buffer.append(shape.offset[0].toString());
+        buffer.append(' ');
+        buffer.append(shape.offset[1].toString());
+        buffer.append(')skewX(');
+        buffer.append(shape.skew[0].toString());
+        buffer.append(')skewY(');
+        buffer.append(shape.skew[1].toString());
+        buffer.append(')scale(');
+        buffer.append(shape.scale[0].toString());
+        buffer.append(' ');
+        buffer.append(shape.scale[1].toString());
+        buffer.append(')"/>');
 
         return buffer.toString();
     }
@@ -318,8 +329,11 @@ library TinyBoxesRenderer {
             stack: int256(0),
             spacing: [0, 0, 0, 0],
             sizeRange: [0, 0, 0, 0],
-            position: [Decimal(0, 5), Decimal(0, 5)],
-            size: [Decimal(0, 5), Decimal(0, 5)],
+            rotation: Decimal(0, 2),
+            origin: [Decimal(0, 3), Decimal(0, 3)],
+            offset: [Decimal(0, 3), Decimal(0, 3)],
+            scale: [Decimal(0, 3), Decimal(0, 3)],
+            skew: [Decimal(0, 3), Decimal(0, 3)],
             mirror: [Decimal(0, 2), Decimal(0, 2), Decimal(0, 2)],
             opacity: Decimal(100, 2),
             radius: uint256(0)
@@ -346,8 +360,8 @@ library TinyBoxesRenderer {
                 change = int256(shape.add(frame).sub(uint256(box.shapes).div(2)).mod(uint256(box.shapes)));
             else
                 change = int256(shape.add(uint256(box.shapes).div(2)).sub(frame.sub(ANIMATION_FRAMES / 2)).mod(uint256(box.shapes)));
-            mod.size[0] = Decimal(change, 0);
-            mod.size[1] = Decimal(change.mul(int256(-1)), 0);
+            mod.scale[0] = Decimal(change, 0);
+            mod.scale[1] = Decimal(change.mul(int256(-1)), 0);
         }
     }
 
@@ -393,27 +407,11 @@ library TinyBoxesRenderer {
 
         // write shapes to the SVG
         for (int256 i = 0; i < int256(shapeCount); i++) {
-            Shape memory shape = shapes[uint256(i.add(mod.stack)).mod(shapeCount)];
-            // SVGBuffer.rect(
-            //     buffer,
-            //     shape.position,
-            //     shape.size,
-            //     shape.opacity,
-            //     shape.radius,
-            //     shape.color
-            // );
-            buffer.append(
-                _rect(
-                    shape.position,
-                    shape.size,
-                    shape.opacity,
-                    shape.radius,
-                    shape.color
-                )
-            );
+            uint256 shapeIndex = uint256(i.add(mod.stack)).mod(shapeCount);
+            buffer.append(_rect(shapes[shapeIndex]));
         }
 
-        // convert scale to decimal
+        // convert master box scale to decimal with precision two two digits
         Decimal memory scale = Decimal(box.scale, 2);
 
         // modulate the mirror values

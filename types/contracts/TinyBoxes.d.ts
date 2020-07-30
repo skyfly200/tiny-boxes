@@ -237,6 +237,14 @@ export class TinyBoxes extends Contract {
       0: string;
       1: string;
     }>;
+    RoleAdminChanged: ContractEvent<{
+      role: string;
+      previousAdminRole: string;
+      newAdminRole: string;
+      0: string;
+      1: string;
+      2: string;
+    }>;
     RoleGranted: ContractEvent<{
       role: string;
       account: string;

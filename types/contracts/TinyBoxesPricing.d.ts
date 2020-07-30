@@ -178,6 +178,14 @@ export class TinyBoxesPricing extends Contract {
     ChainlinkCancelled: ContractEvent<string>;
     ChainlinkFulfilled: ContractEvent<string>;
     ChainlinkRequested: ContractEvent<string>;
+    RoleAdminChanged: ContractEvent<{
+      role: string;
+      previousAdminRole: string;
+      newAdminRole: string;
+      0: string;
+      1: string;
+      2: string;
+    }>;
     RoleGranted: ContractEvent<{
       role: string;
       account: string;
