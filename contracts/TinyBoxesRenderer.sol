@@ -170,7 +170,7 @@ library TinyBoxesRenderer {
 
     /**
      * @dev generate a shape
-     * @param pool randomn numbers
+     * @param pool randomn numbers pool
      * @param spacing for shapes
      * @param size of shapes
      * @param hatch mode on
@@ -211,60 +211,50 @@ library TinyBoxesRenderer {
     }
 
     /**
-     * @dev create a shape from provided box and mod parameters
-     * @return shape struct
+     * @dev generate a shape
+     * @param pool randomn numbers
+     * @param index of the shape
+     * @param box data to make a shape from
+     * @param mod of the frame
+     * @param colorValues list of colors
+     * @return positions of shape
      */
     function _generateShape(
-        int256 index,
         bytes32[] memory pool,
-        uint256[] memory colorValues,
+        uint256 index,
         TinyBox memory box,
-        Modulation memory mod
-    ) internal pure returns (Shape memory) {
-        // modulate box generator input parameters
-        for (uint256 j = 0; j < 4; j++) {
-            box.spacing[j] = uint16(
-                uint256(box.spacing[j]).add(mod.spacing[j])
-            );
-            box.size[j] = uint16(
-                uint256(box.size[j]).add(mod.sizeRange[j])
-            );
-        }
-        // pick a random color from the generated colors list
-        // and modulate selected color indexes
-        int256 colorCount = int256(box.colors);
-        uint256 color = colorValues[
-            uint256(pool.uniform(0, colorCount.sub(1)).add(mod.color))
-            .mod(uint256(colorCount))];
+        Modulation memory mod,
+        uint256[] memory colorValues
+    )
+        internal
+        pure
+        returns (Shape memory)
+    {
         // offset hatching index start by hatch modulator
-        bool hatching = (box.hatching > 0 &&
-            uint256(index.add(mod.hatch)).mod(box.hatching) == 0);
+        bool hatching = (
+            box.hatching > 0 &&
+            uint256(int256(index).add(mod.hatch)).mod(box.hatching) == 0
+        );
         // generate a shapes position and size using box parameters
         (
             int256[2] memory position,
             int256[2] memory size
         ) = _generateBox(pool, box.spacing, box.size, hatching);
-        // Return a Shape Instance
-        // plus modulate the opacity, rotation, origin, offset, skew, scale & corner radius
-        return Shape({
-            position: position,
-            size: size,
-            opacity: mod.opacity,
-            rotation: mod.rotation,
-            origin: mod.origin,
-            offset: mod.offset,
-            skew: mod.skew,
-            scale: mod.scale,
-            radius: mod.radius,
-            color: color
-        });
+        // pick a random color from the generated colors list
+        // and modulate selected color indexes
+        uint256 colorCount = uint256(box.colors);
+        uint256 color = colorValues[
+            uint256(pool.uniform(0, int256(colorCount - 1)).add(mod.color))
+            .mod(colorCount)
+        ];
+        return Shape(position, size, color);
     }
 
     /**
      * @dev render a rectangle SVG tag
      * @param shape object
      */
-    function _rect(Shape memory shape) internal view returns (string memory) {
+    function _rect(Shape memory shape, ShapeModulation memory shapeMods) internal view returns (string memory) {
         // empty buffer for the SVG markup
         bytes memory buffer = new bytes(8192);
 
@@ -282,61 +272,50 @@ library TinyBoxesRenderer {
         buffer.append('" height="');
         buffer.append(shape.size[1].toString());
         buffer.append('" rx="');
-        buffer.append(shape.radius.toString());
+        buffer.append(shapeMods.radius.toString());
         buffer.append('" style="fill:#');
         buffer.append(colorBuffer.toString());
         buffer.append(";fill-opacity:");
-        buffer.append(shape.opacity.toString());
+        buffer.append(shapeMods.opacity.toString());
         buffer.append('" transform="rotate(');
-        buffer.append(shape.rotation.toString());
+        buffer.append(shapeMods.rotation.toString());
         buffer.append(' ');
-        buffer.append(shape.origin[0].toString());
+        buffer.append(shapeMods.origin[0].toString());
         buffer.append(' ');
-        buffer.append(shape.origin[1].toString());
+        buffer.append(shapeMods.origin[1].toString());
         buffer.append(')translate(');
-        buffer.append(shape.offset[0].toString());
+        buffer.append(shapeMods.offset[0].toString());
         buffer.append(' ');
-        buffer.append(shape.offset[1].toString());
+        buffer.append(shapeMods.offset[1].toString());
         buffer.append(')skewX(');
-        buffer.append(shape.skew[0].toString());
+        buffer.append(shapeMods.skew[0].toString());
         buffer.append(')skewY(');
-        buffer.append(shape.skew[1].toString());
+        buffer.append(shapeMods.skew[1].toString());
         buffer.append(')scale(');
-        buffer.append(shape.scale[0].toString());
+        buffer.append(shapeMods.scale[0].toString());
         buffer.append(' ');
-        buffer.append(shape.scale[1].toString());
+        buffer.append(shapeMods.scale[1].toString());
         buffer.append(')"/>');
 
         return buffer.toString();
     }
 
     /**
-     * @dev calculate the animation modulators for a shape
+     * @dev calculate the frame level animation modulators
      * @param box object to base modulations around
      * @param frame number being rendered
-     * @param shape index being modulated
      * @return mod struct of modulator values
      */
     function _calculateMods(
         TinyBox memory box,
-        uint256 frame,
-        uint256 shape
+        uint256 frame
     ) internal pure returns (Modulation memory mod) {
         // set animation modifiers to default
         mod = Modulation({
             color: int256(0),
             hatch: int256(0),
             stack: int256(0),
-            spacing: [0, 0, 0, 0],
-            sizeRange: [0, 0, 0, 0],
-            rotation: Decimal(0, 2),
-            origin: [Decimal(0, 3), Decimal(0, 3)],
-            offset: [Decimal(0, 3), Decimal(0, 3)],
-            scale: [Decimal(0, 3), Decimal(0, 3)],
-            skew: [Decimal(0, 3), Decimal(0, 3)],
-            mirror: [Decimal(0, 2), Decimal(0, 2), Decimal(0, 2)],
-            opacity: Decimal(100, 2),
-            radius: uint256(0)
+            mirror: [Decimal(0, 2), Decimal(0, 2), Decimal(0, 2)]
         });
         // apply animation based on animation, frame and shape values
         uint256 animation = box.animation;
@@ -353,6 +332,36 @@ library TinyBoxesRenderer {
             // shift mirror position 0
             mod.mirror[0] = Decimal(int256(frame), 0);
         } else if (animation == 4) {
+            // squash and squeze
+            // all modulated on the shape level
+        }
+    }
+
+    /**
+     * @dev calculate the modulators for a shape
+     * @param box object to base modulations around
+     * @param frame number being rendered
+     * @param shape index being modulated
+     * @return mod struct of modulator values
+     */
+    function _calculateShapeMods(
+        TinyBox memory box,
+        uint256 frame,
+        uint256 shape
+    ) internal pure returns (ShapeModulation memory mod) {
+        // set animation modifiers to default
+        mod = ShapeModulation({
+            rotation: Decimal(0, 2),
+            origin: [Decimal(0, 3), Decimal(0, 3)],
+            offset: [Decimal(0, 3), Decimal(0, 3)],
+            scale: [Decimal(0, 3), Decimal(0, 3)],
+            skew: [Decimal(0, 3), Decimal(0, 3)],
+            opacity: Decimal(100, 2),
+            radius: uint256(0)
+        });
+        // apply animation based on animation, frame and shape values
+        uint256 animation = box.animation;
+        if (animation == 4) {
             // squash and squeze
             // transfer height to width and vice versa
             int256 change;
@@ -389,12 +398,13 @@ library TinyBoxesRenderer {
         // generate an array of shapes
         uint256 shapeCount = box.shapes;
         Shape[] memory shapes = new Shape[](shapeCount);
-        Modulation memory mod;
+        ShapeModulation[] memory shapeMods = new ShapeModulation[](shapeCount);
+        Modulation memory mod = _calculateMods(box, frame);
         for (uint256 i = 0; i < shapeCount; i++) {
-            // calculate the animation modulators based on frames and animation id
-            mod = _calculateMods(box, frame, i);
             // generate a new shape
-            shapes[i] = _generateShape(int256(i), pool, colorValues, box, mod);
+            shapes[i] = _generateShape(pool, i, box, mod, colorValues);
+            // calculate the shape modulation based on box data, frame and shape #
+            shapeMods[i] = _calculateShapeMods(box, frame, i);
         }
 
         // --- Render SVG Markup ---
@@ -408,7 +418,7 @@ library TinyBoxesRenderer {
         // write shapes to the SVG
         for (int256 i = 0; i < int256(shapeCount); i++) {
             uint256 shapeIndex = uint256(i.add(mod.stack)).mod(shapeCount);
-            buffer.append(_rect(shapes[shapeIndex]));
+            buffer.append(_rect(shapes[shapeIndex], shapeMods[shapeIndex]));
         }
 
         // convert master box scale to decimal with precision two two digits
