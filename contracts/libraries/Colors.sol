@@ -1,22 +1,25 @@
 //SPDX-License-Identifier: Unlicensed
 pragma solidity ^0.6.8;
+pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/SafeCast.sol";
 
 import "./Utils.sol";
 import "./FixidityLib.sol";
 import "./SVGBuffer.sol";
 
 struct HSV {
-    int256 hue;
-    int256 saturation;
-    int256 value;
+    uint16 hue;
+    uint8 saturation;
+    uint8 value;
 }
 
 contract Colors {
     using SVGBuffer for *;
     using Strings for uint256;
     using Utils for *;
+    using SafeCast for *;
 
     /**
      * @dev Contract constructor.
@@ -42,15 +45,15 @@ contract Colors {
         return buffer.toString();
     }
 
-    function toString(HSV memory color) external view returns (string memory) {
+    function toString(HSV calldata color) external view returns (string memory) {
         // new empty buffer for the HSV string
         bytes memory buffer = new bytes(8192);
         buffer.append("hsv(");
-        buffer.append(toString(color.hue));
+        buffer.append(color.hue.toString());
         buffer.append(",");
-        buffer.append(toString(color.saturation));
+        buffer.append(color.saturation.toString());
         buffer.append(",");
-        buffer.append(toString(color.value));
+        buffer.append(color.value.toString());
         buffer.append(")");
         return buffer.toString();
     }
@@ -99,18 +102,18 @@ contract Colors {
 
         for (uint256 i = 0; i < 4; i++) {
             int256 h = hues[i];
-            colors[i] = HSV(h, s, v);
+            colors[i] = HSV(h.toUint256().toUint16(), s.toUint256().toUint8(), v.toUint256().toUint8());
             for (uint256 j = 0; j < shades; j++) {
                 int256 offset = FixidityLib.newFixed(int256(j + 1 * 5));
                 colors[4 + (i * j * 2) + j] = HSV(
-                    h,
-                    s,
-                    FixidityLib.add(v, -offset)
+                    h.toUint256().toUint16(),
+                    s.toUint256().toUint8(),
+                    FixidityLib.add(v, -offset).toUint256().toUint8()
                 );
                 colors[5 + (i * j * 2) + j] = HSV(
-                    h,
-                    s,
-                    FixidityLib.add(v, offset)
+                    h.toUint256().toUint16(),
+                    s.toUint256().toUint8(),
+                    FixidityLib.add(v, offset).toUint256().toUint8()
                 );
             }
         }
