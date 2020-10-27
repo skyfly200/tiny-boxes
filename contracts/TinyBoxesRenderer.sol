@@ -259,8 +259,8 @@ library TinyBoxesRenderer {
         bytes memory buffer = new bytes(8192);
 
         bytes memory colorBuffer = new bytes(10);
-        colorBuffer.toHexColor(shape.color);
-        colorBuffer.append("ffffff");
+        //colorBuffer.toHexColor(shape.color);
+        //colorBuffer.append("ffffff");
 
         // build the rect tag
         buffer.append('<rect x="');
@@ -273,29 +273,32 @@ library TinyBoxesRenderer {
         buffer.append(shape.size[1].toString());
         buffer.append('" rx="');
         buffer.append(shapeMods.radius.toString());
-        buffer.append('" style="fill:#');
-        buffer.append(colorBuffer.toString());
-        buffer.append(";fill-opacity:");
-        buffer.append(shapeMods.opacity.toString());
-        buffer.append('" transform="rotate(');
-        buffer.append(shapeMods.rotation.toString());
-        buffer.append(' ');
-        buffer.append(shapeMods.origin[0].toString());
-        buffer.append(' ');
-        buffer.append(shapeMods.origin[1].toString());
-        buffer.append(')translate(');
-        buffer.append(shapeMods.offset[0].toString());
-        buffer.append(' ');
-        buffer.append(shapeMods.offset[1].toString());
-        buffer.append(')skewX(');
-        buffer.append(shapeMods.skew[0].toString());
-        buffer.append(')skewY(');
-        buffer.append(shapeMods.skew[1].toString());
-        buffer.append(')scale(');
-        buffer.append(shapeMods.scale[0].toString());
-        buffer.append(' ');
-        buffer.append(shapeMods.scale[1].toString());
-        buffer.append(')"/>');
+        // ERR
+        // buffer.append('" style="fill:#');
+        // buffer.append(colorBuffer.toString());
+        // buffer.append(";fill-opacity:");
+        // buffer.append(shapeMods.opacity.toString());
+        // buffer.append('" transform="rotate(');
+        // buffer.append(shapeMods.rotation.toString());
+        // buffer.append(' ');
+        // buffer.append(shapeMods.origin[0].toString());
+        // buffer.append(' ');
+        // buffer.append(shapeMods.origin[1].toString());
+        // buffer.append(')translate(');
+        // buffer.append(shapeMods.offset[0].toString());
+        // buffer.append(' ');
+        // buffer.append(shapeMods.offset[1].toString());
+        // buffer.append(')skewX(');
+        // buffer.append(shapeMods.skew[0].toString());
+        // buffer.append(')skewY(');
+        // buffer.append(shapeMods.skew[1].toString());
+        // buffer.append(')scale(');
+        // buffer.append(shapeMods.scale[0].toString());
+        // buffer.append(' ');
+        // buffer.append(shapeMods.scale[1].toString());
+        // buffer.append(')"/>');
+        // ERR END
+        buffer.append('"/>');
 
         return buffer.toString();
     }
@@ -407,9 +410,9 @@ library TinyBoxesRenderer {
             shapeMods[i] = _calculateShapeMods(box, frame, i);
         }
 
-        // --- Render SVG Markup ---
+        // // --- Render SVG Markup ---
 
-        // empty buffer for the SVG markup
+        // // empty buffer for the SVG markup
         bytes memory buffer = new bytes(8192);
 
         // write the document header to the SVG
@@ -418,6 +421,7 @@ library TinyBoxesRenderer {
         // write shapes to the SVG
         for (int256 i = 0; i < int256(shapeCount); i++) {
             uint256 shapeIndex = uint256(i.add(mod.stack)).mod(shapeCount);
+            // OVERFLOW ERROR
             buffer.append(_rect(shapes[shapeIndex], shapeMods[shapeIndex]));
         }
 
@@ -431,12 +435,13 @@ library TinyBoxesRenderer {
             mirrorPositions[i] = Decimal(mirrorPositionsIn[i], 0).add(mod.mirror[i]);
 
         // write the footer to the SVG
-        buffer.append(
-            _generateFooter(
-                box.mirrors,
-                mirrorPositions,
-                scale
-            )
+        buffer.append("</symbol></symbol></symbol></svg>"
+        // OVERFLOW ERROR
+        //     _generateFooter(
+        //         box.mirrors,
+        //         mirrorPositions,
+        //         scale
+        //     )
         );
 
         return buffer;
