@@ -1,11 +1,11 @@
 //SPDX-License-Identifier: Unlicensed
 pragma solidity ^0.6.8;
 
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v3.1.0/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "./libraries/Utils.sol";
-import "./libraries/FixidityLib.sol";
-import "./libraries/SVGBuffer.sol";
+import "./Utils.sol";
+import "./FixidityLib.sol";
+import "./SVGBuffer.sol";
 
 struct HSV {
     int256 hue;
