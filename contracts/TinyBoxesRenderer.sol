@@ -241,11 +241,11 @@ library TinyBoxesRenderer {
             int256[2] memory size
         ) = _generateBox(pool, box.spacing, box.size, hatching);
         // pick a random color from the generated colors list
-        // and modulate selected color indexes
-        uint256 colorCount = uint256(box.colors);
+        // and modulate selected color
+        int256 selection = pool.uniform(0, int256(uint256(box.colors) - 1));
         uint256 color = colorValues[
-            uint256(pool.uniform(0, int256(colorCount - 1)).add(mod.color))
-            .mod(colorCount)
+            uint256(selection.add(mod.color))
+            .mod(uint256(box.colors))
         ];
         return Shape(position, size, color);
     }
@@ -425,9 +425,10 @@ library TinyBoxesRenderer {
         Decimal memory scale = Decimal(box.scale, 2);
 
         // modulate the mirror values
+        int16[3] memory mirrorPositionsIn = box.mirrorPositions;
         Decimal[3] memory mirrorPositions;
         for (uint256 i = 0; i < 3; i++)
-            mirrorPositions[i] = Decimal(box.mirrorPositions[i], 0).add(mod.mirror[i]);
+            mirrorPositions[i] = Decimal(mirrorPositionsIn[i], 0).add(mod.mirror[i]);
 
         // write the footer to the SVG
         buffer.append(
