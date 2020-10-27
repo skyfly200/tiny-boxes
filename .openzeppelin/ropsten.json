@@ -2,18 +2,18 @@
   "contracts": {},
   "solidityLibs": {
     "TinyBoxesRenderer": {
-      "address": "0xbe83fbe40113bAa99eE4AcE51863c179513Cf872",
-      "constructorCode": "6122dd610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "4cef5680fbc9f7c066722c3385cb099ba5c0019cdf3f3308076a40f87f4b6c0e",
-      "localBytecodeHash": "2002a2a42d4844092dd72c8c4b63fc77c41ef8d71cb8cfbfb4f154937adced1f",
-      "deployedBytecodeHash": "2002a2a42d4844092dd72c8c4b63fc77c41ef8d71cb8cfbfb4f154937adced1f"
+      "address": "0x500713F0843C76c01e4D8D21095295d77F41AAd8",
+      "constructorCode": "612927610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "b2e80906c67b12508083209ea6bd1eaf6522601b48238530442842db5c4211d0",
+      "localBytecodeHash": "85673b09ff367d8aae9f69be65b706861f6d047bba5945561068d6749020b593",
+      "deployedBytecodeHash": "69853baecdb7bddc29558fc493539405a89a322d08677d116a47cc48bfe772ab"
     },
     "Utils": {
-      "address": "0xa8049cc912c3E58F6c8c95d57A91318A23986251",
-      "constructorCode": "610485610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "9623683fc8b6011b60882ae40dca69a8d752f8f32b1baceec1da3cbe3a062733",
-      "localBytecodeHash": "05620d9ab6b82de9819d5270dfc0cdedf7d6e69f0b02f500d5fe43f376c5dfc7",
-      "deployedBytecodeHash": "05620d9ab6b82de9819d5270dfc0cdedf7d6e69f0b02f500d5fe43f376c5dfc7"
+      "address": "0x948f3c222EBA8D818500Bf371222Aa8Db1a709E7",
+      "constructorCode": "610475610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "35d19fd97a39c80cbf97eefff2ba575cad58d37e9b68d270d476e23da4c5cf7a",
+      "localBytecodeHash": "76a6637750931da19d7c9a4edec4e1f64fd1d07aee4455e28845ef318b36bb47",
+      "deployedBytecodeHash": "76a6637750931da19d7c9a4edec4e1f64fd1d07aee4455e28845ef318b36bb47"
     }
   },
   "proxies": {
@@ -32,6 +32,11 @@
         "address": "0xFd93050949E77C35E037e5ee58130260f3Ad2E3A",
         "kind": "NonProxy",
         "bytecodeHash": "1c935ad844486c5219d41d7fa133d1239321f793bbe8d60c5763be55f57c35bf"
+      },
+      {
+        "address": "0xb8327925f1A3b6f7272ee1d508D0755d79783b65",
+        "kind": "NonProxy",
+        "bytecodeHash": "ebf98514215fc609ae30aabd0e9ec745cd091a230147eb127bafdee21f4268de"
       }
     ]
   },
