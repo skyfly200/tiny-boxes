@@ -25,15 +25,15 @@ library DecimalUtils {
         bytes memory buffer = new bytes(8192);
         buffer.append(
             FixidityLib.fromFixed(
-                FixidityLib.integer(number.value)
-            , number.decimals).toString()
+                number.value
+            ).toString()
         );
         buffer.append(".");
         buffer.append(
             FixidityLib.fromFixed(
                 FixidityLib.fractional(
                     FixidityLib.abs(number.value)
-                ), number.decimals).toString()
+                ), 24 - number.decimals).toString()
         );
         return buffer.toString();
     }
