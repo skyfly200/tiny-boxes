@@ -7,8 +7,9 @@ import "@openzeppelin/contracts/math/SignedSafeMath.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/SafeCast.sol";
 
+
 import "./Utils.sol";
-import "../libraries/SVGBuffer.sol";
+import "./SVGBuffer.sol";
 import "../structs/Decimal.sol";
 
 library DecimalUtils {
@@ -19,27 +20,21 @@ library DecimalUtils {
     using Utils for *;
     using SafeCast for *;
 
-    // compute decimal parts
-    function decimalParts(Decimal memory number) internal pure returns (int256, uint256) {
-        return (
-            int256(number.value).div(int256(10) ** number.decimals),
-            uint256(number.value).mod(uint256(10) ** number.decimals)
-        );
-    }
-
     // convert a Decimal to a string
-    // TODO: fix overflow error
     function toString(Decimal memory number) internal view returns (string memory) {
-        ( int256 wholeComponent, uint256 decimalComponent ) = decimalParts(number);
-        bytes memory buffer = new bytes(20);
-        if (wholeComponent < 0) {
-            buffer.append("-");
-            buffer.append(uint256(wholeComponent.mul(-1)).toString());
-        } else {
-            buffer.append(uint256(wholeComponent).toString());
-        }
+        bytes memory buffer = new bytes(8192);
+        buffer.append(
+            FixidityLib.fromFixed(
+                FixidityLib.integer(number.value)
+            , number.decimals).toString()
+        );
         buffer.append(".");
-        buffer.append(decimalComponent.toString());
+        buffer.append(
+            FixidityLib.fromFixed(
+                FixidityLib.fractional(
+                    FixidityLib.abs(number.value)
+                ), number.decimals).toString()
+        );
         return buffer.toString();
     }
 

@@ -27,6 +27,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     // address constant VRF_COORDINATOR = 0xdD3782915140c8f3b190B5D67eAc6dc5760C46E9; // Kovan
     // bytes32 constant KEY_HASH = 0x6c3699283bda56ad74f6b855546325b68d482e983852a7a82979cc4807b641f4; // Kovan
     // LINK Token Rinkeby: 0x01be23585060835e02b77ef475b0cc51aa1e0709
+    // LINK/ETH FEED NOT AVAILABLE ON RINKEBY
     // address constant VRF_COORDINATOR = 0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B; // Rinkeby
     // bytes32 constant KEY_HASH = 0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311; // Rinkeby
     uint256 constant fee = 10**17;

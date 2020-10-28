@@ -30,11 +30,11 @@ contract Colors {
         // new empty buffer for the HSV string
         bytes memory buffer = new bytes(8192);
         buffer.append("hsv(");
-        buffer.append(color.hue.toString());
+        buffer.append(uint256(color.hue).toString());
         buffer.append(",");
-        buffer.append(color.saturation.toString());
+        buffer.append(uint256(color.saturation).toString());
         buffer.append(",");
-        buffer.append(color.value.toString());
+        buffer.append(uint256(color.value).toString());
         buffer.append(")");
         return buffer.toString();
     }
