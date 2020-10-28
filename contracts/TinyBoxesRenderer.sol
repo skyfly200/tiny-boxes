@@ -93,7 +93,6 @@ library TinyBoxesRenderer {
                     buffer.append(Strings.toString(uint256(s + 1)));
                 buffer.append(template[5]);
             } else {
-                string memory value = Decimal(2155 * 10 ** 22, 22).toString();//mirrorPositions[s].toString();
                 for (uint8 i = 0; i < 4; i++) {
                     // loop through transforms
                     if (i == 0) buffer.append(template[0]);
@@ -101,11 +100,11 @@ library TinyBoxesRenderer {
                         buffer.append(template[1]);
                         buffer.append(scales[i - 1]);
                         buffer.append(template[2]);
-                        // TODO: setup multiplication option in this same vain
-                        //if (i <= 2) buffer.append('-');
+                        string memory value = mirrorPositions[s].toString();
+                        if (i <= 2) buffer.append('-');
                         buffer.append(i <= 2 ? value : '0');
                         buffer.append(' ');
-                        //if (i >= 2) buffer.append('-');
+                        if (i >= 2) buffer.append('-');
                         buffer.append(i >= 2 ? value : '0');
                         buffer.append(template[3]);
                     }

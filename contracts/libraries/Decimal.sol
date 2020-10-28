@@ -28,13 +28,13 @@ library DecimalUtils {
                 number.value
             ).toString()
         );
-        buffer.append(".");
-        buffer.append(
-            FixidityLib.fromFixed(
-                FixidityLib.fractional(
-                    FixidityLib.abs(number.value)
-                ), 24 - number.decimals).toString()
-        );
+        int256 fraction = FixidityLib.fractional(FixidityLib.abs(number.value));
+        if (fraction > 0) {
+            buffer.append(".");
+            buffer.append(
+                FixidityLib.fromFixed(fraction, number.decimals).toString()
+            );
+        }
         return buffer.toString();
     }
 
