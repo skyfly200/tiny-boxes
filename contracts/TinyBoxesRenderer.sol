@@ -118,6 +118,7 @@ library TinyBoxesRenderer {
         // add final scaling
         buffer.append(template[6]);
         buffer.append(template[1]);
+        // getting 0.0 out of this
         buffer.append(scale.toString());
         buffer.append(' ');
         buffer.append(scale.toString());
@@ -258,10 +259,8 @@ library TinyBoxesRenderer {
         // empty buffer for the SVG markup
         bytes memory buffer = new bytes(8192);
 
-        bytes memory colorBuffer = new bytes(10);
-        // OVERFLOW ERROR
-        //colorBuffer.toHexColor(shape.color);
-        //colorBuffer.append("ffffff");
+        bytes memory colorBuffer = new bytes(100);
+        colorBuffer.append('ff00ff');
 
         // build the rect tag
         buffer.append('<rect x="');
@@ -274,31 +273,29 @@ library TinyBoxesRenderer {
         buffer.append(shape.size[1].toString());
         buffer.append('" rx="');
         buffer.append(shapeMods.radius.toString());
-        // OVERFLOW ERROR
-        // buffer.append('" style="fill:#');
-        // buffer.append(colorBuffer.toString());
-        // buffer.append(";fill-opacity:");
-        // buffer.append(shapeMods.opacity.toString());
-        // buffer.append('" transform="rotate(');
-        // buffer.append(shapeMods.rotation.toString());
-        // buffer.append(' ');
-        // buffer.append(shapeMods.origin[0].toString());
-        // buffer.append(' ');
-        // buffer.append(shapeMods.origin[1].toString());
-        // buffer.append(')translate(');
-        // buffer.append(shapeMods.offset[0].toString());
-        // buffer.append(' ');
-        // buffer.append(shapeMods.offset[1].toString());
-        // buffer.append(')skewX(');
-        // buffer.append(shapeMods.skew[0].toString());
-        // buffer.append(')skewY(');
-        // buffer.append(shapeMods.skew[1].toString());
-        // buffer.append(')scale(');
-        // buffer.append(shapeMods.scale[0].toString());
-        // buffer.append(' ');
-        // buffer.append(shapeMods.scale[1].toString());
-        // buffer.append(')"/>');
-        // OVERFLOW ERROR END
+        buffer.append('" style="fill:#');
+        buffer.append(colorBuffer.toString());
+        buffer.append(";fill-opacity:");
+        buffer.append(shapeMods.opacity.toString());
+        buffer.append('" transform="rotate(');
+        buffer.append(shapeMods.rotation.toString());
+        buffer.append(' ');
+        buffer.append(shapeMods.origin[0].toString());
+        buffer.append(' ');
+        buffer.append(shapeMods.origin[1].toString());
+        buffer.append(')translate(');
+        buffer.append(shapeMods.offset[0].toString());
+        buffer.append(' ');
+        buffer.append(shapeMods.offset[1].toString());
+        buffer.append(')skewX(');
+        buffer.append(shapeMods.skew[0].toString());
+        buffer.append(')skewY(');
+        buffer.append(shapeMods.skew[1].toString());
+        buffer.append(')scale(');
+        buffer.append(shapeMods.scale[0].toString());
+        buffer.append(' ');
+        buffer.append(shapeMods.scale[1].toString());
+        buffer.append(')"/>');
         buffer.append('"/>');
 
         return buffer.toString();
