@@ -58,32 +58,4 @@ library Utils {
         buffer.append(uint256(val < 0 ? val.mul(-1) : val).toString());
         return buffer.toString();
     }
-
-    // TODO: fix overflow error
-    function toHexColor(bytes memory buffer, uint256 rgb) internal pure {
-        require(
-            SVGBuffer.hasCapacityFor(buffer, 6),
-            "Buffer.rect: no capacity for color"
-        );
-        assembly {
-            function hexrgb(x, v) -> y {
-                let blo := and(v, 0xf)
-                let bhi := and(shr(4, v), 0xf)
-                let glo := and(shr(8, v), 0xf)
-                let ghi := and(shr(12, v), 0xf)
-                let rlo := and(shr(16, v), 0xf)
-                let rhi := and(shr(20, v), 0xf)
-                mstore8(x, add(add(rhi, mul(div(rhi, 10), 39)), 48))
-                mstore8(add(x, 1), add(add(rlo, mul(div(rlo, 10), 39)), 48))
-                mstore8(add(x, 2), add(add(ghi, mul(div(ghi, 10), 39)), 48))
-                mstore8(add(x, 3), add(add(glo, mul(div(glo, 10), 39)), 48))
-                mstore8(add(x, 4), add(add(bhi, mul(div(bhi, 10), 39)), 48))
-                mstore8(add(x, 5), add(add(blo, mul(div(blo, 10), 39)), 48))
-                y := add(x, 6)
-            }
-            let strIdx := add(mload(add(buffer, 32)), add(buffer, 64))
-            strIdx := hexrgb(strIdx, rgb)
-            mstore(add(buffer, 32), sub(sub(strIdx, buffer), 64))
-        }
-    }
 }
