@@ -31,5 +31,15 @@ module.exports = {
       gasLimit: 750000,
       networkId: '4',
     },
+    kovan: {
+      provider: () =>
+        new HDWalletProvider(
+          mnemonic,
+          `https://kovan.infura.io/v3/${projectId}`,
+        ),
+      gasPrice: 10e9,
+      gasLimit: 1000000,
+      networkId: '42',
+    },
   },
 }

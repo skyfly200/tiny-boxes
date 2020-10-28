@@ -17,15 +17,16 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     using StringUtilsLib for *;
 
     // Chainlink VRF and Feed Stuff
-    // LINK ropsten address: 0x20fE562d797A42Dcb3399062AE9546cd06f63280
     LinkTokenInterface LINK_TOKEN;
-    // feed ropsten address: 0xb8c99b98913bE2ca4899CdcaF33a3e519C20EeEc
+    // LINK Token Ropsten: 0x20fE562d797A42Dcb3399062AE9546cd06f63280
+    // FEED Ropsten: 0xb8c99b98913bE2ca4899CdcaF33a3e519C20EeEc
     address constant VRF_COORDINATOR = 0xf720CF1B963e0e7bE9F58fd471EFa67e7bF00cfb; // Ropsten
     bytes32 constant KEY_HASH = 0xced103054e349b8dfb51352f0f8fa9b5d20dde3d06f9f43cb2b85bc64b238205; // Ropsten
-    // 0xa36085f69e2889c224210f603d836748e7dc0088
+    // LINK Token Kovan: 0xa36085f69e2889c224210f603d836748e7dc0088
+    // FEED Kovan: 0x3Af8C569ab77af5230596Acf0E8c2F9351d24C38
     // address constant VRF_COORDINATOR = 0xdD3782915140c8f3b190B5D67eAc6dc5760C46E9; // Kovan
     // bytes32 constant KEY_HASH = 0x6c3699283bda56ad74f6b855546325b68d482e983852a7a82979cc4807b641f4; // Kovan
-    // LINK: 0x01be23585060835e02b77ef475b0cc51aa1e0709
+    // LINK Token Rinkeby: 0x01be23585060835e02b77ef475b0cc51aa1e0709
     // address constant VRF_COORDINATOR = 0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B; // Rinkeby
     // bytes32 constant KEY_HASH = 0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311; // Rinkeby
     uint256 constant fee = 10**17;
