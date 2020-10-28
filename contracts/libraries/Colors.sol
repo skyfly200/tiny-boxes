@@ -17,7 +17,7 @@ struct HSV {
 
 contract Colors {
     using SVGBuffer for *;
-    using Strings for uint256;
+    using Strings for *;
     using Utils for *;
     using SafeCast for *;
 
@@ -25,25 +25,6 @@ contract Colors {
      * @dev Contract constructor.
      */
     //constructor() public {}
-
-    function toString(int256 value, uint8 decimals)
-        external
-        view
-        returns (string memory)
-    {
-        // new empty buffer for the fixed point value as a string
-        bytes memory buffer = new bytes(8192);
-        buffer.append(
-            FixidityLib.fromFixed(FixidityLib.integer(value)).toString()
-        );
-        buffer.append(".");
-        buffer.append(
-            FixidityLib
-                .fromFixed(FixidityLib.fractional(value), decimals)
-                .toString()
-        );
-        return buffer.toString();
-    }
 
     function toString(HSV calldata color) external view returns (string memory) {
         // new empty buffer for the HSV string

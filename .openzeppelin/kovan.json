@@ -9,7 +9,7 @@
       "deployedBytecodeHash": "76a6637750931da19d7c9a4edec4e1f64fd1d07aee4455e28845ef318b36bb47"
     },
     "TinyBoxesRenderer": {
-      "address": "0xe05e0ef87390266E19CA816674123751f4E649cC",
+      "address": "0x0357c42e91DdEA1285C274A66A5abf96551E9a98",
       "constructorCode": "61239d610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
       "bodyBytecodeHash": "aadd0c63b4d66d35bc1ea57da70baff16bfb5cc5733131445b9d48ead6bd79b9",
       "localBytecodeHash": "c4546d026f45651397248c3d8f866045b700f874d3ce2878e8daaf4bc3392fce",
@@ -20,6 +20,41 @@
     "tiny-boxes/TinyBoxes": [
       {
         "address": "0x6F971514d34684892875Ccb9824Ce94De01fd816",
+        "kind": "NonProxy",
+        "bytecodeHash": "ebf98514215fc609ae30aabd0e9ec745cd091a230147eb127bafdee21f4268de"
+      },
+      {
+        "address": "0x935b15A5ae139629782a0Cb8693f54D29bF5166a",
+        "kind": "NonProxy",
+        "bytecodeHash": "ebf98514215fc609ae30aabd0e9ec745cd091a230147eb127bafdee21f4268de"
+      },
+      {
+        "address": "0x55d911f64d51D810c7B6D1e48b61De6305D6d9d9",
+        "kind": "NonProxy",
+        "bytecodeHash": "ebf98514215fc609ae30aabd0e9ec745cd091a230147eb127bafdee21f4268de"
+      },
+      {
+        "address": "0x59fE957c738d3b13299EBc0A18db6D3De4dD8377",
+        "kind": "NonProxy",
+        "bytecodeHash": "ebf98514215fc609ae30aabd0e9ec745cd091a230147eb127bafdee21f4268de"
+      },
+      {
+        "address": "0x69248237Ee1b083C1081fBcFfC0C07eF8F06051D",
+        "kind": "NonProxy",
+        "bytecodeHash": "ebf98514215fc609ae30aabd0e9ec745cd091a230147eb127bafdee21f4268de"
+      },
+      {
+        "address": "0xA9Ab579520B084e368821318339294c883eA460c",
+        "kind": "NonProxy",
+        "bytecodeHash": "ebf98514215fc609ae30aabd0e9ec745cd091a230147eb127bafdee21f4268de"
+      },
+      {
+        "address": "0x7a1c4279e126e5EF012E9ccfd999B13073Db65fF",
+        "kind": "NonProxy",
+        "bytecodeHash": "ebf98514215fc609ae30aabd0e9ec745cd091a230147eb127bafdee21f4268de"
+      },
+      {
+        "address": "0xa3DA316DAAD6b18CA98a8E1Ca0dD095CD2A8CAfE",
         "kind": "NonProxy",
         "bytecodeHash": "ebf98514215fc609ae30aabd0e9ec745cd091a230147eb127bafdee21f4268de"
       }

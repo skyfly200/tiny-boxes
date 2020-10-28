@@ -5,6 +5,8 @@ pragma solidity ^0.6.4;
 import "@openzeppelin/contracts/math/SignedSafeMath.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
+
+import "./FixidityLib.sol";
 import "./SVGBuffer.sol";
 
 library Utils {
@@ -33,6 +35,25 @@ library Utils {
         bytes memory buffer = new bytes(8192);
         if (val >= 0) buffer.append("-");
         buffer.append(uint256(val < 0 ? val.mul(-1) : val).toString());
+        return buffer.toString();
+    }
+
+    function toString(int256 value, uint8 decimals)
+        external
+        view
+        returns (string memory)
+    {
+        // new empty buffer for the fixed point value as a string
+        bytes memory buffer = new bytes(8192);
+        buffer.append(
+            FixidityLib.fromFixed(FixidityLib.integer(value)).toString()
+        );
+        buffer.append(".");
+        buffer.append(
+            FixidityLib
+                .fromFixed(FixidityLib.fractional(value), decimals)
+                .toString()
+        );
         return buffer.toString();
     }
 

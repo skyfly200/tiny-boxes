@@ -5,15 +5,19 @@ pragma solidity ^0.6.4;
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/math/SignedSafeMath.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/SafeCast.sol";
 
+import "./Utils.sol";
 import "../libraries/SVGBuffer.sol";
 import "../structs/Decimal.sol";
 
 library DecimalUtils {
     using SafeMath for uint256;
     using SignedSafeMath for int256;
-    using SVGBuffer for bytes;
+    using SVGBuffer for *;
     using Strings for *;
+    using Utils for *;
+    using SafeCast for *;
 
     // compute decimal parts
     function decimalParts(Decimal memory number) internal pure returns (int256, uint256) {
