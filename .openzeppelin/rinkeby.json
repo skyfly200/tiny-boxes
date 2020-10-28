@@ -1,6 +1,28 @@
 {
   "contracts": {},
-  "solidityLibs": {},
+  "solidityLibs": {
+    "FixidityLib": {
+      "address": "0x93BeF06919CB8B8abB45ff4675840BDbdbB9B110",
+      "constructorCode": "610940610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "f163dbe5f88fb50c53eaac201b38227e6dd850973f1908ee681772881bf9c048",
+      "localBytecodeHash": "b644467ae0ea23c2bb20aa3e6134746b91a7c10213f66697ece00ba564ea5cb2",
+      "deployedBytecodeHash": "b644467ae0ea23c2bb20aa3e6134746b91a7c10213f66697ece00ba564ea5cb2"
+    },
+    "Utils": {
+      "address": "0xEB9BFa5E028F18623C1AD91e5094be85157A475E",
+      "constructorCode": "61069d610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "947aab7a1c62ca626b4c91a4916e2cd1d1b460b23d7d7869ce4e2d06beb4087d",
+      "localBytecodeHash": "cf9508c13cb99bd9f4c2f50e4ac0ceba2ae2d7a325278f24ac1902cd2322ef41",
+      "deployedBytecodeHash": "9879e22385686497758388def3748475b01a45b823c008c18a8a66605d3583a2"
+    },
+    "TinyBoxesRenderer": {
+      "address": "0x094D62c68c09227aDE75D2E89fB286a7e93547cb",
+      "constructorCode": "61264b610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "942b4a8bc08bece687b822bef223f84dd5392ed333b5faec597b3800fabb690b",
+      "localBytecodeHash": "1cf5c3aa239d39ea1082559bc12180e7b226f1ef3ce11e1b7faa1a45f2c46fc7",
+      "deployedBytecodeHash": "4b610e226e173c919b3eb8ee867e2305f2c186d943f17a163c301fef8544dbf2"
+    }
+  },
   "proxies": {
     "tiny-boxes/TinyBoxes": [
       {
@@ -17,6 +39,16 @@
         "address": "0xC1713542e35e7b086f21Bdf906436f6FF483fEAF",
         "kind": "NonProxy",
         "bytecodeHash": "eef15c6154f5890ca97c484e5bb2f2c69d1e5e87ddbe6a7bf52c15303b904ed9"
+      },
+      {
+        "address": "0x04D596152E65B1f6875Bf2413D4B8828C9e0Fa60",
+        "kind": "NonProxy",
+        "bytecodeHash": "83517f962b69df9193dbca9563ff337c20dac7e5b8c7cb77aad209c4c676b314"
+      },
+      {
+        "address": "0x67DE994E5e059c72fFf2B3547E73da68C8d647c5",
+        "kind": "NonProxy",
+        "bytecodeHash": "83517f962b69df9193dbca9563ff337c20dac7e5b8c7cb77aad209c4c676b314"
       }
     ]
   },

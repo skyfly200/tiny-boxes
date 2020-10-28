@@ -118,11 +118,9 @@ library TinyBoxesRenderer {
         // add final scaling
         buffer.append(template[6]);
         buffer.append(template[1]);
-        // OVERFLOW ERROR
-        //buffer.append(scale.toString());
+        buffer.append(scale.toString());
         buffer.append(' ');
-        // OVERFLOW ERROR
-        //buffer.append(scale.toString());
+        buffer.append(scale.toString());
         buffer.append(template[3]);
         buffer.append(template[4]);
         buffer.append('3');
