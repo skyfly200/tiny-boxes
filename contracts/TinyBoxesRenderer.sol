@@ -263,6 +263,7 @@ library TinyBoxesRenderer {
         bytes memory buffer = new bytes(8192);
 
         bytes memory colorBuffer = new bytes(10);
+        // OVERFLOW ERROR
         //colorBuffer.toHexColor(shape.color);
         //colorBuffer.append("ffffff");
 
@@ -277,7 +278,7 @@ library TinyBoxesRenderer {
         buffer.append(shape.size[1].toString());
         buffer.append('" rx="');
         buffer.append(shapeMods.radius.toString());
-        // ERR
+        // OVERFLOW ERROR
         // buffer.append('" style="fill:#');
         // buffer.append(colorBuffer.toString());
         // buffer.append(";fill-opacity:");
@@ -301,7 +302,7 @@ library TinyBoxesRenderer {
         // buffer.append(' ');
         // buffer.append(shapeMods.scale[1].toString());
         // buffer.append(')"/>');
-        // ERR END
+        // OVERFLOW ERROR END
         buffer.append('"/>');
 
         return buffer.toString();
