@@ -1,6 +1,6 @@
 NETWORK=$1
 LINK="0x01be23585060835e02b77ef475b0cc51aa1e0709"
-FEED=""
+FEED="0x3Af8C569ab77af5230596Acf0E8c2F9351d24C38"
 ADDRESS=$(npx oz deploy --no-interactive -k regular -n rinkeby TinyBoxes "$LINK" "$FEED" | tail -n 1)
 
 echo "$ADDRESS"
