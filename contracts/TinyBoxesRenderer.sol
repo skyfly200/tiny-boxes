@@ -89,7 +89,7 @@ library TinyBoxesRenderer {
                 // denote what quad the transform should be used for
                 buffer.append(template[4]);
                 
-                if (s > 0) // TODO?: remove and make quad names consistent
+                if (s > 0)
                     buffer.append(Strings.toString(uint256(s + 1)));
                 buffer.append(template[5]);
             } else {
