@@ -88,11 +88,14 @@ library TinyBoxesRenderer {
                 buffer.append(template[0]);
                 // denote what quad the transform should be used for
                 buffer.append(template[4]);
-                if (s > 0) // TODO: remove and make quad names consistent
+                
+                if (s > 0) // TODO?: remove and make quad names consistent
                     buffer.append(Strings.toString(uint256(s + 1)));
                 buffer.append(template[5]);
             } else {
-                string memory value = mirrorPositions[s].toString();
+                // OVERFLOW ERROR
+                //string memory value = mirrorPositions[s].toString();
+                string memory value = "";
                 for (uint8 i = 0; i < 4; i++) {
                     // loop through transforms
                     if (i == 0) buffer.append(template[0]);
@@ -117,16 +120,17 @@ library TinyBoxesRenderer {
         // add final scaling
         buffer.append(template[6]);
         buffer.append(template[1]);
-        buffer.append(scale.toString());
+        // OVERFLOW ERROR
+        //buffer.append(scale.toString());
         buffer.append(' ');
-        buffer.append(scale.toString());
+        // OVERFLOW ERROR
+        //buffer.append(scale.toString());
         buffer.append(template[3]);
         buffer.append(template[4]);
         buffer.append('3');
         buffer.append(template[5]);
-
-        buffer.append("</svg>"); // add closing svg tag
-        return SVGBuffer.toString(buffer);
+        buffer.append("</svg>");
+        return buffer.toString();
     }
 
     /**
@@ -421,7 +425,6 @@ library TinyBoxesRenderer {
         // write shapes to the SVG
         for (int256 i = 0; i < int256(shapeCount); i++) {
             uint256 shapeIndex = uint256(i.add(mod.stack)).mod(shapeCount);
-            // OVERFLOW ERROR
             buffer.append(_rect(shapes[shapeIndex], shapeMods[shapeIndex]));
         }
 
@@ -435,13 +438,12 @@ library TinyBoxesRenderer {
             mirrorPositions[i] = Decimal(mirrorPositionsIn[i], 0).add(mod.mirror[i]);
 
         // write the footer to the SVG
-        buffer.append("</symbol></symbol></symbol></svg>"
-        // OVERFLOW ERROR
-        //     _generateFooter(
-        //         box.mirrors,
-        //         mirrorPositions,
-        //         scale
-        //     )
+        buffer.append(
+            _generateFooter(
+                box.mirrors,
+                mirrorPositions,
+                scale
+            )
         );
 
         return buffer;
