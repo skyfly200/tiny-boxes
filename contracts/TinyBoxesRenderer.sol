@@ -220,7 +220,7 @@ library TinyBoxesRenderer {
      * @param index of the shape
      * @param box data to make a shape from
      * @param mod of the frame
-     * @param colorValues list of colors
+     * @param colors list of colors
      * @return positions of shape
      */
     function _generateShape(
@@ -228,7 +228,7 @@ library TinyBoxesRenderer {
         uint256 index,
         TinyBox memory box,
         Modulation memory mod,
-        uint256[] memory colorValues
+        HSL[] memory colors
     )
         internal
         pure
@@ -247,7 +247,7 @@ library TinyBoxesRenderer {
         // pick a random color from the generated colors list
         // and modulate selected color
         int256 selection = pool.uniform(0, int256(uint256(box.colors) - 1));
-        uint256 color = colorValues[
+        HSL memory color = colors[
             uint256(selection.add(mod.color))
             .mod(uint256(box.colors))
         ];
@@ -262,8 +262,9 @@ library TinyBoxesRenderer {
         // empty buffer for the SVG markup
         bytes memory buffer = new bytes(8192);
 
-        bytes memory colorBuffer = new bytes(100);
+        bytes memory colorBuffer = new bytes(1000);
         colorBuffer.append('hsl(60,80%,90%)');
+        //colorBuffer.append(shape.color.toString());
 
         // build the rect tag
         buffer.append('<rect x="');
@@ -395,9 +396,9 @@ library TinyBoxesRenderer {
         bytes32[] memory pool = Random.init(box.randomness);
 
         // generate colors
-        uint256[] memory colorValues = new uint256[](box.colors);
-        for (uint256 i = 0; i < box.colors; i++)
-            colorValues[i] = _generateColor(pool);
+        // uint256[] memory colorValues = new uint256[](box.colors);
+        // for (uint256 i = 0; i < box.colors; i++)
+        //     colorValues[i] = _generateColor(pool);
         
         HSL[] memory colors = Colors.generateScheme(3000, 100, 50, 0, 0);
 
@@ -408,14 +409,14 @@ library TinyBoxesRenderer {
         Modulation memory mod = _calculateMods(box, frame);
         for (uint256 i = 0; i < shapeCount; i++) {
             // generate a new shape
-            shapes[i] = _generateShape(pool, i, box, mod, colorValues);
+            shapes[i] = _generateShape(pool, i, box, mod, colors);
             // calculate the shape modulation based on box data, frame and shape #
             shapeMods[i] = _calculateShapeMods(box, frame, i);
         }
 
-        // // --- Render SVG Markup ---
+        // --- Render SVG Markup ---
 
-        // // empty buffer for the SVG markup
+        // empty buffer for the SVG markup
         bytes memory buffer = new bytes(8192);
 
         // write the document header to the SVG

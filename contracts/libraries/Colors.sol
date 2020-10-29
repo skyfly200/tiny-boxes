@@ -4,6 +4,7 @@ pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/SafeCast.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
 
 import "./Utils.sol";
 import "./FixidityLib.sol";
@@ -16,6 +17,7 @@ library Colors {
     using Strings for *;
     using Utils for *;
     using SafeCast for *;
+    using SafeMath for *;
 
     /**
      * @dev Contract constructor.
@@ -36,10 +38,10 @@ library Colors {
     }
 
     function generateHues(
-        int256 base,
+        uint16 base,
         uint8 decimals,
         uint8 scheme
-    ) public pure returns (int256[4] memory hues) {
+    ) public pure returns (uint16[4] memory hues) {
         uint16[3][8] memory schemes = [
             [uint16(180), uint16(180), uint16(0)], // complimentary
             [uint16(30), uint16(330), uint16(0)], // analogous
@@ -53,13 +55,10 @@ library Colors {
 
         require(scheme < schemes.length, "Invalid theme id");
 
-        hues[0] = FixidityLib.newFixed(base, decimals);
+        hues[0] = base;
 
         for (uint256 i = 0; i < 3; i++)
-            hues[i + 1] = FixidityLib.add(
-                FixidityLib.newFixed(base, decimals),
-                FixidityLib.newFixed(int256(schemes[scheme][i]))
-            );
+            hues[i + 1] = uint16(base.add(schemes[scheme][i]));
     }
 
     function testSchemes() external pure returns (HSL memory colors) {
@@ -67,31 +66,23 @@ library Colors {
     }
 
     function generateScheme(
-        int256 rootHue,
-        int256 saturation,
-        int256 lightness,
+        uint16 rootHue,
+        uint8 saturation,
+        uint8 lightness,
         uint8 scheme,
         uint8 shades
     ) public pure returns (HSL[] memory colors) {
-        int256[4] memory hues = generateHues(rootHue, 2, scheme);
-        int256 s = FixidityLib.newFixed(saturation);
-        int256 l = FixidityLib.newFixed(lightness);
+        uint16[4] memory hues = generateHues(rootHue, 2, scheme);
+        uint8 s = saturation;
+        uint8 l = lightness;
 
         for (uint256 i = 0; i < 4; i++) {
-            int256 h = hues[i];
-            colors[i] = HSL(h.toUint256().toUint16(), s.toUint256().toUint8(), l.toUint256().toUint8());
-            for (uint256 j = 0; j < shades; j++) {
-                int256 offset = FixidityLib.newFixed(int256(j + 1 * 5));
-                colors[4 + (i * j * 2) + j] = HSL(
-                    h.toUint256().toUint16(),
-                    s.toUint256().toUint8(),
-                    FixidityLib.add(l, -offset).toUint256().toUint8()
-                );
-                colors[5 + (i * j * 2) + j] = HSL(
-                    h.toUint256().toUint16(),
-                    s.toUint256().toUint8(),
-                    FixidityLib.add(l, offset).toUint256().toUint8()
-                );
+            uint16 h = hues[i];
+            colors[i] = HSL(h, s, l);
+            for (uint16 j = 0; j < shades; j++) {
+                uint offset = j + 1 * 5;
+                colors[4 + (i * j * 2) + j] = HSL(h, s, uint8(l.add(-offset)));
+                colors[5 + (i * j * 2) + j] = HSL(h, s, uint8(l.add(offset)));
             }
         }
     }
