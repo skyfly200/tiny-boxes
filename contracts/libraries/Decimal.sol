@@ -47,4 +47,22 @@ library DecimalUtils {
         // add scaled values and return a new decimal
         return Decimal(scaled.add(x.value), x.decimals);
     }
+
+    // create a new Decimal
+    function toDecimal(int256 value, uint8 decimals, uint8 significant) internal pure returns (Decimal memory result) {
+        // scale value and return a new decimal
+        return Decimal(FixidityLib.newFixed(value, decimals), significant);
+    }
+
+    // create a new Decimal
+    function toDecimal(int256 value, uint8 decimals) internal pure returns (Decimal memory result) {
+        // scale value and return a new decimal
+        return Decimal(FixidityLib.newFixed(value, decimals), decimals);
+    }
+
+    // create a new Decimal
+    function toDecimal(int256 value) internal pure returns (Decimal memory result) {
+        // scale value and return a new decimal
+        return Decimal(FixidityLib.newFixed(value), 0);
+    }
 }

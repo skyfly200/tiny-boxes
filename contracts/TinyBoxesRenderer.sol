@@ -25,7 +25,7 @@ library TinyBoxesRenderer {
     using StringUtilsLib for *;
     using SVGBuffer for bytes;
     using Random for bytes32[];
-    using DecimalUtils for Decimal;
+    using DecimalUtils for *;
     using Utils for *;
     using Strings for *;
 
@@ -317,7 +317,7 @@ library TinyBoxesRenderer {
             color: int256(0),
             hatch: int256(0),
             stack: int256(0),
-            mirror: [Decimal(0, 2), Decimal(0, 2), Decimal(0, 2)]
+            mirror: [int256(0).toDecimal(2), int256(0).toDecimal(2), int256(0).toDecimal(2)]
         });
         // apply animation based on animation, frame and shape values
         uint256 animation = box.animation;
@@ -332,7 +332,7 @@ library TinyBoxesRenderer {
             mod.stack = uint8(frame);
         } else if (animation == 3) {
             // shift mirror position 0
-            mod.mirror[0] = Decimal(int256(frame), 0);
+            mod.mirror[0] = int256(frame).toDecimal();
         } else if (animation == 4) {
             // squash and squeze
             // all modulated on the shape level
@@ -353,12 +353,12 @@ library TinyBoxesRenderer {
     ) internal pure returns (ShapeModulation memory mod) {
         // set animation modifiers to default
         mod = ShapeModulation({
-            rotation: Decimal(0, 2),
-            origin: [Decimal(0, 3), Decimal(0, 3)],
-            offset: [Decimal(0, 3), Decimal(0, 3)],
-            scale: [Decimal(0, 3), Decimal(0, 3)],
-            skew: [Decimal(0, 3), Decimal(0, 3)],
-            opacity: Decimal(100, 2),
+            rotation: int256(0).toDecimal(2),
+            origin: [int256(0).toDecimal(3), int256(0).toDecimal(3)],
+            offset: [int256(0).toDecimal(3), int256(0).toDecimal(3)],
+            scale: [int256(1000).toDecimal(3), int256(1000).toDecimal(3)],
+            skew: [int256(0).toDecimal(3), int256(0).toDecimal(3)],
+            opacity: int256(100).toDecimal(2),
             radius: uint256(0)
         });
         // apply animation based on animation, frame and shape values
@@ -371,8 +371,8 @@ library TinyBoxesRenderer {
                 change = int256(shape.add(frame).sub(uint256(box.shapes).div(2)).mod(uint256(box.shapes)));
             else
                 change = int256(shape.add(uint256(box.shapes).div(2)).sub(frame.sub(ANIMATION_FRAMES / 2)).mod(uint256(box.shapes)));
-            mod.scale[0] = Decimal(change, 0);
-            mod.scale[1] = Decimal(change.mul(int256(-1)), 0);
+            mod.scale[0] = int256(change).toDecimal();
+            mod.scale[1] = int256(change.mul(int256(-1))).toDecimal();
         }
     }
 
@@ -423,14 +423,14 @@ library TinyBoxesRenderer {
             buffer.append(_rect(shapes[shapeIndex], shapeMods[shapeIndex]));
         }
 
-        // convert master box scale to decimal with precision two two digits
-        Decimal memory scale = Decimal(FixidityLib.newFixed(box.scale, 2), 2);
+        // convert master box scale to decimal with a precision of two digits
+        Decimal memory scale = int256(box.scale).toDecimal(2);
 
         // modulate the mirror values
         int16[3] memory mirrorPositionsIn = box.mirrorPositions;
         Decimal[3] memory mirrorPositions;
         for (uint256 i = 0; i < 3; i++)
-            mirrorPositions[i] = Decimal(FixidityLib.newFixed(mirrorPositionsIn[i], 2), 2).add(mod.mirror[i]);
+            mirrorPositions[i] = mirrorPositionsIn[i].toDecimal(2, 0).add(mod.mirror[i]);
 
         // write the footer to the SVG
         buffer.append(
