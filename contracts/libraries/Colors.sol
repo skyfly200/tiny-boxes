@@ -9,10 +9,10 @@ import "./Utils.sol";
 import "./FixidityLib.sol";
 import "./SVGBuffer.sol";
 
-struct HSV {
+struct HSL {
     uint16 hue;
     uint8 saturation;
-    uint8 value;
+    uint8 lightness;
 }
 
 contract Colors {
@@ -26,16 +26,16 @@ contract Colors {
      */
     //constructor() public {}
 
-    function toString(HSV calldata color) external view returns (string memory) {
+    function toString(HSL calldata color) external view returns (string memory) {
         // new empty buffer for the HSV string
         bytes memory buffer = new bytes(8192);
-        buffer.append("hsv(");
+        buffer.append("hsl(");
         buffer.append(uint256(color.hue).toString());
         buffer.append(",");
         buffer.append(uint256(color.saturation).toString());
-        buffer.append(",");
-        buffer.append(uint256(color.value).toString());
-        buffer.append(")");
+        buffer.append("%,");
+        buffer.append(uint256(color.lightness).toString());
+        buffer.append("%)");
         return buffer.toString();
     }
 
@@ -73,13 +73,13 @@ contract Colors {
     function generateScheme(
         int256 rootHue,
         int256 saturation,
-        int256 value,
+        int256 lightness,
         uint8 scheme,
         uint8 shades
     ) public pure returns (HSV[] memory colors) {
         int256[4] memory hues = generateHues(rootHue, 2, scheme);
         int256 s = FixidityLib.newFixed(saturation);
-        int256 v = FixidityLib.newFixed(value);
+        int256 v = FixidityLib.newFixed(lightness);
 
         for (uint256 i = 0; i < 4; i++) {
             int256 h = hues[i];
