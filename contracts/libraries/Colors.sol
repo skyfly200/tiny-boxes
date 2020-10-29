@@ -75,22 +75,22 @@ library Colors {
     ) public pure returns (HSL[] memory colors) {
         int256[4] memory hues = generateHues(rootHue, 2, scheme);
         int256 s = FixidityLib.newFixed(saturation);
-        int256 v = FixidityLib.newFixed(lightness);
+        int256 l = FixidityLib.newFixed(lightness);
 
         for (uint256 i = 0; i < 4; i++) {
             int256 h = hues[i];
-            colors[i] = HSL(h.toUint256().toUint16(), s.toUint256().toUint8(), v.toUint256().toUint8());
+            colors[i] = HSL(h.toUint256().toUint16(), s.toUint256().toUint8(), l.toUint256().toUint8());
             for (uint256 j = 0; j < shades; j++) {
                 int256 offset = FixidityLib.newFixed(int256(j + 1 * 5));
                 colors[4 + (i * j * 2) + j] = HSL(
                     h.toUint256().toUint16(),
                     s.toUint256().toUint8(),
-                    FixidityLib.add(v, -offset).toUint256().toUint8()
+                    FixidityLib.add(l, -offset).toUint256().toUint8()
                 );
                 colors[5 + (i * j * 2) + j] = HSL(
                     h.toUint256().toUint16(),
                     s.toUint256().toUint8(),
-                    FixidityLib.add(v, offset).toUint256().toUint8()
+                    FixidityLib.add(l, offset).toUint256().toUint8()
                 );
             }
         }
