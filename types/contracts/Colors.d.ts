@@ -30,21 +30,23 @@ export class Colors extends Contract {
     generateScheme(
       rootHue: number | string,
       saturation: number | string,
-      value: number | string,
+      lightness: number | string,
       scheme: number | string,
       shades: number | string
-    ): TransactionObject<{ hue: string; saturation: string; value: string }[]>;
+    ): TransactionObject<
+      { hue: string; saturation: string; lightness: string }[]
+    >;
 
     testSchemes(): TransactionObject<{
       hue: string;
       saturation: string;
-      value: string;
+      lightness: string;
     }>;
 
     toString(color: {
       hue: number | string;
       saturation: number | string;
-      value: number | string;
+      lightness: number | string;
     }): TransactionObject<string>;
   };
   events: {

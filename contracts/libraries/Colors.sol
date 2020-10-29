@@ -9,13 +9,9 @@ import "./Utils.sol";
 import "./FixidityLib.sol";
 import "./SVGBuffer.sol";
 
-struct HSL {
-    uint16 hue;
-    uint8 saturation;
-    uint8 lightness;
-}
+import "../structs/HSL.sol";
 
-contract Colors {
+library Colors {
     using SVGBuffer for *;
     using Strings for *;
     using Utils for *;
@@ -27,7 +23,7 @@ contract Colors {
     //constructor() public {}
 
     function toString(HSL calldata color) external view returns (string memory) {
-        // new empty buffer for the HSV string
+        // new empty buffer for the HSL string
         bytes memory buffer = new bytes(8192);
         buffer.append("hsl(");
         buffer.append(uint256(color.hue).toString());
@@ -66,7 +62,7 @@ contract Colors {
             );
     }
 
-    function testSchemes() external pure returns (HSV memory colors) {
+    function testSchemes() external pure returns (HSL memory colors) {
         return generateScheme(3000, 100, 50, 0, 0)[0];
     }
 
@@ -76,22 +72,22 @@ contract Colors {
         int256 lightness,
         uint8 scheme,
         uint8 shades
-    ) public pure returns (HSV[] memory colors) {
+    ) public pure returns (HSL[] memory colors) {
         int256[4] memory hues = generateHues(rootHue, 2, scheme);
         int256 s = FixidityLib.newFixed(saturation);
         int256 v = FixidityLib.newFixed(lightness);
 
         for (uint256 i = 0; i < 4; i++) {
             int256 h = hues[i];
-            colors[i] = HSV(h.toUint256().toUint16(), s.toUint256().toUint8(), v.toUint256().toUint8());
+            colors[i] = HSL(h.toUint256().toUint16(), s.toUint256().toUint8(), v.toUint256().toUint8());
             for (uint256 j = 0; j < shades; j++) {
                 int256 offset = FixidityLib.newFixed(int256(j + 1 * 5));
-                colors[4 + (i * j * 2) + j] = HSV(
+                colors[4 + (i * j * 2) + j] = HSL(
                     h.toUint256().toUint16(),
                     s.toUint256().toUint8(),
                     FixidityLib.add(v, -offset).toUint256().toUint8()
                 );
-                colors[5 + (i * j * 2) + j] = HSV(
+                colors[5 + (i * j * 2) + j] = HSL(
                     h.toUint256().toUint16(),
                     s.toUint256().toUint8(),
                     FixidityLib.add(v, offset).toUint256().toUint8()

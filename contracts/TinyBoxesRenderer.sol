@@ -11,11 +11,13 @@ import "./structs/Decimal.sol";
 import "./structs/Shape.sol";
 import "./structs/Modulation.sol";
 import "./structs/TinyBox.sol";
+import "./structs/HSL.sol";
 
 import "./libraries/SVGBuffer.sol";
 import "./libraries/Random.sol";
 import "./libraries/Utils.sol";
 import "./libraries/Decimal.sol";
+import "./libraries/Colors.sol";
 import "./libraries/StringUtilsLib.sol";
 
 library TinyBoxesRenderer {
@@ -27,6 +29,7 @@ library TinyBoxesRenderer {
     using Random for bytes32[];
     using DecimalUtils for *;
     using Utils for *;
+    using Colors for *;
     using Strings for *;
 
     uint256 public constant ANIMATION_FRAME_RATE = 12;
@@ -260,8 +263,7 @@ library TinyBoxesRenderer {
         bytes memory buffer = new bytes(8192);
 
         bytes memory colorBuffer = new bytes(100);
-        // TODO: replace with HSV color
-        colorBuffer.append('ff00ff');
+        colorBuffer.append('hsl(60,80%,90%)');
 
         // build the rect tag
         buffer.append('<rect x="');
@@ -274,7 +276,7 @@ library TinyBoxesRenderer {
         buffer.append(shape.size[1].toString());
         buffer.append('" rx="');
         buffer.append(shapeMods.radius.toString());
-        buffer.append('" style="fill:#');
+        buffer.append('" style="fill:');
         buffer.append(colorBuffer.toString());
         buffer.append(";fill-opacity:");
         buffer.append(shapeMods.opacity.toString());
@@ -396,6 +398,8 @@ library TinyBoxesRenderer {
         uint256[] memory colorValues = new uint256[](box.colors);
         for (uint256 i = 0; i < box.colors; i++)
             colorValues[i] = _generateColor(pool);
+        
+        HSL[] memory colors = Colors.generateScheme(3000, 100, 50, 0, 0);
 
         // generate an array of shapes
         uint256 shapeCount = box.shapes;
