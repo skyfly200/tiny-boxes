@@ -118,7 +118,7 @@ library TinyBoxesRenderer {
         // add final scaling
         buffer.append(template[6]);
         buffer.append(template[1]);
-        // getting 0.0 out of this
+        // ??? getting 0.0 out of this
         buffer.append(scale.toString());
         buffer.append(' ');
         buffer.append(scale.toString());
@@ -260,6 +260,7 @@ library TinyBoxesRenderer {
         bytes memory buffer = new bytes(8192);
 
         bytes memory colorBuffer = new bytes(100);
+        // TODO: replace with HSV color
         colorBuffer.append('ff00ff');
 
         // build the rect tag
@@ -423,13 +424,13 @@ library TinyBoxesRenderer {
         }
 
         // convert master box scale to decimal with precision two two digits
-        Decimal memory scale = Decimal(box.scale, 2);
+        Decimal memory scale = Decimal(FixidityLib.newFixed(box.scale, 2), 2);
 
         // modulate the mirror values
         int16[3] memory mirrorPositionsIn = box.mirrorPositions;
         Decimal[3] memory mirrorPositions;
         for (uint256 i = 0; i < 3; i++)
-            mirrorPositions[i] = Decimal(mirrorPositionsIn[i], 0).add(mod.mirror[i]);
+            mirrorPositions[i] = Decimal(FixidityLib.newFixed(mirrorPositionsIn[i], 2), 2).add(mod.mirror[i]);
 
         // write the footer to the SVG
         buffer.append(
