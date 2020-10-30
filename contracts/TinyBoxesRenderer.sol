@@ -262,9 +262,6 @@ library TinyBoxesRenderer {
         // empty buffer for the SVG markup
         bytes memory buffer = new bytes(8192);
 
-        bytes memory colorBuffer = new bytes(1000);
-        colorBuffer.append(shape.color.toString());
-
         // build the rect tag
         buffer.append('<rect x="');
         buffer.append(shape.position[0].toString());
@@ -277,7 +274,7 @@ library TinyBoxesRenderer {
         buffer.append('" rx="');
         buffer.append(shapeMods.radius.toString());
         buffer.append('" style="fill:');
-        buffer.append(colorBuffer.toString());
+        buffer.append(shape.color.toString());
         buffer.append(";fill-opacity:");
         buffer.append(shapeMods.opacity.toString());
         buffer.append('" transform="rotate(');
