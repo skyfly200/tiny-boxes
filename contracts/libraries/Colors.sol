@@ -103,13 +103,11 @@ library Colors {
 
         for (uint256 i = 0; i < 4; i++) {
             uint16 h = hues[i];
-            //uint16 h2 = lookupHue(rootHue, schemeId, uint8(i));
-            //scheme[i] = HSL(h, s, l);
             for (uint8 j = 0; j < shades; j++) {
                 uint8 offset = j + 1 * 5;
-                //colors[4 + (i * j * 2) + j] = HSL(h, s, l);
-                // colors[4 + (i * j * 2) + j] = HSL(h, s, uint8(l.add(-offset)));
-                // colors[5 + (i * j * 2) + j] = HSL(h, s, uint8(l.add(offset)));
+                //colors[i * (shades * 2 + 1)] = HSL(h, s, l);
+                // colors[i * (shades * 2 + 1)] = HSL(h, s, uint8(l.add(-offset)));
+                // colors[i * (shades * 2 + 1)] = HSL(h, s, uint8(l.add(offset)));
             }
         }
         return scheme;

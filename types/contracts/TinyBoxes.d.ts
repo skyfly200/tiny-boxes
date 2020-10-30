@@ -197,6 +197,15 @@ export class TinyBoxes extends Contract {
       mirrors: boolean[]
     ): TransactionObject<string>;
 
+    tokenTest(
+      _seed: string,
+      counts: (number | string)[],
+      dials: (number | string)[],
+      mirrors: boolean[],
+      frame: number | string,
+      animation: number | string
+    ): TransactionObject<string>;
+
     tokenURI(tokenId: number | string): TransactionObject<string>;
 
     totalSupply(): TransactionObject<string>;

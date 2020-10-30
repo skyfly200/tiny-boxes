@@ -395,10 +395,10 @@ library TinyBoxesRenderer {
         // TODO: use generate scheme params
         //HSL[] memory colors = Colors.generateScheme(30, 100, 50, 0, 0);
         HSL[] memory colors = new HSL[](4);
-        colors[0] = HSL(40,70,95);
-        colors[1] = HSL(20,60,95);
-        colors[2] = HSL(140,90,95);
-        colors[3] = HSL(270,75,95);
+        colors[0] = HSL(40,70,25);
+        colors[1] = HSL(20,60,25);
+        colors[2] = HSL(140,90,25);
+        colors[3] = HSL(270,75,25);
 
         // generate an array of shapes
         uint256 shapeCount = box.shapes;
