@@ -246,10 +246,10 @@ library TinyBoxesRenderer {
         ) = _generateBox(pool, box.spacing, box.size, hatching);
         // pick a random color from the generated colors list
         // and modulate selected color
-        int256 selection = pool.uniform(0, int256(uint256(box.colors) - 1));
+        int256 selection = pool.uniform(0, int256(uint256(colors.length) - 1));
         HSL memory color = colors[
             uint256(selection.add(mod.color))
-            .mod(uint256(box.colors))
+            .mod(uint256(colors.length))
         ];
         return Shape(position, size, color);
     }
@@ -263,8 +263,7 @@ library TinyBoxesRenderer {
         bytes memory buffer = new bytes(8192);
 
         bytes memory colorBuffer = new bytes(1000);
-        colorBuffer.append('hsl(60,80%,90%)');
-        //colorBuffer.append(shape.color.toString());
+        colorBuffer.append(shape.color.toString());
 
         // build the rect tag
         buffer.append('<rect x="');
@@ -396,11 +395,13 @@ library TinyBoxesRenderer {
         bytes32[] memory pool = Random.init(box.randomness);
 
         // generate colors
-        // uint256[] memory colorValues = new uint256[](box.colors);
-        // for (uint256 i = 0; i < box.colors; i++)
-        //     colorValues[i] = _generateColor(pool);
-        
-        HSL[] memory colors = Colors.generateScheme(3000, 100, 50, 0, 0);
+        // TODO: use generate scheme params
+        //HSL[] memory colors = Colors.generateScheme(30, 100, 50, 0, 0);
+        HSL[] memory colors = new HSL[](4);
+        colors[0] = HSL(40,70,95);
+        colors[1] = HSL(20,60,95);
+        colors[2] = HSL(140,90,95);
+        colors[3] = HSL(270,75,95);
 
         // generate an array of shapes
         uint256 shapeCount = box.shapes;

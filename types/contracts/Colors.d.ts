@@ -23,7 +23,6 @@ export class Colors extends Contract {
   methods: {
     generateHues(
       base: number | string,
-      decimals: number | string,
       scheme: number | string
     ): TransactionObject<string[]>;
 
@@ -31,11 +30,30 @@ export class Colors extends Contract {
       rootHue: number | string,
       saturation: number | string,
       lightness: number | string,
-      scheme: number | string,
+      schemeId: number | string,
       shades: number | string
     ): TransactionObject<
       { hue: string; saturation: string; lightness: string }[]
     >;
+
+    lookupColor(
+      rootHue: number | string,
+      saturation: number | string,
+      lightness: number | string,
+      scheme: number | string,
+      color: number | string,
+      shade: number | string
+    ): TransactionObject<{
+      hue: string;
+      saturation: string;
+      lightness: string;
+    }>;
+
+    lookupHue(
+      base: number | string,
+      scheme: number | string,
+      index: number | string
+    ): TransactionObject<string>;
 
     testSchemes(): TransactionObject<{
       hue: string;
