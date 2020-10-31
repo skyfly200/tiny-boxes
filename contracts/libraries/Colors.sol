@@ -86,45 +86,41 @@ library Colors {
     }
 
     function testSchemes() external pure returns (HSL memory colors) {
-        return generateScheme(3000, 100, 50, 0, 0)[0];
+        return generateScheme(HSL(30,100,50),0,0)[0];
     }
 
     function generateScheme(
-        uint16 rootHue,
-        uint8 saturation,
-        uint8 lightness,
+        HSL memory root,
         uint8 schemeId,
         uint8 shades
     ) public pure returns (HSL[] memory) {
         HSL[] memory scheme = new HSL[](shades * 4);
-        uint16[4] memory hues = generateHues(rootHue, schemeId);
-        uint8 s = saturation;
-        uint8 l = lightness;
+        uint16[4] memory hues = generateHues(root.hue, schemeId);
+        uint8 s = root.saturation;
+        uint8 l = root.lightness;
 
         for (uint256 i = 0; i < 4; i++) {
             uint16 h = hues[i];
-            for (uint8 j = 0; j < shades; j++) {
-                uint8 offset = j + 1 * 5;
-                //colors[i * (shades * 2 + 1)] = HSL(h, s, l);
-                // colors[i * (shades * 2 + 1)] = HSL(h, s, uint8(l.add(-offset)));
-                // colors[i * (shades * 2 + 1)] = HSL(h, s, uint8(l.add(offset)));
+            scheme[i * (shades * 2 + 1)] = HSL(h, s, l);
+            for (uint8 j = 1; j <= shades; j++) {
+                uint8 offset = j * 5;
+                scheme[i * (shades * 2 + 1) + j] = HSL(h, s, uint8(uint256(l).add(-offset)));
+                scheme[i * (shades * 2 + 1) + j] = HSL(h, s, uint8(uint256(l).add(offset)));
             }
         }
         return scheme;
     }
 
     function lookupColor(
-        uint16 rootHue,
-        uint8 saturation,
-        uint8 lightness,
+        HSL memory root,
         uint8 scheme,
         uint8 color,
         int8 shade
     ) public pure returns (HSL memory) {
         int8 offset = shade * 5;
-        uint16 h = lookupHue(rootHue, scheme, color);
-        uint8 s = saturation;
-        uint8 l = uint8(int8(lightness).add(offset));
+        uint16 h = lookupHue(root.hue, scheme, color);
+        uint8 s = root.saturation;
+        uint8 l = uint8(int8(root.lightness).add(offset));
         return HSL(h, s, l);
     }
 }

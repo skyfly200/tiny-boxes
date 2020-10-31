@@ -27,9 +27,11 @@ export class Colors extends Contract {
     ): TransactionObject<string[]>;
 
     generateScheme(
-      rootHue: number | string,
-      saturation: number | string,
-      lightness: number | string,
+      root: {
+        hue: number | string;
+        saturation: number | string;
+        lightness: number | string;
+      },
       schemeId: number | string,
       shades: number | string
     ): TransactionObject<
@@ -37,9 +39,11 @@ export class Colors extends Contract {
     >;
 
     lookupColor(
-      rootHue: number | string,
-      saturation: number | string,
-      lightness: number | string,
+      root: {
+        hue: number | string;
+        saturation: number | string;
+        lightness: number | string;
+      },
       scheme: number | string,
       color: number | string,
       shade: number | string

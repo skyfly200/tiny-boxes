@@ -393,12 +393,24 @@ library TinyBoxesRenderer {
 
         // generate colors
         // TODO: use generate scheme params
-        //HSL[] memory colors = Colors.generateScheme(30, 100, 50, 0, 0);
-        HSL[] memory colors = new HSL[](4);
-        colors[0] = HSL(40,70,25);
-        colors[1] = HSL(20,60,25);
-        colors[2] = HSL(140,90,25);
-        colors[3] = HSL(270,75,25);
+        // hue, sat, light, scheme, shades
+        HSL memory root = HSL(40,100,50);
+        uint8 scheme = 0;
+        //HSL[] memory colors2 = Colors.generateScheme(root, scheme, 0);
+        HSL[] memory colors = new HSL[](11);
+        colors[0] = Colors.lookupColor(root,scheme,0,-1);
+        colors[1] = Colors.lookupColor(root,scheme,0,0);
+        colors[2] = Colors.lookupColor(root,scheme,0,1);
+        colors[3] = Colors.lookupColor(root,scheme,1,-1);
+        colors[4] = Colors.lookupColor(root,scheme,1,0);
+        colors[5] = Colors.lookupColor(root,scheme,1,1);
+        colors[6] = Colors.lookupColor(root,scheme,2,-2);
+        colors[7] = Colors.lookupColor(root,scheme,2,-1);
+        colors[8] = Colors.lookupColor(root,scheme,2,0);
+        colors[9] = Colors.lookupColor(root,scheme,2,1);
+        colors[10] = Colors.lookupColor(root,scheme,2,2);
+        // colors[11] = Colors.lookupColor(root,scheme,3,0);
+        // colors[12] = Colors.lookupColor(root,scheme,3,1);
 
         // generate an array of shapes
         uint256 shapeCount = box.shapes;
@@ -430,6 +442,7 @@ library TinyBoxesRenderer {
         Decimal memory scale = int256(box.scale).toDecimal(2);
 
         // modulate the mirror values
+        bool[3] memory mirrors = box.mirrors;
         int16[3] memory mirrorPositionsIn = box.mirrorPositions;
         Decimal[3] memory mirrorPositions;
         for (uint256 i = 0; i < 3; i++)
@@ -438,7 +451,7 @@ library TinyBoxesRenderer {
         // write the footer to the SVG
         buffer.append(
             _generateFooter(
-                box.mirrors,
+                mirrors,
                 mirrorPositions,
                 scale
             )

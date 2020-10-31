@@ -202,8 +202,8 @@ export class TinyBoxes extends Contract {
       counts: (number | string)[],
       dials: (number | string)[],
       mirrors: boolean[],
-      frame: number | string,
-      animation: number | string
+      animation: number | string,
+      frame: number | string
     ): TransactionObject<string>;
 
     tokenURI(tokenId: number | string): TransactionObject<string>;
