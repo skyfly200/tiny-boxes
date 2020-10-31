@@ -331,10 +331,7 @@ library TinyBoxesRenderer {
             mod.stack = uint8(frame);
         } else if (animation == 3) {
             // shift mirror position 0
-            mod.mirror[0] = int256(frame).toDecimal();
-        } else if (animation == 4) {
-            // squash and squeze
-            // all modulated on the shape level
+            mod.mirror[0] = int256(frame).toDecimal(2);
         }
     }
 
@@ -372,7 +369,23 @@ library TinyBoxesRenderer {
                 change = int256(shape.add(uint256(box.shapes).div(2)).sub(frame.sub(ANIMATION_FRAMES / 2)).mod(uint256(box.shapes)));
             mod.scale[0] = int256(change).toDecimal();
             mod.scale[1] = int256(change.mul(int256(-1))).toDecimal();
-        }
+        } else if (animation == 5) {
+            // skew x
+            int256 amp = 5;
+            int256 s = int256(
+                amp.mul(int256(frame)
+                .add(int256(shape).sub(int256(box.shapes / 2))))
+            );
+            mod.skew[0] = s.toDecimal(0);
+        } else if (animation == 6) {
+            // wave
+            int256 amp = 5;
+            int256 s = int256(
+                amp.mul(int256(frame))
+                .add(int256(shape).sub(int256(box.shapes / 2)))
+            );
+            mod.offset[0] = s.toDecimal(0);
+        } 
     }
 
     /**
