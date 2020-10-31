@@ -7,7 +7,7 @@ echo "$ADDRESS"
 
 ANIMATION=1
 echo "Testing Token Render"
-for FRAME in {0..5}
+for FRAME in {0..23}
 do
     npx oz call --method tokenTest -n rinkeby --args "12345, [7,11], [100,100,2,2,111,222,333,444,2,750,1200,2400,100], [true,true,true], $ANIMATION, $FRAME" --to "$ADDRESS">| "./frames/f$FRAME.svg"
 done
