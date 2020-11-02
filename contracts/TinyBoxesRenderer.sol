@@ -343,9 +343,10 @@ library TinyBoxesRenderer {
      * @return mod struct of modulator values
      */
     function _calculateShapeMods(
+        Shape memory shape,
         TinyBox memory box,
         uint256 frame,
-        uint256 shape
+        uint256 shapeIndex
     ) internal pure returns (ShapeModulation memory mod) {
         // set animation modifiers to default
         mod = ShapeModulation({
@@ -364,17 +365,18 @@ library TinyBoxesRenderer {
             // transfer height to width and vice versa
             int256 change;
             if (frame < ANIMATION_FRAMES / 2)
-                change = int256(shape.add(frame).sub(uint256(box.shapes).div(2)).mod(uint256(box.shapes)));
+                change = int256(shapeIndex.add(frame).sub(uint256(box.shapes).div(2)).mod(uint256(box.shapes)));
             else
-                change = int256(shape.add(uint256(box.shapes).div(2)).sub(frame.sub(ANIMATION_FRAMES / 2)).mod(uint256(box.shapes)));
+                change = int256(shapeIndex.add(uint256(box.shapes).div(2)).sub(frame.sub(ANIMATION_FRAMES / 2)).mod(uint256(box.shapes)));
             mod.scale[0] = int256(change).toDecimal();
             mod.scale[1] = int256(change.mul(int256(-1))).toDecimal();
         } else if (animation == 5) {
             // skew x
-            int256 amp = 5;
+            int256 amp = 1;
             int256 s = int256(
-                amp.mul(int256(frame)
-                .add(int256(shape).sub(int256(box.shapes / 2))))
+                amp.mul(int256(frame))
+                //shape.size[0]
+                //.add(int256(shapeIndex).sub(int256(box.shapes / 2))))
             );
             mod.skew[0] = s.toDecimal(0);
         } else if (animation == 6) {
@@ -382,7 +384,7 @@ library TinyBoxesRenderer {
             int256 amp = 5;
             int256 s = int256(
                 amp.mul(int256(frame))
-                .add(int256(shape).sub(int256(box.shapes / 2)))
+                .add(int256(shapeIndex).sub(int256(box.shapes / 2)))
             );
             mod.offset[0] = s.toDecimal(0);
         } 
@@ -434,7 +436,7 @@ library TinyBoxesRenderer {
             // generate a new shape
             shapes[i] = _generateShape(pool, i, box, mod, colors);
             // calculate the shape modulation based on box data, frame and shape #
-            shapeMods[i] = _calculateShapeMods(box, frame, i);
+            shapeMods[i] = _calculateShapeMods(shapes[i], box, frame, i);
         }
 
         // --- Render SVG Markup ---
