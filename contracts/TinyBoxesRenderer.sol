@@ -273,16 +273,16 @@ library TinyBoxesRenderer {
         buffer.append(shape.size[1].toString());
         buffer.append('" rx="');
         buffer.append(shapeMods.radius.toString());
+        buffer.append('" transform-origin="');
+        buffer.append(shapeMods.origin[0].toString());
+        buffer.append(' ');
+        buffer.append(shapeMods.origin[1].toString());
         buffer.append('" style="fill:');
         buffer.append(shape.color.toString());
         buffer.append(";fill-opacity:");
         buffer.append(shapeMods.opacity.toString());
         buffer.append('" transform="rotate(');
         buffer.append(shapeMods.rotation.toString());
-        buffer.append(' ');
-        buffer.append(shapeMods.origin[0].toString());
-        buffer.append(' ');
-        buffer.append(shapeMods.origin[1].toString());
         buffer.append(')translate(');
         buffer.append(shapeMods.offset[0].toString());
         buffer.append(' ');
@@ -380,13 +380,21 @@ library TinyBoxesRenderer {
             );
             mod.skew[0] = s.toDecimal(0);
         } else if (animation == 6) {
-            // wave
+            // slide
             int256 amp = 5;
             int256 s = int256(
                 amp.mul(int256(frame))
-                .add(int256(shapeIndex).sub(int256(box.shapes / 2)))
+                //.add(int256(shapeIndex).sub(int256(box.shapes / 2)))
             );
             mod.offset[0] = s.toDecimal(0);
+        } else if (animation == 7) {
+            // spin
+            int256 amp = 5;
+            int256 s = int256(
+                amp.mul(int256(frame))
+                //.add(int256(shapeIndex).sub(int256(box.shapes / 2)))
+            );
+            mod.rotation = s.toDecimal(0);
         } 
     }
 

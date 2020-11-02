@@ -5,7 +5,7 @@ FEED="0x3Af8C569ab77af5230596Acf0E8c2F9351d24C38"
 ADDRESS=$(npx oz deploy --no-interactive -k regular -n rinkeby TinyBoxes "$LINK" "$FEED" | tail -n 1)
 echo "$ADDRESS"
 
-ANIMATION=5
+ANIMATION=7
 echo "Testing Token Render"
 for FRAME in {0..9}
 do
