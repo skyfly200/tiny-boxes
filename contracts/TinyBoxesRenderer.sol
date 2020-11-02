@@ -389,10 +389,9 @@ library TinyBoxesRenderer {
             mod.offset[0] = s.toDecimal(0);
         } else if (animation == 7) {
             // spin
-            int256 amp = 5;
+            uint256 angle = uint256(360).div(ANIMATION_FRAMES);
             int256 s = int256(
-                amp.mul(int256(frame))
-                //.add(int256(shapeIndex).sub(int256(box.shapes / 2)))
+                angle.mul(frame)
             );
             mod.rotation = s.toDecimal(0);
         } 
