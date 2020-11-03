@@ -296,7 +296,6 @@ library TinyBoxesRenderer {
         buffer.append(' ');
         buffer.append(shapeMods.scale[1].toString());
         buffer.append(')"/>');
-        buffer.append('"/>');
 
         return buffer.toString();
     }
@@ -390,11 +389,28 @@ library TinyBoxesRenderer {
         } else if (animation == 7) {
             // spin
             uint256 angle = uint256(360).div(ANIMATION_FRAMES);
-            int256 s = int256(
-                angle.mul(frame)
-            );
+            int256 s = int256(angle.mul(frame));
             mod.rotation = s.toDecimal(0);
-        } 
+        } else if (animation == 8) {
+            // opacity
+            uint256 step = uint256(1000).div(ANIMATION_FRAMES);
+            uint256 p;
+            if (frame < ANIMATION_FRAMES.div(2)) p = frame; // first half
+            else p = ANIMATION_FRAMES.sub(frame);
+            uint256 alpha = uint256(1000).sub(step.mul(p));
+            mod.opacity = int256(alpha).toDecimal(3);
+        } else if (animation == 9) {
+            // rounded corners
+            // find shorter shape dimension
+            // modulate the shapes radius by that amount
+            uint256 d = Math.min(uint256(shape.size[0]), uint256(shape.size[1]));
+            uint256 step = uint256(d).div(ANIMATION_FRAMES);
+            uint256 p;
+            if (frame < ANIMATION_FRAMES.div(2)) p = frame; // first half
+            else p = ANIMATION_FRAMES.sub(frame);
+            uint256 radius = step.mul(p);
+            mod.radius = radius;
+        }
     }
 
     /**
