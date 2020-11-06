@@ -12,6 +12,13 @@ node_modules
 .env.local
 .env.*.local
 
+# images
+*.svg
+*.png
+*.gif
+*.mp4
+*.jpg
+
 # Secrets
 secrets.json
 
