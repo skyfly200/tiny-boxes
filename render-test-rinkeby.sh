@@ -21,7 +21,7 @@ if [ -z "$ADDRESS" ]
         echo "$ADDRESS"
         ANIMATION=8
         echo "Testing Token Render"
-        for FRAME in {0..60}
+        for FRAME in {0..119}
         do
             npx oz call --method tokenTest -n rinkeby --args "12345, [10,10], [100,100,2,2,111,222,333,444,2,750,1200,2400,100], [true,true,true], $ANIMATION, $FRAME" --to "$ADDRESS">| "./frames/f$FRAME.svg"
             inkscape -z -w 2400 -h 2400 "./frames/f$FRAME.svg" -e "./frames/png/f$FRAME.png"
