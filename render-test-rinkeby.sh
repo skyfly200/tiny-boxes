@@ -19,13 +19,17 @@ if [ -z "$ADDRESS" ]
         echo "no address provided";
     else
         echo "$ADDRESS"
-        ANIMATION=8
+        ANIMATION=7
         echo "Testing Token Render"
         for FRAME in {0..119}
         do
             npx oz call --method tokenTest -n rinkeby --args "12345, [10,10], [100,100,2,2,111,222,333,444,2,750,1200,2400,100], [true,true,true], $ANIMATION, $FRAME" --to "$ADDRESS">| "./frames/f$FRAME.svg"
             inkscape -z -w 2400 -h 2400 "./frames/f$FRAME.svg" -e "./frames/png/f$FRAME.png"
         done
+
+        # generate a GIF from the PNG frames
+        magick ./png/f*.png "test-$ANIMATION.gif"
+
         # Find child processes and wait for them to finish so this script doesn't
         # exit before the children do (otherwise our trap will kill them)
         for job in $(jobs -p); do
