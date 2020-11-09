@@ -18,6 +18,9 @@ while getopts "d:a:f:r:c:g:" arg; do
     esac
 done
 
+## if deploy or render
+## delete oz lock file ./.openzeppelin/.lock
+
 if [ -z "$DEPLOY" ]
     then
         echo "Skipping Deploy Step";
@@ -40,7 +43,7 @@ if [ -z "$RENDER" ]
                 for FRAME in {000..119}
                 do
                     npx oz call --method tokenTest -n rinkeby --args "12345, [10,10], [100,100,2,2,111,222,333,444,2,750,1200,2400,100], [true,true,true], $ANIMATION, $FRAME" --to "$ADDRESS">| "./frames/f$FRAME.svg"
-                    inkscape -z -w 2400 -h 2400 "./frames/f$FRAME.svg" -e "./frames/png/f$FRAME.png"
+                    inkscape -z -w 1200 -h 1200 "./frames/f$FRAME.svg" -e "./frames/png/f$FRAME.png"
                 done 
                 # Find child processes and wait for them to finish so this script doesn't
                 # exit before the children do
