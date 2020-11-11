@@ -33,7 +33,7 @@ library TinyBoxesRenderer {
     using Strings for *;
 
     uint256 public constant ANIMATION_FRAME_RATE = 10;
-    uint256 public constant ANIMATION_SECONDS = 6;
+    uint256 public constant ANIMATION_SECONDS = 3;
     uint256 public constant ANIMATION_FRAMES = ANIMATION_FRAME_RATE * ANIMATION_SECONDS;
 
     /**
