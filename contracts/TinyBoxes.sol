@@ -128,7 +128,7 @@ contract TinyBoxes is TinyBoxesStore {
         int16[13] memory dials,
         bool[3] memory mirrors,
         uint8 animation,
-        uint256 set,
+        uint256 start,
         uint256 count
     ) public view returns (string memory) {
         TinyBox memory box = TinyBox({
@@ -156,7 +156,7 @@ contract TinyBoxes is TinyBoxesStore {
         bytes memory bulk = new bytes(100000);
         for (uint256 f = 0; f < count; f++) {
             if (f > 0) bulk.append("\n");
-            bulk.append(box.perpetualRenderer(set * count + f).toString());
+            bulk.append(box.perpetualRenderer(start + f).toString());
         }
 
         return bulk.toString();
