@@ -468,6 +468,7 @@ library TinyBoxesRenderer {
         bytes memory buffer = new bytes(8192);
 
         // write the document header to the SVG
+        // TODO: add a frame tag into the header
         buffer.append(_generateHeader());
 
         // write shapes to the SVG
