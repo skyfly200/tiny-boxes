@@ -153,6 +153,15 @@ export class TinyBoxes extends Contract {
 
     tokenArt(_id: number | string): TransactionObject<string>;
 
+    tokenBulkTest(
+      _seed: string,
+      counts: (number | string)[],
+      dials: (number | string)[],
+      mirrors: boolean[],
+      animation: number | string,
+      frameStart: number | string
+    ): TransactionObject<string>;
+
     tokenByIndex(index: number | string): TransactionObject<string>;
 
     tokenData(
