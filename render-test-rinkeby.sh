@@ -37,7 +37,7 @@ if [ -z "$RENDER" ]
             then
                 echo "Error: no contract address provided!";
             else
-                echo "$ADDRESS"
+                echo "Calling against contract @ $ADDRESS"
                 ANIMATION=5
                 COUNT=10
                 echo "Testing Token Render"
@@ -45,13 +45,15 @@ if [ -z "$RENDER" ]
                 rm -f ./.openzeppelin/.lock
                 ## delete last renders
                 rm -f ./frames/*.svg
+                ## delete last bulk out
+                rm -f ./frames/bulk/*.xml
                 # render bulk frame bundles
                 for SET in {00..11}
                 do
                     start=$((SET*COUNT))
                     echo "$start"
                     BULK_FRAMES=$(npx oz call --method tokenBulkTest -n rinkeby --args "12345, [10,10], [100,100,2,2,111,222,333,444,2,750,1200,2400,100], [true,true,true], $ANIMATION, $start, $COUNT" --to "$ADDRESS")
-                    echo $BULK_FRAMES > ".frames/bulk/$set.xml"
+                    echo $BULK_FRAMES > "./frames/bulk/$SET.xml"
                     # split frames to individual files
                     i=0
                     while IFS= read -r line; do
