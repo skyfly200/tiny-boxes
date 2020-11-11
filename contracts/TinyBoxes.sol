@@ -153,9 +153,9 @@ contract TinyBoxes is TinyBoxesStore {
             scale: uint16(dials[12]),
             mirrors: mirrors
         });
-        bytes memory bulk = new bytes(41192);
+        bytes memory bulk = new bytes(100000);
         for (uint256 f = 0; f < count; f++) {
-            if (f > 0) bulk.append("|");
+            if (f > 0) bulk.append("\n");
             bulk.append(box.perpetualRenderer(start + f).toString());
         }
 
