@@ -40,17 +40,22 @@ library TinyBoxesRenderer {
      * @dev render the header of the SVG markup
      * @return header string
      */
-    function _generateHeader() internal view returns (string memory) {
+    function _generateHeader(uint256 frame) internal view returns (string memory) {
         bytes memory buffer = new bytes(8192);
 
         string memory xmlVersion = '<?xml version="1.0" encoding="UTF-8"?>';
         string memory doctype = '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
         string memory openingTag = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2400 2400" style="stroke-width:0;background-color:#121212">';
+        string memory frameTag = '<frame>';
+        string memory frameEndTag = '</frame>';
         string memory symbols = '<symbol id="quad3"><symbol id="quad2"><symbol id="quad1"><symbol id="quad0">';
 
         buffer.append(xmlVersion);
         buffer.append(doctype);
         buffer.append(openingTag);
+        buffer.append(frameTag);
+        buffer.append(frame.toString());
+        buffer.append(frameEndTag);
         buffer.append(symbols);
 
         return buffer.toString();
@@ -469,7 +474,7 @@ library TinyBoxesRenderer {
 
         // write the document header to the SVG
         // TODO: add a frame tag into the header
-        buffer.append(_generateHeader());
+        buffer.append(_generateHeader(frame));
 
         // write shapes to the SVG
         for (int256 i = 0; i < int256(shapeCount); i++) {
