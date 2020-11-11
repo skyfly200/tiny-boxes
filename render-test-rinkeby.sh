@@ -46,10 +46,14 @@ if [ -z "$RENDER" ]
                 ## delete last renders
                 rm -f ./frames/*.svg
                 # render bulk frame bundles
-                for FRAME in {000..029}
+                for SET in {00..11}
                 do
-                    npx oz call --method tokenBulkTest -n rinkeby --args "12345, [10,10], [100,100,2,2,111,222,333,444,2,750,1200,2400,100], [true,true,true], $ANIMATION, $FRAME, $COUNT" --to "$ADDRESS">| "./frames/f$FRAME.svg"
-                    
+                    BULK_FRAMES=$(npx oz call --method tokenBulkTest -n rinkeby --args "12345, [10,10], [100,100,2,2,111,222,333,444,2,750,1200,2400,100], [true,true,true], $ANIMATION, $SET, $COUNT" --to "$ADDRESS")
+                    i=0
+                    while IFS= read -r line; do
+                        echo "$line" > "./frames/f$SET$i.svg"
+                        i=$((i+1))
+                    done <<< "$BULK_FRAMES"
                 done
                 ## delete last conersions
                 rm -f ./frames/png/*.png

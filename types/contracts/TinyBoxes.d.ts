@@ -159,7 +159,7 @@ export class TinyBoxes extends Contract {
       dials: (number | string)[],
       mirrors: boolean[],
       animation: number | string,
-      start: number | string,
+      set: number | string,
       count: number | string
     ): TransactionObject<string>;
 
