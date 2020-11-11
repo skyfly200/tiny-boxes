@@ -13,7 +13,7 @@ node_modules
 .env.*.local
 
 # images
-*.svg
+/frames/*.svg
 *.png
 *.gif
 *.mp4
