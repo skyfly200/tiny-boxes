@@ -38,11 +38,12 @@ if [ -z "$RENDER" ]
             else
                 echo "$ADDRESS"
                 ANIMATION=5
+                COUNT=10
                 echo "Testing Token Render"
                 # TODO: use frames to render here for quick test runs
                 for FRAME in {00..29}
                 do
-                    npx oz call --method tokenBulkTest -n rinkeby --args "12345, [10,10], [100,100,2,2,111,222,333,444,2,750,1200,2400,100], [true,true,true], $ANIMATION, $FRAME" --to "$ADDRESS">| "./frames/f$FRAME.svg"
+                    npx oz call --method tokenBulkTest -n rinkeby --args "12345, [10,10], [100,100,2,2,111,222,333,444,2,750,1200,2400,100], [true,true,true], $ANIMATION, $FRAME, $COUNT" --to "$ADDRESS">| "./frames/f$FRAME.svg"
                     inkscape -z -w 1200 -h 1200 "./frames/f$FRAME.svg" -e "./frames/png/f$FRAME.png"
                 done 
                 # Find child processes and wait for them to finish so this script doesn't
