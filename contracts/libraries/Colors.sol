@@ -82,7 +82,7 @@ library Colors {
         require(index < 4, "Invalid color index");
 
         if (index == 0) hue = base;
-        else hue = uint16(uint256(base).add(schemes[scheme][index]));
+        else hue = uint16(uint256(base).add(schemes[scheme][index-1]));
     }
 
     function testSchemes() external pure returns (HSL memory colors) {
