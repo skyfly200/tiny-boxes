@@ -319,7 +319,7 @@ library SVG {
             // snap spin
             buffer.append(_animateTransformSpline(
                 "transform",
-                "skew",
+                "rotate",
                 "0 60 70 ; 270 60 70 ; 270 60 70 ; 360 60 70 ; 360 60 70",
                 "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1",
                 "0 ; 0.55 ; 0.75 ; 0.9 ; 1",
