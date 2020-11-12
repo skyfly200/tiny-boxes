@@ -23,20 +23,19 @@ done
 ## delete oz lock file ./.openzeppelin/.lock
 rm -f ./.openzeppelin/.lock
 
-if [ -z "$DEPLOY" ]
-    then
-        echo "Skipping Deploy Step";
-    else
-        ADDRESS=$(npx oz deploy --no-interactive -k regular -n rinkeby TinyBoxes "$LINK" "$FEED" | tail -n 1)
-fi
-
 if [ -z "$RENDER" ]
     then 
         echo "Skipping Frame Rendering"
     else
         if [ -z "$ADDRESS" ]
             then
-                echo "Error: no contract address provided!";
+                if [ -z "$DEPLOY" ]
+                    then
+                        echo "Error: no contract address provided!";
+                        echo "(use -a ADDRESS to provide address or -d y to deploy a new one)";
+                    else
+                        ADDRESS=$(npx oz deploy --no-interactive -k regular -n rinkeby TinyBoxes "$LINK" "$FEED" | tail -n 1)
+                fi
             else
                 echo "Testing Token Render"
                 if [ -z "$ANIMATION" ]

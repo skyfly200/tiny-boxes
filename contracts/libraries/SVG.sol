@@ -79,7 +79,7 @@ library SVG {
         buffer.append(shapeMods.scale[1].toString());
         buffer.append(')">');
         // here is where to add animate tags per shape
-        buffer.append(_generateAnimation(box, shapeIndex));
+        buffer.append(_generateAnimation(box, shape, shapeIndex));
         buffer.append('</rect>');
 
         return buffer.toString();
@@ -300,6 +300,7 @@ library SVG {
      */
     function _generateAnimation(
         TinyBox memory box,
+        Shape memory shape,
         uint256 shapeIndex
     ) internal view returns (string memory) {
         // empty buffer for the SVG markup
@@ -331,14 +332,14 @@ library SVG {
             // skew
             buffer.append(_animateTransform(
                 "transform",
-                "skew",
+                "skewX",
                 "0 ; 50 ; 0",
                 "10s"
             ));
         } else if (animation == 4) {
-            // 
-            buffer.append(_animate("width","100;50;100","10s"));
-            buffer.append(_animate("height","50;100;50","10s"));
+            // jiggle
+            buffer.append(_animate("x","100;50;100","10s"));
+            buffer.append(_animate("y","50;100;50","10s"));
         }  else if (animation == 5) {
             // snap spin
             buffer.append(_animateTransformSpline(
