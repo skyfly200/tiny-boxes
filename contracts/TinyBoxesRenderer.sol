@@ -14,6 +14,7 @@ import "./structs/TinyBox.sol";
 import "./structs/HSL.sol";
 
 import "./libraries/SVGBuffer.sol";
+import "./libraries/SVG.sol";
 import "./libraries/Random.sol";
 import "./libraries/Utils.sol";
 import "./libraries/Decimal.sol";
@@ -35,147 +36,6 @@ library TinyBoxesRenderer {
     uint256 public constant ANIMATION_FRAME_RATE = 10;
     uint256 public constant ANIMATION_SECONDS = 3;
     uint256 public constant ANIMATION_FRAMES = ANIMATION_FRAME_RATE * ANIMATION_SECONDS;
-
-    /**
-     * @dev render the header of the SVG markup
-     * @return header string
-     */
-    function _generateHeader(uint256 frame) internal view returns (string memory) {
-        bytes memory buffer = new bytes(8192);
-
-        string memory xmlVersion = '<?xml version="1.0" encoding="UTF-8"?>';
-        string memory doctype = '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
-        string memory openingTag = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2400 2400" style="stroke-width:0;background-color:#121212">';
-        string memory frameTag = '<frame>';
-        string memory frameEndTag = '</frame>';
-        string memory symbols = '<symbol id="quad3"><symbol id="quad2"><symbol id="quad1"><symbol id="quad0">';
-
-        buffer.append(xmlVersion);
-        buffer.append(doctype);
-        buffer.append(openingTag);
-        buffer.append(frameTag);
-        buffer.append(frame.toString());
-        buffer.append(frameEndTag);
-        buffer.append(symbols);
-
-        return buffer.toString();
-    }
-
-    /**
-     * @dev render the footer string for mirring effects
-     * @param switches for each mirroring stage
-     * @param mirrorPositions for generator settings
-     * @param scale for each mirroring stage
-     * @return footer string
-     */
-    function _generateFooter(
-        bool[3] memory switches,
-        Decimal[3] memory mirrorPositions,
-        Decimal memory scale
-    ) internal view returns (string memory) {
-        bytes memory buffer = new bytes(8192);
-
-        string[3] memory scales = ['-1 1', '-1 -1', '1 -1'];
-        string[7] memory template = [
-            '<g>',
-            '<g transform="scale(',
-            ') translate(',
-            ')">',
-            '<use xlink:href="#quad',
-            '"/></g>',
-            '</symbol>'
-        ];
-
-        for (uint256 s = 0; s < 3; s++) {
-            // loop through mirroring effects
-            buffer.append(template[6]);
-
-            if (!switches[s]) {
-                // turn off this level of mirroring
-                // add a scale transform
-                buffer.append(template[0]);
-                // denote what quad the transform should be used for
-                buffer.append(template[4]);
-                
-                if (s > 0)
-                    buffer.append(Strings.toString(uint256(s + 1)));
-                buffer.append(template[5]);
-            } else {
-                for (uint8 i = 0; i < 4; i++) {
-                    // loop through transforms
-                    if (i == 0) buffer.append(template[0]);
-                    else {
-                        buffer.append(template[1]);
-                        buffer.append(scales[i - 1]);
-                        buffer.append(template[2]);
-                        string memory value = mirrorPositions[s].toString();
-                        if (i <= 2) buffer.append('-');
-                        buffer.append(i <= 2 ? value : '0');
-                        buffer.append(' ');
-                        if (i >= 2) buffer.append('-');
-                        buffer.append(i >= 2 ? value : '0');
-                        buffer.append(template[3]);
-                    }
-                    // denote what quad the transforms should be used for
-                    buffer.append(template[4]);
-                    buffer.append(Strings.toString(s));
-                    buffer.append(template[5]);
-                }
-            }
-        }
-        // add final scaling
-        buffer.append(template[6]);
-        buffer.append(template[1]);
-        // ??? getting 0.0 out of this
-        buffer.append(scale.toString());
-        buffer.append(' ');
-        buffer.append(scale.toString());
-        buffer.append(template[3]);
-        buffer.append(template[4]);
-        buffer.append('3');
-        buffer.append(template[5]);
-        buffer.append("</svg>");
-        return buffer.toString();
-    }
-
-    /**
-     * @dev generate a color
-     * @param pool randomn numbers
-     * @return color value
-     */
-    function _generateColor(bytes32[] memory pool)
-        internal
-        pure
-        returns (uint256)
-    {
-        uint256 red = uint256(pool.uniform(0x000012, 0x0000ff));
-        uint256 green = uint256(pool.uniform(0x000012, 0x0000ff) * 256);
-        uint256 blue = uint256(
-            pool.uniform(0x000012, 0x0000ff) * 65536
-        );
-        uint256 colorscheme = uint256(pool.uniform(0, 99));
-
-        if (colorscheme < 7) {
-            return blue; // blue
-        } else if (colorscheme < 14) {
-            return green; // green
-        } else if (colorscheme < 21) {
-            return red; // red
-        } else if (colorscheme < 35) {
-            return green.add(blue); // cyan
-        } else if (colorscheme < 49) {
-            return red.add(blue); // magenta
-        } else if (colorscheme < 63) {
-            return red.add(green); // yellow
-        } else if (colorscheme < 66) {
-            uint256 brightness = uint256(
-                pool.uniform(0x000022, 0x0000ee)
-            ); // random greys
-            return brightness.mul(65536).add(brightness.mul(256)).add(brightness);
-        } else {
-            return blue;
-        }
-    }
 
     /**
      * @dev generate a shape
@@ -257,52 +117,6 @@ library TinyBoxesRenderer {
             .mod(uint256(colors.length))
         ];
         return Shape(position, size, color);
-    }
-
-    /**
-     * @dev render a rectangle SVG tag
-     * @param shape object
-     */
-    function _rect(Shape memory shape, ShapeModulation memory shapeMods) internal view returns (string memory) {
-        // empty buffer for the SVG markup
-        bytes memory buffer = new bytes(8192);
-
-        // build the rect tag
-        buffer.append('<rect x="');
-        buffer.append(shape.position[0].toString());
-        buffer.append('" y="');
-        buffer.append(shape.position[1].toString());
-        buffer.append('" width="');
-        buffer.append(shape.size[0].toString());
-        buffer.append('" height="');
-        buffer.append(shape.size[1].toString());
-        buffer.append('" rx="');
-        buffer.append(shapeMods.radius.toString());
-        buffer.append('" transform-origin="');
-        buffer.append(shapeMods.origin[0].toString());
-        buffer.append(' ');
-        buffer.append(shapeMods.origin[1].toString());
-        buffer.append('" style="fill:');
-        buffer.append(shape.color.toString());
-        buffer.append(";fill-opacity:");
-        buffer.append(shapeMods.opacity.toString());
-        buffer.append('" transform="rotate(');
-        buffer.append(shapeMods.rotation.toString());
-        buffer.append(')translate(');
-        buffer.append(shapeMods.offset[0].toString());
-        buffer.append(' ');
-        buffer.append(shapeMods.offset[1].toString());
-        buffer.append(')skewX(');
-        buffer.append(shapeMods.skew[0].toString());
-        buffer.append(')skewY(');
-        buffer.append(shapeMods.skew[1].toString());
-        buffer.append(')scale(');
-        buffer.append(shapeMods.scale[0].toString());
-        buffer.append(' ');
-        buffer.append(shapeMods.scale[1].toString());
-        buffer.append(')"/>');
-
-        return buffer.toString();
     }
 
     /**
@@ -473,13 +287,13 @@ library TinyBoxesRenderer {
         bytes memory buffer = new bytes(8192);
 
         // write the document header to the SVG
-        // TODO: add a frame tag into the header
-        buffer.append(_generateHeader(frame));
+        buffer.append(SVG._generateHeader());
+        buffer.append(SVG._generateBody(box));
 
         // write shapes to the SVG
         for (int256 i = 0; i < int256(shapeCount); i++) {
             uint256 shapeIndex = uint256(i.add(mod.stack)).mod(shapeCount);
-            buffer.append(_rect(shapes[shapeIndex], shapeMods[shapeIndex]));
+            buffer.append(SVG._rect(box, uint256(i), shapes[shapeIndex], shapeMods[shapeIndex]));
         }
 
         // convert master box scale to decimal with a precision of two digits
@@ -494,7 +308,7 @@ library TinyBoxesRenderer {
 
         // write the footer to the SVG
         buffer.append(
-            _generateFooter(
+            SVG._generateFooter(
                 mirrors,
                 mirrorPositions,
                 scale
