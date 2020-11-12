@@ -7,11 +7,10 @@ LINK="0x01be23585060835e02b77ef475b0cc51aa1e0709"
 FEED="0x3Af8C569ab77af5230596Acf0E8c2F9351d24C38"
 
 ## deploy only on calls with a -d flag present
-while getopts "d:a:f:n:r:c:g:" arg; do
+while getopts "d:a:n:r:c:g:" arg; do
     case $arg in
         d) DEPLOY="set";;
         a) ADDRESS=$OPTARG;;
-        f) FRAMES=$OPTARG;;
         n) ANIMATION=$OPTARG;;
         r) RENDER="set";;
         c) CONVERT="set";;
