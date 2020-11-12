@@ -86,28 +86,28 @@ library SVG {
     /**
      * @dev render an animate SVG tag
      */
-    function _animate(string memory attribute, string memory values, string memory duration) internal view returns (string memory) {
+    function _animate(string memory attribute, string memory values, string memory duration) internal pure returns (string memory) {
         return string(abi.encodePacked('<animate attributeName="', attribute, '" values="', values, '" dur="', duration, '" repeatCount="indefinite" />'));
     }
 
     /**
      * @dev render a animateTransform SVG tag
      */
-    function _animateTransform(string memory attribute, string memory typeVal, string memory values, string memory duration) internal view returns (string memory) {
+    function _animateTransform(string memory attribute, string memory typeVal, string memory values, string memory duration) internal pure returns (string memory) {
         return string(abi.encodePacked('<animateTransform attributeName="', attribute, '" attributeType="XML" type="', typeVal, '" values="', values, '" dur="', duration, '" repeatCount="indefinite" />'));
     }
 
     /**
      * @dev render a animateTransform SVG tag
      */
-    function _animateTransform(string memory attribute, string memory typeVal, string memory values, string memory keyTimes, string memory duration) internal view returns (string memory) {
+    function _animateTransform(string memory attribute, string memory typeVal, string memory values, string memory keyTimes, string memory duration) internal pure returns (string memory) {
         return string(abi.encodePacked('<animateTransform attributeName="', attribute, '" attributeType="XML" type="', typeVal, '" values="', values, '" keyTimes="', keyTimes, '" dur="', duration, '" repeatCount="indefinite" />'));
     }
 
     /**
      * @dev render a animateTransform SVG tag
      */
-    function _animateTransformSpline(string memory attribute, string memory typeVal, string memory values, string memory keySplines, string memory keyTimes, string memory duration) internal view returns (string memory) {
+    function _animateTransformSpline(string memory attribute, string memory typeVal, string memory values, string memory keySplines, string memory keyTimes, string memory duration) internal pure returns (string memory) {
         return string(abi.encodePacked('<animateTransform attributeName="', attribute, '" attributeType="XML" type="', typeVal, '" calcMode="spline" values="', values, '" keySplines="', keySplines, '" keyTimes="', keyTimes, '" dur="', duration, '" repeatCount="indefinite" />'));
     }
     
@@ -115,7 +115,7 @@ library SVG {
      * @dev render the header of the SVG markup
      * @return header string
      */
-    function _generateHeader() internal view returns (string memory) {
+    function _generateHeader() internal pure returns (string memory) {
         string memory xmlVersion = '<?xml version="1.0" encoding="UTF-8"?>';
         string memory doctype = '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
         string memory openingTag = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2400 2400" style="stroke-width:0;background-color:#121212">';
@@ -127,7 +127,7 @@ library SVG {
      * @dev render the header of the SVG markup
      * @return header string
      */
-    function _generateBody(TinyBox memory box) internal view returns (string memory) {
+    function _generateBody(TinyBox memory box) internal pure returns (string memory) {
         string memory metadataTag = '<metadata>';
         string memory metadataEndTag = '</metadata>';
         string memory animationTag = '<animation>';
