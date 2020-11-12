@@ -16,18 +16,18 @@
       "deployedBytecodeHash": "9879e22385686497758388def3748475b01a45b823c008c18a8a66605d3583a2"
     },
     "TinyBoxesRenderer": {
-      "address": "0x8471dC642254B1D46e9bE053ea020ae319c934Ba",
-      "constructorCode": "61439a610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "860e3835b305e970341f17e6b80b82afb99881ab3910b4f0a8837abd09446052",
-      "localBytecodeHash": "3705a10ce53f2b4528142f919645f84fedd7da3c28350f0b42696e2054d97782",
-      "deployedBytecodeHash": "901fe17321bfc9cf9d1389f9943d457b9370d3b9c3c1e321d67ef0861d8df336"
+      "address": "0x903a4cbE624780215007803Fb42d46F5e883Fdb6",
+      "constructorCode": "614803610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "c0d8d1e28b6d9b062df006fb80cc56ebc433b8fc36cf6c3637b0869bc0833303",
+      "localBytecodeHash": "af53181edc3538ab2dde2170316758cd4685ddfdd07bf58fdf9f21372708121e",
+      "deployedBytecodeHash": "d04d7287e496a30c8e4be8c87b80a2b53e6609f8409c566bad019b4b6f9fbe27"
     },
     "Colors": {
-      "address": "0x72A8a4DE7b54abE5def6d062Afd7009F751321Dc",
-      "constructorCode": "610f9c610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "1e17ac89ee66f9d4d3ff2065ac17e754cd25f05ca6cbc3b5f636ce9c11b7e744",
-      "localBytecodeHash": "69b93538409f0903a67464e525aae988209fe219834126185e28c7f07832daad",
-      "deployedBytecodeHash": "69b93538409f0903a67464e525aae988209fe219834126185e28c7f07832daad"
+      "address": "0x0bab0f6144a6671ca4719A1fd83e4F87fF9364Fc",
+      "constructorCode": "610f9f610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "346250f0084e97751a050e2d3252ce83c0cec11b2a1223f01caab78aa9ca7fae",
+      "localBytecodeHash": "9318f2dd6437bc863a86512473767c801cf2e7d661b91e445bcec6152f2b0f55",
+      "deployedBytecodeHash": "9318f2dd6437bc863a86512473767c801cf2e7d661b91e445bcec6152f2b0f55"
     }
   },
   "proxies": {
@@ -1219,6 +1219,61 @@
       },
       {
         "address": "0x6a70461cc953ad65b6c3D93B0C8C617Db84Be53b",
+        "kind": "NonProxy",
+        "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
+      },
+      {
+        "address": "0xF27a0545540E89583cf4E74096553AE45177f344",
+        "kind": "NonProxy",
+        "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
+      },
+      {
+        "address": "0xd03355E768953d574E329bf5F6496FD0Ef6BA52b",
+        "kind": "NonProxy",
+        "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
+      },
+      {
+        "address": "0x470b8cEbB7b4D3DB40D055A54E036fea8F54F827",
+        "kind": "NonProxy",
+        "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
+      },
+      {
+        "address": "0x7e3781fb75D907d3D283AC5777d32EF739763048",
+        "kind": "NonProxy",
+        "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
+      },
+      {
+        "address": "0xBE0C8Ce580b7132A0aEbE4f9dc8c449D8549624d",
+        "kind": "NonProxy",
+        "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
+      },
+      {
+        "address": "0xAd31bCdd94e35bfDC4c69c972AE6e8A9B1d42235",
+        "kind": "NonProxy",
+        "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
+      },
+      {
+        "address": "0x5783D55f3a297e32a498ceEA87FDe8674253022B",
+        "kind": "NonProxy",
+        "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
+      },
+      {
+        "address": "0x827DdBdC3C1060c98474b785a7334021600098A9",
+        "kind": "NonProxy",
+        "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
+      },
+      {
+        "address": "0xB09bB017b49C76C4Fd1b172e4804734C8e753266",
+        "kind": "NonProxy",
+        "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
+      },
+      {
+        "address": "0x3BF0Ed15e827f7Ef105B4cf98585a0D321FC55A6",
+        "kind": "NonProxy",
+        "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
+      },
+      {
+        "address": "0xf5253cb4D9Ec76CCfAA97f2128D9b8Fd2F36966E",
         "kind": "NonProxy",
         "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
       }

@@ -40,7 +40,7 @@ library SVG {
      * @dev render a rectangle SVG tag
      * @param shape object
      */
-    function _rect(TinyBox memory box, uint256 shapeIndex, Shape memory shape, ShapeModulation memory shapeMods) internal view returns (string memory) {
+    function _rect(TinyBox memory box, uint256 shapeIndex, Shape memory shape, ShapeModulation memory shapeMods, bool animated) internal view returns (string memory) {
         // empty buffer for the SVG markup
         bytes memory buffer = new bytes(8192);
 
@@ -78,10 +78,8 @@ library SVG {
         buffer.append(' ');
         buffer.append(shapeMods.scale[1].toString());
         buffer.append(')">');
-        // here is where to add animate tags per shape
-        buffer.append(_generateAnimation(box, shape, shapeIndex));
+        if (animated) buffer.append(_generateAnimation(box, shape, shapeIndex));
         buffer.append('</rect>');
-
         return buffer.toString();
     }
 
@@ -325,7 +323,6 @@ library SVG {
             // BYPASS _animateTransform
             //buffer.append('<animateTransform attributeName="transform" attributeType="XML" type="rotate" calcMode="spline" values="0 60 70 ; 270 60 70 ; 270 60 70 ; 360 60 70 ; 360 60 70" keyTimes="0 ; 0.55 ; 0.75 ; 0.9 ; 1" keySplines="0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1" dur="10s" repeatCount="indefinite" />');
         } else if (animation == 2) {
-            // TODO: use a for loop for simplifying dupicate logic
             // squash n stretch
             uint256 div = 7;
             for (uint256 i = 0; i < 2; i++) {
@@ -355,19 +352,70 @@ library SVG {
             ));
         } else if (animation == 4) {
             // jiggle
-            buffer.append(_animate("x","100;50;100","10s"));
-            buffer.append(_animate("y","50;100;50","10s"));
+            bytes memory values = new bytes(10000);
+            uint256 amp = 20;
+            uint256 posX = uint256(shape.position[0]);
+            uint256 posY = uint256(shape.position[1]);
+            // values.append(posX.toString());
+            // values.append(" ");
+            // values.append(posY.toString());
+            // values.append(";");
+            // values.append(posX.sub(amp).toString());
+            // values.append(" ");
+            // values.append(posY.sub(amp).toString());
+            // values.append(";");
+            // values.append(posX.toString());
+            // values.append(" ");
+            // values.append(posY.toString());
+            // values.append(";");
+            // values.append(posX.add(amp).toString());
+            // values.append(" ");
+            // values.append(posY.add(amp).toString());
+            // values.append(";");
+            // values.append(posX.toString());
+            // values.append(" ");
+            // values.append(posY.toString());
+            buffer.append(_animateTransform("transform","translate",values.toString(),"10s"));
         }  else if (animation == 5) {
             // snap spin
             buffer.append(_animateTransformSpline(
                 "transform",
                 "rotate",
-                "0 60 70 ; 270 60 70 ; 270 60 70 ; 360 60 70 ; 360 60 70",
+                "0 200 200 ; 270 200 200 ; 270 200 200 ; 360 200 200 ; 360 200 200",
                 "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1",
                 "0 ; 0.55 ; 0.75 ; 0.9 ; 1",
                 "10s"
             ));
-        } 
+        } else if (animation == 6) {
+            // spread
+            // TODO: use different hold points in values and times in keyTimes
+            buffer.append(_animateTransformSpline(
+                "transform",
+                "rotate",
+                "0 200 200 ; 270 200 200 ; 270 200 200 ; 360 200 200 ; 360 200 200",
+                "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1",
+                "0 ; 0.55 ; 0.75 ; 0.9 ; 1",
+                "10s"
+            ));
+        } else if (animation == 7) {
+            // drop
+            bytes memory values = new bytes(10000);
+            values.append(shape.position[0].toString());
+            values.append(" ");
+            values.append(shape.position[1].toString());
+            values.append(" ; ");
+            values.append(shape.position[0].toString());
+            values.append(" ");
+            values.append(shape.position[1].sub(500).toString());
+            buffer.append(_animateTransformSpline(
+                "transform",
+                "translate",
+                values.toString(),
+                "0.2 0 0.5 1 ; 0.5 0 0.5 1",
+                "0 ; 1",
+                "10s"
+            ));
+        }
 
         return buffer.toString();
     }

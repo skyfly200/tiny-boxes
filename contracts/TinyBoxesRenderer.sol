@@ -294,7 +294,7 @@ library TinyBoxesRenderer {
         // write shapes to the SVG
         for (int256 i = 0; i < int256(shapeCount); i++) {
             uint256 shapeIndex = uint256(i.add(mod.stack)).mod(shapeCount);
-            buffer.append(SVG._rect(box, uint256(i), shapes[shapeIndex], shapeMods[shapeIndex]));
+            buffer.append(SVG._rect(box, uint256(i), shapes[shapeIndex], shapeMods[shapeIndex], true)); // animated flag at end
         }
 
         // convert master box scale to decimal with a precision of two digits
