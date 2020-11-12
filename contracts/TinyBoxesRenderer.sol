@@ -254,7 +254,7 @@ library TinyBoxesRenderer {
         HSL memory root = HSL(305,100,80);
         uint8 scheme = 3;
         //HSL[] memory colors2 = Colors.generateScheme(root, scheme, 0);
-        HSL[] memory colors = new HSL[](11);
+        HSL[] memory colors = new HSL[](14);
         colors[0] = Colors.lookupColor(root,scheme,0,-1);
         colors[1] = Colors.lookupColor(root,scheme,0,0);
         colors[2] = Colors.lookupColor(root,scheme,0,1);
@@ -266,8 +266,9 @@ library TinyBoxesRenderer {
         colors[8] = Colors.lookupColor(root,scheme,2,0);
         colors[9] = Colors.lookupColor(root,scheme,2,1);
         colors[10] = Colors.lookupColor(root,scheme,2,2);
-        // colors[11] = Colors.lookupColor(root,scheme,3,0);
-        // colors[12] = Colors.lookupColor(root,scheme,3,1);
+        colors[11] = Colors.lookupColor(root,scheme,3,-1);
+        colors[12] = Colors.lookupColor(root,scheme,3,0);
+        colors[13] = Colors.lookupColor(root,scheme,3,1);
 
         // generate an array of shapes
         uint256 shapeCount = box.shapes;
