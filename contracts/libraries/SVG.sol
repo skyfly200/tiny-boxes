@@ -326,8 +326,23 @@ library SVG {
             //buffer.append('<animateTransform attributeName="transform" attributeType="XML" type="rotate" calcMode="spline" values="0 60 70 ; 270 60 70 ; 270 60 70 ; 360 60 70 ; 360 60 70" keyTimes="0 ; 0.55 ; 0.75 ; 0.9 ; 1" keySplines="0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1" dur="10s" repeatCount="indefinite" />');
         } else if (animation == 2) {
             // squash n stretch
-            buffer.append(_animate("width","100;50;100","10s"));
-            buffer.append(_animate("height","50;100;50","10s"));
+            uint256 div = 10;
+            bytes memory valuesWidth = new bytes(1000);
+            uint256 width = uint256(shape.size[0]);
+            valuesWidth.append(width.sub(width.div(div)).toString());
+            valuesWidth.append(";");
+            valuesWidth.append(width.add(width.div(div)).toString());
+            valuesWidth.append(";");
+            valuesWidth.append(width.sub(width.div(div)).toString());
+            buffer.append(_animate("width",valuesWidth.toString(),"10s"));
+            bytes memory valuesHeight = new bytes(1000);
+            uint256 height = uint256(shape.size[0]);
+            valuesHeight.append(height.add(height.div(div)).toString());
+            valuesHeight.append(";");
+            valuesHeight.append(height.sub(height.div(div)).toString());
+            valuesHeight.append(";");
+            valuesHeight.append(height.add(height.div(div)).toString());
+            buffer.append(_animate("height",valuesHeight.toString(),"10s"));
         } else if (animation == 3) {
             // skew
             buffer.append(_animateTransform(
