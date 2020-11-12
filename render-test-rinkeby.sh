@@ -23,19 +23,21 @@ done
 ## delete oz lock file ./.openzeppelin/.lock
 rm -f ./.openzeppelin/.lock
 
+if [ -z "$DEPLOY" ]
+    then
+        echo "Skipping Deploy"
+    else
+        ADDRESS=$(npx oz deploy --no-interactive -k regular -n rinkeby TinyBoxes "$LINK" "$FEED" | tail -n 1)
+fi
+
 if [ -z "$RENDER" ]
     then 
         echo "Skipping Frame Rendering"
     else
         if [ -z "$ADDRESS" ]
             then
-                if [ -z "$DEPLOY" ]
-                    then
-                        echo "Error: no contract address provided!";
-                        echo "(use -a ADDRESS to provide address or -d y to deploy a new one)";
-                    else
-                        ADDRESS=$(npx oz deploy --no-interactive -k regular -n rinkeby TinyBoxes "$LINK" "$FEED" | tail -n 1)
-                fi
+                echo "Error: no contract address provided!";
+                echo "(use -a ADDRESS to provide address or -d y to deploy a new one)";
             else
                 echo "Testing Token Render"
                 if [ -z "$ANIMATION" ]
@@ -45,9 +47,7 @@ if [ -z "$RENDER" ]
                 fi
                 echo "Calling against contract @ $ADDRESS"
                 ## delete oz lock file ./.openzeppelin/.lock
-                rm -f "./.openzeppelin/.lock"
-                ## delete last render
-                rm -f "./frames/Anim-*.svg"
+                rm -f ./.openzeppelin/.lock
                 # render svg at
                 npx oz call --method tokenTest -n rinkeby --args "12345, [10,10], [100,100,2,2,111,222,333,444,2,750,1200,2400,100], [true,true,true], $ANIMATION, 0" --to "$ADDRESS" > "./frames/Anim-$ANIMATION.svg"
         fi
