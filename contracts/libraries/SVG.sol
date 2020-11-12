@@ -116,8 +116,31 @@ library SVG {
         buffer.append(attribute);
         buffer.append('" attributeType="XML" type="');
         buffer.append(typeVal);
-        buffer.append('" calcMode="spline" values="');
+        buffer.append('" values="');
         buffer.append(values);
+        buffer.append('" dur="');
+        buffer.append(duration);
+        buffer.append('" repeatCount="indefinite" />');
+
+        return buffer.toString();
+    }
+
+    /**
+     * @dev render a animateTransform SVG tag
+     */
+    function _animateTransform(string memory attribute, string memory typeVal, string memory values, string memory keyTimes, string memory duration) internal view returns (string memory) {
+        // empty buffer for the SVG markup
+        bytes memory buffer = new bytes(8192);
+
+        // build the animateTransform tag
+        buffer.append('<animateTransform attributeName="');
+        buffer.append(attribute);
+        buffer.append('" attributeType="XML" type="');
+        buffer.append(typeVal);
+        buffer.append('" values="');
+        buffer.append(values);
+        buffer.append('" keyTimes="');
+        buffer.append(keyTimes);
         buffer.append('" dur="');
         buffer.append(duration);
         buffer.append('" repeatCount="indefinite" />');
@@ -294,7 +317,8 @@ library SVG {
             buffer.append(_animateTransform(
                 "transform",
                 "rotate",
-                "0 60 70 ; 270 60 70 ; 270 60 70 ; 360 60 70 ; 360 60 70",
+                "0 60 70 ; 90 60 70 ; 270 60 70 ; 360 60 70",
+                "0 ; 0.1 ; 0.9 ; 1",
                 "10s"
             ));
             // BYPASS _animateTransform
