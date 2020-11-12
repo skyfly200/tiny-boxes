@@ -87,88 +87,28 @@ library SVG {
      * @dev render an animate SVG tag
      */
     function _animate(string memory attribute, string memory values, string memory duration) internal view returns (string memory) {
-        // empty buffer for the SVG markup
-        bytes memory buffer = new bytes(8192);
-
-        // build the animate tag
-        buffer.append('<animate attributeName="');
-        buffer.append(attribute);
-        buffer.append('" values="');
-        buffer.append(values);
-        buffer.append('" dur="');
-        buffer.append(duration);
-        buffer.append('" repeatCount="indefinite" />');
-
-        return buffer.toString();
+        return string(abi.encodePacked('<animate attributeName="', attribute, '" values="', values, '" dur="', duration, '" repeatCount="indefinite" />'));
     }
 
     /**
      * @dev render a animateTransform SVG tag
      */
     function _animateTransform(string memory attribute, string memory typeVal, string memory values, string memory duration) internal view returns (string memory) {
-        // empty buffer for the SVG markup
-        bytes memory buffer = new bytes(8192);
-
-        // build the animateTransform tag
-        buffer.append('<animateTransform attributeName="');
-        buffer.append(attribute);
-        buffer.append('" attributeType="XML" type="');
-        buffer.append(typeVal);
-        buffer.append('" values="');
-        buffer.append(values);
-        buffer.append('" dur="');
-        buffer.append(duration);
-        buffer.append('" repeatCount="indefinite" />');
-
-        return buffer.toString();
+        return string(abi.encodePacked('<animateTransform attributeName="', attribute, '" attributeType="XML" type="', typeVal, '" values="', values, '" dur="', duration, '" repeatCount="indefinite" />'));
     }
 
     /**
      * @dev render a animateTransform SVG tag
      */
     function _animateTransform(string memory attribute, string memory typeVal, string memory values, string memory keyTimes, string memory duration) internal view returns (string memory) {
-        // empty buffer for the SVG markup
-        bytes memory buffer = new bytes(8192);
-
-        // build the animateTransform tag
-        buffer.append('<animateTransform attributeName="');
-        buffer.append(attribute);
-        buffer.append('" attributeType="XML" type="');
-        buffer.append(typeVal);
-        buffer.append('" values="');
-        buffer.append(values);
-        buffer.append('" keyTimes="');
-        buffer.append(keyTimes);
-        buffer.append('" dur="');
-        buffer.append(duration);
-        buffer.append('" repeatCount="indefinite" />');
-
-        return buffer.toString();
+        return string(abi.encodePacked('<animateTransform attributeName="', attribute, '" attributeType="XML" type="', typeVal, '" values="', values, '" keyTimes="', keyTimes, '" dur="', duration, '" repeatCount="indefinite" />'));
     }
 
     /**
      * @dev render a animateTransform SVG tag
      */
     function _animateTransformSpline(string memory attribute, string memory typeVal, string memory values, string memory keySplines, string memory keyTimes, string memory duration) internal view returns (string memory) {
-        // empty buffer for the SVG markup
-        bytes memory buffer = new bytes(8192);
-
-        // build the animateTransform tag
-        buffer.append('<animateTransform attributeName="');
-        buffer.append(attribute);
-        buffer.append('" attributeType="XML" type="');
-        buffer.append(typeVal);
-        buffer.append('" calcMode="spline" values="');
-        buffer.append(values);
-        buffer.append('" keySplines="');
-        buffer.append(keySplines);
-        buffer.append('" keyTimes="');
-        buffer.append(keyTimes);
-        buffer.append('" dur="');
-        buffer.append(duration);
-        buffer.append('" repeatCount="indefinite" />');
-
-        return buffer.toString();
+        return string(abi.encodePacked('<animateTransform attributeName="', attribute, '" attributeType="XML" type="', typeVal, '" calcMode="spline" values="', values, '" keySplines="', keySplines, '" keyTimes="', keyTimes, '" dur="', duration, '" repeatCount="indefinite" />'));
     }
     
     /**
@@ -176,18 +116,11 @@ library SVG {
      * @return header string
      */
     function _generateHeader() internal view returns (string memory) {
-        bytes memory buffer = new bytes(8192);
-
         string memory xmlVersion = '<?xml version="1.0" encoding="UTF-8"?>';
         string memory doctype = '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
         string memory openingTag = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2400 2400" style="stroke-width:0;background-color:#121212">';
 
-        // buffer.append(xmlVersion);
-        // buffer.append(doctype);
-        // buffer.append(openingTag);
         return string(abi.encodePacked(xmlVersion, doctype, openingTag));
-
-        //return buffer.toString();
     }
 
     /**
@@ -195,22 +128,13 @@ library SVG {
      * @return header string
      */
     function _generateBody(TinyBox memory box) internal view returns (string memory) {
-        bytes memory buffer = new bytes(8192);
-
         string memory metadataTag = '<metadata>';
         string memory metadataEndTag = '</metadata>';
         string memory animationTag = '<animation>';
         string memory animationEndTag = '</animation>';
         string memory symbols = '<symbol id="quad3"><symbol id="quad2"><symbol id="quad1"><symbol id="quad0">';
 
-        buffer.append(metadataTag);
-        buffer.append(animationTag);
-        buffer.append(uint256(box.animation).toString());
-        buffer.append(animationEndTag);
-        buffer.append(metadataEndTag);
-        buffer.append(symbols);
-
-        return buffer.toString();
+        return string(abi.encodePacked(metadataTag, animationTag, uint256(box.animation).toString(), animationEndTag, metadataEndTag, symbols));
     }
 
     /**
