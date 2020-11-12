@@ -325,24 +325,26 @@ library SVG {
             // BYPASS _animateTransform
             //buffer.append('<animateTransform attributeName="transform" attributeType="XML" type="rotate" calcMode="spline" values="0 60 70 ; 270 60 70 ; 270 60 70 ; 360 60 70 ; 360 60 70" keyTimes="0 ; 0.55 ; 0.75 ; 0.9 ; 1" keySplines="0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1" dur="10s" repeatCount="indefinite" />');
         } else if (animation == 2) {
+            // TODO: use a for loop for simplifying dupicate logic
             // squash n stretch
-            uint256 div = 10;
-            bytes memory valuesWidth = new bytes(1000);
-            uint256 width = uint256(shape.size[0]);
-            valuesWidth.append(width.sub(width.div(div)).toString());
-            valuesWidth.append(";");
-            valuesWidth.append(width.add(width.div(div)).toString());
-            valuesWidth.append(";");
-            valuesWidth.append(width.sub(width.div(div)).toString());
-            buffer.append(_animate("width",valuesWidth.toString(),"10s"));
-            bytes memory valuesHeight = new bytes(1000);
-            uint256 height = uint256(shape.size[0]);
-            valuesHeight.append(height.add(height.div(div)).toString());
-            valuesHeight.append(";");
-            valuesHeight.append(height.sub(height.div(div)).toString());
-            valuesHeight.append(";");
-            valuesHeight.append(height.add(height.div(div)).toString());
-            buffer.append(_animate("height",valuesHeight.toString(),"10s"));
+            uint256 div = 7;
+            for (uint256 i = 0; i < 2; i++) {
+                bytes memory values = new bytes(1000);
+                uint256 size = uint256(shape.size[i]);
+                values.append(size.toString());
+                values.append(";");
+                if (i==0) values.append(size.sub(size.div(div)).toString());
+                else values.append(size.add(size.div(div)).toString());
+                values.append(";");
+                values.append(size.toString());
+                values.append(";");
+                if (i==0) values.append(size.add(size.div(div)).toString());
+                else values.append(size.sub(size.div(div)).toString());
+                values.append(";");
+                values.append(size.toString());
+                if (i==0) buffer.append(_animate("width",values.toString(),"10s"));
+                else buffer.append(_animate("height",values.toString(),"10s"));
+            }
         } else if (animation == 3) {
             // skew
             buffer.append(_animateTransform(
