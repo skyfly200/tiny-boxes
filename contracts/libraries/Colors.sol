@@ -27,16 +27,7 @@ library Colors {
     //constructor() public {}
 
     function toString(HSL calldata color) external view returns (string memory) {
-        // new empty buffer for the HSL string
-        bytes memory buffer = new bytes(8192);
-        buffer.append("hsl(");
-        buffer.append(uint256(color.hue).toString());
-        buffer.append(",");
-        buffer.append(uint256(color.saturation).toString());
-        buffer.append("%,");
-        buffer.append(uint256(color.lightness).toString());
-        buffer.append("%)");
-        return buffer.toString();
+        return string(abi.encodePacked("hsl(", uint256(color.hue).toString(), ",", uint256(color.saturation).toString(), "%,", uint256(color.lightness).toString(), "%)"));
     }
 
     function generateHues(
