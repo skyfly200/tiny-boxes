@@ -21,11 +21,6 @@ library Colors {
     using SafeMath for *;
     using SignedSafeMath for *;
 
-    /**
-     * @dev Contract constructor.
-     */
-    //constructor() public {}
-
     function toString(HSL calldata color) external view returns (string memory) {
         return string(abi.encodePacked("hsl(", uint256(color.hue).toString(), ",", uint256(color.saturation).toString(), "%,", uint256(color.lightness).toString(), "%)"));
     }
@@ -34,23 +29,8 @@ library Colors {
         uint16 base,
         uint8 scheme
     ) public pure returns (uint16[4] memory hues) {
-        uint16[3][8] memory schemes = [
-            [uint16(180), uint16(180), uint16(0)], // complimentary
-            [uint16(30), uint16(330), uint16(0)], // analogous
-            [uint16(150), uint16(210), uint16(0)], // split complimentary
-            [uint16(120), uint16(240), uint16(0)], // triadic
-            [uint16(150), uint16(180), uint16(210)], // complimentary and analogous
-            [uint16(30), uint16(180), uint16(330)], // analogous and complimentary
-            [uint16(90), uint16(180), uint16(270)], // square
-            [uint16(60), uint16(180), uint16(240)] // tetradic
-        ];
-
-        require(scheme < schemes.length, "Invalid theme id");
-
-        hues[0] = base;
-
-        for (uint256 i = 0; i < 3; i++)
-            hues[i + 1] = uint16(uint256(base).add(schemes[scheme][i]));
+        for (uint256 i = 0; i < 4; i++)
+            hues[i] = lookupHue(base, scheme, i);
     }
     
     function lookupHue(

@@ -253,7 +253,7 @@ library TinyBoxesRenderer {
         // hue, sat, light, scheme, shades
         HSL memory root = HSL(305,100,80);
         uint8 scheme = 3;
-        //HSL[] memory colors2 = Colors.generateScheme(root, scheme, 0);
+        //HSL[] memory colors = Colors.generateScheme(root, scheme, 0);
         HSL[] memory colors = new HSL[](14);
         colors[0] = Colors.lookupColor(root,scheme,0,-1);
         colors[1] = Colors.lookupColor(root,scheme,0,0);
