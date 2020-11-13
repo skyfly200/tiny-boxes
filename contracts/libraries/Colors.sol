@@ -50,30 +50,6 @@ library Colors {
     }
 
     function lookupColor(
-        uint16 hue,
-        uint8 saturation,
-        uint8 lightnessMin,
-        uint8 lightnessMax,
-        uint8 scheme,
-        uint8 color,
-        uint8 shades,
-        uint8 shade
-    ) public pure returns (HSL memory) {
-        uint16 h = lookupHue(hue, scheme, color);
-        uint8 s = saturation;
-        uint8 l;
-        if (shades > 0) {
-            uint256 range = uint256(lightnessMax).sub(lightnessMin);
-            uint256 step = range.div(uint256(shades));
-            uint256 offset = uint256(shade.mul(step));
-            l = uint8(uint256(lightnessMax).sub(offset));
-        } else {
-            l = lightnessMax;
-        }
-        return HSL(h, s, l);
-    }
-
-    function lookupColor(
         Palette memory pal,
         uint8 color,
         uint8 shade
@@ -90,13 +66,6 @@ library Colors {
             l = pal.lightnessRange[1];
         }
         return HSL(h, s, l);
-    }
-
-    function generateColors(HSL memory root, uint8 scheme, uint8 shades) public pure returns (HSL[] memory colors) {
-        colors = new HSL[](4 * shades + 1);
-        for (uint8 i = 0; i < 4; i++)
-            for (uint8 s = 0; s <= shades; s++) 
-                colors[i * shades + s] = lookupColor(root.hue,root.saturation,0,100,scheme,i,shades,s);
     }
 
     function generateColors(Palette memory palette) public pure returns (HSL[] memory colors) {
