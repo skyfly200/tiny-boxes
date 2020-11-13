@@ -78,7 +78,7 @@ library SVG {
         buffer.append(' ');
         buffer.append(shapeMods.scale[1].toString());
         buffer.append(')">');
-        if (animated) buffer.append(_generateAnimation(box, shape, shapeIndex));
+        buffer.append(animated ? _generateAnimation(box, shape, shapeIndex) : '');
         buffer.append('</rect>');
         return buffer.toString();
     }
