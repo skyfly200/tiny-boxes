@@ -181,13 +181,13 @@ library TinyBoxesRenderer {
         if (animation == 4) {
             // squash and squeze
             // transfer height to width and vice versa
-            int256 change;
-            if (frame < ANIMATION_FRAMES / 2)
-                change = int256(shapeIndex.add(frame).sub(uint256(box.shapes).div(2)).mod(uint256(box.shapes)));
-            else
-                change = int256(shapeIndex.add(uint256(box.shapes).div(2)).sub(frame.sub(ANIMATION_FRAMES / 2)).mod(uint256(box.shapes)));
-            mod.scale[0] = int256(change).toDecimal();
-            mod.scale[1] = int256(change.mul(int256(-1))).toDecimal();
+            // int256 change;
+            // if (frame < ANIMATION_FRAMES / 2)
+            //     change = int256(shapeIndex.add(frame).sub(uint256(box.shapes).div(2)).mod(uint256(box.shapes)));
+            // else
+            //     change = int256(shapeIndex.add(uint256(box.shapes).div(2)).sub(frame.sub(ANIMATION_FRAMES / 2)).mod(uint256(box.shapes)));
+            // mod.scale[0] = int256(change).toDecimal();
+            // mod.scale[1] = int256(change.mul(int256(-1))).toDecimal();
         } else if (animation == 5) {
             // skew x
             int256 amp = 1;

@@ -278,9 +278,9 @@ library SVG {
         } else if (animation == 4) {
             // jiggle
             bytes memory values = new bytes(10000);
-            uint256 amp = 20;
-            uint256 posX = uint256(shape.position[0]);
-            uint256 posY = uint256(shape.position[1]);
+            // uint256 amp = 20;
+            // uint256 posX = uint256(shape.position[0]);
+            // uint256 posY = uint256(shape.position[1]);
             // values.append(posX.toString());
             // values.append(" ");
             // values.append(posY.toString());
@@ -324,18 +324,14 @@ library SVG {
             ));
         } else if (animation == 7) {
             // drop
-            bytes memory values = new bytes(10000);
-            values.append(shape.position[0].toString());
-            values.append(" ");
-            values.append(shape.position[1].toString());
-            values.append(" ; ");
-            values.append(shape.position[0].toString());
-            values.append(" ");
-            values.append(shape.position[1].sub(500).toString());
+            string memory values = string(abi.encodePacked(
+                shape.position[0].toString()," ",shape.position[1].toString()," ; ",
+                shape.position[0].toString()," ",shape.position[1].sub(500).toString()
+            ));
             buffer.append(_animateTransformSpline(
                 "transform",
                 "translate",
-                values.toString(),
+                values,
                 "0.2 0 0.5 1 ; 0.5 0 0.5 1",
                 "0 ; 1",
                 "10s"
