@@ -268,7 +268,7 @@ library TinyBoxesRenderer {
         colors[10] = Colors.lookupColor(root,scheme,2,2);
         colors[11] = Colors.lookupColor(root,scheme,3,-1);
         colors[12] = Colors.lookupColor(root,scheme,3,0);
-        colors[13] = Colors.lookupColor(root,scheme,3,1);
+        colors[13] = Colors.lookupColor(root.hue,root.saturation,0,100,scheme,3,5,3);
 
         // generate an array of shapes
         uint256 shapeCount = box.shapes;

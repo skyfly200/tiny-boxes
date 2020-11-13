@@ -99,14 +99,14 @@ library Colors {
         uint8 lightnessMax,
         uint8 scheme,
         uint8 color,
-        uint8 shade,
-        uint8 shades
+        uint8 shades,
+        uint8 shade
     ) public pure returns (HSL memory) {
         uint16 h = lookupHue(hue, scheme, color);
         uint8 s = saturation;
-        int8 range = lightnessMax.sub(lightnessMin);
-        int8 offset = shade.mul(range.div(shades.sub(1)));
-        uint8 l = uint8(int8(lightnessMin).add(offset));
+        uint256 range = uint256(lightnessMax).sub(lightnessMin);
+        uint256 offset = uint256(shade.mul(range.div(uint256(shades).sub(1))));
+        uint8 l = uint8(uint256(lightnessMin).add(offset));
         return HSL(h, s, l);
     }
 }
