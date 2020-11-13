@@ -33,31 +33,14 @@ export class Colors extends Contract {
       { hue: string; saturation: string; lightness: string }[]
     >;
 
-    generateHues(
-      base: number | string,
-      scheme: number | string
-    ): TransactionObject<string[]>;
-
-    generateScheme(
-      root: {
-        hue: number | string;
-        saturation: number | string;
-        lightness: number | string;
-      },
-      schemeId: number | string,
-      shades: number | string
-    ): TransactionObject<
-      { hue: string; saturation: string; lightness: string }[]
-    >;
-
     lookupColor(
-      root: {
-        hue: number | string;
-        saturation: number | string;
-        lightness: number | string;
-      },
+      hue: number | string,
+      saturation: number | string,
+      lightnessMin: number | string,
+      lightnessMax: number | string,
       scheme: number | string,
       color: number | string,
+      shades: number | string,
       shade: number | string
     ): TransactionObject<{
       hue: string;
@@ -70,12 +53,6 @@ export class Colors extends Contract {
       scheme: number | string,
       index: number | string
     ): TransactionObject<string>;
-
-    testSchemes(): TransactionObject<{
-      hue: string;
-      saturation: string;
-      lightness: string;
-    }>;
 
     toString(color: {
       hue: number | string;

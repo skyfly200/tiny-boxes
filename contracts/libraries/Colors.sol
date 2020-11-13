@@ -48,50 +48,6 @@ library Colors {
         else hue = uint16(uint256(base).add(schemes[scheme][index-1]));
     }
 
-    function generateHues(
-        uint16 base,
-        uint8 scheme
-    ) public pure returns (uint16[4] memory hues) {
-        for (uint8 i = 0; i < 4; i++) hues[i] = lookupHue(base, scheme, i);
-    }
-
-    function testSchemes() external pure returns (HSL memory colors) {
-        return generateScheme(HSL(30,100,50),0,0)[0];
-    }
-
-    function generateScheme(
-        HSL memory root,
-        uint8 schemeId,
-        uint8 shades
-    ) public pure returns (HSL[] memory) {
-        HSL[] memory scheme = new HSL[](shades * 4);
-        uint16[4] memory hues = generateHues(root.hue, schemeId);
-        uint8 s = root.saturation;
-        uint8 l = root.lightness;
-
-        for (uint256 i = 0; i < 4; i++) {
-            uint16 h = hues[i];
-            for (uint8 j = 0; j < shades; j++) {
-                uint8 offset = uint8(uint256(l).div(shades).mul(j));
-                scheme[i * (shades * 2 + 1) + j] = HSL(h, s, uint8(uint256(l).sub(offset)));
-            }
-        }
-        return scheme;
-    }
-
-    function lookupColor(
-        HSL memory root,
-        uint8 scheme,
-        uint8 color,
-        int8 shade
-    ) public pure returns (HSL memory) {
-        uint16 h = lookupHue(root.hue, scheme, color);
-        uint8 s = root.saturation;
-        int8 offset = shade * 5;
-        uint8 l = uint8(int8(root.lightness).add(offset));
-        return HSL(h, s, l);
-    }
-
     function lookupColor(
         uint16 hue,
         uint8 saturation,

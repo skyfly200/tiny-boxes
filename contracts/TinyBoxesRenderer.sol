@@ -252,23 +252,22 @@ library TinyBoxesRenderer {
         // TODO: use generate scheme params
         // hue, sat, light, scheme, shades
         HSL memory root = HSL(305,100,80);
+        //HSL[] memory colors = Colors.generateColors(root, 3, 5); // root color, scheme, shades, min lightness
         uint8 scheme = 3;
         //HSL[] memory colors = Colors.generateScheme(root, scheme, 0);
-        HSL[] memory colors = new HSL[](14);
-        colors[0] = Colors.lookupColor(root,scheme,0,-1);
-        colors[1] = Colors.lookupColor(root,scheme,0,0);
-        colors[2] = Colors.lookupColor(root,scheme,0,1);
-        colors[3] = Colors.lookupColor(root,scheme,1,-1);
-        colors[4] = Colors.lookupColor(root,scheme,1,0);
-        colors[5] = Colors.lookupColor(root,scheme,1,1);
-        colors[6] = Colors.lookupColor(root,scheme,2,-2);
-        colors[7] = Colors.lookupColor(root,scheme,2,-1);
-        colors[8] = Colors.lookupColor(root,scheme,2,0);
-        colors[9] = Colors.lookupColor(root,scheme,2,1);
-        colors[10] = Colors.lookupColor(root,scheme,2,2);
-        colors[11] = Colors.lookupColor(root,scheme,3,-1);
-        colors[12] = Colors.lookupColor(root,scheme,3,0);
-        colors[13] = Colors.lookupColor(root.hue,root.saturation,0,100,scheme,3,5,3);
+        HSL[] memory colors = new HSL[](12);
+        colors[0] = Colors.lookupColor(root.hue,root.saturation,0,100,scheme,0,2,0);
+        colors[1] = Colors.lookupColor(root.hue,root.saturation,0,100,scheme,0,2,1);
+        colors[2] = Colors.lookupColor(root.hue,root.saturation,0,100,scheme,0,2,2);
+        colors[3] = Colors.lookupColor(root.hue,root.saturation,0,100,scheme,1,2,0);
+        colors[4] = Colors.lookupColor(root.hue,root.saturation,0,100,scheme,1,2,1);
+        colors[5] = Colors.lookupColor(root.hue,root.saturation,0,100,scheme,1,2,2);
+        colors[6] = Colors.lookupColor(root.hue,root.saturation,0,100,scheme,2,2,0);
+        colors[7] = Colors.lookupColor(root.hue,root.saturation,0,100,scheme,2,2,1);
+        colors[8] = Colors.lookupColor(root.hue,root.saturation,0,100,scheme,2,2,2);
+        colors[9] = Colors.lookupColor(root.hue,root.saturation,0,100,scheme,3,2,0);
+        colors[10] = Colors.lookupColor(root.hue,root.saturation,0,100,scheme,3,2,1);
+        colors[11] = Colors.lookupColor(root.hue,root.saturation,0,100,scheme,3,2,2);
 
         // generate an array of shapes
         uint256 shapeCount = box.shapes;
