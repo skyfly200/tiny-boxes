@@ -22,7 +22,7 @@ library Colors {
     using SafeMath for *;
     using SignedSafeMath for *;
 
-    function toString(HSL calldata color) external view returns (string memory) {
+    function toString(HSL calldata color) external pure returns (string memory) {
         return string(abi.encodePacked("hsl(", uint256(color.hue).toString(), ",", uint256(color.saturation).toString(), "%,", uint256(color.lightness).toString(), "%)"));
     }
     

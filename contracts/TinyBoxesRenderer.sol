@@ -251,20 +251,20 @@ library TinyBoxesRenderer {
         // generate colors
         HSL memory root = HSL(305,100,80);
         //HSL[] memory colors = Colors.generateColors(root, 3, 5); // root color, scheme, shades, min lightness
-        uint8 scheme = 3;
+        Palette memory colorPalette = Palette(305,100,[30,70],3,2);
         HSL[] memory colors = new HSL[](12);
-        colors[0] = Colors.lookupColor(root.hue,root.saturation,50,70,scheme,0,2,0);
-        colors[1] = Colors.lookupColor(root.hue,root.saturation,50,70,scheme,0,2,1);
-        colors[2] = Colors.lookupColor(root.hue,root.saturation,50,70,scheme,0,2,2);
-        colors[3] = Colors.lookupColor(root.hue,root.saturation,50,70,scheme,1,2,0);
-        colors[4] = Colors.lookupColor(root.hue,root.saturation,50,70,scheme,1,2,1);
-        colors[5] = Colors.lookupColor(root.hue,root.saturation,50,70,scheme,1,2,2);
-        colors[6] = Colors.lookupColor(root.hue,root.saturation,50,70,scheme,2,2,0);
-        colors[7] = Colors.lookupColor(root.hue,root.saturation,50,70,scheme,2,2,1);
-        colors[8] = Colors.lookupColor(root.hue,root.saturation,50,70,scheme,2,2,2);
-        colors[9] = Colors.lookupColor(root.hue,root.saturation,50,70,scheme,3,2,0);
-        colors[10] = Colors.lookupColor(root.hue,root.saturation,50,70,scheme,3,2,1);
-        colors[11] = Colors.lookupColor(root.hue,root.saturation,50,70,scheme,3,2,2);
+        colors[0] = Colors.lookupColor(colorPalette,0,0);
+        colors[1] = Colors.lookupColor(colorPalette,0,1);
+        colors[2] = Colors.lookupColor(colorPalette,0,2);
+        colors[3] = Colors.lookupColor(colorPalette,1,0);
+        colors[4] = Colors.lookupColor(colorPalette,1,1);
+        colors[5] = Colors.lookupColor(colorPalette,1,2);
+        colors[6] = Colors.lookupColor(colorPalette,2,0);
+        colors[7] = Colors.lookupColor(colorPalette,2,1);
+        colors[8] = Colors.lookupColor(colorPalette,2,2);
+        colors[9] = Colors.lookupColor(colorPalette,3,0);
+        colors[10] = Colors.lookupColor(colorPalette,3,1);
+        colors[11] = Colors.lookupColor(colorPalette,3,2);
 
         // generate an array of shapes
         uint256 shapeCount = box.shapes;
