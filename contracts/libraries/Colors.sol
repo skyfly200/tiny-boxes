@@ -24,14 +24,6 @@ library Colors {
     function toString(HSL calldata color) external view returns (string memory) {
         return string(abi.encodePacked("hsl(", uint256(color.hue).toString(), ",", uint256(color.saturation).toString(), "%,", uint256(color.lightness).toString(), "%)"));
     }
-
-    function generateHues(
-        uint16 base,
-        uint8 scheme
-    ) public pure returns (uint16[4] memory hues) {
-        for (uint256 i = 0; i < 4; i++)
-            hues[i] = lookupHue(base, scheme, i);
-    }
     
     function lookupHue(
         uint16 base,
@@ -56,6 +48,13 @@ library Colors {
         else hue = uint16(uint256(base).add(schemes[scheme][index-1]));
     }
 
+    function generateHues(
+        uint16 base,
+        uint8 scheme
+    ) public pure returns (uint16[4] memory hues) {
+        for (uint8 i = 0; i < 4; i++) hues[i] = lookupHue(base, scheme, i);
+    }
+
     function testSchemes() external pure returns (HSL memory colors) {
         return generateScheme(HSL(30,100,50),0,0)[0];
     }
@@ -72,11 +71,9 @@ library Colors {
 
         for (uint256 i = 0; i < 4; i++) {
             uint16 h = hues[i];
-            scheme[i * (shades * 2 + 1)] = HSL(h, s, l);
-            for (uint8 j = 1; j <= shades; j++) {
-                uint8 offset = j * 5;
-                scheme[i * (shades * 2 + 1) + j] = HSL(h, s, uint8(uint256(l).add(-offset)));
-                scheme[i * (shades * 2 + 1) + j] = HSL(h, s, uint8(uint256(l).add(offset)));
+            for (uint8 j = 0; j < shades; j++) {
+                uint8 offset = uint8(uint256(l).div(shades).mul(j));
+                scheme[i * (shades * 2 + 1) + j] = HSL(h, s, uint8(uint256(l).sub(offset)));
             }
         }
         return scheme;
@@ -88,10 +85,28 @@ library Colors {
         uint8 color,
         int8 shade
     ) public pure returns (HSL memory) {
-        int8 offset = shade * 5;
         uint16 h = lookupHue(root.hue, scheme, color);
         uint8 s = root.saturation;
+        int8 offset = shade * 5;
         uint8 l = uint8(int8(root.lightness).add(offset));
+        return HSL(h, s, l);
+    }
+
+    function lookupColor(
+        uint16 hue,
+        uint8 saturation,
+        uint8 lightnessMin,
+        uint8 lightnessMax,
+        uint8 scheme,
+        uint8 color,
+        uint8 shade,
+        uint8 shades
+    ) public pure returns (HSL memory) {
+        uint16 h = lookupHue(hue, scheme, color);
+        uint8 s = saturation;
+        int8 range = lightnessMax.sub(lightnessMin);
+        int8 offset = shade.mul(range.div(shades.sub(1)));
+        uint8 l = uint8(int8(lightnessMin).add(offset));
         return HSL(h, s, l);
     }
 }
