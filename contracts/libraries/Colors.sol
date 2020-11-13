@@ -12,6 +12,7 @@ import "./FixidityLib.sol";
 import "./SVGBuffer.sol";
 
 import "../structs/HSL.sol";
+import "../structs/Palette.sol";
 
 library Colors {
     using SVGBuffer for *;
@@ -68,6 +69,25 @@ library Colors {
             l = uint8(uint256(lightnessMax).sub(offset));
         } else {
             l = lightnessMax;
+        }
+        return HSL(h, s, l);
+    }
+
+    function lookupColor(
+        Palette memory pal,
+        uint8 color,
+        uint8 shade
+    ) public pure returns (HSL memory) {
+        uint16 h = lookupHue(pal.hue, pal.scheme, color);
+        uint8 s = pal.saturation;
+        uint8 l;
+        if (pal.shades > 0) {
+            uint256 range = uint256(pal.lightnessRange[1]).sub(pal.lightnessRange[0]);
+            uint256 step = range.div(uint256(pal.shades));
+            uint256 offset = uint256(shade.mul(step));
+            l = uint8(uint256(pal.lightnessRange[1]).sub(offset));
+        } else {
+            l = pal.lightnessRange[1];
         }
         return HSL(h, s, l);
     }

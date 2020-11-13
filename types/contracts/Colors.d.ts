@@ -34,13 +34,14 @@ export class Colors extends Contract {
     >;
 
     lookupColor(
-      hue: number | string,
-      saturation: number | string,
-      lightnessMin: number | string,
-      lightnessMax: number | string,
-      scheme: number | string,
+      pal: {
+        hue: number | string;
+        saturation: number | string;
+        lightnessRange: (number | string)[];
+        scheme: number | string;
+        shades: number | string;
+      },
       color: number | string,
-      shades: number | string,
       shade: number | string
     ): TransactionObject<{
       hue: string;
