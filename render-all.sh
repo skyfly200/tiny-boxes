@@ -47,5 +47,4 @@ if [ -z "$ADDRESS" ]
                     npx oz call --method tokenTest -n rinkeby --args "12345, [10,10], [100,100,2,2,111,222,333,444,2,750,1200,2400,100], [true,true,true], $ANIMATION, 0" --to "$ADDRESS" > "./frames/Anim-$ANIMATION.svg"
                 done
         fi
-        
 fi
