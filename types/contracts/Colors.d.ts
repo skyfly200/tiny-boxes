@@ -21,15 +21,13 @@ export class Colors extends Contract {
   );
   clone(): Colors;
   methods: {
-    generateColors(
-      root: {
-        hue: number | string;
-        saturation: number | string;
-        lightness: number | string;
-      },
-      scheme: number | string,
-      shades: number | string
-    ): TransactionObject<
+    generateColors(palette: {
+      hue: number | string;
+      saturation: number | string;
+      lightnessRange: (number | string)[];
+      scheme: number | string;
+      shades: number | string;
+    }): TransactionObject<
       { hue: string; saturation: string; lightness: string }[]
     >;
 

@@ -98,4 +98,11 @@ library Colors {
             for (uint8 s = 0; s <= shades; s++) 
                 colors[i * shades + s] = lookupColor(root.hue,root.saturation,0,100,scheme,i,shades,s);
     }
+
+    function generateColors(Palette memory palette) public pure returns (HSL[] memory colors) {
+        colors = new HSL[](4 * palette.shades + 1);
+        for (uint8 i = 0; i < 4; i++)
+            for (uint8 s = 0; s <= palette.shades; s++) 
+                colors[i * palette.shades + s] = lookupColor(palette,i,s);
+    }
 }

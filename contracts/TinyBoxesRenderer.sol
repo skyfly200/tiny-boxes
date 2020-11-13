@@ -249,7 +249,6 @@ library TinyBoxesRenderer {
         bytes32[] memory pool = Random.init(box.randomness);
 
         // generate colors
-        HSL memory root = HSL(305,100,80);
         //HSL[] memory colors = Colors.generateColors(root, 3, 5); // root color, scheme, shades, min lightness
         Palette memory colorPalette = Palette(305,100,[30,70],3,2);
         HSL[] memory colors = new HSL[](12);
