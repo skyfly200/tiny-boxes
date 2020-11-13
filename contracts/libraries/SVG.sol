@@ -234,8 +234,6 @@ library SVG {
         if (animation == 0) {
             //Rounding corners
             buffer.append(_animate("rx","0;100;0","10s"));
-            // BYPASS _animate
-            //buffer.append('<animate attributeName="rx" values="0;100;0" dur="10s" repeatCount="indefinite" />');
         } else if (animation == 1) {
             // Spin
             buffer.append(_animateTransform(
@@ -245,8 +243,6 @@ library SVG {
                 "0 ; 0.1 ; 0.9 ; 1",
                 "10s"
             ));
-            // BYPASS _animateTransform
-            //buffer.append('<animateTransform attributeName="transform" attributeType="XML" type="rotate" calcMode="spline" values="0 60 70 ; 270 60 70 ; 270 60 70 ; 360 60 70 ; 360 60 70" keyTimes="0 ; 0.55 ; 0.75 ; 0.9 ; 1" keySplines="0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1" dur="10s" repeatCount="indefinite" />');
         } else if (animation == 2) {
             // squash n stretch
             uint256 div = 7;
