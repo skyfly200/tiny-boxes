@@ -104,9 +104,22 @@ library Colors {
     ) public pure returns (HSL memory) {
         uint16 h = lookupHue(hue, scheme, color);
         uint8 s = saturation;
-        uint256 range = uint256(lightnessMax).sub(lightnessMin);
-        uint256 offset = uint256(shade.mul(range.div(uint256(shades).sub(1))));
-        uint8 l = uint8(uint256(lightnessMin).add(offset));
+        uint8 l;
+        if (shades > 0) {
+            uint256 range = uint256(lightnessMax).sub(lightnessMin);
+            uint256 step = range.div(uint256(shades));
+            uint256 offset = uint256(shade.mul(step));
+            l = uint8(uint256(lightnessMax).sub(offset));
+        } else {
+            l = lightnessMax;
+        }
         return HSL(h, s, l);
+    }
+
+    function generateColors(HSL memory root, uint8 scheme, uint8 shades) public pure returns (HSL[] memory colors) {
+        colors = new HSL[](4 * shades + 1);
+        for (uint8 i = 0; i < 4; i++)
+            for (uint8 s = 0; s <= shades; s++) 
+                colors[i * shades + s] = lookupColor(root.hue,root.saturation,0,100,scheme,i,shades,s);
     }
 }

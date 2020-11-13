@@ -16,18 +16,18 @@
       "deployedBytecodeHash": "9879e22385686497758388def3748475b01a45b823c008c18a8a66605d3583a2"
     },
     "TinyBoxesRenderer": {
-      "address": "0xe736606EA412cbC4aFe8705F4bBc0c1a075C2fb9",
-      "constructorCode": "614797610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "1f8c667cc0de04fdfbcc4a4b02ae73be978d067259871cb600df7ef86834c4bf",
-      "localBytecodeHash": "b8ec6377bd0619c69c2e76004b783a054970ae1dc0a2a681cdd70c5cb97905b1",
-      "deployedBytecodeHash": "005264bb632980fe5449223698fa9feb0b5e8df355abdd9c19886d592ec4a341"
+      "address": "0x4AE78AE11E7c52f193156fe59E9c55b18CdA3475",
+      "constructorCode": "613f38610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "93e66d1cbd5dc7a75b5e50c2deeb67e6eddb5dc86673467002c38a3e59b301e7",
+      "localBytecodeHash": "afc487f4e614346f019fe55f522be1d8e7504075ef9ed77e98bc279a00087f26",
+      "deployedBytecodeHash": "9d3006e7da7e21fe134aede24cb6144bec8c82a89b0095ecc96e102f6eeaa18a"
     },
     "Colors": {
-      "address": "0x3d5896fF1D755053F70fb1B8cF64D3c8fdDCaF2E",
-      "constructorCode": "610f4c610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "fb03e172e595e31ddce39fe46c539b8d9f05d201417e87340fb598c2505e46f6",
-      "localBytecodeHash": "0f49fe85c847c8c9436f5d69172e675e8604fa4d3738e7e6674730356d5e38f1",
-      "deployedBytecodeHash": "0f49fe85c847c8c9436f5d69172e675e8604fa4d3738e7e6674730356d5e38f1"
+      "address": "0x48BC9D4Cd5f48A4402eeaD1994D62867c3d5778d",
+      "constructorCode": "611030610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "f64d0e3fde7c7c0b2b6fd3584387d637c0bbaf59b3b780f0e325ca2f35723283",
+      "localBytecodeHash": "75133266de92f8c790c059f8afb63e6c83187d043928774e267c16d47bb1e2c2",
+      "deployedBytecodeHash": "75133266de92f8c790c059f8afb63e6c83187d043928774e267c16d47bb1e2c2"
     }
   },
   "proxies": {
@@ -1389,6 +1389,51 @@
       },
       {
         "address": "0x8373efAa8c93157090EC86B5d501493c33cD63Bd",
+        "kind": "NonProxy",
+        "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
+      },
+      {
+        "address": "0x322Ff7F89C49fA43C9115733b7D2E5f9F087F6C6",
+        "kind": "NonProxy",
+        "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
+      },
+      {
+        "address": "0xaa983645CC2aAAc388CAa5a2363e53f7D4135470",
+        "kind": "NonProxy",
+        "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
+      },
+      {
+        "address": "0xB67ca337cb629537eFe814f1d3EAa6c92F0f5AAD",
+        "kind": "NonProxy",
+        "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
+      },
+      {
+        "address": "0x90Dded3aa11C3722E09396d30e5736bBE5E28A16",
+        "kind": "NonProxy",
+        "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
+      },
+      {
+        "address": "0xc33b14bD954f8d21B4543837e03e4Df4e8df7C03",
+        "kind": "NonProxy",
+        "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
+      },
+      {
+        "address": "0x96403F4d283C142b20ec4B5a4c87c95c243407A9",
+        "kind": "NonProxy",
+        "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
+      },
+      {
+        "address": "0x1150da44478EDd6A493882911E0E6249B5d8f41a",
+        "kind": "NonProxy",
+        "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
+      },
+      {
+        "address": "0x3a3409270d932b72f195736bD2e2f1A6F2f38324",
+        "kind": "NonProxy",
+        "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
+      },
+      {
+        "address": "0x8F910386d10E4CACEE98b7aBe51dFf6d44Bb3671",
         "kind": "NonProxy",
         "bytecodeHash": "93246122af4be66160ba274328c1ef6a4cdb3899184d6e11650a0168c045daff"
       }
