@@ -103,6 +103,27 @@ library SVG {
     function _animateTransformSpline(string memory attribute, string memory typeVal, string memory values, string memory keySplines, string memory keyTimes, string memory duration) internal pure returns (string memory) {
         return string(abi.encodePacked('<animateTransform attributeName="', attribute, '" attributeType="XML" type="', typeVal, '" calcMode="spline" values="', values, '" keySplines="', keySplines, '" keyTimes="', keyTimes, '" dur="', duration, '" repeatCount="indefinite" />'));
     }
+
+    /**
+     * @dev render an g SVG tag
+     */
+    function _g(string memory slot) internal pure returns (string memory) {
+        return string(abi.encodePacked('<g>', slot,'</g>'));
+    }
+
+    /**
+     * @dev render an g SVG tag
+     */
+    function _g(string memory transformValues, string memory slot) internal pure returns (string memory) {
+        return string(abi.encodePacked('<g transform="', transformValues,  '">', slot,'</g>'));
+    }
+
+    /**
+     * @dev render an use SVG tag link
+     */
+    function _use(string memory id) internal pure returns (string memory) {
+        return string(abi.encodePacked('<use xlink:href="#', id,'"/>'));
+    }
     
     /**
      * @dev render the header of the SVG markup
@@ -145,55 +166,40 @@ library SVG {
         bytes memory buffer = new bytes(8192);
 
         string[3] memory scales = ['-1 1', '-1 -1', '1 -1'];
-        string[7] memory template = [
-            '<g>',
-            '<g transform="scale(',
-            ') translate(',
-            ')">',
-            '<use xlink:href="#quad',
-            '"/></g>',
-            '</symbol>'
-        ];
 
         for (uint256 s = 0; s < 4; s++) {
             // loop through nested mirroring effects
-            buffer.append(template[6]);
-
+            buffer.append('</symbol>');
             if (!switches[s]) {
                 // turn off this level of mirroring
-                buffer.append(template[0]);
-                // denote what quad the transforms should be used for
-                buffer.append(string(abi.encodePacked(template[4], Strings.toString(s), template[5])));
+                // g > use
+                buffer.append(string(abi.encodePacked(
+                    _g(_use(s.toString()))
+                )));
             } else if ( s < 3 ) {
                 for (uint8 i = 0; i < 4; i++) {
                     // loop through transforms
-                    if (i == 0) buffer.append(template[0]);
-                    else {
+                    if (i > 0) {
                         string memory value = mirrorPositions[s].toString();
-                        string memory formated = (i >= 2) ? string(abi.encodePacked('-', value)) : '0';
-                        buffer.append(string(abi.encodePacked(template[1], scales[i - 1], template[2], formated, ' ', formated, template[3])));
-                    }
-                    // denote what quad the transforms should be used for
-                    buffer.append(string(abi.encodePacked(template[4], Strings.toString(s), template[5])));
+                        string memory formated = (i >= 2) ? '0' : string(abi.encodePacked('-', value));
+                        string memory transform = string(abi.encodePacked(
+                            'transform="scale(', scales[i - 1], ') translate(', formated, ' ', formated, ')'
+                        ));
+                        buffer.append(_g(transform, _use(s.toString())));
+                    } else 
+                        buffer.append(_g(_use(s.toString())));
                 }
             } else {
                 // add final scaling
-                buffer.append(string(abi.encodePacked(
-                    template[1],
-                    scale.toString(),
-                    ' ',
-                    scale.toString(),
-                    template[3],
-                    template[4],
-                    Strings.toString(s),
-                    template[5]
-                )));
+                string memory scaleStr = scale.toString();
+                string memory transform = string(abi.encodePacked(
+                    'transform="scale(', scaleStr, ' ', scaleStr, ')'
+                ));
+                buffer.append(_g(transform, _use(s.toString())));
             }
         }
         return buffer.toString();
     }
-
-    
 
     /**
      * @dev select the animation
