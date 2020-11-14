@@ -84,7 +84,6 @@ library TinyBoxesRenderer {
      * @param pool randomn numbers
      * @param index of the shape
      * @param box data to make a shape from
-     * @param mod of the frame
      * @param colors list of colors
      * @return positions of shape
      */
@@ -92,7 +91,6 @@ library TinyBoxesRenderer {
         bytes32[] memory pool,
         uint256 index,
         TinyBox memory box,
-        Modulation memory mod,
         HSL[] memory colors
     )
         internal
@@ -102,7 +100,7 @@ library TinyBoxesRenderer {
         // offset hatching index start by hatch modulator
         bool hatching = (
             box.hatching > 0 &&
-            uint256(int256(index).add(mod.hatch)).mod(box.hatching) == 0
+            uint256(index).mod(box.hatching) == 0
         );
         // generate a shapes position and size using box parameters
         (
@@ -113,132 +111,17 @@ library TinyBoxesRenderer {
         // and modulate selected color
         int256 selection = pool.uniform(0, int256(uint256(colors.length) - 1));
         HSL memory color = colors[
-            uint256(selection.add(mod.color))
-            .mod(uint256(colors.length))
+            uint256(selection)
         ];
         return Shape(position, size, color);
     }
 
     /**
-     * @dev calculate the frame level animation modulators
-     * @param box object to base modulations around
-     * @param frame number being rendered
-     * @return mod struct of modulator values
-     */
-    function _calculateMods(
-        TinyBox memory box,
-        uint256 frame
-    ) internal pure returns (Modulation memory mod) {
-        // set animation modifiers to default
-        mod = Modulation({
-            color: int256(0),
-            hatch: int256(0),
-            stack: int256(0),
-            mirror: [int256(0).toDecimal(2), int256(0).toDecimal(2), int256(0).toDecimal(2)]
-        });
-        // apply animation based on animation, frame and shape values
-        uint256 animation = box.animation;
-        if (animation == 0) {
-            // shift the shapes color indexes
-            mod.color = uint8(frame);
-        } else if (animation == 1) {
-            // shift the starting index of hatched shapes
-            mod.hatch = uint8(frame);
-        } else if (animation == 2) {
-            // shift the stacking order of the shapes
-            mod.stack = uint8(frame);
-        } else if (animation == 3) {
-            // shift mirror position 0
-            mod.mirror[0] = int256(frame).toDecimal(2);
-        }
-    }
-
-    /**
-     * @dev calculate the modulators for a shape
-     * @param box object to base modulations around
-     * @param frame number being rendered
-     * @param shape index being modulated
-     * @return mod struct of modulator values
-     */
-    function _calculateShapeMods(
-        Shape memory shape,
-        TinyBox memory box,
-        uint256 frame,
-        uint256 shapeIndex
-    ) internal pure returns (ShapeModulation memory mod) {
-        // set animation modifiers to default
-        mod = ShapeModulation({
-            rotation: int256(0).toDecimal(2),
-            origin: [int256(0).toDecimal(3), int256(0).toDecimal(3)],
-            offset: [int256(0).toDecimal(3), int256(0).toDecimal(3)],
-            scale: [int256(1000).toDecimal(3), int256(1000).toDecimal(3)],
-            skew: [int256(0).toDecimal(3), int256(0).toDecimal(3)],
-            opacity: int256(100).toDecimal(2),
-            radius: uint256(0)
-        });
-        // apply animation based on animation, frame and shape values
-        uint256 animation = box.animation;
-        if (animation == 4) {
-            // squash and squeze
-            // transfer height to width and vice versa
-            // int256 change;
-            // if (frame < ANIMATION_FRAMES / 2)
-            //     change = int256(shapeIndex.add(frame).sub(uint256(box.shapes).div(2)).mod(uint256(box.shapes)));
-            // else
-            //     change = int256(shapeIndex.add(uint256(box.shapes).div(2)).sub(frame.sub(ANIMATION_FRAMES / 2)).mod(uint256(box.shapes)));
-            // mod.scale[0] = int256(change).toDecimal();
-            // mod.scale[1] = int256(change.mul(int256(-1))).toDecimal();
-        } else if (animation == 5) {
-            // skew x
-            int256 amp = 1;
-            int256 s = int256(
-                amp.mul(int256(frame))
-                //shape.size[0]
-                //.add(int256(shapeIndex).sub(int256(box.shapes / 2))))
-            );
-            mod.skew[0] = s.toDecimal(0);
-        } else if (animation == 6) {
-            // slide
-            int256 amp = 5;
-            int256 s = int256(
-                amp.mul(int256(frame))
-                //.add(int256(shapeIndex).sub(int256(box.shapes / 2)))
-            );
-            mod.offset[0] = s.toDecimal(0);
-        } else if (animation == 7) {
-            // spin
-            uint256 angle = uint256(360).div(ANIMATION_FRAMES);
-            int256 s = int256(angle.mul(frame));
-            mod.rotation = s.toDecimal(0);
-        } else if (animation == 8) {
-            // opacity
-            uint256 step = uint256(1000).div(ANIMATION_FRAMES);
-            uint256 p;
-            if (frame < ANIMATION_FRAMES.div(2)) p = frame; // first half
-            else p = ANIMATION_FRAMES.sub(frame);
-            uint256 alpha = uint256(1000).sub(step.mul(p));
-            mod.opacity = int256(alpha).toDecimal(3);
-        } else if (animation == 9) {
-            // rounded corners
-            // find shorter shape dimension
-            // modulate the shapes radius by that amount
-            uint256 d = Math.min(uint256(shape.size[0]), uint256(shape.size[1]));
-            uint256 step = uint256(d).div(ANIMATION_FRAMES);
-            uint256 p;
-            if (frame < ANIMATION_FRAMES.div(2)) p = frame; // first half
-            else p = ANIMATION_FRAMES.sub(frame);
-            uint256 radius = step.mul(p);
-            mod.radius = radius;
-        }
-    }
-
-    /**
      * @dev render a token's art
      * @param box TinyBox data structure
-     * @param frame number to render
      * @return markup of the SVG graphics of the token
      */
-    function perpetualRenderer(TinyBox memory box, uint256 frame)
+    function perpetualRenderer(TinyBox memory box)
         public
         view
         returns (bytes memory)
@@ -269,18 +152,6 @@ library TinyBoxesRenderer {
         colors[14] = Colors.lookupColor(colorPalette,3,2);
         colors[15] = Colors.lookupColor(colorPalette,3,3);
 
-        // generate an array of shapes
-        uint256 shapeCount = box.shapes;
-        Shape[] memory shapes = new Shape[](shapeCount);
-        ShapeModulation[] memory shapeMods = new ShapeModulation[](shapeCount);
-        Modulation memory mod = _calculateMods(box, frame);
-        for (uint256 i = 0; i < shapeCount; i++) {
-            // generate a new shape
-            shapes[i] = _generateShape(pool, i, box, mod, colors);
-            // calculate the shape modulation based on box data, frame and shape #
-            shapeMods[i] = _calculateShapeMods(shapes[i], box, frame, i);
-        }
-
         // --- Render SVG Markup ---
 
         // empty buffer for the SVG markup
@@ -291,10 +162,10 @@ library TinyBoxesRenderer {
         buffer.append(SVG._generateBody(box));
 
         // write shapes to the SVG
-        for (int256 i = 0; i < int256(shapeCount); i++) {
-            uint256 shapeIndex = uint256(i.add(mod.stack)).mod(shapeCount);
-            string memory animation = SVG._generateAnimation(box, shapes[shapeIndex], shapeIndex);
-            buffer.append(SVG._rect(shapes[shapeIndex], shapeMods[shapeIndex], animation)); // animated flag at end
+        for (uint256 i = 0; i < uint256(box.shapes); i++) {
+            Shape memory shape = _generateShape(pool, i, box, colors);
+            string memory animation = SVG._generateAnimation(box, shape, i);
+            buffer.append(SVG._rect(shape, animation));
         }
 
         // convert master box scale to decimal with a precision of two digits
@@ -302,16 +173,12 @@ library TinyBoxesRenderer {
 
         // modulate the mirror values
         bool[3] memory mirrors = box.mirrors;
-        int16[3] memory mirrorPositionsIn = box.mirrorPositions;
-        Decimal[3] memory mirrorPositions;
-        for (uint256 i = 0; i < 3; i++)
-            mirrorPositions[i] = mirrorPositionsIn[i].toDecimal(2, 0).add(mod.mirror[i]);
 
         // write the footer to the SVG
         buffer.append(
             SVG._generateFooter(
                 mirrors,
-                mirrorPositions,
+                box.mirrorPositions,
                 scale
             )
         );

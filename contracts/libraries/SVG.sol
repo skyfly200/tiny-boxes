@@ -40,7 +40,7 @@ library SVG {
      * @dev render a rectangle SVG tag
      * @param shape object
      */
-    function _rect(Shape memory shape, ShapeModulation memory shapeMods) internal view returns (string memory) {
+    function _rect(Shape memory shape) internal view returns (string memory) {
         // empty buffer for the SVG markup
         bytes memory buffer = new bytes(8192);
 
@@ -53,31 +53,9 @@ library SVG {
         buffer.append(shape.size[0].toString());
         buffer.append('" height="');
         buffer.append(shape.size[1].toString());
-        buffer.append('" rx="');
-        buffer.append(shapeMods.radius.toString());
-        buffer.append('" transform-origin="');
-        buffer.append(shapeMods.origin[0].toString());
-        buffer.append(' ');
-        buffer.append(shapeMods.origin[1].toString());
         buffer.append('" style="fill:');
         buffer.append(shape.color.toString());
-        buffer.append(";fill-opacity:");
-        buffer.append(shapeMods.opacity.toString());
-        buffer.append('" transform="rotate(');
-        buffer.append(shapeMods.rotation.toString());
-        buffer.append(')translate(');
-        buffer.append(shapeMods.offset[0].toString());
-        buffer.append(' ');
-        buffer.append(shapeMods.offset[1].toString());
-        buffer.append(')skewX(');
-        buffer.append(shapeMods.skew[0].toString());
-        buffer.append(')skewY(');
-        buffer.append(shapeMods.skew[1].toString());
-        buffer.append(')scale(');
-        buffer.append(shapeMods.scale[0].toString());
-        buffer.append(' ');
-        buffer.append(shapeMods.scale[1].toString());
-        buffer.append(')" />');
+        buffer.append('" />');
         return buffer.toString();
     }
 
@@ -85,7 +63,7 @@ library SVG {
      * @dev render a rectangle SVG tag
      * @param shape object
      */
-    function _rect(Shape memory shape, ShapeModulation memory shapeMods, string memory slot) internal view returns (string memory) {
+    function _rect(Shape memory shape, string memory slot) internal view returns (string memory) {
         // empty buffer for the SVG markup
         bytes memory buffer = new bytes(8192);
 
@@ -98,31 +76,9 @@ library SVG {
         buffer.append(shape.size[0].toString());
         buffer.append('" height="');
         buffer.append(shape.size[1].toString());
-        buffer.append('" rx="');
-        buffer.append(shapeMods.radius.toString());
-        buffer.append('" transform-origin="');
-        buffer.append(shapeMods.origin[0].toString());
-        buffer.append(' ');
-        buffer.append(shapeMods.origin[1].toString());
         buffer.append('" style="fill:');
         buffer.append(shape.color.toString());
-        buffer.append(";fill-opacity:");
-        buffer.append(shapeMods.opacity.toString());
-        buffer.append('" transform="rotate(');
-        buffer.append(shapeMods.rotation.toString());
-        buffer.append(')translate(');
-        buffer.append(shapeMods.offset[0].toString());
-        buffer.append(' ');
-        buffer.append(shapeMods.offset[1].toString());
-        buffer.append(')skewX(');
-        buffer.append(shapeMods.skew[0].toString());
-        buffer.append(')skewY(');
-        buffer.append(shapeMods.skew[1].toString());
-        buffer.append(')scale(');
-        buffer.append(shapeMods.scale[0].toString());
-        buffer.append(' ');
-        buffer.append(shapeMods.scale[1].toString());
-        buffer.append(')">');
+        buffer.append('">');
         buffer.append(slot);
         buffer.append('</rect>');
         return buffer.toString();
@@ -191,7 +147,7 @@ library SVG {
      */
     function _generateFooter(
         bool[3] memory switches,
-        Decimal[3] memory mirrorPositions,
+        int16[3] memory mirrorPositions,
         Decimal memory scale
     ) internal view returns (string memory) {
         bytes memory buffer = new bytes(8192);

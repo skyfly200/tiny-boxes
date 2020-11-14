@@ -153,16 +153,6 @@ export class TinyBoxes extends Contract {
 
     tokenArt(_id: number | string): TransactionObject<string>;
 
-    tokenBulkTest(
-      _seed: string,
-      counts: (number | string)[],
-      dials: (number | string)[],
-      mirrors: boolean[],
-      animation: number | string,
-      start: number | string,
-      count: number | string
-    ): TransactionObject<string>;
-
     tokenByIndex(index: number | string): TransactionObject<string>;
 
     tokenData(
@@ -190,11 +180,6 @@ export class TinyBoxes extends Contract {
       9: string;
     }>;
 
-    tokenFrame(
-      _id: number | string,
-      _frame: number | string
-    ): TransactionObject<string>;
-
     tokenOfOwnerByIndex(
       owner: string,
       index: number | string
@@ -212,8 +197,7 @@ export class TinyBoxes extends Contract {
       counts: (number | string)[],
       dials: (number | string)[],
       mirrors: boolean[],
-      animation: number | string,
-      frame: number | string
+      animation: number | string
     ): TransactionObject<string>;
 
     tokenURI(tokenId: number | string): TransactionObject<string>;

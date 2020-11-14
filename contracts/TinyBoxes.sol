@@ -68,7 +68,7 @@ contract TinyBoxes is TinyBoxesStore {
             scale: uint16(dials[12]),
             mirrors: mirrors
         });
-        return box.perpetualRenderer(0).toString();
+        return box.perpetualRenderer().toString();
     }
 
     /**
@@ -84,8 +84,7 @@ contract TinyBoxes is TinyBoxesStore {
         uint8[2] memory counts,
         int16[13] memory dials,
         bool[3] memory mirrors,
-        uint8 animation,
-        uint256 frame
+        uint8 animation
     ) public view returns (string memory) {
         TinyBox memory box = TinyBox({
             randomness: _seed.stringToUint(),
@@ -109,81 +108,20 @@ contract TinyBoxes is TinyBoxesStore {
             scale: uint16(dials[12]),
             mirrors: mirrors
         });
-        return box.perpetualRenderer(frame).toString();
-    }
-
-    
-
-    /**
-     * @dev Generate the token SVG art preview for given parameters
-     * @param _seed for renderer RNG
-     * @param counts for colors and shapes
-     * @param dials for perpetual renderer
-     * @param mirrors switches
-     * @return preview SVG art
-     */
-    function tokenBulkTest(
-        string memory _seed,
-        uint8[2] memory counts,
-        int16[13] memory dials,
-        bool[3] memory mirrors,
-        uint8 animation,
-        uint256 start,
-        uint256 count
-    ) public view returns (string memory) {
-        TinyBox memory box = TinyBox({
-            randomness: _seed.stringToUint(),
-            animation: animation,
-            shapes: counts[1],
-            colors: counts[0],
-            spacing: [
-                uint16(dials[0]),
-                uint16(dials[1]),
-                uint16(dials[2]),
-                uint16(dials[3])
-            ],
-            size: [
-                uint16(dials[4]),
-                uint16(dials[5]),
-                uint16(dials[6]),
-                uint16(dials[7])
-            ],
-            hatching: uint16(dials[8]),
-            mirrorPositions: [dials[9], dials[10], dials[11]],
-            scale: uint16(dials[12]),
-            mirrors: mirrors
-        });
-        bytes memory bulk = new bytes(100000);
-        for (uint256 f = 0; f < count; f++) {
-            if (f > 0) bulk.append("\n");
-            bulk.append(box.perpetualRenderer(start + f).toString());
-        }
-
-        return bulk.toString();
+        return box.perpetualRenderer().toString();
     }
 
     /**
      * @dev Generate the token SVG art of a specified frame
      * @param _id for which we want art
-     * @param _frame for which we want art
      * @return animated SVG art of token _id at _frame.
      */
-    function tokenFrame(uint256 _id, uint256 _frame)
+    function tokenArt(uint256 _id)
         public
         view
         returns (string memory)
     {
         TinyBox memory box = boxes[_id];
-        return box.perpetualRenderer(_frame).toString();
-    }
-
-    /**
-     * @dev Generate the static token SVG art
-     * @param _id for which we want art
-     * @return URI of _id.
-     */
-    function tokenArt(uint256 _id) external view returns (string memory) {
-        // render frame 0 of the token animation
-        return tokenFrame(_id, 0);
+        return box.perpetualRenderer().toString();
     }
 }
