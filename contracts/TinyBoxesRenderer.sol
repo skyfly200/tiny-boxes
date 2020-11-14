@@ -150,6 +150,9 @@ library TinyBoxesRenderer {
             )
         );
 
+        // close the svg tag
+        buffer.append("</svg>");
+
         return buffer;
     }
 }

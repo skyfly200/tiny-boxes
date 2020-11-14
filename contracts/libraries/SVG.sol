@@ -186,8 +186,7 @@ library SVG {
                     template[3],
                     template[4],
                     Strings.toString(s),
-                    template[5],
-                    "</svg>"
+                    template[5]
                 )));
             }
         }
