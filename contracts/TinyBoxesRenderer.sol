@@ -126,19 +126,11 @@ library TinyBoxesRenderer {
         returns (bytes memory)
     {
         // --- Calculate Generative Shape Data ---
-
-        // initilize RNG with the provided randomness
         bytes32[] memory pool = Random.init(box.randomness);
-
-        // generate colors
         HSL[] memory colors = Colors.generateColors(box.colorPalette);
 
         // --- Render SVG Markup ---
-
-        // empty buffer for the SVG markup
         bytes memory buffer = new bytes(8192);
-
-        // write the document header to the SVG
         buffer.append(SVG._generateHeader());
         buffer.append(SVG._generateBody(box));
 
