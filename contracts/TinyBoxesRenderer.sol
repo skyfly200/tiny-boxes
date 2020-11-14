@@ -131,25 +131,8 @@ library TinyBoxesRenderer {
         bytes32[] memory pool = Random.init(box.randomness);
 
         // generate colors
-        //HSL[] memory colors = Colors.generateColors(root, 3, 5); // root color, scheme, shades, min lightness
         Palette memory colorPalette = Palette(222,80,[30,70],6,3);
-        HSL[] memory colors = new HSL[](16);
-        colors[0] = Colors.lookupColor(colorPalette,0,0);
-        colors[1] = Colors.lookupColor(colorPalette,0,1);
-        colors[2] = Colors.lookupColor(colorPalette,0,2);
-        colors[3] = Colors.lookupColor(colorPalette,0,3);
-        colors[4] = Colors.lookupColor(colorPalette,1,0);
-        colors[5] = Colors.lookupColor(colorPalette,1,1);
-        colors[6] = Colors.lookupColor(colorPalette,1,2);
-        colors[7] = Colors.lookupColor(colorPalette,1,3);
-        colors[8] = Colors.lookupColor(colorPalette,2,0);
-        colors[9] = Colors.lookupColor(colorPalette,2,1);
-        colors[10] = Colors.lookupColor(colorPalette,2,2);
-        colors[11] = Colors.lookupColor(colorPalette,2,3);
-        colors[12] = Colors.lookupColor(colorPalette,3,0);
-        colors[13] = Colors.lookupColor(colorPalette,3,1);
-        colors[14] = Colors.lookupColor(colorPalette,3,2);
-        colors[15] = Colors.lookupColor(colorPalette,3,3);
+        HSL[] memory colors = Colors.generateColors(colorPalette);
 
         // --- Render SVG Markup ---
 
