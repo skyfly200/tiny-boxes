@@ -155,20 +155,16 @@ library SVG {
             '</symbol>'
         ];
 
-        for (uint256 s = 0; s < 3; s++) {
-            // loop through mirroring effects
+        for (uint256 s = 0; s < 4; s++) {
+            // loop through nested mirroring effects
             buffer.append(template[6]);
 
             if (!switches[s]) {
                 // turn off this level of mirroring
-                // add a scale transform
                 buffer.append(template[0]);
-                // denote what quad the transform should be used for
-                buffer.append(template[4]);
-                if (s > 0)
-                    buffer.append(uint256(s + 1).toString());
-                buffer.append(template[5]);
-            } else {
+                // denote what quad the transforms should be used for
+                buffer.append(string(abi.encodePacked(template[4], Strings.toString(s), template[5])));
+            } else if ( s < 3 ) {
                 for (uint8 i = 0; i < 4; i++) {
                     // loop through transforms
                     if (i == 0) buffer.append(template[0]);
@@ -180,21 +176,21 @@ library SVG {
                     // denote what quad the transforms should be used for
                     buffer.append(string(abi.encodePacked(template[4], Strings.toString(s), template[5])));
                 }
+            } else {
+                // add final scaling
+                buffer.append(string(abi.encodePacked(
+                    template[1],
+                    scale.toString(),
+                    ' ',
+                    scale.toString(),
+                    template[3],
+                    template[4],
+                    Strings.toString(s),
+                    template[5],
+                    "</svg>"
+                )));
             }
         }
-        // add final scaling
-        buffer.append(string(abi.encodePacked(
-            template[6],
-            template[1],
-            scale.toString(),
-            ' ',
-            scale.toString(),
-            template[3],
-            template[4],
-            '3',
-            template[5],
-            "</svg>"
-        )));
         return buffer.toString();
     }
 
