@@ -252,30 +252,13 @@ library SVG {
             );
         } else if (animation == 4) {
             // jiggle
-            string memory values = string(abi.encodePacked(''));
-            // uint256 amp = 20;
-            // uint256 posX = uint256(shape.position[0]);
-            // uint256 posY = uint256(shape.position[1]);
-            // values.append(posX.toString());
-            // values.append(" ");
-            // values.append(posY.toString());
-            // values.append(";");
-            // values.append(posX.sub(amp).toString());
-            // values.append(" ");
-            // values.append(posY.sub(amp).toString());
-            // values.append(";");
-            // values.append(posX.toString());
-            // values.append(" ");
-            // values.append(posY.toString());
-            // values.append(";");
-            // values.append(posX.add(amp).toString());
-            // values.append(" ");
-            // values.append(posY.add(amp).toString());
-            // values.append(";");
-            // values.append(posX.toString());
-            // values.append(" ");
-            // values.append(posY.toString());
-
+            uint256 amp = 20;
+            uint256 posX = uint256(shape.position[0]);
+            uint256 posY = uint256(shape.position[1]);
+            string memory avg = string(abi.encodePacked(posX.toString(), " ", posY.toString()));
+            string memory max = string(abi.encodePacked(posX.add(amp).toString(), " ", posY.add(amp).toString()));
+            string memory min = string(abi.encodePacked(posX.sub(amp).toString(), " ", posY.sub(amp).toString()));
+            string memory values = string(abi.encodePacked( avg, ";", min, ";", avg, ";", max, ";", avg ));
             return _animateTransform("transform","translate",values,"10s");
         }  else if (animation == 5) {
             // snap spin
