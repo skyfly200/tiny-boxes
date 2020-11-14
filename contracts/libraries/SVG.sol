@@ -39,22 +39,19 @@ library SVG {
      * @param shape object
      */
     function _rect(Shape memory shape) internal view returns (string memory) {
-        // empty buffer for the SVG markup
-        bytes memory buffer = new bytes(8192);
-
-        // build the rect tag
-        buffer.append('<rect x="');
-        buffer.append(shape.position[0].toString());
-        buffer.append('" y="');
-        buffer.append(shape.position[1].toString());
-        buffer.append('" width="');
-        buffer.append(shape.size[0].toString());
-        buffer.append('" height="');
-        buffer.append(shape.size[1].toString());
-        buffer.append('" style="fill:');
-        buffer.append(shape.color.toString());
-        buffer.append('" />');
-        return buffer.toString();
+        return string(abi.encodePacked(
+            '<rect x="',
+            shape.position[0].toString(),
+            '" y="',
+            shape.position[1].toString(),
+            '" width="',
+            shape.size[0].toString(),
+            '" height="',
+            shape.size[1].toString(),
+            '" style="fill:',
+            shape.color.toString(),
+            '"/>'
+        ));
     }
 
     /**
@@ -62,24 +59,21 @@ library SVG {
      * @param shape object
      */
     function _rect(Shape memory shape, string memory slot) internal view returns (string memory) {
-        // empty buffer for the SVG markup
-        bytes memory buffer = new bytes(8192);
-
-        // build the rect tag
-        buffer.append('<rect x="');
-        buffer.append(shape.position[0].toString());
-        buffer.append('" y="');
-        buffer.append(shape.position[1].toString());
-        buffer.append('" width="');
-        buffer.append(shape.size[0].toString());
-        buffer.append('" height="');
-        buffer.append(shape.size[1].toString());
-        buffer.append('" style="fill:');
-        buffer.append(shape.color.toString());
-        buffer.append('">');
-        buffer.append(slot);
-        buffer.append('</rect>');
-        return buffer.toString();
+        return string(abi.encodePacked(
+            '<rect x="',
+            shape.position[0].toString(),
+            '" y="',
+            shape.position[1].toString(),
+            '" width="',
+            shape.size[0].toString(),
+            '" height="',
+            shape.size[1].toString(),
+            '" style="fill:',
+            shape.color.toString(),
+            '">',
+            slot,
+            '</rect>'
+        ));
     }
 
     /**
