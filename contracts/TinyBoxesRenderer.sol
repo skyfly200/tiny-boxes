@@ -153,18 +153,12 @@ library TinyBoxesRenderer {
             buffer.append(SVG._rect(shape, animation));
         }
 
-        // convert master box scale to decimal with a precision of two digits
-        Decimal memory scale = int256(box.scale).toDecimal(2);
-
-        // modulate the mirror values
-        bool[3] memory mirrors = box.mirrors;
-
         // write the footer to the SVG
         buffer.append(
             SVG._generateFooter(
-                mirrors,
+                box.mirrors,
                 box.mirrorPositions,
-                scale
+                int256(box.scale).toDecimal(2)
             )
         );
 
