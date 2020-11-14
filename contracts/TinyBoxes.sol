@@ -46,7 +46,8 @@ contract TinyBoxes is TinyBoxesStore {
         uint16[6] memory palette,
         int16[13] memory dials,
         bool[3] memory mirrors,
-        uint8 animation
+        uint8 animation,
+        bool animate
     ) public view returns (string memory) {
         TinyBox memory box = TinyBox({
             randomness: _seed.stringToUint(),
@@ -70,7 +71,7 @@ contract TinyBoxes is TinyBoxesStore {
             scale: uint16(dials[12]),
             mirrors: mirrors
         });
-        return box.perpetualRenderer().toString();
+        return box.perpetualRenderer(animate).toString();
     }
 
     /**
@@ -78,12 +79,12 @@ contract TinyBoxes is TinyBoxesStore {
      * @param _id for which we want art
      * @return animated SVG art of token _id at _frame.
      */
-    function tokenArt(uint256 _id)
+    function tokenArt(uint256 _id, bool animate)
         public
         view
         returns (string memory)
     {
         TinyBox memory box = boxes[_id];
-        return box.perpetualRenderer().toString();
+        return box.perpetualRenderer(animate).toString();
     }
 }

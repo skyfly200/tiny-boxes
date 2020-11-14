@@ -27,24 +27,27 @@ export class TinyBoxesRenderer extends Contract {
 
     ANIMATION_SECONDS(): TransactionObject<string>;
 
-    perpetualRenderer(box: {
-      randomness: number | string;
-      animation: number | string;
-      shapes: number | string;
-      colorPalette: {
-        hue: number | string;
-        saturation: number | string;
-        lightnessRange: (number | string)[];
-        scheme: number | string;
-        shades: number | string;
-      };
-      hatching: number | string;
-      scale: number | string;
-      mirrorPositions: (number | string)[];
-      size: (number | string)[];
-      spacing: (number | string)[];
-      mirrors: boolean[];
-    }): TransactionObject<string>;
+    perpetualRenderer(
+      box: {
+        randomness: number | string;
+        animation: number | string;
+        shapes: number | string;
+        colorPalette: {
+          hue: number | string;
+          saturation: number | string;
+          lightnessRange: (number | string)[];
+          scheme: number | string;
+          shades: number | string;
+        };
+        hatching: number | string;
+        scale: number | string;
+        mirrorPositions: (number | string)[];
+        size: (number | string)[];
+        spacing: (number | string)[];
+        mirrors: boolean[];
+      },
+      animate: boolean
+    ): TransactionObject<string>;
   };
   events: {
     allEvents: (
