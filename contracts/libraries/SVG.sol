@@ -164,38 +164,38 @@ library SVG {
         Decimal memory scale
     ) internal view returns (string memory) {
         bytes memory buffer = new bytes(8192);
-
         string[3] memory scales = ['-1 1', '-1 -1', '1 -1'];
-
         for (uint256 s = 0; s < 4; s++) {
             // loop through nested mirroring effects
             buffer.append('</symbol>');
-            if (!switches[s]) {
-                // turn off this level of mirroring
-                // g > use
-                buffer.append(string(abi.encodePacked(
-                    _g(_use(s.toString()))
-                )));
-            } else if ( s < 3 ) {
-                for (uint8 i = 0; i < 4; i++) {
-                    // loop through transforms
-                    if (i > 0) {
-                        string memory value = mirrorPositions[s].toString();
-                        string memory formated = (i >= 2) ? '0' : string(abi.encodePacked('-', value));
-                        string memory transform = string(abi.encodePacked(
-                            'transform="scale(', scales[i - 1], ') translate(', formated, ' ', formated, ')'
-                        ));
-                        buffer.append(_g(transform, _use(s.toString())));
-                    } else 
-                        buffer.append(_g(_use(s.toString())));
+            string memory id = string(abi.encodePacked('quad', s.toString()));
+            if ( s < 3 ) {
+                if (!switches[s]) {
+                    // turn off this level of mirroring
+                    buffer.append(string(abi.encodePacked(
+                        _g(_use(id))
+                    )));
+                } else {
+                    for (uint8 i = 0; i < 4; i++) {
+                        // loop through transforms
+                        if (i > 0) {
+                            string memory value = mirrorPositions[s].toString();
+                            string memory formated = (i >= 2) ? '0' : string(abi.encodePacked('-', value));
+                            string memory transform = string(abi.encodePacked(
+                                'scale(', scales[i - 1], ') translate(', formated, ' ', formated, ')'
+                            ));
+                            buffer.append(_g(transform, _use(id)));
+                        } else 
+                            buffer.append(_g(_use(id)));
+                    }
                 }
             } else {
                 // add final scaling
                 string memory scaleStr = scale.toString();
                 string memory transform = string(abi.encodePacked(
-                    'transform="scale(', scaleStr, ' ', scaleStr, ')'
+                    'scale(', scaleStr, ' ', scaleStr, ')'
                 ));
-                buffer.append(_g(transform, _use(s.toString())));
+                buffer.append(_g(transform, _use(id)));
             }
         }
         return buffer.toString();
