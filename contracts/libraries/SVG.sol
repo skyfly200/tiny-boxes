@@ -40,7 +40,52 @@ library SVG {
      * @dev render a rectangle SVG tag
      * @param shape object
      */
-    function _rect(TinyBox memory box, uint256 shapeIndex, Shape memory shape, ShapeModulation memory shapeMods, bool animated) internal view returns (string memory) {
+    function _rect(Shape memory shape, ShapeModulation memory shapeMods) internal view returns (string memory) {
+        // empty buffer for the SVG markup
+        bytes memory buffer = new bytes(8192);
+
+        // build the rect tag
+        buffer.append('<rect x="');
+        buffer.append(shape.position[0].toString());
+        buffer.append('" y="');
+        buffer.append(shape.position[1].toString());
+        buffer.append('" width="');
+        buffer.append(shape.size[0].toString());
+        buffer.append('" height="');
+        buffer.append(shape.size[1].toString());
+        buffer.append('" rx="');
+        buffer.append(shapeMods.radius.toString());
+        buffer.append('" transform-origin="');
+        buffer.append(shapeMods.origin[0].toString());
+        buffer.append(' ');
+        buffer.append(shapeMods.origin[1].toString());
+        buffer.append('" style="fill:');
+        buffer.append(shape.color.toString());
+        buffer.append(";fill-opacity:");
+        buffer.append(shapeMods.opacity.toString());
+        buffer.append('" transform="rotate(');
+        buffer.append(shapeMods.rotation.toString());
+        buffer.append(')translate(');
+        buffer.append(shapeMods.offset[0].toString());
+        buffer.append(' ');
+        buffer.append(shapeMods.offset[1].toString());
+        buffer.append(')skewX(');
+        buffer.append(shapeMods.skew[0].toString());
+        buffer.append(')skewY(');
+        buffer.append(shapeMods.skew[1].toString());
+        buffer.append(')scale(');
+        buffer.append(shapeMods.scale[0].toString());
+        buffer.append(' ');
+        buffer.append(shapeMods.scale[1].toString());
+        buffer.append(')" />');
+        return buffer.toString();
+    }
+
+    /**
+     * @dev render a rectangle SVG tag
+     * @param shape object
+     */
+    function _rect(Shape memory shape, ShapeModulation memory shapeMods, string memory slot) internal view returns (string memory) {
         // empty buffer for the SVG markup
         bytes memory buffer = new bytes(8192);
 
@@ -78,7 +123,7 @@ library SVG {
         buffer.append(' ');
         buffer.append(shapeMods.scale[1].toString());
         buffer.append(')">');
-        buffer.append(animated ? _generateAnimation(box, shape, shapeIndex) : '');
+        buffer.append(slot);
         buffer.append('</rect>');
         return buffer.toString();
     }
