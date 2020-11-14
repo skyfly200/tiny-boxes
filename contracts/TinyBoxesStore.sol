@@ -187,6 +187,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     function dataForLINKPay(
         string memory _seed,
         uint8 shapes,
+        uint16[6] memory palette,
         int16[13] memory dials,
         bool[3] memory mirrors
     ) public view returns (string memory) {
@@ -195,6 +196,12 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
 
         buffer.append(_seed);
         buffer.append(uint256(shapes).toString());
+        buffer.append(palette[0].toString());
+        buffer.append(palette[1].toString());
+        buffer.append(palette[2].toString());
+        buffer.append(palette[3].toString());
+        buffer.append(palette[4].toString());
+        buffer.append(palette[5].toString());
         buffer.append(dials[0].toString());
         buffer.append(dials[1].toString());
         buffer.append(dials[2].toString());
@@ -226,6 +233,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     function buy(
         string calldata _seed,
         uint8 shapes,
+        uint16[6] calldata palette,
         int16[13] calldata dials,
         bool[3] calldata mirrors
     ) external payable notSoldOut returns (bytes32) {
@@ -239,7 +247,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
             randomness: 0,
             animation: 0,
             shapes: shapes,
-            colorPalette: Palette(222,80,[30,70],6,3),
+            colorPalette: Palette(palette[0],uint8(palette[1]),[uint8(palette[2]),uint8(palette[3])],uint8(palette[4]),uint8(palette[5])),
             spacing: [
                 uint16(dials[0]),
                 uint16(dials[1]),

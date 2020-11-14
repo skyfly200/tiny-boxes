@@ -1,3 +1,4 @@
+//SPDX-License-Identifier: Unlicensed
 /**
  * Basic trigonometry functions
  *

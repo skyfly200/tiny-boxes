@@ -40,48 +40,10 @@ contract TinyBoxes is TinyBoxesStore {
      * @param mirrors switches
      * @return preview SVG art
      */
-    function tokenPreview(
-        string memory _seed,
-        uint8 shapes,
-        int16[13] memory dials,
-        bool[3] memory mirrors
-    ) public view returns (string memory) {
-        TinyBox memory box = TinyBox({
-            randomness: _seed.stringToUint(),
-            animation: 0,
-            shapes: shapes,
-            colorPalette: Palette(222,80,[30,70],6,3),
-            spacing: [
-                uint16(dials[0]),
-                uint16(dials[1]),
-                uint16(dials[2]),
-                uint16(dials[3])
-            ],
-            size: [
-                uint16(dials[4]),
-                uint16(dials[5]),
-                uint16(dials[6]),
-                uint16(dials[7])
-            ],
-            hatching: uint16(dials[8]),
-            mirrorPositions: [dials[9], dials[10], dials[11]],
-            scale: uint16(dials[12]),
-            mirrors: mirrors
-        });
-        return box.perpetualRenderer().toString();
-    }
-
-    /**
-     * @dev Generate the token SVG art preview for given parameters
-     * @param _seed for renderer RNG
-     * @param shapes count
-     * @param dials for perpetual renderer
-     * @param mirrors switches
-     * @return preview SVG art
-     */
     function tokenTest(
         string memory _seed,
         uint8 shapes,
+        uint16[6] memory palette,
         int16[13] memory dials,
         bool[3] memory mirrors,
         uint8 animation
@@ -90,7 +52,7 @@ contract TinyBoxes is TinyBoxesStore {
             randomness: _seed.stringToUint(),
             animation: animation,
             shapes: shapes,
-            colorPalette: Palette(222,80,[30,70],6,3),
+            colorPalette: Palette(palette[0],uint8(palette[1]),[uint8(palette[2]),uint8(palette[3])],uint8(palette[4]),uint8(palette[5])),
             spacing: [
                 uint16(dials[0]),
                 uint16(dials[1]),

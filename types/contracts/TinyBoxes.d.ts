@@ -50,6 +50,7 @@ export class TinyBoxes extends Contract {
     buy(
       _seed: string,
       shapes: number | string,
+      palette: (number | string)[],
       dials: (number | string)[],
       mirrors: boolean[]
     ): TransactionObject<string>;
@@ -61,6 +62,7 @@ export class TinyBoxes extends Contract {
     dataForLINKPay(
       _seed: string,
       shapes: number | string,
+      palette: (number | string)[],
       dials: (number | string)[],
       mirrors: boolean[]
     ): TransactionObject<string>;
@@ -198,16 +200,10 @@ export class TinyBoxes extends Contract {
       4: string;
     }>;
 
-    tokenPreview(
-      _seed: string,
-      shapes: number | string,
-      dials: (number | string)[],
-      mirrors: boolean[]
-    ): TransactionObject<string>;
-
     tokenTest(
       _seed: string,
       shapes: number | string,
+      palette: (number | string)[],
       dials: (number | string)[],
       mirrors: boolean[],
       animation: number | string
