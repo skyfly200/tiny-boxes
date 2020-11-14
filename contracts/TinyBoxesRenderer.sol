@@ -9,7 +9,6 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "./structs/Decimal.sol";
 import "./structs/Shape.sol";
-import "./structs/Modulation.sol";
 import "./structs/TinyBox.sol";
 import "./structs/HSL.sol";
 
