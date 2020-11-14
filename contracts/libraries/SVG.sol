@@ -176,17 +176,16 @@ library SVG {
                         _g(_use(id))
                     )));
                 } else {
-                    for (uint8 i = 0; i < 4; i++) {
+                    buffer.append(_g(_use(id)));
+                    for (uint8 i = 0; i < 3; i++) {
                         // loop through transforms
-                        if (i > 0) {
-                            string memory value = mirrorPositions[s].toString();
-                            string memory formated = (i >= 2) ? '0' : string(abi.encodePacked('-', value));
-                            string memory transform = string(abi.encodePacked(
-                                'scale(', scales[i - 1], ') translate(', formated, ' ', formated, ')'
-                            ));
-                            buffer.append(_g(transform, _use(id)));
-                        } else 
-                            buffer.append(_g(_use(id)));
+                        string memory value = string(abi.encodePacked('-', mirrorPositions[s].toString()));
+                        string memory x = (i > 1) ? '0' : value;
+                        string memory y = (i < 1) ? '0' : value;
+                        string memory transform = string(abi.encodePacked(
+                            'scale(', scales[i], ') translate(', x, ' ', y, ')'
+                        ));
+                        buffer.append(_g(transform, _use(id)));
                     }
                 }
             } else {
