@@ -165,44 +165,36 @@ library SVG {
                 buffer.append(template[0]);
                 // denote what quad the transform should be used for
                 buffer.append(template[4]);
-                
                 if (s > 0)
-                    buffer.append(Strings.toString(uint256(s + 1)));
+                    buffer.append(uint256(s + 1).toString());
                 buffer.append(template[5]);
             } else {
                 for (uint8 i = 0; i < 4; i++) {
                     // loop through transforms
                     if (i == 0) buffer.append(template[0]);
                     else {
-                        buffer.append(template[1]);
-                        buffer.append(scales[i - 1]);
-                        buffer.append(template[2]);
                         string memory value = mirrorPositions[s].toString();
-                        if (i <= 2) buffer.append('-');
-                        buffer.append(i <= 2 ? value : '0');
-                        buffer.append(' ');
-                        if (i >= 2) buffer.append('-');
-                        buffer.append(i >= 2 ? value : '0');
-                        buffer.append(template[3]);
+                        string memory formated = (i >= 2) ? string(abi.encodePacked('-', value)) : '0';
+                        buffer.append(string(abi.encodePacked(template[1], scales[i - 1], template[2], formated, ' ', formated, template[3])));
                     }
                     // denote what quad the transforms should be used for
-                    buffer.append(template[4]);
-                    buffer.append(Strings.toString(s));
-                    buffer.append(template[5]);
+                    buffer.append(string(abi.encodePacked(template[4], Strings.toString(s), template[5])));
                 }
             }
         }
         // add final scaling
-        buffer.append(template[6]);
-        buffer.append(template[1]);
-        buffer.append(scale.toString());
-        buffer.append(' ');
-        buffer.append(scale.toString());
-        buffer.append(template[3]);
-        buffer.append(template[4]);
-        buffer.append('3');
-        buffer.append(template[5]);
-        buffer.append("</svg>");
+        buffer.append(string(abi.encodePacked(
+            template[6],
+            template[1],
+            scale.toString(),
+            ' ',
+            scale.toString(),
+            template[3],
+            template[4],
+            '3',
+            template[5],
+            "</svg>"
+        )));
         return buffer.toString();
     }
 
