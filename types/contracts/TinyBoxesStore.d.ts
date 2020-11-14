@@ -49,7 +49,7 @@ export class TinyBoxesStore extends Contract {
 
     buy(
       _seed: string,
-      counts: (number | string)[],
+      shapes: number | string,
       dials: (number | string)[],
       mirrors: boolean[]
     ): TransactionObject<string>;
@@ -60,7 +60,7 @@ export class TinyBoxesStore extends Contract {
 
     dataForLINKPay(
       _seed: string,
-      counts: (number | string)[],
+      shapes: number | string,
       dials: (number | string)[],
       mirrors: boolean[]
     ): TransactionObject<string>;
@@ -158,7 +158,6 @@ export class TinyBoxesStore extends Contract {
     ): TransactionObject<{
       randomness: string;
       animation: string;
-      colors: string;
       shapes: string;
       hatching: string;
       size: string[];
@@ -170,18 +169,32 @@ export class TinyBoxesStore extends Contract {
       1: string;
       2: string;
       3: string;
-      4: string;
+      4: string[];
       5: string[];
       6: string[];
-      7: string[];
-      8: boolean[];
-      9: string;
+      7: boolean[];
+      8: string;
     }>;
 
     tokenOfOwnerByIndex(
       owner: string,
       index: number | string
     ): TransactionObject<string>;
+
+    tokenPalette(
+      _id: number | string
+    ): TransactionObject<{
+      rootHue: string;
+      saturation: string;
+      lightnessRange: string[];
+      scheme: string;
+      shades: string;
+      0: string;
+      1: string;
+      2: string[];
+      3: string;
+      4: string;
+    }>;
 
     tokenURI(tokenId: number | string): TransactionObject<string>;
 

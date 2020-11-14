@@ -1,5 +1,6 @@
 //SPDX-License-Identifier: Unlicensed
 pragma solidity ^0.6.8;
+pragma experimental ABIEncoderV2;
 
 // needed for upgradability
 //import "@openzeppelin/upgrades/contracts/Initializable.sol";
@@ -59,7 +60,6 @@ contract TinyBoxesBase is ERC721, AccessControl  {
      * @param _id for which we want token data
      * @return randomness provided by Chainlink VRF
      * @return animation of token
-     * @return colors of token
      * @return shapes of token
      * @return hatching of token
      * @return size of token
@@ -74,7 +74,6 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         returns (
             uint256 randomness,
             uint8 animation,
-            uint8 colors,
             uint8 shapes,
             uint16 hatching,
             uint16[4] memory size,
@@ -87,7 +86,6 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         TinyBox memory box = boxes[_id];
         randomness = box.randomness;
         animation = box.animation;
-        colors = box.colors;
         shapes = box.shapes;
         hatching = box.hatching;
         size = box.size;
@@ -95,5 +93,33 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         mirrorPositions = box.mirrorPositions;
         mirrors = box.mirrors;
         scale = box.scale;
+    }
+
+    /**
+     * @dev Lookup all token data in one call
+     * @param _id for which we want token data
+     * @return rootHue of token
+     * @return saturation of token
+     * @return lightnessRange of token
+     * @return scheme of token
+     * @return shades of token
+     */
+    function tokenPalette(uint256 _id)
+        external
+        view
+        returns (
+            uint16 rootHue,
+            uint8 saturation,
+            uint8[2] memory lightnessRange,
+            uint8 scheme,
+            uint shades
+        )
+    {
+        TinyBox memory box = boxes[_id];
+        rootHue = box.colorPalette.hue;
+        saturation = box.colorPalette.saturation;
+        lightnessRange = box.colorPalette.lightnessRange;
+        scheme = box.colorPalette.scheme;
+        shades = box.colorPalette.shades;
     }
 }

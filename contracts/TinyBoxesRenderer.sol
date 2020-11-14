@@ -130,8 +130,11 @@ library TinyBoxesRenderer {
         // initilize RNG with the provided randomness
         bytes32[] memory pool = Random.init(box.randomness);
 
-        // generate colors
+        // create a color palette
+        // TODO: add palette to TinyBox type and function inputs
         Palette memory colorPalette = Palette(222,80,[30,70],6,3);
+
+        // generate colors
         HSL[] memory colors = Colors.generateColors(colorPalette);
 
         // --- Render SVG Markup ---

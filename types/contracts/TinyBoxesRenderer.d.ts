@@ -31,7 +31,13 @@ export class TinyBoxesRenderer extends Contract {
       randomness: number | string;
       animation: number | string;
       shapes: number | string;
-      colors: number | string;
+      colorPalette: {
+        hue: number | string;
+        saturation: number | string;
+        lightnessRange: (number | string)[];
+        scheme: number | string;
+        shades: number | string;
+      };
       hatching: number | string;
       scale: number | string;
       mirrorPositions: (number | string)[];

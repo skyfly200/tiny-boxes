@@ -4,7 +4,6 @@ pragma solidity ^0.6.4;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-
 import "@openzeppelin/contracts/math/Math.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/math/SignedSafeMath.sol";

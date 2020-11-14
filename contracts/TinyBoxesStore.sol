@@ -10,6 +10,8 @@ import "./libraries/StringUtilsLib.sol";
 
 import "./TinyBoxesPricing.sol";
 
+import "./structs/Palette.sol";
+
 contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     using SafeMath for uint256;
     using Utils for *;
@@ -148,7 +150,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
             randomness: 0,
             animation: 0,
             shapes: uint8(parts[1].stringToUint()),
-            colors: uint8(parts[2].stringToUint()),
+            colorPalette: Palette(222,80,[30,70],6,3),//uint8(parts[2].stringToUint()),
             spacing: [
                 uint16(parts[3].stringToUint()),
                 uint16(parts[4].stringToUint()),
@@ -177,14 +179,14 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     /**
      * @dev write token data to string for use when purchasing with LINK
      * @param _seed for renderer RNG
-     * @param counts for colors and shapes
+     * @param shapes count
      * @param dials for perpetual renderer
      * @param mirrors switches
      * @return preview SVG art
      */
     function dataForLINKPay(
         string memory _seed,
-        uint8[2] memory counts,
+        uint8 shapes,
         int16[13] memory dials,
         bool[3] memory mirrors
     ) public view returns (string memory) {
@@ -192,8 +194,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         bytes memory buffer = new bytes(8192);
 
         buffer.append(_seed);
-        buffer.append(uint256(counts[0]).toString());
-        buffer.append(uint256(counts[1]).toString());
+        buffer.append(uint256(shapes).toString());
         buffer.append(dials[0].toString());
         buffer.append(dials[1].toString());
         buffer.append(dials[2].toString());
@@ -217,14 +218,14 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     /**
      * @dev Create a new TinyBox Token
      * @param _seed of token
-     * @param counts of token colors & shapes
+     * @param shapes of token colors & shapes
      * @param dials of token renderer
      * @param mirrors active boolean of token
      * @return _requestId of the VRF call
      */
     function buy(
         string calldata _seed,
-        uint8[2] calldata counts,
+        uint8 shapes,
         int16[13] calldata dials,
         bool[3] calldata mirrors
     ) external payable notSoldOut returns (bytes32) {
@@ -237,8 +238,8 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         TinyBox memory box = TinyBox({
             randomness: 0,
             animation: 0,
-            shapes: counts[1],
-            colors: counts[0],
+            shapes: shapes,
+            colorPalette: Palette(222,80,[30,70],6,3),
             spacing: [
                 uint16(dials[0]),
                 uint16(dials[1]),
