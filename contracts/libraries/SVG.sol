@@ -211,54 +211,48 @@ library SVG {
         Shape memory shape,
         uint256 shapeIndex
     ) internal view returns (string memory) {
-        // empty buffer for the SVG markup
-        bytes memory buffer = new bytes(8192);
-        
         // select animation based on animation id
         uint256 animation = box.animation;
         if (animation == 0) {
             //Rounding corners
-            buffer.append(_animate("rx","0;100;0","10s"));
+            return _animate("rx","0;100;0","10s");
         } else if (animation == 1) {
             // Spin
-            buffer.append(_animateTransform(
+            return _animateTransform(
                 "transform",
                 "rotate",
                 "0 60 70 ; 90 60 70 ; 270 60 70 ; 360 60 70",
                 "0 ; 0.1 ; 0.9 ; 1",
                 "10s"
-            ));
+            );
         } else if (animation == 2) {
             // squash n stretch
             uint256 div = 7;
+            string[2] memory vals;
             for (uint256 i = 0; i < 2; i++) {
-                bytes memory values = new bytes(1000);
                 uint256 size = uint256(shape.size[i]);
-                values.append(size.toString());
-                values.append(";");
-                if (i==0) values.append(size.sub(size.div(div)).toString());
-                else values.append(size.add(size.div(div)).toString());
-                values.append(";");
-                values.append(size.toString());
-                values.append(";");
-                if (i==0) values.append(size.add(size.div(div)).toString());
-                else values.append(size.sub(size.div(div)).toString());
-                values.append(";");
-                values.append(size.toString());
-                if (i==0) buffer.append(_animate("width",values.toString(),"10s"));
-                else buffer.append(_animate("height",values.toString(),"10s"));
+                string memory avg = size.toString();
+                string memory min = size.sub(size.div(div)).toString();
+                string memory max = size.add(size.div(div)).toString();
+                vals[i] = string(abi.encodePacked(
+                    avg, ";", (i==0) ? min : max, ";", avg, ";", (i==0) ? max : min, ";", avg
+                ));
             }
+            return string(abi.encodePacked(
+                _animate("width",vals[0],"10s"),
+                _animate("height",vals[1],"10s")
+            ));
         } else if (animation == 3) {
             // skew
-            buffer.append(_animateTransform(
+            return _animateTransform(
                 "transform",
                 "skewX",
                 "0 ; 50 ; 0",
                 "10s"
-            ));
+            );
         } else if (animation == 4) {
             // jiggle
-            bytes memory values = new bytes(10000);
+            string memory values = string(abi.encodePacked(''));
             // uint256 amp = 20;
             // uint256 posX = uint256(shape.position[0]);
             // uint256 posY = uint256(shape.position[1]);
@@ -281,44 +275,43 @@ library SVG {
             // values.append(posX.toString());
             // values.append(" ");
             // values.append(posY.toString());
-            buffer.append(_animateTransform("transform","translate",values.toString(),"10s"));
+
+            return _animateTransform("transform","translate",values,"10s");
         }  else if (animation == 5) {
             // snap spin
-            buffer.append(_animateTransformSpline(
+            return _animateTransformSpline(
                 "transform",
                 "rotate",
                 "0 200 200 ; 270 200 200 ; 270 200 200 ; 360 200 200 ; 360 200 200",
                 "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1",
                 "0 ; 0.55 ; 0.75 ; 0.9 ; 1",
                 "10s"
-            ));
+            );
         } else if (animation == 6) {
             // spread
             // TODO: use different hold points in values and times in keyTimes
-            buffer.append(_animateTransformSpline(
+            return _animateTransformSpline(
                 "transform",
                 "rotate",
                 "0 200 200 ; 270 200 200 ; 270 200 200 ; 360 200 200 ; 360 200 200",
                 "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1",
                 "0 ; 0.55 ; 0.75 ; 0.9 ; 1",
                 "10s"
-            ));
+            );
         } else if (animation == 7) {
             // drop
             string memory values = string(abi.encodePacked(
                 shape.position[0].toString()," ",shape.position[1].toString()," ; ",
                 shape.position[0].toString()," ",shape.position[1].sub(500).toString()
             ));
-            buffer.append(_animateTransformSpline(
+            return _animateTransformSpline(
                 "transform",
                 "translate",
                 values,
                 "0.2 0 0.5 1 ; 0.5 0 0.5 1",
                 "0 ; 1",
                 "10s"
-            ));
+            );
         }
-
-        return buffer.toString();
     }
 }
