@@ -243,7 +243,7 @@ library SVG {
                 _animate("height",vals[1],"10s")
             ));
         } else if (animation == 3) {
-            // skew
+            // skew X
             return _animateTransform(
                 "transform",
                 "skewX",
@@ -251,15 +251,13 @@ library SVG {
                 "10s"
             );
         } else if (animation == 4) {
-            // jiggle
-            uint256 amp = 20;
-            uint256 posX = uint256(shape.position[0]);
-            uint256 posY = uint256(shape.position[1]);
-            string memory avg = string(abi.encodePacked(posX.toString(), " ", posY.toString()));
-            string memory max = string(abi.encodePacked(posX.add(amp).toString(), " ", posY.add(amp).toString()));
-            string memory min = string(abi.encodePacked(posX.sub(amp).toString(), " ", posY.sub(amp).toString()));
-            string memory values = string(abi.encodePacked( avg, ";", min, ";", avg, ";", max, ";", avg ));
-            return _animateTransform("transform","translate",values,"10s");
+            // skew Y
+            return _animateTransform(
+                "transform",
+                "skewY",
+                "0 ; 50 ; 0",
+                "10s"
+            );
         }  else if (animation == 5) {
             // snap spin
             return _animateTransformSpline(
@@ -295,6 +293,17 @@ library SVG {
                 "0 ; 1",
                 "10s"
             );
+        } else if (animation == 8) {
+            // jiggle
+            uint256 amp = 20;
+            uint256 posX = uint256(shape.position[0]);
+            uint256 posY = uint256(shape.position[1]);
+            string memory avg = string(abi.encodePacked(posX.toString(), " ", posY.toString()));
+            // OVERFLOW ERROR
+            string memory max = string(abi.encodePacked(posX.add(amp).toString(), " ", posY.add(amp).toString()));
+            string memory min = string(abi.encodePacked(posX.sub(amp).toString(), " ", posY.sub(amp).toString()));
+            string memory values = string(abi.encodePacked( avg, ";", min, ";", avg, ";", max, ";", avg ));
+            return _animateTransform("transform","translate",values,"10s");
         }
     }
 }
