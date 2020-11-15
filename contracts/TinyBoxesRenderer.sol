@@ -130,7 +130,7 @@ library TinyBoxesRenderer {
         HSL[] memory colors = Colors.generateColors(box.colorPalette);
 
         // --- Render SVG Markup ---
-        bytes memory buffer = new bytes(8192);
+        bytes memory buffer = new bytes(100000);
         buffer.append(SVG._generateHeader());
         buffer.append(SVG._generateBody(box));
 

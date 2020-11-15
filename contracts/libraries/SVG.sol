@@ -258,17 +258,47 @@ library SVG {
                 "0 ; 50 ; 0",
                 "10s"
             );
-        }  else if (animation == 5) {
+        } else if (animation == 5) {
+            // snap spin
+            return _animateTransformSpline(
+                "transform",
+                "rotate",
+                "0 200 200 ; 90 200 200 ; 90 200 200 ; 360 200 200 ; 360 200 200",
+                "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1",
+                "0 ; 0.2 ; 0.4 ; 0.9 ; 1",
+                "10s"
+            );
+        } else if (animation == 6) {
+            // snap spin
+            return _animateTransformSpline(
+                "transform",
+                "rotate",
+                "0 200 200 ; 180 200 200 ; 180 200 200 ; 360 200 200 ; 360 200 200",
+                "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1",
+                "0 ; 0.4 ; 0.6 ; 0.9 ; 1",
+                "10s"
+            );
+        } else if (animation == 7) {
             // snap spin
             return _animateTransformSpline(
                 "transform",
                 "rotate",
                 "0 200 200 ; 270 200 200 ; 270 200 200 ; 360 200 200 ; 360 200 200",
                 "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1",
-                "0 ; 0.55 ; 0.75 ; 0.9 ; 1",
+                "0 ; 0.6 ; 0.8 ; 0.9 ; 1",
                 "10s"
             );
-        } else if (animation == 6) {
+        } else if (animation == 8) {
+            // snap spin
+            return _animateTransformSpline(
+                "transform",
+                "rotate",
+                "0 200 200 ; 90 200 200 ; 90 200 200 ; 180 200 200 ; 180 200 200 ; 270 200 200 ; 270 200 200 ; 360 200 200 ; 360 200 200",
+                "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1",
+                "0 ; 0.2 ; 0.35 ; 0.45 ; 0.55 ; 0.65 ; 0.8 ; 0.9 ; 1",
+                "10s"
+            );
+        } else if (animation == 9) {
             // spread
             // TODO: use different hold points in values and times in keyTimes
             return _animateTransformSpline(
@@ -279,7 +309,7 @@ library SVG {
                 "0 ; 0.55 ; 0.75 ; 0.9 ; 1",
                 "10s"
             );
-        } else if (animation == 7) {
+        } else if (animation == 10) {
             // drop
             string memory values = string(abi.encodePacked(
                 shape.position[0].toString()," ",shape.position[1].toString()," ; ",
@@ -293,7 +323,7 @@ library SVG {
                 "0 ; 1",
                 "10s"
             );
-        } else if (animation == 8) {
+        } else if (animation == 11) {
             // jiggle
             uint256 amp = 20;
             uint256 posX = uint256(shape.position[0]);
