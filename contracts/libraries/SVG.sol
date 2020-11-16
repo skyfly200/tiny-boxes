@@ -324,12 +324,11 @@ library SVG {
                 "10s"
             );
         } else if (animation == 11) {
-            // jiggle
-            uint256 amp = 20;
-            uint256 posX = uint256(shape.position[0]);
-            uint256 posY = uint256(shape.position[1]);
+            // glide
+            int256 amp = 20;
+            int256 posX = shape.position[0];
+            int256 posY = shape.position[1];
             string memory avg = string(abi.encodePacked(posX.toString(), " ", posY.toString()));
-            // OVERFLOW ERROR
             string memory max = string(abi.encodePacked(posX.add(amp).toString(), " ", posY.add(amp).toString()));
             string memory min = string(abi.encodePacked(posX.sub(amp).toString(), " ", posY.sub(amp).toString()));
             string memory values = string(abi.encodePacked( avg, ";", min, ";", avg, ";", max, ";", avg ));
