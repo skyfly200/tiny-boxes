@@ -214,15 +214,15 @@ library SVG {
         // select animation based on animation id
         uint256 animation = box.animation;
         if (animation == 0) {
-            //Rounding corners
+            // Rounding corners
             return _animate("rx","0;100;0","10s");
         } else if (animation == 1) {
-            // Spin
+            // grow n shrink
             return _animateTransform(
                 "transform",
-                "rotate",
-                "0 60 70 ; 90 60 70 ; 270 60 70 ; 360 60 70",
-                "0 ; 0.1 ; 0.9 ; 1",
+                "scale",
+                "1 1 ; 1.5 1.5 ; 1 1 ; 0.5 0.5 ; 1 1",
+                "0 ; 0.25 ; 0.5 ; 0.75 ; 1",
                 "10s"
             );
         } else if (animation == 2) {
@@ -334,6 +334,24 @@ library SVG {
             string memory min = string(abi.encodePacked(posX.sub(amp).toString(), " ", posY.sub(amp).toString()));
             string memory values = string(abi.encodePacked( avg, ";", min, ";", avg, ";", max, ";", avg ));
             return _animateTransform("transform","translate",values,"10s");
+        } else if (animation == 12) {
+            // 2 Speed Spin
+            return _animateTransform(
+                "transform",
+                "rotate",
+                "0 60 70 ; 90 60 70 ; 270 60 70 ; 360 60 70",
+                "0 ; 0.1 ; 0.9 ; 1",
+                "10s"
+            );
+        } else if (animation == 13) {
+            // uniform Speed Spin
+            return _animateTransform(
+                "transform",
+                "rotate",
+                "0 60 70 ; 360 60 70",
+                "0 ; 1",
+                "10s"
+            );
         }
     }
 }
