@@ -1,40 +1,17 @@
 export const sections: Array<object> = [
   {
-    title: "Counts",
+    title: "Shapes",
     rand: true,
     options: [
       {
-        label: "Colors",
-        key: "colors",
-        type: "slider",
-        rand: {
-          min: 1,
-          max: 50,
-        },
-        range: {
-          min: 1,
-          max: 100,
-        },
-      },
-      {
-        label: "Shapes",
+        label: "Count",
         key: "shapes",
         type: "slider",
-        rand: {
-          min: 1,
-          max: 55,
-        },
         range: {
           min: 1,
-          max: 70,
+          max: 30,
         },
       },
-    ],
-  },
-  {
-    title: "Size",
-    rand: true,
-    options: [
       {
         label: "Width",
         key: "width",
@@ -101,6 +78,56 @@ export const sections: Array<object> = [
         range: {
           min: 1,
           max: 50,
+        },
+      },
+    ],
+  },{
+    title: "Color",
+    rand: true,
+    options: [
+      {
+        label: "Root Hue",
+        key: "hue",
+        type: "slider",
+        range: {
+          min: 0,
+          max: 360,
+        },
+      },
+      {
+        label: "Saturation",
+        key: "saturation",
+        type: "slider",
+        range: {
+          min: 0,
+          max: 100,
+        },
+      },
+      {
+        label: "Lightness Range",
+        key: "lightness",
+        type: "range-slider",
+        range: {
+          min: 0,
+          max: 100,
+        },
+      },
+      {
+        label: "Shades",
+        key: "shades",
+        type: "slider",
+        range: {
+          min: 1,
+          max: 10,
+        },
+      },
+      {
+        label: "Scheme",
+        key: "scheme",
+        type: "slider",
+        range: {
+          min: 0,
+          max: 7,
         },
       },
     ],

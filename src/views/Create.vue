@@ -196,7 +196,15 @@ export default Vue.extend({
       t.loading = true;
       await t.loadStatus();
       const v = t.values;
-      const counts = [v.colors, v.shapes];
+      const shapes = v.shapes;
+      const palette = [
+        v.hue,
+        v.saturation,
+        v.lightness[0],
+        v.lightness[1],
+        v.scheme,
+        v.shades
+      ];
       const dials = [
         v.x,
         v.y,
@@ -212,9 +220,11 @@ export default Vue.extend({
         v.mirrorPos3,
         v.scale,
       ];
-      const switches = [v.mirror1, v.mirror2, v.mirror3];
+      const mirrors = [v.mirror1, v.mirror2, v.mirror3];
+      const animation = v.animation;
+      const animate = v.animate;
       t.data = await this.$store.state.contracts.tinyboxes.methods
-        .tokenPreview(t.id, v.seed.toString(), counts, dials, switches)
+        .tokenTest(v.seed.toString(), shapes, palette, dials, mirrors, animation, animate)
         .call()
         .catch((err: any) => {
           console.error(err, t.id, v.seed);
@@ -309,7 +319,6 @@ export default Vue.extend({
       values: {} as any,
       defaults: {
         seed: 1234,
-        colors: 7,
         shapes: 11,
         x: 200,
         y: 200,
@@ -325,6 +334,13 @@ export default Vue.extend({
         mirrorPos2: 1300,
         mirrorPos3: 2600,
         scale: 100,
+        hue: 0,
+        saturation: 80,
+        lightness: [30,70],
+        shades: 3,
+        scheme: 0,
+        animate: false,
+        animation: 9,
       },
       sections: sections,
     };

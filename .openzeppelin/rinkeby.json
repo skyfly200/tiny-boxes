@@ -2001,6 +2001,11 @@
         "address": "0x3C102277feF2255BC510306F72852B1ec2B45ecb",
         "kind": "NonProxy",
         "bytecodeHash": "b273d60224dee5353664d7230f64f2dd93322c1f91692c43a09b31a11db6d9d9"
+      },
+      {
+        "address": "0xf258B44e8f9532DAf37fF261203148BB7807E10e",
+        "kind": "NonProxy",
+        "bytecodeHash": "b273d60224dee5353664d7230f64f2dd93322c1f91692c43a09b31a11db6d9d9"
       }
     ]
   },
