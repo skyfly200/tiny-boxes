@@ -84,6 +84,13 @@ library SVG {
     }
 
     /**
+     * @dev render an animate SVG tag with calcMode discrete (no interpolation)
+     */
+    function _animateDiscrete(string memory attribute, string memory values, string memory duration) internal pure returns (string memory) {
+        return string(abi.encodePacked('<animate attributeName="', attribute, '" values="', values, '" dur="', duration, '" calcMode="discrete" repeatCount="indefinite" />'));
+    }
+
+    /**
      * @dev render a animateTransform SVG tag
      */
     function _animateTransform(string memory attribute, string memory typeVal, string memory values, string memory duration) internal pure returns (string memory) {
@@ -341,6 +348,49 @@ library SVG {
                 "10s"
             );
         } else if (animation == 14) {
+            // indexed speed
+            return _animateTransform(
+                "transform",
+                "rotate",
+                "0 60 70 ; 360 60 70",
+                "0  ; 1",
+                string(abi.encodePacked(uint256(10000).div(shapeIndex + 1).toString(),"ms"))
+            );
+        } else if (animation == 15) {
+            // jitter
+            int256[2] memory amp = [int256(20), int256(20)]; // randomize amps for each shape?
+            string[2] memory vals;
+            for (uint256 i = 0; i < 2; i++) {
+                int256 pos = shape.position[i];
+                string memory avg = pos.toString();
+                string memory min = pos.sub(amp[i]).toString();
+                string memory max = pos.add(amp[i]).toString();
+                vals[i] = string(abi.encodePacked(
+                    avg, ";", (i==0) ? min : max, ";", (i==0) ? max : min, ";", avg
+                ));
+            }
+            return string(abi.encodePacked(
+                _animateDiscrete("x",vals[0],"2s"),
+                _animateDiscrete("y",vals[1],"2s")
+            ));
+        } else if (animation == 16) {
+            // giggle
+            int256 amp = 20;
+            string[2] memory vals;
+            for (uint256 i = 0; i < 2; i++) {
+                int256 pos = shape.position[i];
+                string memory avg = pos.toString();
+                string memory min = pos.sub(amp).toString();
+                string memory max = pos.add(amp).toString();
+                vals[i] = string(abi.encodePacked(
+                    avg, ";", (i==0) ? min : max, ";", (i==0) ? max : min, ";", avg
+                ));
+            }
+            return string(abi.encodePacked(
+                _animate("x",vals[0],"200ms"),
+                _animate("y",vals[1],"200ms")
+            ));
+        } else if (animation == 17 ) {
             // drop (shake first?)
             string memory values = string(abi.encodePacked(
                 shape.position[0].toString()," ",shape.position[1].toString()," ; ",
