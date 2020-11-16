@@ -234,7 +234,15 @@ export default Vue.extend({
     mintToken: async function() {
       const t = this as any;
       const v = t.values;
-      const counts = [v.colors, v.shapes];
+      const shapes = v.shapes;
+      const palette = [
+        v.hue,
+        v.saturation,
+        v.lightness[0],
+        v.lightness[1],
+        v.scheme,
+        v.shades
+      ];
       const dials = [
         v.x,
         v.y,
@@ -250,7 +258,7 @@ export default Vue.extend({
         v.mirrorPos3,
         v.scale,
       ];
-      const switches = [v.mirror1, v.mirror2, v.mirror3];
+      const mirrors = [v.mirror1, v.mirror2, v.mirror3];
       t.price = await t.getPrice();
       t.minted = {};
       t.overlay = "confirm";
@@ -260,7 +268,7 @@ export default Vue.extend({
           to: tinyboxesAddress,
           value: t.price,
           data: this.$store.state.contracts.tinyboxes.methods
-            .createBox(v.seed.toString(), counts, dials, switches)
+            .buy(v.seed.toString(), shapes, palette, dials, mirrors)
             .encodeABI(),
         },
         (err: any, txHash: string) => {
