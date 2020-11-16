@@ -335,21 +335,21 @@ library SVG {
             string memory values = string(abi.encodePacked( avg, ";", min, ";", avg, ";", max, ";", avg ));
             return _animateTransform("transform","translate",values,"10s");
         } else if (animation == 12) {
-            // 2 Speed Spin
-            return _animateTransform(
-                "transform",
-                "rotate",
-                "0 60 70 ; 90 60 70 ; 270 60 70 ; 360 60 70",
-                "0 ; 0.1 ; 0.9 ; 1",
-                "10s"
-            );
-        } else if (animation == 13) {
             // uniform Speed Spin
             return _animateTransform(
                 "transform",
                 "rotate",
                 "0 60 70 ; 360 60 70",
                 "0 ; 1",
+                "10s"
+            );
+        } else if (animation == 13) {
+            // 2 Speed Spin
+            return _animateTransform(
+                "transform",
+                "rotate",
+                "0 60 70 ; 90 60 70 ; 270 60 70 ; 360 60 70",
+                "0 ; 0.1 ; 0.9 ; 1",
                 "10s"
             );
         }
