@@ -300,29 +300,19 @@ library SVG {
             );
         } else if (animation == 9) {
             // spread
-            // TODO: use different hold points in values and times in keyTimes
-            return _animateTransformSpline(
-                "transform",
-                "rotate",
-                "0 200 200 ; 270 200 200 ; 270 200 200 ; 360 200 200 ; 360 200 200",
-                "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1",
-                "0 ; 0.55 ; 0.75 ; 0.9 ; 1",
-                "10s"
-            );
+            uint256 spread = uint256(360).div(uint256(box.shapes));
+            string memory angle = shapeIndex.mul(spread).toString();
+            string memory values = string(abi.encodePacked("0 200 200 ; ",  angle, " 200 200 ; ",  angle, " 200 200 ; 360 200 200 ; 360 200 200"));
+            return _animateTransformSpline( "transform", "rotate", values, "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1", "0;0.55;0.75;0.9;1", "10s" );
         } else if (animation == 10) {
-            // drop
-            string memory values = string(abi.encodePacked(
-                shape.position[0].toString()," ",shape.position[1].toString()," ; ",
-                shape.position[0].toString()," ",shape.position[1].sub(500).toString()
-            ));
-            return _animateTransformSpline(
-                "transform",
-                "translate",
-                values,
-                "0.2 0 0.5 1 ; 0.5 0 0.5 1",
-                "0 ; 1",
-                "10s"
-            );
+            // spread w time
+            uint256 spread = uint256(360).div(uint256(box.shapes));
+            string memory angle = shapeIndex.mul(spread).toString();
+            string memory values = string(abi.encodePacked("0 200 200 ; ",  angle, " 200 200 ; ",  angle, " 200 200 ; 360 200 200 ; 360 200 200"));
+            uint256 timeShift = uint256(100).add(uint256(box.shapes).sub(shapeIndex).mul(uint256(800).div(uint256(box.shapes))));
+            string memory time = string(abi.encodePacked('0.', timeShift.toString())); 
+            string memory times = string(abi.encodePacked("0;", time, ";0.8;0.9;1"));
+            return _animateTransformSpline( "transform", "rotate", values, "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1", times, "10s" );
         } else if (animation == 11) {
             // glide
             int256 amp = 20;
@@ -334,7 +324,7 @@ library SVG {
             string memory values = string(abi.encodePacked( avg, ";", min, ";", avg, ";", max, ";", avg ));
             return _animateTransform("transform","translate",values,"10s");
         } else if (animation == 12) {
-            // uniform Speed Spin
+            // Uniform Speed Spin
             return _animateTransform(
                 "transform",
                 "rotate",
@@ -349,6 +339,20 @@ library SVG {
                 "rotate",
                 "0 60 70 ; 90 60 70 ; 270 60 70 ; 360 60 70",
                 "0 ; 0.1 ; 0.9 ; 1",
+                "10s"
+            );
+        } else if (animation == 14) {
+            // drop (shake first?)
+            string memory values = string(abi.encodePacked(
+                shape.position[0].toString()," ",shape.position[1].toString()," ; ",
+                shape.position[0].toString()," ",shape.position[1].sub(500).toString()
+            ));
+            return _animateTransformSpline(
+                "transform",
+                "translate",
+                values,
+                "0.2 0 0.5 1 ; 0.5 0 0.5 1",
+                "0 ; 1",
                 "10s"
             );
         }

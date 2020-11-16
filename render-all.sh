@@ -45,7 +45,7 @@ if [ -z "$ADDRESS" ]
                 npx oz call --method tokenTest -n rinkeby --args "1234567, [16,16], [222,80,30,70,6,3], [100,100,2,2,111,222,150,200,2,750,1200,2400,100], [true,true,true], $ANIMATION, true" --to "$ADDRESS" > "./frames/Anim-$ANIMATION.svg"
             else
                 # adjust max animation value here
-                for ANIMATION in {0..13}
+                for ANIMATION in {0..14}
                 do  
                     # render svg at
                     npx oz call --method tokenTest -n rinkeby --args "1234567, [16,16], [222,80,30,70,6,3], [100,100,2,2,111,222,150,200,2,750,1200,2400,100], [true,true,true], $ANIMATION, true" --to "$ADDRESS" > "./frames/Anim-$ANIMATION.svg"
