@@ -388,7 +388,7 @@ library SVG {
                 _animate("x",vals[0],"200ms"),
                 _animate("y",vals[1],"200ms")
             ));
-        } else if (animation == 16) {
+        } else if (animation == 17) {
             // jolt
             int256 amp = 5;
             string[2] memory vals;
@@ -401,10 +401,10 @@ library SVG {
                 ));
             }
             return string(abi.encodePacked(
-                _animate("x",vals[0],"200ms"),
-                _animate("y",vals[1],"200ms")
+                _animate("x",vals[0],"250ms"),
+                _animate("y",vals[1],"250ms")
             ));
-        } else if (animation == 17 ) {
+        } else if (animation == 18) {
             // drop (shake first?)
             string memory values = string(abi.encodePacked(
                 shape.position[0].toString()," ",shape.position[1].toString()," ; ",
