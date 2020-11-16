@@ -133,6 +133,26 @@ export const sections: Array<object> = [
     ],
   },
   {
+    title: "Animation",
+    options: [
+      {
+        label: "Animate",
+        key: "animate",
+        type: "switch",
+      },
+      {
+        label: "Animation #",
+        key: "animation",
+        type: "slider",
+        hide: "animate",
+        range: {
+          min: 0,
+          max: 18,
+        },
+      },
+    ]
+  },
+  {
     title: "Mirror",
     options: [
       {
