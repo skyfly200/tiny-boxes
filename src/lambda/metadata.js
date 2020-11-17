@@ -53,7 +53,7 @@ exports.handler = async (event, context) => {
       return generateResponse('Token ' + id + " dosn't exist", 204)
     }
 
-    // concurently lookup token data, art & timestamp
+    // concurently lookup token data, palette, art & timestamp
     const dataPromise = tinyboxesContract.methods.tokenData(id).call()
     const palettePromise = tinyboxesContract.methods.tokenPalette(id).call()
     const artPromise = tinyboxesContract.methods.tokenArt(id).call()
@@ -70,23 +70,21 @@ exports.handler = async (event, context) => {
       })
 
     // await token data
-    const mintedBlock = await timestampPromise
-    const minted = (await web3.eth.getBlock(mintedBlock)).timestamp
     const data = await dataPromise
     const palette = await palettePromise
     const art = await artPromise
+    const minted = (await web3.eth.getBlock(await timestampPromise)).timestamp
     
     // convert art stream from SVG to PNG
 
     // build MP4 stream of animation
 
-    // load Pinata SDK
-    const pinata = pinataSDK(PINATA_API_KEY, PINATA_API_SECRET)
 
     // upload image and video to IPFS
-    console.log('Uploading art to IPFS...')
 
-    // direct appreach
+    // load Pinata SDK
+    const pinata = pinataSDK(PINATA_API_KEY, PINATA_API_SECRET)
+    console.log('Uploading art to IPFS...')
     const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`
 
     // build form data with any valid readStream source
