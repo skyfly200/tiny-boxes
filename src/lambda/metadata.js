@@ -63,20 +63,33 @@ exports.handler = async (event, context) => {
       return generateResponse('Token ' + id + " dosn't exist", 204)
     }
 
-    // concurently lookup token data and art
+    // concurently lookup token data, art & timestamp
     const dataPromise = tinyboxesContract.methods.tokenData(id).call()
+    const palettePromise = tinyboxesContract.methods.tokenPalette(id).call()
     const artPromise = tinyboxesContract.methods.tokenArt(id).call()
+    let minted = 1546360800
+    const timestampPromise = web3.eth
+      .subscribe('logs', {
+        address: CONTRACT_ADDRESS,
+        fromBlock: 0,
+        topics: [
+          '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+          '0x0000000000000000000000000000000000000000000000000000000000000000',
+          null,
+          '0x' + id.toString(16).padStart(64, '0'),
+        ],
+      })
 
     // await token data
+    const mintedBlock = await timestampPromise
+    const minted = (await web3.eth.getBlock(mintedBlock)).timestamp
     const data = await dataPromise
+    const palette = await palettePromise
     const art = await artPromise
-
-    // generate readable stream of the SVG art markup
-    const artStream = streamifier.createReadStream(new Buffer([art]))
-
+    
     // convert art stream from SVG to PNG
 
-    // build MP4 stream of animation from frames
+    // build MP4 stream of animation
 
     // load Pinata SDK
     const pinata = pinataSDK(PINATA_API_KEY, PINATA_API_SECRET)
@@ -101,33 +114,15 @@ exports.handler = async (event, context) => {
     })
 
     //const imageHash = (await pinata.pinFileToIPFS(artStream)).IpfsHash
-    const imageHash = ''
-    const animationHash = ''
     //const animationHash = await pinata.pinFileToIPFS(mp4Stream)
     // console.log('IPFS Hash: ')
     // console.log(imageHash)
-
-    // lookup token minted timestamp
-    let minted = 1546360800
-    await web3.eth
-      .subscribe('logs', {
-        address: CONTRACT_ADDRESS,
-        fromBlock: 0,
-        topics: [
-          '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
-          '0x0000000000000000000000000000000000000000000000000000000000000000',
-          null,
-          '0x' + id.toString(16).padStart(64, '0'),
-        ],
-      })
-      .on('data', async (result) => {
-        const block = await web3.eth.getBlock(result.blockNumber)
-        minted = block.timestamp
-      })
+    const imageHash = ''
+    const animationHash = ''
 
     // build the metadata object from the token data and IPFS hashes
     let metadata = {
-      name: 'Token ' + id,
+      name: 'TinyBox #' + id,
       description:
         'A scattering of tiny boxes, Aranged in patterns ranging from mundane to magnificent.',
       external_url: EXTERNAL_URL_BASE + id,
@@ -138,13 +133,33 @@ exports.handler = async (event, context) => {
       attributes: [
         {
           display_type: 'number',
-          trait_type: 'Colors',
-          value: parseInt(data.counts[0]),
+          trait_type: 'Shapes',
+          value: parseInt(data.shapes),
         },
         {
           display_type: 'number',
-          trait_type: 'Shapes',
-          value: parseInt(data.counts[1]),
+          trait_type: 'Color Scheme',
+          value: parseInt(palette.scheme),
+        },
+        {
+          display_type: 'number',
+          trait_type: 'Root Hue',
+          value: parseInt(palette.rootHue),
+        },
+        {
+          display_type: 'number',
+          trait_type: 'Saturation',
+          value: parseInt(palette.scheme),
+        },
+        {
+          display_type: 'number',
+          trait_type: 'Lightness',
+          value: parseInt(palette.lightnessRange[0])+''+parseInt(palette.lightnessRange[1]),
+        },
+        {
+          display_type: 'number',
+          trait_type: 'Shades',
+          value: parseInt(palette.shades),
         },
         {
           display_type: 'number',
@@ -158,7 +173,7 @@ exports.handler = async (event, context) => {
         },
         {
           trait_type: 'Hatching',
-          value: data.dials[8],
+          value: data.hatching,
         },
         {
           trait_type: 'Mirror Level 1',
@@ -186,12 +201,15 @@ exports.handler = async (event, context) => {
 
     // log metadata to console
     console.log('Metadata of token ' + id)
-    //console.log(metadata)
+    console.log(metadata)
 
     // upload metadata JSON object to IPFS
     console.log('Writing metadata to IPFS')
     const metadataHash = (await pinata.pinJSONToIPFS(metadata)).IpfsHash
     console.log(metadataHash)
+
+    // update token with the metadataHash
+    // can happen after response
 
     return generateResponse(metadata, 200)
   } catch (err) {
