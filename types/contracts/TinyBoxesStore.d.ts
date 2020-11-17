@@ -58,14 +58,6 @@ export class TinyBoxesStore extends Contract {
 
     currentPrice(): TransactionObject<string>;
 
-    dataForLINKPay(
-      _seed: string,
-      shapes: number | string,
-      palette: (number | string)[],
-      dials: (number | string)[],
-      mirrors: boolean[]
-    ): TransactionObject<string>;
-
     fulfillRandomness(
       requestId: string | number[],
       randomness: number | string
