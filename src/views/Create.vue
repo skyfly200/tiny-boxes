@@ -98,9 +98,11 @@
 <script lang="ts">
 import Vue from "vue";
 import { mapGetters } from "vuex";
-import { tinyboxesAddress } from "../tinyboxes-contract";
+//import { tinyboxesAddress } from "../tinyboxes-contract";
 import { sections } from "./create-form";
 import Token from "@/components/Token.vue";
+
+const tinyboxesAddress = 0xf258B44e8f9532DAf37fF261203148BB7807E10e
 
 export default Vue.extend({
   name: "Create",
