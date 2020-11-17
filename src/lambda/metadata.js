@@ -86,9 +86,6 @@ exports.handler = async (event, context) => {
 
     // build MP4 stream of animation
 
-
-    // upload image and video to IPFS
-
     // load Pinata SDK
     const pinata = pinataSDK(PINATA_API_KEY, PINATA_API_SECRET)
     console.log('Uploading art to IPFS...')
@@ -116,8 +113,8 @@ exports.handler = async (event, context) => {
     console.log('IPFS Hashes: ')
     console.log(imageHash)
     console.log(animationHash)
-    const imageHash = ''
-    const animationHash = ''
+    // const imageHash = ''
+    // const animationHash = ''
 
     // build the metadata object from the token data and IPFS hashes
     let metadata = {
