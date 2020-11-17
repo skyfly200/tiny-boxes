@@ -186,7 +186,7 @@ export const sections: Array<object> = [
     ],
   },
   {
-    title: "Advanced",
+    title: "Miscellaneous",
     options: [
       {
         label: "RNG Seed",
