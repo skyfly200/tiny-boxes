@@ -35,27 +35,7 @@ library SVG {
     using Strings for *;
 
     /**
-     * @dev render a rectangle SVG tag
-     * @param shape object
-     */
-    function _rect(Shape memory shape) internal view returns (string memory) {
-        return string(abi.encodePacked(
-            '<rect x="',
-            shape.position[0].toString(),
-            '" y="',
-            shape.position[1].toString(),
-            '" width="',
-            shape.size[0].toString(),
-            '" height="',
-            shape.size[1].toString(),
-            '" style="fill:',
-            shape.color.toString(),
-            '"/>'
-        ));
-    }
-
-    /**
-     * @dev render a rectangle SVG tag
+     * @dev render a rectangle SVG tag with nested content
      * @param shape object
      */
     function _rect(Shape memory shape, string memory slot) internal view returns (string memory) {
@@ -70,59 +50,74 @@ library SVG {
             shape.size[1].toString(),
             '" style="fill:',
             shape.color.toString(),
-            '">',
-            slot,
-            '</rect>'
+            bytes(slot).length == 0 ?
+                '"/>' :
+                string(abi.encodePacked('">',slot,'</rect>'))
         ));
+    }
+    
+    /**
+     * @dev render a rectangle SVG tag
+     * @param shape object
+     */
+    function _rect(Shape memory shape) internal view returns (string memory) {
+        return _rect(shape, '');
     }
 
     /**
      * @dev render an animate SVG tag
      */
-    function _animate(string memory attribute, string memory values, string memory duration) internal pure returns (string memory) {
-        return string(abi.encodePacked('<animate attributeName="', attribute, '" values="', values, '" dur="', duration, '" repeatCount="indefinite" />'));
+    function _animate(string memory attribute, string memory duration, string memory values) internal pure returns (string memory) {
+        return _animate(attribute, duration, values, '');
     }
 
     /**
-     * @dev render an animate SVG tag with calcMode discrete (no interpolation)
+     * @dev render an animate SVG tag
      */
-    function _animateDiscrete(string memory attribute, string memory values, string memory duration) internal pure returns (string memory) {
-        return string(abi.encodePacked('<animate attributeName="', attribute, '" values="', values, '" dur="', duration, '" calcMode="discrete" repeatCount="indefinite" />'));
+    function _animate(string memory attribute, string memory duration, string memory values, string memory calcMode) internal pure returns (string memory) {
+        return string(abi.encodePacked('<animate attributeName="', attribute, '" values="', values, '" dur="', duration,
+        bytes(calcMode).length == 0 ? '' : string(abi.encodePacked('" calcMode="',calcMode)),
+        '" repeatCount="indefinite" />'));
     }
 
     /**
-     * @dev render a animateTransform SVG tag
+     * @dev render an animateTransform SVG tag with keyTimes and keySplines
      */
-    function _animateTransform(string memory attribute, string memory typeVal, string memory values, string memory duration) internal pure returns (string memory) {
-        return string(abi.encodePacked('<animateTransform attributeName="', attribute, '" attributeType="XML" type="', typeVal, '" values="', values, '" dur="', duration, '" repeatCount="indefinite" />'));
+    function _animateTransform(string memory attribute, string memory typeVal, string memory duration, string memory values, string memory keyTimes, string memory keySplines) internal pure returns (string memory) {
+        return string(abi.encodePacked('<animateTransform attributeName="', attribute, '" attributeType="XML" type="', typeVal,'" dur="', duration, '" values="', values,
+            bytes(keyTimes).length == 0 ? '' : string(abi.encodePacked('" keyTimes="', keyTimes)),
+            bytes(keySplines).length == 0 ? '' : string(abi.encodePacked('" calcMode="spline" keySplines="', keySplines)),
+        '" repeatCount="indefinite" />'));
     }
 
     /**
-     * @dev render a animateTransform SVG tag
+     * @dev render an animateTransform SVG tag with keyTimes
      */
-    function _animateTransform(string memory attribute, string memory typeVal, string memory values, string memory keyTimes, string memory duration) internal pure returns (string memory) {
-        return string(abi.encodePacked('<animateTransform attributeName="', attribute, '" attributeType="XML" type="', typeVal, '" values="', values, '" keyTimes="', keyTimes, '" dur="', duration, '" repeatCount="indefinite" />'));
+    function _animateTransform(string memory attribute, string memory typeVal, string memory duration, string memory values, string memory keyTimes) internal pure returns (string memory) {
+        return _animateTransform(attribute, typeVal, duration, values, keyTimes, '');
     }
 
     /**
-     * @dev render a animateTransform SVG tag
+     * @dev render an animateTransform SVG tag
      */
-    function _animateTransformSpline(string memory attribute, string memory typeVal, string memory values, string memory keySplines, string memory keyTimes, string memory duration) internal pure returns (string memory) {
-        return string(abi.encodePacked('<animateTransform attributeName="', attribute, '" attributeType="XML" type="', typeVal, '" calcMode="spline" values="', values, '" keySplines="', keySplines, '" keyTimes="', keyTimes, '" dur="', duration, '" repeatCount="indefinite" />'));
-    }
-
-    /**
-     * @dev render an g SVG tag
-     */
-    function _g(string memory slot) internal pure returns (string memory) {
-        return string(abi.encodePacked('<g>', slot,'</g>'));
+    function _animateTransform(string memory attribute, string memory typeVal, string memory duration, string memory values) internal pure returns (string memory) {
+        return _animateTransform(attribute, typeVal, duration, values, '', '');
     }
 
     /**
      * @dev render an g SVG tag
      */
     function _g(string memory transformValues, string memory slot) internal pure returns (string memory) {
-        return string(abi.encodePacked('<g transform="', transformValues,  '">', slot,'</g>'));
+        return string(abi.encodePacked('<g', 
+        bytes(transformValues).length == 0 ? '' : string(abi.encodePacked(' transform="', transformValues, '"')),
+        '>', slot,'</g>'));
+    }
+
+    /**
+     * @dev render a g(group) SVG tag
+     */
+    function _g(string memory slot) internal pure returns (string memory) {
+        return _g('', slot);
     }
 
     /**
@@ -221,15 +216,15 @@ library SVG {
         uint256 animation = box.animation;
         if (animation == 0) {
             // Rounding corners
-            return _animate("rx","0;100;0","10s");
+            return _animate("rx","10s","0;100;0");
         } else if (animation == 1) {
             // grow n shrink
             return _animateTransform(
                 "transform",
                 "scale",
-                "1 1 ; 1.5 1.5 ; 1 1 ; 0.5 0.5 ; 1 1",
+                "10s",
                 "0 ; 0.25 ; 0.5 ; 0.75 ; 1",
-                "10s"
+                "1 1 ; 1.5 1.5 ; 1 1 ; 0.5 0.5 ; 1 1"
             );
         } else if (animation == 2) {
             // squash n stretch
@@ -245,71 +240,69 @@ library SVG {
                 ));
             }
             return string(abi.encodePacked(
-                _animate("width",vals[0],"10s"),
-                _animate("height",vals[1],"10s")
+                _animate("width","10s",vals[0]),
+                _animate("height","10s",vals[1])
             ));
         } else if (animation == 3) {
             // skew X
             return _animateTransform(
                 "transform",
                 "skewX",
-                "0 ; 50 ; 0",
-                "10s"
+                "10s",
+                "0 ; 50 ; 0"
             );
         } else if (animation == 4) {
             // skew Y
             return _animateTransform(
                 "transform",
                 "skewY",
-                "0 ; 50 ; 0",
-                "10s"
+                "10s",
+                "0 ; 50 ; 0"
             );
         } else if (animation == 5) {
             // snap spin
-            return _animateTransformSpline(
+            return _animateTransform(
                 "transform",
                 "rotate",
+                "10s",
                 "0 200 200 ; 90 200 200 ; 90 200 200 ; 360 200 200 ; 360 200 200",
-                "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1",
                 "0 ; 0.2 ; 0.4 ; 0.9 ; 1",
-                "10s"
+                "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1"
             );
         } else if (animation == 6) {
             // snap spin
-            return _animateTransformSpline(
+            return _animateTransform(
                 "transform",
                 "rotate",
+                "10s",
                 "0 200 200 ; 180 200 200 ; 180 200 200 ; 360 200 200 ; 360 200 200",
-                "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1",
                 "0 ; 0.4 ; 0.6 ; 0.9 ; 1",
-                "10s"
+                "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1"
             );
         } else if (animation == 7) {
             // snap spin
-            return _animateTransformSpline(
+            return _animateTransform(
                 "transform",
                 "rotate",
                 "0 200 200 ; 270 200 200 ; 270 200 200 ; 360 200 200 ; 360 200 200",
-                "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1",
                 "0 ; 0.6 ; 0.8 ; 0.9 ; 1",
-                "10s"
+                "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1"
             );
         } else if (animation == 8) {
             // snap spin
-            return _animateTransformSpline(
+            return _animateTransform(
                 "transform",
                 "rotate",
                 "0 200 200 ; 90 200 200 ; 90 200 200 ; 180 200 200 ; 180 200 200 ; 270 200 200 ; 270 200 200 ; 360 200 200 ; 360 200 200",
-                "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1",
                 "0 ; 0.125 ; 0.25 ; 0.375 ; 0.5 ; 0.625 ; 0.8 ; 0.925 ; 1",
-                "10s"
+                "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1"
             );
         } else if (animation == 9) {
             // spread
             uint256 spread = uint256(300).div(uint256(box.shapes));
             string memory angle = shapeIndex.add(1).mul(spread).toString();
             string memory values = string(abi.encodePacked("0 200 200 ; ",  angle, " 200 200 ; ",  angle, " 200 200 ; 360 200 200 ; 360 200 200"));
-            return _animateTransformSpline( "transform", "rotate", values, "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1", "0;0.5;0.6;0.9;1", "10s" );
+            return _animateTransform( "transform", "rotate", "10s", values, "0;0.5;0.6;0.9;1", "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1" );
         } else if (animation == 10) {
             // spread w time
             uint256 spread = uint256(300).div(uint256(box.shapes));
@@ -317,7 +310,7 @@ library SVG {
             string memory values = string(abi.encodePacked("0 200 200 ; ",  angle, " 200 200 ; ",  angle, " 200 200 ; 360 200 200"));
             uint256 timeShift = uint256(100).add(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
             string memory times = string(abi.encodePacked("0;0.", timeShift.toString(), ";0.9;1"));
-            return _animateTransformSpline( "transform", "rotate", values, "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ", times, "10s" );
+            return _animateTransform( "transform", "rotate", "10s", values, times, "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 " );
         } else if (animation == 11) {
             // glide
             int256 amp = 20;
@@ -327,33 +320,33 @@ library SVG {
             string memory max = string(abi.encodePacked(posX.add(amp).toString(), " ", posY.add(amp).toString()));
             string memory min = string(abi.encodePacked(posX.sub(amp).toString(), " ", posY.sub(amp).toString()));
             string memory values = string(abi.encodePacked( avg, ";", min, ";", avg, ";", max, ";", avg ));
-            return _animateTransform("transform","translate",values,"10s");
+            return _animateTransform("transform","translate","10s",values);
         } else if (animation == 12) {
             // Uniform Speed Spin
             return _animateTransform(
                 "transform",
                 "rotate",
+                "10s",
                 "0 60 70 ; 360 60 70",
-                "0 ; 1",
-                "10s"
+                "0 ; 1"
             );
         } else if (animation == 13) {
             // 2 Speed Spin
             return _animateTransform(
                 "transform",
                 "rotate",
+                "10s",
                 "0 60 70 ; 90 60 70 ; 270 60 70 ; 360 60 70",
-                "0 ; 0.1 ; 0.9 ; 1",
-                "10s"
+                "0 ; 0.1 ; 0.9 ; 1"
             );
         } else if (animation == 14) {
             // indexed speed
             return _animateTransform(
                 "transform",
                 "rotate",
+                string(abi.encodePacked(uint256(10000).div(shapeIndex + 1).toString(),"ms")),
                 "0 60 70 ; 360 60 70",
-                "0  ; 1",
-                string(abi.encodePacked(uint256(10000).div(shapeIndex + 1).toString(),"ms"))
+                "0;1"
             );
         } else if (animation == 15) {
             // jitter
@@ -368,8 +361,8 @@ library SVG {
                 ));
             }
             return string(abi.encodePacked(
-                _animateDiscrete("x",vals[0],"1s"),
-                _animateDiscrete("y",vals[1],"2s")
+                _animate("x","1s",vals[0],"discrete"),
+                _animate("y","2s",vals[1],"discrete")
             ));
         } else if (animation == 16) {
             // giggle
@@ -384,8 +377,8 @@ library SVG {
                 ));
             }
             return string(abi.encodePacked(
-                _animate("x",vals[0],"200ms"),
-                _animate("y",vals[1],"200ms")
+                _animate("x","200ms",vals[0]),
+                _animate("y","200ms",vals[1])
             ));
         } else if (animation == 17) {
             // jolt
@@ -400,8 +393,8 @@ library SVG {
                 ));
             }
             return string(abi.encodePacked(
-                _animate("x",vals[0],"250ms"),
-                _animate("y",vals[1],"250ms")
+                _animate("x","250ms",vals[0]),
+                _animate("y","250ms",vals[1])
             ));
         } else if (animation == 18) {
             // drop (shake first?)
@@ -409,13 +402,13 @@ library SVG {
                 shape.position[0].toString()," ",shape.position[1].toString()," ; ",
                 shape.position[0].toString()," ",shape.position[1].sub(500).toString()
             ));
-            return _animateTransformSpline(
+            return _animateTransform(
                 "transform",
                 "translate",
+                "10s",
                 values,
-                "0.2 0 0.5 1 ; 0.5 0 0.5 1",
                 "0 ; 1",
-                "10s"
+                "0.2 0 0.5 1 ; 0.5 0 0.5 1"
             );
         }
     }
