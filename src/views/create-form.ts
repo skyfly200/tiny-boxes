@@ -13,6 +13,15 @@ export const sections: Array<object> = [
         },
       },
       {
+        label: "Hatching Mod",
+        key: "hatchMod",
+        type: "slider",
+        range: {
+          min: 0,
+          max: 30,
+        },
+      },
+      {
         label: "Width",
         key: "width",
         type: "range-slider",
@@ -33,7 +42,7 @@ export const sections: Array<object> = [
     ],
   },
   {
-    title: "Position",
+    title: "Placement",
     rand: true,
     options: [
       {
@@ -142,7 +151,7 @@ export const sections: Array<object> = [
         step: 25,
         range: {
           min: 0,
-          max: 3400,
+          max: 2400,
         },
       },
       {
@@ -152,7 +161,7 @@ export const sections: Array<object> = [
         step: 25,
         range: {
           min: 0,
-          max: 3400,
+          max: 2400,
         },
       },
       {
@@ -162,7 +171,17 @@ export const sections: Array<object> = [
         step: 25,
         range: {
           min: 0,
-          max: 3400,
+          max: 2400,
+        },
+      },
+      {
+        label: "Scale %",
+        key: "scale",
+        type: "slider",
+        step: 100,
+        range: {
+          min: 100,
+          max: 800,
         },
       },
     ],
@@ -177,25 +196,6 @@ export const sections: Array<object> = [
         range: {
           min: 0,
           max: 2 ** 53,
-        },
-      },
-      {
-        label: "Hatching Mod",
-        key: "hatchMod",
-        type: "slider",
-        range: {
-          min: 0,
-          max: 1000,
-        },
-      },
-      {
-        label: "Scale %",
-        key: "scale",
-        type: "slider",
-        step: 10,
-        range: {
-          min: 10,
-          max: 1000,
         },
       },
       {
