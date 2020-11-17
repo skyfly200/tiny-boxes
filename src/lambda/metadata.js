@@ -47,6 +47,7 @@ exports.handler = async (event, context) => {
     )
 
     // check token exists and get owner
+    console.log('Checking token of ID exists')
     const owner = await tinyboxesContract.methods.ownerOf(id).call()
     if (owner === '0x0000000000000000000000000000000000000000') {
       // complain if token is missing
@@ -55,6 +56,7 @@ exports.handler = async (event, context) => {
     }
 
     // concurently lookup token data, palette, art & timestamp
+    console.log('Looking Up Token...')
     const dataPromise = tinyboxesContract.methods.tokenData(id).call()
     const palettePromise = tinyboxesContract.methods.tokenPalette(id).call()
     const artPromise = tinyboxesContract.methods.tokenArt(id,false).call()
@@ -76,6 +78,7 @@ exports.handler = async (event, context) => {
     // await token data
     const [data, palette, art, animation, minted] = await Promise.all([dataPromise, palettePromise, artPromise, animatonPromise, mintedPromise])
     
+    console.log('Lookup Complete!')
     console.log(data);
     console.log(palette);
     console.log(art);
