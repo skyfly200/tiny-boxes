@@ -56,7 +56,8 @@ exports.handler = async (event, context) => {
     // concurently lookup token data, palette, art & timestamp
     const dataPromise = tinyboxesContract.methods.tokenData(id).call()
     const palettePromise = tinyboxesContract.methods.tokenPalette(id).call()
-    const artPromise = tinyboxesContract.methods.tokenArt(id).call()
+    const artPromise = tinyboxesContract.methods.tokenArt(id,false).call()
+    const animatonPromise = tinyboxesContract.methods.tokenArt(id,true).call()
     const timestampPromise = web3.eth
       .subscribe('logs', {
         address: CONTRACT_ADDRESS,
@@ -72,11 +73,12 @@ exports.handler = async (event, context) => {
     const mintedPromise = web3.eth.getBlock(await timestampPromise)
 
     // await token data
-    const [data, palette, art, minted] = await Promise.all([dataPromise, palettePromise, artPromise, mintedPromise])
+    const [data, palette, art, animation, minted] = await Promise.all([dataPromise, palettePromise, artPromise, animatonPromise, mintedPromise])
     
     console.log(data);
     console.log(palette);
     console.log(art);
+    console.log(animation);
     console.log(minted);
 
     // convert art stream from SVG to PNG
