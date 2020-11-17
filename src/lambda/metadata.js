@@ -69,11 +69,10 @@ exports.handler = async (event, context) => {
         ],
       })
 
+    const mintedPromise = web3.eth.getBlock(await timestampPromise)
+
     // await token data
-    const data = await dataPromise
-    const palette = await palettePromise
-    const art = await artPromise
-    const minted = (await web3.eth.getBlock(await timestampPromise)).timestamp
+    const [data, palette, art, minted] = await Promise.all([dataPromise, palettePromise, artPromise, mintedPromise])
     
     console.log(data);
     console.log(palette);
@@ -186,7 +185,7 @@ exports.handler = async (event, context) => {
         {
           display_type: 'date',
           trait_type: 'Created',
-          value: minted,
+          value: minted.timestamp,
         },
       ],
     }
