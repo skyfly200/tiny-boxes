@@ -130,8 +130,10 @@ library TinyBoxesRenderer {
         HSL[] memory colors = Colors.generateColors(box.colorPalette);
 
         // --- Render SVG Markup ---
+        // TODO - switch up to use abi.encodePacked(arg);
         bytes memory buffer = new bytes(100000);
         buffer.append(SVG._generateHeader());
+        // TODO - pass slot in here with shapes, change footer to mirroring and add generateSVG
         buffer.append(SVG._generateBody(box));
 
         // write shapes to the SVG
@@ -144,7 +146,6 @@ library TinyBoxesRenderer {
         // write the footer to the SVG
         buffer.append(
             SVG._generateFooter(
-                box.mirrors,
                 box.mirrorPositions,
                 int256(box.scale).toDecimal(2)
             )

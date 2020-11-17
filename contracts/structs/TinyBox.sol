@@ -13,5 +13,4 @@ struct TinyBox {
     int16[3] mirrorPositions;
     uint16[4] size;
     uint16[4] spacing;
-    bool[3] mirrors;
 }

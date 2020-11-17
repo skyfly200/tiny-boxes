@@ -160,16 +160,15 @@ library SVG {
 
     /**
      * @dev render the footer string for mirring effects
-     * @param switches for each mirroring stage
      * @param mirrorPositions for generator settings
      * @param scale for each mirroring stage
      * @return footer string
      */
     function _generateFooter(
-        bool[3] memory switches,
         int16[3] memory mirrorPositions,
         Decimal memory scale
     ) internal view returns (string memory) {
+        // TODO - move away from the buffer approach
         bytes memory buffer = new bytes(8192);
         string[3] memory scales = ['-1 1', '-1 -1', '1 -1'];
         for (uint256 s = 0; s < 4; s++) {
@@ -177,7 +176,7 @@ library SVG {
             buffer.append('</symbol>');
             string memory id = string(abi.encodePacked('quad', s.toString()));
             if ( s < 3 ) {
-                if (!switches[s]) {
+                if (mirrorPositions[s] == 0) {
                     // turn off this level of mirroring
                     buffer.append(string(abi.encodePacked(
                         _g(_use(id))

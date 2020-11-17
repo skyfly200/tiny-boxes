@@ -222,11 +222,8 @@ export default Vue.extend({
         v.mirrorPos3,
         v.scale,
       ];
-      const mirrors = [v.mirror1, v.mirror2, v.mirror3];
-      const animation = v.animation;
-      const animate = v.animate;
       t.data = await this.$store.state.contracts.tinyboxes.methods
-        .tokenTest(v.seed.toString(), shapes, palette, dials, mirrors, animation, animate)
+        .tokenTest(v.seed.toString(), shapes, palette, dials, v.animation, v.animate)
         .call()
         .catch((err: any) => {
           console.error(err, t.id, v.seed);
@@ -260,7 +257,6 @@ export default Vue.extend({
         v.mirrorPos3,
         v.scale,
       ];
-      const mirrors = [v.mirror1, v.mirror2, v.mirror3];
       t.price = await t.getPrice();
       t.minted = {};
       t.overlay = "confirm";
@@ -270,7 +266,7 @@ export default Vue.extend({
           to: tinyboxesAddress,
           value: t.price,
           data: this.$store.state.contracts.tinyboxes.methods
-            .buy(v.seed.toString(), shapes, palette, dials, mirrors)
+            .buy(v.seed.toString(), shapes, palette, dials)
             .encodeABI(),
         },
         (err: any, txHash: string) => {

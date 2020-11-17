@@ -136,31 +136,19 @@ export const sections: Array<object> = [
     title: "Mirror",
     options: [
       {
-        label: "Level 1",
-        key: "mirror1",
-        type: "switch",
-      },
-      {
         label: "Position 1",
         key: "mirrorPos1",
         type: "slider",
-        hide: "mirror1",
         step: 25,
         range: {
           min: 0,
           max: 3400,
         },
-      },
-      {
-        label: "Level 2",
-        key: "mirror2",
-        type: "switch",
       },
       {
         label: "Position 2",
         key: "mirrorPos2",
         type: "slider",
-        hide: "mirror2",
         step: 25,
         range: {
           min: 0,
@@ -168,15 +156,9 @@ export const sections: Array<object> = [
         },
       },
       {
-        label: "Level 3",
-        key: "mirror3",
-        type: "switch",
-      },
-      {
         label: "Position 3",
         key: "mirrorPos3",
         type: "slider",
-        hide: "mirror3",
         step: 25,
         range: {
           min: 0,

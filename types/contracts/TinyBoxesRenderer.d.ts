@@ -44,7 +44,6 @@ export class TinyBoxesRenderer extends Contract {
         mirrorPositions: (number | string)[];
         size: (number | string)[];
         spacing: (number | string)[];
-        mirrors: boolean[];
       },
       animate: boolean
     ): TransactionObject<string>;

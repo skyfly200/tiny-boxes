@@ -36,8 +36,8 @@ contract TinyBoxes is TinyBoxesStore {
      * @dev Generate the token SVG art preview for given parameters
      * @param _seed for renderer RNG
      * @param shapes count
+     * @param palette for color selection
      * @param dials for perpetual renderer
-     * @param mirrors switches
      * @return preview SVG art
      */
     function tokenTest(
@@ -45,7 +45,6 @@ contract TinyBoxes is TinyBoxesStore {
         uint8 shapes,
         uint16[6] memory palette,
         int16[13] memory dials,
-        bool[3] memory mirrors,
         uint8 animation,
         bool animate
     ) public view returns (string memory) {
@@ -68,8 +67,7 @@ contract TinyBoxes is TinyBoxesStore {
             ],
             hatching: uint16(dials[8]),
             mirrorPositions: [dials[9], dials[10], dials[11]],
-            scale: uint16(dials[12]),
-            mirrors: mirrors
+            scale: uint16(dials[12])
         });
         return box.perpetualRenderer(animate).toString();
     }

@@ -42,13 +42,13 @@ if [ -z "$ADDRESS" ]
                         ANIMATION=0
                 fi
                 # render svg at
-                npx oz call --method tokenTest -n rinkeby --args "1234567, [16,16], [222,80,30,70,6,3], [100,100,2,2,111,222,150,200,2,600,1200,2400,100], [true,true,true], $ANIMATION, true" --to "$ADDRESS" > "./frames/Anim-$ANIMATION.svg"
+                npx oz call --method tokenTest -n rinkeby --args "1234567, [16,16], [222,80,30,70,6,3], [100,100,2,2,111,222,150,200,2,600,1200,2400,100], $ANIMATION, true" --to "$ADDRESS" > "./frames/Anim-$ANIMATION.svg"
             else
                 # adjust max animation value here
                 for ANIMATION in {0..18}
                 do  
                     # render svg at
-                    npx oz call --method tokenTest -n rinkeby --args "1234567, [16,16], [222,80,30,70,6,3], [100,100,2,2,111,222,150,200,2,600,1200,2400,100], [true,true,true], $ANIMATION, true" --to "$ADDRESS" > "./frames/Anim-$ANIMATION.svg"
+                    npx oz call --method tokenTest -n rinkeby --args "1234567, [16,16], [222,80,30,70,6,3], [100,100,2,2,111,222,150,200,2,600,1200,2400,100], $ANIMATION, true" --to "$ADDRESS" > "./frames/Anim-$ANIMATION.svg"
                 done
         fi
 fi

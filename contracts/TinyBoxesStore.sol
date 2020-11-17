@@ -165,8 +165,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
             ],
             hatching: uint16(parts[11].stringToUint()),
             mirrorPositions: [int16(parts[12].stringToUint()), int16(parts[13].stringToUint()), int16(parts[14].stringToUint())],
-            scale: uint16(parts[15].stringToUint()),
-            mirrors: [parts[16].stringToUint() != 0, parts[17].stringToUint() != 0, parts[18].stringToUint() != 0]
+            scale: uint16(parts[15].stringToUint())
         });
 
         // register the new box
@@ -225,17 +224,16 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     /**
      * @dev Create a new TinyBox Token
      * @param _seed of token
-     * @param shapes of token colors & shapes
+     * @param shapes count
+     * @param palette token colors
      * @param dials of token renderer
-     * @param mirrors active boolean of token
      * @return _requestId of the VRF call
      */
     function buy(
         string calldata _seed,
         uint8 shapes,
         uint16[6] calldata palette,
-        int16[13] calldata dials,
-        bool[3] calldata mirrors
+        int16[13] calldata dials
     ) external payable notSoldOut returns (bytes32) {
         handlePayment(false, msg.value, msg.sender);
 
@@ -262,8 +260,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
             ],
             hatching: uint16(dials[8]),
             mirrorPositions: [dials[9], dials[10], dials[11]],
-            scale: uint16(dials[12]),
-            mirrors: mirrors
+            scale: uint16(dials[12])
         });
 
         // register the new box

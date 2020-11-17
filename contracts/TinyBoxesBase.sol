@@ -65,7 +65,6 @@ contract TinyBoxesBase is ERC721, AccessControl  {
      * @return size of token
      * @return spacing of token
      * @return mirrorPositions of token
-     * @return mirrors of token
      * @return scale of token
      */
     function tokenData(uint256 _id)
@@ -79,7 +78,6 @@ contract TinyBoxesBase is ERC721, AccessControl  {
             uint16[4] memory size,
             uint16[4] memory spacing,
             int16[3] memory mirrorPositions,
-            bool[3] memory mirrors,
             uint16 scale
         )
     {
@@ -91,7 +89,6 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         size = box.size;
         spacing = box.spacing;
         mirrorPositions = box.mirrorPositions;
-        mirrors = box.mirrors;
         scale = box.scale;
     }
 

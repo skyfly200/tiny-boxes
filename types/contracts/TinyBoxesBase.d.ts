@@ -114,7 +114,6 @@ export class TinyBoxesBase extends Contract {
       size: string[];
       spacing: string[];
       mirrorPositions: string[];
-      mirrors: boolean[];
       scale: string;
       0: string;
       1: string;
@@ -123,8 +122,7 @@ export class TinyBoxesBase extends Contract {
       4: string[];
       5: string[];
       6: string[];
-      7: boolean[];
-      8: string;
+      7: string;
     }>;
 
     tokenOfOwnerByIndex(
