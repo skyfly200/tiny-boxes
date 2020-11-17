@@ -6,7 +6,7 @@ import VuexPersist from "vuex-persist";
 //import TinyBoxes from 'Contracts/TinyBoxes.sol'
 //import { tinyboxesAddress, tinyboxesABI } from "@/tinyboxes-contract";
 
-const tinyboxesAddress = 0xf258B44e8f9532DAf37fF261203148BB7807E10e
+const tinyboxesAddress = '0xf258B44e8f9532DAf37fF261203148BB7807E10e'
 const tinyboxesABI = [
     {
       "inputs": [

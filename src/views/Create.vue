@@ -62,6 +62,7 @@
                   h2 {{ priceInETH }}
                   v-icon(large) mdi-ethereum
                 v-spacer
+                v-spacer
                 v-btn(@click="mintToken" :disabled="!form.valid || soldOut || loading") Mint
           v-alert(v-if="!loading && soldOut" type="warning" prominent outlined border="left").sold-out
             p All boxes have sold, minting is disabled.
@@ -102,7 +103,7 @@ import { mapGetters } from "vuex";
 import { sections } from "./create-form";
 import Token from "@/components/Token.vue";
 
-const tinyboxesAddress = 0xf258B44e8f9532DAf37fF261203148BB7807E10e
+const tinyboxesAddress = '0xf258B44e8f9532DAf37fF261203148BB7807E10e'
 
 export default Vue.extend({
   name: "Create",
