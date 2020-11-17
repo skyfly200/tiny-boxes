@@ -1,19 +1,9 @@
 import dotenv from 'dotenv'
-import querystring from 'querystring'
-import fs from 'fs'
-import { Readable } from 'stream'
-import streamifier from 'streamifier'
 import Web3 from 'web3'
 import pinataSDK from '@pinata/sdk'
 import axios from 'axios'
 import FormData from 'form-data'
 import { tinyboxesABI } from '../tinyboxes-contract'
-//import ffmpegExec from '@ffmpeg-installer/ffmpeg'
-//import ffmpeg from 'fluent-ffmpeg'
-
-//console.log('FFMPEG Path: ')
-//console.log(ffmpegExec.path)
-//ffmpeg.setFfmpegPath(ffmpegExec.path)
 dotenv.config()
 
 const {
@@ -67,7 +57,6 @@ exports.handler = async (event, context) => {
     const dataPromise = tinyboxesContract.methods.tokenData(id).call()
     const palettePromise = tinyboxesContract.methods.tokenPalette(id).call()
     const artPromise = tinyboxesContract.methods.tokenArt(id).call()
-    let minted = 1546360800
     const timestampPromise = web3.eth
       .subscribe('logs', {
         address: CONTRACT_ADDRESS,
