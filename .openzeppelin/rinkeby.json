@@ -2011,6 +2011,11 @@
         "address": "0x2a6Be63B9E245f27C54Cdc2175d50664dd35fa60",
         "kind": "NonProxy",
         "bytecodeHash": "c3bdaa373ee2bc84bc9fec12e3635a83f09d90ebb028166d2ac4c50eeb5d38c9"
+      },
+      {
+        "address": "0xD146d505c3408aB87a570c2E465A6b9D2Ea16A1f",
+        "kind": "NonProxy",
+        "bytecodeHash": "c3bdaa373ee2bc84bc9fec12e3635a83f09d90ebb028166d2ac4c50eeb5d38c9"
       }
     ]
   },

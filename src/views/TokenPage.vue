@@ -67,7 +67,7 @@ import { mapGetters } from "vuex";
 import Token from "@/components/Token.vue";
 //import { tinyboxesAddress } from "../tinyboxes-contract";
 
-const tinyboxesAddress = '0xf258B44e8f9532DAf37fF261203148BB7807E10e'
+const tinyboxesAddress = '0x2a6Be63B9E245f27C54Cdc2175d50664dd35fa60'
 
 export default Vue.extend({
   name: "TokenPage",

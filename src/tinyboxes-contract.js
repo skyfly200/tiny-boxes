@@ -1,4 +1,4 @@
-export const tinyboxesAddress = '0xf258B44e8f9532DAf37fF261203148BB7807E10e'
+export const tinyboxesAddress = '0x2a6Be63B9E245f27C54Cdc2175d50664dd35fa60'
 export const tinyboxesABI = [
     {
       "inputs": [
@@ -425,11 +425,6 @@ export const tinyboxesABI = [
           "internalType": "int16[13]",
           "name": "dials",
           "type": "int16[13]"
-        },
-        {
-          "internalType": "bool[3]",
-          "name": "mirrors",
-          "type": "bool[3]"
         }
       ],
       "name": "buy",
@@ -1085,11 +1080,6 @@ export const tinyboxesABI = [
           "type": "int16[3]"
         },
         {
-          "internalType": "bool[3]",
-          "name": "mirrors",
-          "type": "bool[3]"
-        },
-        {
           "internalType": "uint16",
           "name": "scale",
           "type": "uint16"
@@ -1182,11 +1172,6 @@ export const tinyboxesABI = [
           "internalType": "int16[13]",
           "name": "dials",
           "type": "int16[13]"
-        },
-        {
-          "internalType": "bool[3]",
-          "name": "mirrors",
-          "type": "bool[3]"
         },
         {
           "internalType": "uint8",

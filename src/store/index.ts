@@ -6,7 +6,7 @@ import VuexPersist from "vuex-persist";
 //import TinyBoxes from 'Contracts/TinyBoxes.sol'
 //import { tinyboxesAddress, tinyboxesABI } from "@/tinyboxes-contract";
 
-const tinyboxesAddress = '0xf258B44e8f9532DAf37fF261203148BB7807E10e'
+const tinyboxesAddress = '0x2a6Be63B9E245f27C54Cdc2175d50664dd35fa60'
 const tinyboxesABI = [
     {
       "inputs": [
@@ -433,11 +433,6 @@ const tinyboxesABI = [
           "internalType": "int16[13]",
           "name": "dials",
           "type": "int16[13]"
-        },
-        {
-          "internalType": "bool[3]",
-          "name": "mirrors",
-          "type": "bool[3]"
         }
       ],
       "name": "buy",
@@ -1093,11 +1088,6 @@ const tinyboxesABI = [
           "type": "int16[3]"
         },
         {
-          "internalType": "bool[3]",
-          "name": "mirrors",
-          "type": "bool[3]"
-        },
-        {
           "internalType": "uint16",
           "name": "scale",
           "type": "uint16"
@@ -1190,11 +1180,6 @@ const tinyboxesABI = [
           "internalType": "int16[13]",
           "name": "dials",
           "type": "int16[13]"
-        },
-        {
-          "internalType": "bool[3]",
-          "name": "mirrors",
-          "type": "bool[3]"
         },
         {
           "internalType": "uint8",
