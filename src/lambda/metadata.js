@@ -58,7 +58,6 @@ exports.handler = async (event, context) => {
     // concurently lookup token data, palette, art & timestamp
     console.log('Looking Up Token...')
     const dataPromise = tinyboxesContract.methods.tokenData(id).call()
-    const palettePromise = tinyboxesContract.methods.tokenPalette(id).call()
     const artPromise = tinyboxesContract.methods.tokenArt(id,false).call()
     const animatonPromise = tinyboxesContract.methods.tokenArt(id,true).call()
     const timestampPromise = web3.eth
@@ -76,11 +75,10 @@ exports.handler = async (event, context) => {
     const mintedPromise = web3.eth.getBlock(await timestampPromise)
 
     // await token data
-    const [data, palette, art, animation, minted] = await Promise.all([dataPromise, palettePromise, artPromise, animatonPromise, mintedPromise])
+    const [data, palette, art, animation, minted] = await Promise.all([dataPromise, artPromise, animatonPromise, mintedPromise])
     
     console.log('Lookup Complete!')
     console.log(data);
-    console.log(palette);
     console.log(art);
     console.log(animation);
     console.log(minted);
@@ -138,27 +136,27 @@ exports.handler = async (event, context) => {
         {
           display_type: 'number',
           trait_type: 'Color Scheme',
-          value: parseInt(palette.scheme),
+          value: parseInt(data.palette[4]),
         },
         {
           display_type: 'number',
           trait_type: 'Root Hue',
-          value: parseInt(palette.rootHue),
+          value: parseInt(data.palette[0]),
         },
         {
           display_type: 'number',
           trait_type: 'Saturation',
-          value: parseInt(palette.scheme),
+          value: parseInt(data.palette[1]),
         },
         {
           display_type: 'number',
           trait_type: 'Lightness',
-          value: parseInt(palette.lightnessRange[0])+''+parseInt(palette.lightnessRange[1]),
+          value: parseInt(data.palette[2])+''+parseInt(data.palette[3]),
         },
         {
           display_type: 'number',
           trait_type: 'Shades',
-          value: parseInt(palette.shades),
+          value: parseInt(data.palette[5]),
         },
         {
           display_type: 'number',
