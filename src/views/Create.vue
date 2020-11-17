@@ -198,7 +198,6 @@ export default Vue.extend({
       t.loading = true;
       await t.loadStatus();
       const v = t.values;
-      const shapes = v.shapes;
       const palette = [
         v.hue,
         v.saturation,
@@ -223,7 +222,7 @@ export default Vue.extend({
         v.scale,
       ];
       t.data = await this.$store.state.contracts.tinyboxes.methods
-        .tokenTest(v.seed.toString(), shapes, palette, dials, v.animation, v.animate)
+        .tokenTest(v.seed.toString(), v.shapes, palette, dials, v.animation, v.animate)
         .call()
         .catch((err: any) => {
           console.error(err, t.id, v.seed);
