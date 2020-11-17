@@ -125,6 +125,7 @@ export class TinyBoxesPricing extends Contract {
       animation: string;
       shapes: string;
       hatching: string;
+      palette: string[];
       size: string[];
       spacing: string[];
       mirrorPositions: string[];
@@ -136,28 +137,14 @@ export class TinyBoxesPricing extends Contract {
       4: string[];
       5: string[];
       6: string[];
-      7: string;
+      7: string[];
+      8: string;
     }>;
 
     tokenOfOwnerByIndex(
       owner: string,
       index: number | string
     ): TransactionObject<string>;
-
-    tokenPalette(
-      _id: number | string
-    ): TransactionObject<{
-      rootHue: string;
-      saturation: string;
-      lightnessRange: string[];
-      scheme: string;
-      shades: string;
-      0: string;
-      1: string;
-      2: string[];
-      3: string;
-      4: string;
-    }>;
 
     tokenURI(tokenId: number | string): TransactionObject<string>;
 

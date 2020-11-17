@@ -62,6 +62,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
      * @return animation of token
      * @return shapes of token
      * @return hatching of token
+     * @return palette of token
      * @return size of token
      * @return spacing of token
      * @return mirrorPositions of token
@@ -75,6 +76,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
             uint8 animation,
             uint8 shapes,
             uint16 hatching,
+            uint16[6] memory palette,
             uint16[4] memory size,
             uint16[4] memory spacing,
             int16[3] memory mirrorPositions,
@@ -86,37 +88,17 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         animation = box.animation;
         shapes = box.shapes;
         hatching = box.hatching;
+        palette = [
+            box.colorPalette.hue,
+            box.colorPalette.saturation,
+            box.colorPalette.lightnessRange[0],
+            box.colorPalette.lightnessRange[1],
+            box.colorPalette.scheme,
+            box.colorPalette.shades
+        ];
         size = box.size;
         spacing = box.spacing;
         mirrorPositions = box.mirrorPositions;
         scale = box.scale;
-    }
-
-    /**
-     * @dev Lookup all token data in one call
-     * @param _id for which we want token data
-     * @return rootHue of token
-     * @return saturation of token
-     * @return lightnessRange of token
-     * @return scheme of token
-     * @return shades of token
-     */
-    function tokenPalette(uint256 _id)
-        external
-        view
-        returns (
-            uint16 rootHue,
-            uint8 saturation,
-            uint8[2] memory lightnessRange,
-            uint8 scheme,
-            uint shades
-        )
-    {
-        TinyBox memory box = boxes[_id];
-        rootHue = box.colorPalette.hue;
-        saturation = box.colorPalette.saturation;
-        lightnessRange = box.colorPalette.lightnessRange;
-        scheme = box.colorPalette.scheme;
-        shades = box.colorPalette.shades;
     }
 }
