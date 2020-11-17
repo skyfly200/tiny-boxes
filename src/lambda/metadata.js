@@ -75,6 +75,11 @@ exports.handler = async (event, context) => {
     const art = await artPromise
     const minted = (await web3.eth.getBlock(await timestampPromise)).timestamp
     
+    console.log(data);
+    console.log(palette);
+    console.log(art);
+    console.log(minted);
+
     // convert art stream from SVG to PNG
 
     // build MP4 stream of animation
