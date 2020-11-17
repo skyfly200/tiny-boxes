@@ -1,8 +1,8 @@
 import dotenv from 'dotenv'
 import Web3 from 'web3'
+import Readable from 'stream'
 import pinataSDK from '@pinata/sdk'
 import axios from 'axios'
-import Readable from Stream
 import FormData, { Stream } from 'form-data'
 import { tinyboxesABI } from '../tinyboxes-contract'
 dotenv.config()
