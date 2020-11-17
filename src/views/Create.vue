@@ -98,7 +98,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { mapGetters } from "vuex";
-import { tinyboxesAddress } from "../tinyboxes-contract";
+import "../tinyboxes-contract";
 import { sections } from "./create-form";
 import Token from "@/components/Token.vue";
 
