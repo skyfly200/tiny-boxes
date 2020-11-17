@@ -2,7 +2,8 @@ import dotenv from 'dotenv'
 import Web3 from 'web3'
 import pinataSDK from '@pinata/sdk'
 import axios from 'axios'
-import FormData from 'form-data'
+import Readable from Stream
+import FormData, { Stream } from 'form-data'
 import { tinyboxesABI } from '../tinyboxes-contract'
 dotenv.config()
 
@@ -93,23 +94,28 @@ exports.handler = async (event, context) => {
     console.log('Uploading art to IPFS...')
     const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`
 
-    // build form data with any valid readStream source
-    let formData = new FormData()
-    formData.append('file', artStream)
+    // // build form data for the IPFS pin
+    // const fileStream = Readable.from(art)
+    // let formData = new FormData()
+    // formData.append('file', fileStream)
 
-    const ipfsResp = await axios.post(url, formData, {
-      maxContentLength: 'Infinity', //this is needed to prevent axios from erroring out with large files
-      headers: {
-        'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
-        pinata_api_key: PINATA_API_KEY,
-        pinata_secret_api_key: PINATA_API_SECRET,
-      },
-    })
+    // const ipfsPromise = axios.post(url, formData, {
+    //   maxContentLength: 'Infinity', //this is needed to prevent axios from erroring out with large files
+    //   headers: {
+    //     'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+    //     pinata_api_key: PINATA_API_KEY,
+    //     pinata_secret_api_key: PINATA_API_SECRET,
+    //   },
+    // })
+    // const ipfsResp = await ipfsPromise
 
-    //const imageHash = (await pinata.pinFileToIPFS(artStream)).IpfsHash
-    //const animationHash = await pinata.pinFileToIPFS(mp4Stream)
-    // console.log('IPFS Hash: ')
-    // console.log(imageHash)
+    const artStream = Readable.from(art)
+    const animationStream = Readable.from(animation)
+    const imageHash = (await pinata.pinFileToIPFS(artStream)).IpfsHash
+    const animationHash = (await pinata.pinFileToIPFS(animationStream)).IpfsHash
+    console.log('IPFS Hashes: ')
+    console.log(imageHash)
+    console.log(animationHash)
     const imageHash = ''
     const animationHash = ''
 
