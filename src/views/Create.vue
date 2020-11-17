@@ -62,7 +62,6 @@
                   h2 {{ priceInETH }}
                   v-icon(large) mdi-ethereum
                 v-spacer
-                v-spacer
                 v-btn(@click="mintToken" :disabled="!form.valid || soldOut || loading") Mint
           v-alert(v-if="!loading && soldOut" type="warning" prominent outlined border="left").sold-out
             p All boxes have sold, minting is disabled.
