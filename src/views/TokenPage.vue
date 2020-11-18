@@ -31,30 +31,26 @@
               .stats
                 h3 Counts
                 .counts
-                  p {{ data.counts[0] }} Colors
-                  p {{ data.counts[1] }} Shapes
+                  p {{ data.shapes }} Shapes
                 h3 Size
-                .size
-                  p Width: {{ data.dials[4] }} to {{ data.dials[5] }}
-                  p Height: {{ data.dials[6] }} to {{ data.dials[7] }}
+                .size(v-if="data.size")
+                  p Width: {{ data.size[0] }} to {{ data.size[1] }}
+                  p Height: {{ data.size[2] }} to {{ data.size[3] }}
                 h3 Position
-                .position
-                  p Spread: {{ data.dials[0] }} X {{ data.dials[1] }} Y
-                  p {{ data.dials[2] }} Rows
-                  p {{ data.dials[3] }} Columns
+                .position(v-if="data.spacing")
+                  p Spread: {{ data.spacing[0] }} X {{ data.spacing[1] }} Y
+                  p {{ data.spacing[2] }} Rows
+                  p {{ data.spacing[3] }} Columns
                 h3 Advanced
                 .advanced
-                  p Seed: {{ data.seed }}
-                  p Hatching Mod: {{ data.dials[8] }}
-                  p {{ data.dials[12] + "%" }} Scale
+                  p Randomness: {{ data.randomness }}
+                  p Hatching Mod: {{ data.hatching }}
+                  p {{ data.scale + "%" }} Scale
                 h3 Mirroring
-                .mirroring
-                  p {{ data.dials[9] }}
-                    v-icon {{ data.switches[0] ? "mdi-checkbox-marked-outline" : "mdi-checkbox-blank-outline" }}
-                  p {{ data.dials[10] }}
-                    v-icon {{ data.switches[1] ? "mdi-checkbox-marked-outline" : "mdi-checkbox-blank-outline" }}
-                  p {{ data.dials[11] }}
-                    v-icon {{ data.switches[2] ? "mdi-checkbox-marked-outline" : "mdi-checkbox-blank-outline" }}
+                .mirroring(v-if="data.mirrorPositions")
+                  p {{ data.mirrorPositions[0] }}
+                  p {{ data.mirrorPositions[1] }}
+                  p {{ data.mirrorPositions[2] }}
             v-card-actions.opensea
               v-spacer
               v-btn(large target="_blank" color="primary" href="//opensea.io") View on OpenSea
