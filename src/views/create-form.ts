@@ -126,8 +126,8 @@ export const sections: Array<object> = [
         key: "shades",
         type: "slider",
         range: {
-          min: 1,
-          max: 10,
+          min: 0,
+          max: 8,
         },
       },
       {
