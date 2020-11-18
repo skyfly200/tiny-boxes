@@ -86,7 +86,9 @@ exports.handler = async (event, context) => {
     console.log("Awaiting requests...");
 
     // await token data
-    const [data, art, animation, minted] = await Promise.all([dataPromise, artPromise, animatonPromise, mintedPromise])
+    //const [data, art, animation, minted] = await 
+    Promise.all([dataPromise, artPromise, animatonPromise, mintedPromise])
+      .then((values) => console.log(values))
       .catch((err) => console.error(err));
     
     console.log('Lookup Complete!')
