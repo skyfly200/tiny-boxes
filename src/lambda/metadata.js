@@ -57,10 +57,14 @@ exports.handler = async (event, context) => {
 
     // concurently lookup token data, palette, art & timestamp
     console.log('Looking Up Token...')
+    console.log('...Data...')
     const dataPromise = tinyboxesContract.methods.tokenData(id).call()
+    console.log('...Art...')
     const artPromise = tinyboxesContract.methods.tokenArt(id,false).call()
+    console.log('...Animation...')
     const animatonPromise = tinyboxesContract.methods.tokenArt(id,true).call()
-    const timestampPromise = web3.eth
+    console.log('...Mined Block Number...')
+    const blockNumberPromise = web3.eth
       .subscribe('logs', {
         address: CONTRACT_ADDRESS,
         fromBlock: 0,
@@ -71,9 +75,12 @@ exports.handler = async (event, context) => {
           '0x' + id.toString(16).padStart(64, '0'),
         ],
       })
+    console.log('...Minted Block...')
+    const blockNumResp = await blockNumberPromise;
+    console.log(blockNumResp);
+    const mintedPromise = web3.eth.getBlock(blockNumResp)
 
     console.log("Awaiting requests...");
-    const mintedPromise = web3.eth.getBlock(await timestampPromise)
 
     // await token data
     const [data, art, animation, minted] = await Promise.all([dataPromise, artPromise, animatonPromise, mintedPromise])
