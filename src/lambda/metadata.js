@@ -91,11 +91,11 @@ exports.handler = async (event, context) => {
       .then((values) => console.log(values))
       .catch((err) => console.error(err));
     
-    console.log('Lookup Complete!')
-    console.log(data);
-    console.log(art);
-    console.log(animation);
-    console.log(minted);
+    // console.log('Lookup Complete!')
+    // console.log(data);
+    // console.log(art);
+    // console.log(animation);
+    // console.log(minted);
 
     // convert art stream from SVG to PNG
 
