@@ -19,7 +19,6 @@ const {
 
 // init web3 provider and load contract
 var web3 = new Web3(WEB3_PROVIDER_ENDPOINT)
-console.log(CONTRACT_ADDRESS);
 const tinyboxesContract = new web3.eth.Contract(
   tinyboxesABI,
   CONTRACT_ADDRESS,
@@ -29,6 +28,24 @@ const generateResponse = (body, statusCode) => {
   return {
     statusCode: statusCode,
     body: JSON.stringify(body),
+  }
+}
+
+class ReadableString extends Readable {
+  sent = false
+
+  constructor(str) {
+    super();
+  }
+
+  _read() {
+    if (!this.sent) {
+      this.push(Buffer.from(this.str));
+      this.sent = true
+    }
+    else {
+      this.push(null)
+    }
   }
 }
 
@@ -60,6 +77,8 @@ exports.handler = async (event, context) => {
   try {
     const id = event.queryStringParameters.id
 
+    console.log(CONTRACT_ADDRESS);
+
     if (event.httpMethod !== 'GET') {
       // Only GET requests allowed
       console.log('Bad method:', event.httpMethod)
@@ -88,42 +107,39 @@ exports.handler = async (event, context) => {
     console.log('...Animation...')
     const animatonPromise = tinyboxesContract.methods.tokenArt(id,true).call()
     console.log('...Mined Block Number...')
-    const blockPromist = lookupMintedBlock(id);
+    const blockPromise = lookupMintedBlock(id);
     
 
     // await token data
     console.log("Awaiting requests...");
     let [data, art, animation, block] = ['', '', '', '']
-    await dataPromise
-      .then(() => data = result)
+    data = await dataPromise
       .catch((err) => console.error(err))
-    console.log("Data: ",data);
-    await artPromise
-      .then((result) => art = result)
+    art = await artPromise
       .catch((err) => console.error(err))
-    console.log("Art: ",art);
-    // animation = await animatonPromise
-    //   .catch((err) => console.error(err))
-    // console.log("Animation: ",animation);
+    animation = await animatonPromise
+      .catch((err) => console.error(err))
+    block = await blockPromise
+      .catch((err) => console.error(err))
 
-    //if (data === undefined || art === undefined || animation === undefined) return generateResponse('Server Error', 500)
+    if (data === undefined || art === undefined || animation === undefined) return generateResponse('Server Error', 500)
     
-    // console.log('Lookup Complete!')
+    console.log('Lookup Complete!')
 
     // convert art stream from SVG to PNG
 
-    // build MP4 stream of animation
+    // capture MP4 stream of animation
+
+    console.log('Creating Streams from Strings')
+    const artStream = new ReadableString(art)
+    const animationStream = new ReadableString(animation)
 
     // load Pinata SDK
     console.log('Connecting to Pinata SDK...')
     const pinata = pinataSDK(PINATA_API_KEY, PINATA_API_SECRET)
-    const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`
+    console.log(pinata)
 
-    // // build form data for the IPFS pin
-    // const fileStream = Readable.from(art)
-    // let formData = new FormData()
-    // formData.append('file', fileStream)
-
+    // const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`
     // const ipfsPromise = axios.post(url, formData, {
     //   maxContentLength: 'Infinity', //this is needed to prevent axios from erroring out with large files
     //   headers: {
@@ -134,17 +150,12 @@ exports.handler = async (event, context) => {
     // })
     // const ipfsResp = await ipfsPromise
 
-    // console.log('Creating Streams from Strings')
-    // const artStream = Readable.from(art)
-    // const animationStream = Readable.from(animation)
-    // console.log('Uploading Streams to IPFS')
-    // const imageHash = (await pinata.pinFileToIPFS(artStream)).IpfsHash
-    // const animationHash = (await pinata.pinFileToIPFS(animationStream)).IpfsHash
-    // console.log('IPFS Hashes: ')
-    // console.log(imageHash)
-    // console.log(animationHash)
-    // const imageHash = ''
-    // const animationHash = ''
+    console.log('Uploading Streams to IPFS')
+    const imageHash = (await pinata.pinFileToIPFS(artStream)).IpfsHash
+    const animationHash = (await pinata.pinFileToIPFS(animationStream)).IpfsHash
+    console.log('IPFS Hashes: ')
+    console.log(imageHash)
+    console.log(animationHash)
 
     // build the metadata object from the token data and IPFS hashes
     let metadata = {}
