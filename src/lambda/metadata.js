@@ -83,11 +83,10 @@ exports.handler = async (event, context) => {
         mintedPromise = web3.eth.getBlock(blockNumResp)
       });
 
-    console.log("Awaiting requests...");
-
     // await token data
+    console.log("Awaiting requests...");
     //const [data, art, animation, minted] = await 
-    Promise.all([dataPromise, artPromise, animatonPromise, mintedPromise])
+    await Promise.all([dataPromise, artPromise, animatonPromise, mintedPromise])
       .then((values) => console.log(values))
       .catch((err) => console.error(err));
     
