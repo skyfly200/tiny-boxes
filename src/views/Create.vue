@@ -289,8 +289,9 @@ export default Vue.extend({
           const t = this as any;
           t.minted.id = parseInt(log.topics[3], 16);
           t.minted.art = await t.$store.state.contracts.tinyboxes.methods
-            .tokenArt(t.minted.id)
+            .tokenArt(t.minted.id, true)
             .call();
+          console.log(t.minted.art);
           t.overlay = "ready";
         });
     },
