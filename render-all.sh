@@ -4,7 +4,7 @@ trap "exit" INT TERM    # Convert INT and TERM to EXIT
 trap "kill 0" EXIT      # Kill all children if we receive EXIT
 
 LINK="0x01be23585060835e02b77ef475b0cc51aa1e0709"
-FEED="0x3Af8C569ab77af5230596Acf0E8c2F9351d24C38"
+FEED="0xd8bD0a1cB028a31AA859A21A3758685a95dE4623"
 
 ## deploy only on calls with a -d flag present
 while getopts "d:i:c:a:" arg; do
