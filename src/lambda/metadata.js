@@ -72,6 +72,7 @@ exports.handler = async (event, context) => {
         ],
       })
 
+    console.log("Awaiting requests...");
     const mintedPromise = web3.eth.getBlock(await timestampPromise)
       .catch((err) => console.error(err));
 
