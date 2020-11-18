@@ -6,6 +6,7 @@ import axios from 'axios'
 import FormData, { Stream } from 'form-data'
 import { tinyboxesABI } from '../tinyboxes-contract'
 import { resolve } from 'path'
+import fs from 'fs'
 dotenv.config()
 
 const {
@@ -130,34 +131,16 @@ exports.handler = async (event, context) => {
 
     // capture MP4 stream of animation
 
-    console.log('Creating ReadableStrings')
-    const artStream = new ReadableString(art)
-    const animationStream = new ReadableString(animation)
-
-    console.log('Generating Form Data')
-    const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`
-    let formData = new FormData()
-    formData.append('file', artStream)
-      .then(() =>  console.log("yay"))
-      .catch((err) =>  console.error(err))
-
-    console.log('Uploading Files to IPFS')
-    const ipfsPromise = axios.post(url, formData, {
-      maxContentLength: 'Infinity', //this is needed to prevent axios from erroring out with large files
-      headers: {
-        'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
-        pinata_api_key: PINATA_API_KEY,
-        pinata_secret_api_key: PINATA_API_SECRET,
-      },
-    })
-    const ipfsResp = await ipfsPromise
-      .catch(err => console.error(err))
-    console.log(ipfsResp)
+    // console.log('Creating ReadableStrings')
+    // // needs to be converted to a file without writing to fs
+    // const artStream = new File(art, ("TinyBox#"+id+"-art.svg"))
+    // //Blob(art, {type : 'image/svg+xml'})
+    // const animationStream = new ReadableString(animation)
 
     // load Pinata SDK
-    // console.log('Connecting to Pinata SDK...')
-    // const pinata = pinataSDK(PINATA_API_KEY, PINATA_API_SECRET)
-    // console.log(pinata)
+    console.log('Connecting to Pinata SDK...')
+    const pinata = pinataSDK(PINATA_API_KEY, PINATA_API_SECRET)
+
     // const imageHash = (await pinata.pinFileToIPFS(artStream)).IpfsHash
     // const animationHash = (await pinata.pinFileToIPFS(animationStream)).IpfsHash
     // console.log('IPFS Hashes: ')
@@ -165,95 +148,91 @@ exports.handler = async (event, context) => {
     // console.log(animationHash)
 
     // build the metadata object from the token data and IPFS hashes
-    let metadata = {}
-    //   name: 'TinyBox #' + id,
-    //   description:
-    //     'A scattering of tiny boxes, Aranged in patterns ranging from mundane to magnificent.',
-    //   external_url: EXTERNAL_URL_BASE + id,
-    //   image: imageHash,
-    //   image_data: art,
-    //   background_color: '121212',
-    //   animation_url: animationHash,
-    //   attributes: [
-    //     {
-    //       display_type: 'number',
-    //       trait_type: 'Shapes',
-    //       value: parseInt(data.shapes),
-    //     },
-    //     {
-    //       display_type: 'number',
-    //       trait_type: 'Color Scheme',
-    //       value: parseInt(data.palette[4]),
-    //     },
-    //     {
-    //       display_type: 'number',
-    //       trait_type: 'Root Hue',
-    //       value: parseInt(data.palette[0]),
-    //     },
-    //     {
-    //       display_type: 'number',
-    //       trait_type: 'Saturation',
-    //       value: parseInt(data.palette[1]),
-    //     },
-    //     {
-    //       display_type: 'number',
-    //       trait_type: 'Lightness',
-    //       value: parseInt(data.palette[2])+''+parseInt(data.palette[3]),
-    //     },
-    //     {
-    //       display_type: 'number',
-    //       trait_type: 'Shades',
-    //       value: parseInt(data.palette[5]),
-    //     },
-    //     {
-    //       display_type: 'number',
-    //       trait_type: 'Animation',
-    //       value: parseInt(data.animation),
-    //     },
-    //     {
-    //       display_type: 'number',
-    //       trait_type: 'Seed',
-    //       value: parseInt(data.seed),
-    //     },
-    //     {
-    //       trait_type: 'Hatching',
-    //       value: data.hatching,
-    //     },
-    //     {
-    //       trait_type: 'Mirror Level 1',
-    //       value: data.switches[0] ? 'On' : 'Off',
-    //     },
-    //     {
-    //       trait_type: 'Mirror Level 2',
-    //       value: data.switches[1] ? 'On' : 'Off',
-    //     },
-    //     {
-    //       trait_type: 'Mirror Level 3',
-    //       value: data.switches[2] ? 'On' : 'Off',
-    //     },
-    //     {
-    //       trait_type: 'Scale',
-    //       value: data.dials[12] + '%',
-    //     },
-    //     {
-    //       display_type: 'date',
-    //       trait_type: 'Created',
-    //       value: minted.timestamp,
-    //     },
-    //   ],
-    // }
+    console.log("Building Metadata");
+    let metadata = {
+      name: 'TinyBox #' + id,
+      description:
+        'A scattering of tiny boxes, Aranged in patterns ranging from mundane to magnificent.',
+      external_url: EXTERNAL_URL_BASE + id,
+      //image: imageHash,
+      //animation_url: animationHash,
+      image_data: animation,
+      background_color: '121212',
+      attributes: [
+        {
+          display_type: 'number',
+          trait_type: 'Shapes',
+          value: parseInt(data.shapes),
+        },
+        {
+          display_type: 'number',
+          trait_type: 'Color Scheme',
+          value: parseInt(data.palette[4]),
+        },
+        {
+          display_type: 'number',
+          trait_type: 'Root Hue',
+          value: parseInt(data.palette[0]),
+        },
+        {
+          display_type: 'number',
+          trait_type: 'Saturation',
+          value: parseInt(data.palette[1]),
+        },
+        {
+          display_type: 'number',
+          trait_type: 'Lightness',
+          value: parseInt(data.palette[2])+''+parseInt(data.palette[3]),
+        },
+        {
+          display_type: 'number',
+          trait_type: 'Shades',
+          value: parseInt(data.palette[5]),
+        },
+        {
+          display_type: 'number',
+          trait_type: 'Animation',
+          value: parseInt(data.animation),
+        },
+        {
+          trait_type: 'Hatching',
+          value: data.hatching,
+        },
+        {
+          trait_type: 'Mirror 1',
+          value: data.mirrorPositions[0],
+        },
+        {
+          trait_type: 'Mirror 2',
+          value: data.mirrorPositions[1],
+        },
+        {
+          trait_type: 'Mirror 3',
+          value: data.mirrorPositions[2],
+        },
+        {
+          trait_type: 'Scale',
+          value: data.scale + '%',
+        },
+        {
+          display_type: 'date',
+          trait_type: 'Created',
+          value: block.timestamp,
+        },
+      ],
+    }
 
-    // // log metadata to console
-    // console.log('Metadata of token ' + id)
-    // console.log(metadata)
+    // log metadata to console
+    console.log('Metadata of token ' + id)
+    console.log(metadata)
 
-    // // upload metadata JSON object to IPFS
-    // console.log('Writing metadata to IPFS')
-    // const metadataHash = (await pinata.pinJSONToIPFS(metadata)).IpfsHash
-    // console.log(metadataHash)
+    // upload metadata JSON object to IPFS
+    console.log('Writing metadata to IPFS')
+    const metadataHash = (await pinata.pinJSONToIPFS(metadata)).IpfsHash
+    console.log(metadataHash)
 
-    // // update token with the metadataHash
-    // // can happen after response
+    // update token with the metadataHash
+    // can happen after response
 
     return generateResponse(metadata, 200)
   } catch (err) {
