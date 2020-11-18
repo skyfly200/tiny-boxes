@@ -71,7 +71,6 @@ export default Vue.extend({
   components: { Token },
   computed: {
     priceInETH: function() {
-      // data.price is not what it should be (maybe a send-tx result?)
       return this.$store.state.web3.utils.fromWei((this as any).data.price.toString());
     },
     id(): number {
