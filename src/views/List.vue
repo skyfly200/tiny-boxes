@@ -79,8 +79,8 @@ export default {
       this.$store.commit("setItemsPerPage", this.itemsPerPageSelector);
       this.loadTokens();
     },
-    lookupToken: function(id) {
-      return this.$store.state.contracts.tinyboxes.methods.tokenArt(id).call();
+    lookupToken: function(id, animate) {
+      return this.$store.state.contracts.tinyboxes.methods.tokenArt(id, animate).call();
     },
     lookupSupply: function() {
       return this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
@@ -118,7 +118,7 @@ export default {
     },
     loadToken(tokenID) {
       const data = this.$store.state.cachedTokens[tokenID];
-      this.lookupToken(tokenID).then(result => {
+      this.lookupToken(tokenID, false).then(result => {
         this.$set(this.tokens, tokenID, data && data.art ? data.art : result);
         this.$set(this.tokensLoaded, tokenID, true);
         this.loading = false;
@@ -138,7 +138,7 @@ export default {
           "data",
           async function(log) {
             const index = parseInt(log.topics[3], 16);
-            this.tokens[index] = await this.lookupToken(index);
+            this.tokens[index] = await this.lookupToken(index, false);
             // lookup new supply and check if sold out
             this.supply = await this.lookupSupply();
             this.soldOut = this.supply === this.limit;
