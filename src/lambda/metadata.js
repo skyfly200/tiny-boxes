@@ -64,7 +64,8 @@ exports.handler = async (event, context) => {
     console.log('...Animation...')
     const animatonPromise = tinyboxesContract.methods.tokenArt(id,true).call()
     console.log('...Mined Block Number...')
-    const blockNumberPromise = web3.eth
+    let mintedPromise
+    web3.eth
       .subscribe('logs', {
         address: CONTRACT_ADDRESS,
         fromBlock: 0,
@@ -75,10 +76,12 @@ exports.handler = async (event, context) => {
           '0x' + id.toString(16).padStart(64, '0'),
         ],
       })
-    console.log('...Minted Block...')
-    const blockNumResp = await blockNumberPromise;
-    console.log(blockNumResp);
-    const mintedPromise = web3.eth.getBlock(blockNumResp)
+      .on("data", async (log) => {
+        console.log('...Minted Block...')
+        console.log(log);
+        parseInt(log.topics[3], 16);
+        mintedPromise = web3.eth.getBlock(blockNumResp)
+      });
 
     console.log("Awaiting requests...");
 
