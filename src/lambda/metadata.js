@@ -73,9 +73,10 @@ exports.handler = async (event, context) => {
       })
 
     const mintedPromise = web3.eth.getBlock(await timestampPromise)
+      .catch((err) => console.error(err));
 
     // await token data
-    const [data, palette, art, animation, minted] = await Promise.all([dataPromise, artPromise, animatonPromise, mintedPromise])
+    const [data, art, animation, minted] = await Promise.all([dataPromise, artPromise, animatonPromise, mintedPromise])
     
     console.log('Lookup Complete!')
     console.log(data);
