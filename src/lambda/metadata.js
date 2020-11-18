@@ -149,7 +149,7 @@ exports.handler = async (event, context) => {
 
     // build the metadata object from the token data and IPFS hashes
     console.log("Building Metadata");
-    let metadata = {
+    const metadata = {
       name: 'TinyBox #' + id,
       description:
         'A scattering of tiny boxes, Aranged in patterns ranging from mundane to magnificent.',
@@ -228,7 +228,13 @@ exports.handler = async (event, context) => {
 
     // upload metadata JSON object to IPFS
     console.log('Writing metadata to IPFS')
-    const metadataHash = (await pinata.pinJSONToIPFS(metadata)).IpfsHash
+    const options = {
+      pinataMetadata: {
+          name: "TinyBox #"+id+" Metadata"
+      }
+    };
+
+    const metadataHash = (await pinata.pinJSONToIPFS(metadata, options)).IpfsHash
     console.log(metadataHash)
 
     // update token with the metadataHash
