@@ -19,6 +19,7 @@
     "@openzeppelin/contract-loader": "^0.6.1",
     "@openzeppelin/contracts-ethereum-package": "^3.0.0",
     "@openzeppelin/upgrades": "^2.8.0",
+    "@pinata/sdk": "^1.1.11",
     "core-js": "^3.6.4",
     "electron": "^9.0.4",
     "netlify-lambda": "^1.6.3",

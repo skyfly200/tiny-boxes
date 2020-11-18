@@ -130,32 +130,39 @@ exports.handler = async (event, context) => {
 
     // capture MP4 stream of animation
 
-    console.log('Creating Streams from Strings')
+    console.log('Creating ReadableStrings')
     const artStream = new ReadableString(art)
     const animationStream = new ReadableString(animation)
 
+    console.log('Generating Form Data')
+    const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`
+    let formData = new FormData()
+    formData.append('file', artStream)
+      .then(() =>  console.log("yay"))
+      .catch((err) =>  console.error(err))
+
+    console.log('Uploading Files to IPFS')
+    const ipfsPromise = axios.post(url, formData, {
+      maxContentLength: 'Infinity', //this is needed to prevent axios from erroring out with large files
+      headers: {
+        'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+        pinata_api_key: PINATA_API_KEY,
+        pinata_secret_api_key: PINATA_API_SECRET,
+      },
+    })
+    const ipfsResp = await ipfsPromise
+      .catch(err => console.error(err))
+    console.log(ipfsResp)
+
     // load Pinata SDK
-    console.log('Connecting to Pinata SDK...')
-    const pinata = pinataSDK(PINATA_API_KEY, PINATA_API_SECRET)
-    console.log(pinata)
-
-    // const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`
-    // const ipfsPromise = axios.post(url, formData, {
-    //   maxContentLength: 'Infinity', //this is needed to prevent axios from erroring out with large files
-    //   headers: {
-    //     'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
-    //     pinata_api_key: PINATA_API_KEY,
-    //     pinata_secret_api_key: PINATA_API_SECRET,
-    //   },
-    // })
-    // const ipfsResp = await ipfsPromise
-
-    console.log('Uploading Streams to IPFS')
-    const imageHash = (await pinata.pinFileToIPFS(artStream)).IpfsHash
-    const animationHash = (await pinata.pinFileToIPFS(animationStream)).IpfsHash
-    console.log('IPFS Hashes: ')
-    console.log(imageHash)
-    console.log(animationHash)
+    // console.log('Connecting to Pinata SDK...')
+    // const pinata = pinataSDK(PINATA_API_KEY, PINATA_API_SECRET)
+    // console.log(pinata)
+    // const imageHash = (await pinata.pinFileToIPFS(artStream)).IpfsHash
+    // const animationHash = (await pinata.pinFileToIPFS(animationStream)).IpfsHash
+    // console.log('IPFS Hashes: ')
+    // console.log(imageHash)
+    // console.log(animationHash)
 
     // build the metadata object from the token data and IPFS hashes
     let metadata = {}
