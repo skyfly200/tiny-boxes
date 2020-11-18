@@ -65,6 +65,7 @@
 import Vue from "vue";
 import { mapGetters } from "vuex";
 import Token from "@/components/Token.vue";
+import { log } from 'util';
 //import { tinyboxesAddress } from "../tinyboxes-contract";
 
 const tinyboxesAddress = '0xCEe8Cd2Cd97a4E2FfdC669A4311260C85c5cF22f'
@@ -74,7 +75,8 @@ export default Vue.extend({
   components: { Token },
   computed: {
     priceInETH: function() {
-      return this.$store.state.web3.utils.fromWei((this as any).data.price);
+      // data.price is not what it should be (maybe a send-tx result?)
+      return this.$store.state.web3.utils.fromWei((this as any).data.price.toString());
     },
     id(): number {
       return parseInt(this.$route.params.id);
@@ -99,14 +101,14 @@ export default Vue.extend({
         // load all token data
         this.data.creation = (await t.lookupMinting()) as any;
         this.data.art = await this.$store.state.contracts.tinyboxes.methods
-          .tokenArt(this.id)
+          .tokenArt(this.id, true)
           .call();
         this.data.data = await this.$store.state.contracts.tinyboxes.methods
           .tokenData(this.id)
           .call();
         this.data.price = await this.$store.state.contracts.tinyboxes.methods.priceAt(
           this.id
-        );
+        ).call();
         this.data.block = await this.$store.state.web3.eth.getBlock(
           this.data.creation.blockNumber
         );
