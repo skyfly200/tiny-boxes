@@ -6,7 +6,7 @@ import VuexPersist from "vuex-persist";
 //import TinyBoxes from 'Contracts/TinyBoxes.sol'
 //import { tinyboxesAddress, tinyboxesABI } from "@/tinyboxes-contract";
 
-const tinyboxesAddress = '0x2a6Be63B9E245f27C54Cdc2175d50664dd35fa60'
+const tinyboxesAddress = '0xCEe8Cd2Cd97a4E2FfdC669A4311260C85c5cF22f'
 const tinyboxesABI = [
     {
       "inputs": [
@@ -475,63 +475,6 @@ const tinyboxesABI = [
     {
       "inputs": [
         {
-          "internalType": "string",
-          "name": "_seed",
-          "type": "string"
-        },
-        {
-          "internalType": "uint8",
-          "name": "shapes",
-          "type": "uint8"
-        },
-        {
-          "internalType": "uint16[6]",
-          "name": "palette",
-          "type": "uint16[6]"
-        },
-        {
-          "internalType": "int16[13]",
-          "name": "dials",
-          "type": "int16[13]"
-        },
-        {
-          "internalType": "bool[3]",
-          "name": "mirrors",
-          "type": "bool[3]"
-        }
-      ],
-      "name": "dataForLINKPay",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "requestId",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "uint256",
-          "name": "randomness",
-          "type": "uint256"
-        }
-      ],
-      "name": "fulfillRandomness",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "uint256",
           "name": "tokenId",
           "type": "uint256"
@@ -824,6 +767,24 @@ const tinyboxesABI = [
       "inputs": [
         {
           "internalType": "bytes32",
+          "name": "requestId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "randomness",
+          "type": "uint256"
+        }
+      ],
+      "name": "rawFulfillRandomness",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
           "name": "role",
           "type": "bytes32"
         },
@@ -1073,6 +1034,11 @@ const tinyboxesABI = [
           "type": "uint16"
         },
         {
+          "internalType": "uint16[6]",
+          "name": "palette",
+          "type": "uint16[6]"
+        },
+        {
           "internalType": "uint16[4]",
           "name": "size",
           "type": "uint16[4]"
@@ -1114,45 +1080,6 @@ const tinyboxesABI = [
         {
           "internalType": "uint256",
           "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_id",
-          "type": "uint256"
-        }
-      ],
-      "name": "tokenPalette",
-      "outputs": [
-        {
-          "internalType": "uint16",
-          "name": "rootHue",
-          "type": "uint16"
-        },
-        {
-          "internalType": "uint8",
-          "name": "saturation",
-          "type": "uint8"
-        },
-        {
-          "internalType": "uint8[2]",
-          "name": "lightnessRange",
-          "type": "uint8[2]"
-        },
-        {
-          "internalType": "uint8",
-          "name": "scheme",
-          "type": "uint8"
-        },
-        {
-          "internalType": "uint256",
-          "name": "shades",
           "type": "uint256"
         }
       ],

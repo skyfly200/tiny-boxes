@@ -102,7 +102,7 @@ import { mapGetters } from "vuex";
 import { sections } from "./create-form";
 import Token from "@/components/Token.vue";
 
-const tinyboxesAddress = '0x2a6Be63B9E245f27C54Cdc2175d50664dd35fa60'
+const tinyboxesAddress = '0xCEe8Cd2Cd97a4E2FfdC669A4311260C85c5cF22f'
 
 export default Vue.extend({
   name: "Create",
