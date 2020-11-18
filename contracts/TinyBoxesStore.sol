@@ -269,7 +269,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
      * @dev The VRF Coordinator will not pass randomness that could not be verified.
      */
     function fulfillRandomness(bytes32 requestId, uint256 randomness)
-        external
+        internal
         override
     {
         // lookup VRF Request by id
