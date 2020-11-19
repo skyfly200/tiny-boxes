@@ -380,6 +380,7 @@ library SVG {
             );
         } else if (animation == 14) {
             // indexed speed
+            // TODO - to fast
             return _animateTransform(
                 "transform",
                 "rotate",

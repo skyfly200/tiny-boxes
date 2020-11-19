@@ -139,8 +139,11 @@ library TinyBoxesRenderer {
         // write shapes to the SVG
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
             Shape memory shape = _generateShape(pool, i, box, colors);
-            string memory animation = SVG._generateAnimation(box, shape, i);
-            buffer.append(animate ? SVG._rect(shape, animation) : SVG._rect(shape));
+            if (animate) {
+                string memory animation = SVG._generateAnimation(box, shape, i);
+                buffer.append(SVG._rect(shape, animation));
+            } else
+                buffer.append(SVG._rect(shape));
         }
 
         // write the footer to the SVG
