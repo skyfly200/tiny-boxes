@@ -154,7 +154,7 @@ exports.handler = async (event, context) => {
       description:
         'A scattering of tiny boxes, Aranged in patterns ranging from mundane to magnificent.',
       external_url: EXTERNAL_URL_BASE + id,
-      //image: imageHash,
+      //image: imageHash, // Using the image_data attribute
       //animation_url: animationHash,
       image_data: animation,
       background_color: '121212',
