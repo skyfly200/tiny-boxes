@@ -337,7 +337,7 @@ export default Vue.extend({
         mirrorPos2: 1200,
         mirrorPos3: 2400,
         scale: 100,
-        hue: 0,
+        hue: Date.now() % 360,
         saturation: 80,
         lightness: [30,70],
         shades: 3,
