@@ -80,7 +80,7 @@
                 v-expansion-panel-header(color="#3F51B5").section-title {{ section.title }}
                 v-expansion-panel-content.section-content
                   template(v-for="option of section.options")
-                    template(v-if="!option.hide || values[option.hide]")
+                    template(v-if="!option.show || values[option.show] && !option.hide || (values[option.hide]) == false")
                       v-slider(v-if="option.type === 'slider'" v-model="values[option.key]" @change="update" thumb-label required
                         :label="option.label" :step="option.step" :min="option.range.min" :max="option.range.max")
                           template(v-slot:append)
@@ -333,6 +333,10 @@ export default Vue.extend({
         width: [200, 300],
         height: [200, 300],
         hatching: 0,
+        mirrorAdv: false,
+        mirrorA: true,
+        mirrorB: true,
+        mirrorC: true,
         mirrorPos1: 600,
         mirrorPos2: 1200,
         mirrorPos3: 2400,

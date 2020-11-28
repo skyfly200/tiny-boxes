@@ -145,9 +145,33 @@ export const sections: Array<object> = [
     title: "Mirror",
     options: [
       {
+        label: "A",
+        key: "mirrorA",
+        type: "switch",
+        hide: "mirrorAdv",
+      },
+      {
+        label: "B",
+        key: "mirrorB",
+        type: "switch",
+        hide: "mirrorAdv",
+      },
+      {
+        label: "C",
+        key: "mirrorC",
+        type: "switch",
+        hide: "mirrorAdv",
+      },
+      {
+        label: "Advanced",
+        key: "mirrorAdv",
+        type: "switch",
+      },
+      {
         label: "Position 1",
         key: "mirrorPos1",
         type: "slider",
+        show: "mirrorAdv",
         step: 25,
         range: {
           min: 0,
@@ -158,6 +182,7 @@ export const sections: Array<object> = [
         label: "Position 2",
         key: "mirrorPos2",
         type: "slider",
+        show: "mirrorAdv",
         step: 25,
         range: {
           min: 0,
@@ -168,6 +193,7 @@ export const sections: Array<object> = [
         label: "Position 3",
         key: "mirrorPos3",
         type: "slider",
+        show: "mirrorAdv",
         step: 25,
         range: {
           min: 0,
@@ -178,6 +204,7 @@ export const sections: Array<object> = [
         label: "Scale %",
         key: "scale",
         type: "slider",
+        show: "mirrorAdv",
         step: 100,
         range: {
           min: 100,
@@ -207,7 +234,7 @@ export const sections: Array<object> = [
         label: "Animation #",
         key: "animation",
         type: "slider",
-        hide: "animate",
+        show: "animate",
         range: {
           min: 0,
           max: 18,
