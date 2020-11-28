@@ -324,7 +324,7 @@ export default Vue.extend({
       minted: {} as any,
       values: {} as any,
       defaults: {
-        seed: 1234,
+        seed: Date.now(),
         shapes: 11,
         x: 200,
         y: 200,
