@@ -170,19 +170,21 @@ export default Vue.extend({
       for (const s of t.sections)
         if (s.rand)
           for (const o of s.options) {
-            const range = o.rand ? o.rand : o.range;
-            switch (o.type) {
-              case "switch":
-                randomSettings[o.key] = Math.random() > 0.5;
-                break;
-              case "range-slider":
-                randomSettings[o.key] = [range, range]
-                  .map((r) => t.between(r))
-                  .sort();
-                break;
-              default:
-                randomSettings[o.key] = t.between(range);
-                break;
+            if (o.rand !== false) {
+              const range = o.rand ? o.rand : o.range;
+              switch (o.type) {
+                case "switch":
+                  randomSettings[o.key] = Math.random() > (o.randWeight ? o.randWeight : 0.5);
+                  break;
+                case "range-slider":
+                  randomSettings[o.key] = [range, range]
+                    .map((r) => t.between(r))
+                    .sort();
+                  break;
+                default:
+                  randomSettings[o.key] = t.between(range);
+                  break;
+              }
             }
           }
       Object.assign(t.values, randomSettings);
@@ -216,10 +218,10 @@ export default Vue.extend({
         v.height[0],
         v.height[1],
         v.hatching,
-        v.mirrorPos1,
-        v.mirrorPos2,
-        v.mirrorPos3,
-        v.scale,
+        v.mirrorAdv ? v.mirrorPos1 : (v.mirrorA ? t.defaults.mirrorPos1 : 0),
+        v.mirrorAdv ? v.mirrorPos2 : (v.mirrorB ? t.defaults.mirrorPos2 : 0),
+        v.mirrorAdv ? v.mirrorPos3 : (v.mirrorC ? t.defaults.mirrorPos3 : 0),
+        v.mirrorAdv ? v.scale : (!v.mirrorC ? (!v.mirrorB ? 400 : 200) : 100),
       ];
       t.data = await this.$store.state.contracts.tinyboxes.methods
         .tokenTest(v.seed.toString(), v.shapes, palette, dials, v.animation, v.animate)
@@ -251,10 +253,10 @@ export default Vue.extend({
         v.height[0],
         v.height[1],
         v.hatching,
-        v.mirrorPos1,
-        v.mirrorPos2,
-        v.mirrorPos3,
-        v.scale,
+        v.mirrorAdv ? v.mirrorPos1 : (v.mirrorA ? t.defaults.mirrorPos1 : 0),
+        v.mirrorAdv ? v.mirrorPos2 : (v.mirrorB ? t.defaults.mirrorPos2 : 0),
+        v.mirrorAdv ? v.mirrorPos3 : (v.mirrorC ? t.defaults.mirrorPos3 : 0),
+        v.mirrorAdv ? v.scale : (!v.mirrorC ? (!v.mirrorB ? 400 : 200) : 100),
       ];
       t.price = await t.getPrice();
       t.minted = {};

@@ -143,29 +143,34 @@ export const sections: Array<object> = [
   },
   {
     title: "Mirror",
+    rand: true,
     options: [
       {
         label: "A",
         key: "mirrorA",
         type: "switch",
         hide: "mirrorAdv",
+        randWeight: 0.25,
       },
       {
         label: "B",
         key: "mirrorB",
         type: "switch",
         hide: "mirrorAdv",
+        randWeight: 0.2,
       },
       {
         label: "C",
         key: "mirrorC",
         type: "switch",
         hide: "mirrorAdv",
+        randWeight: 0.1,
       },
       {
         label: "Advanced",
         key: "mirrorAdv",
         type: "switch",
+        rand: false,
       },
       {
         label: "Position 1",
@@ -205,6 +210,7 @@ export const sections: Array<object> = [
         key: "scale",
         type: "slider",
         show: "mirrorAdv",
+        rand: false,
         step: 100,
         range: {
           min: 100,
