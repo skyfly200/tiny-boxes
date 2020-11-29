@@ -77,14 +77,15 @@
             br
             v-expansion-panels(v-model="form.section" popout tile)
               v-expansion-panel.section(v-for="section,s of active" :key="section.title" ripple)
-                v-expansion-panel-header(color="#3F51B5").section-title {{ section.title }}
-                v-expansion-panel-content.section-content
+                v-expansion-panel-header(color="#3F51B5").section-title
+                  span {{ section.title }}
                   v-spacer
                   v-tooltip(left)
                     template(v-slot:activator="{ on }")
-                      v-btn(v-if="section.rand" @click="randomizeSection(s)" v-on="on" icon)
+                      v-btn(v-if="section.rand" @click.stop="randomizeSection(s);form.section = s" v-on="on" icon).rand-section
                         v-icon mdi-dice-multiple
                     span Randomize
+                v-expansion-panel-content.section-content
                   template(v-for="option of section.options")
                     template(v-if="!option.show || values[option.show] && !option.hide || (values[option.hide]) == false")
                       template(v-if="option.type === 'slider'")
@@ -439,6 +440,9 @@ export default Vue.extend({
   margin-top: 1rem
 .form-buttons, .price-tag
   display: flex
+.rand-section
+  flex: 0 0 auto
+  margin-right: 10px
 .theme--dark.v-input
   margin: 0 15px
   width: 100%
