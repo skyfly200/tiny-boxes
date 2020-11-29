@@ -22,8 +22,9 @@ library SVG {
     function _tag(string memory tag, string memory slot) internal pure returns (string memory) {
         return string(abi.encodePacked(
             "<", tag,
-            bytes(slot).length == 0 ? "/>" :
-            string(abi.encodePacked(">",slot,"</", tag, ">"))
+            bytes(slot).length == 0 ?
+                "/>" :
+                string(abi.encodePacked(">",slot,"</", tag, ">"))
         ));
     }
 
@@ -39,8 +40,9 @@ library SVG {
         for (uint i=0; i < attr.length; i++) attrString = string(abi.encodePacked(attrString,' ',attr[0][i],'="',attr[1][i],'"'));
         return string(abi.encodePacked(
             "<", tag,attrString,
-            bytes(slot).length == 0 ? "/>" :
-            string(abi.encodePacked(">",slot,"</", tag, ">"))
+            bytes(slot).length == 0 ?
+                "/>" :
+                string(abi.encodePacked(">",slot,"</", tag, ">"))
         ));
     }
 }
