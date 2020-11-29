@@ -198,7 +198,7 @@ exports.handler = async (event, context) => {
         {
           display_type: 'number',
           trait_type: 'Color Scheme',
-          value: parseInt(data.palette[4]),
+          value:  schemeTitles[data.palette[4]],
         },
         {
           display_type: 'number',
@@ -223,7 +223,7 @@ exports.handler = async (event, context) => {
         {
           display_type: 'number',
           trait_type: 'Animation',
-          value: parseInt(data.animation),
+          value: animationTitles[data.animation],
         },
         {
           trait_type: 'Hatching',
