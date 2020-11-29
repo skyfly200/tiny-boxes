@@ -119,10 +119,10 @@ library TinyBoxesRenderer {
      * @param box TinyBox data structure
      * @return markup of the SVG graphics of the token as a string
      */
-    function perpetualRendererStr(TinyBox memory box, bool animate)
+    function perpetualRenderer(TinyBox memory box, bool animate)
         public
         view
-        returns (string memory)
+        returns (bytes memory)
     {
         // --- Calculate Generative Shape Data ---
         bytes32[] memory pool = Random.init(box.randomness);
@@ -136,21 +136,20 @@ library TinyBoxesRenderer {
         string memory shapes = "";
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
             Shape memory shape = _generateShape(pool, i, box, colors);
-            if (animate) {
-                string memory animation = SVG._generateAnimation(box, shape, i);
-                shapes = string(abi.encodePacked(shapes, SVG._rect(shape, animation)));
-            } else
-                shapes = string(abi.encodePacked(shapes, SVG._rect(shape)));
+            shapes = string(abi.encodePacked(shapes, 
+                animate ?
+                SVG._rect(shape, SVG._generateAnimation(box, shape, i)) : SVG._rect(shape)
+            ));
         }
+        string memory defs = string(abi.encodePacked('<defs><symbol id="shapes">', shapes, '</symbol></defs>'));
 
         // generate the footer
-        // TODO: rename to mirroring and reference shapes symbol
         string memory mirroring = SVG._generateMirroring(
             box.mirrorPositions,
             int256(box.scale).toDecimal(2)
         );
 
-        return string(abi.encodePacked(header, metadata, '<defs><symbol id="shapes">', shapes, '</symbol></defs>',  mirroring, '</svg>'));
+        return abi.encodePacked(header, metadata, defs, mirroring, '</svg>');
     }
 
     /**
@@ -158,7 +157,7 @@ library TinyBoxesRenderer {
      * @param box TinyBox data structure
      * @return markup of the SVG graphics of the token
      */
-    function perpetualRenderer(TinyBox memory box, bool animate)
+    function perpetualRendererOld(TinyBox memory box, bool animate)
         public
         view
         returns (bytes memory)

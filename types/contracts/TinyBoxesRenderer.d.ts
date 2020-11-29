@@ -48,7 +48,7 @@ export class TinyBoxesRenderer extends Contract {
       animate: boolean
     ): TransactionObject<string>;
 
-    perpetualRendererStr(
+    perpetualRendererOld(
       box: {
         randomness: number | string;
         animation: number | string;
