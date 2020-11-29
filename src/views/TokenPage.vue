@@ -102,8 +102,11 @@ export default Vue.extend({
       } else {
         // load all token data
         this.data.creation = (await t.lookupMinting()) as any;
-        this.data.art = await this.$store.state.contracts.tinyboxes.methods
+        this.data.animation = await this.$store.state.contracts.tinyboxes.methods
           .tokenArt(this.id, true)
+          .call();
+        this.data.art = await this.$store.state.contracts.tinyboxes.methods
+          .tokenArt(this.id, false)
           .call();
         this.data.data = await this.$store.state.contracts.tinyboxes.methods
           .tokenData(this.id)
