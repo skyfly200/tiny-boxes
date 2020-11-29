@@ -75,7 +75,8 @@
               v-spacer
               v-tooltip(left)
                 template(v-slot:activator="{ on }")
-                  v-btn(@click.stop="randomizeForm" v-on="on" icon).rand-btn {}
+                  v-btn(@click.stop="randomizeForm" v-on="on" icon).rand-btn
+                    v-icon mdi-dice-multiple
                 span Randomize
             br
             v-expansion-panels(v-model="form.section" popout tile)
@@ -443,8 +444,8 @@ export default Vue.extend({
   margin-top: 1rem
 .form-buttons, .price-tag
   display: flex
-.rand-section, .rand-btn
-  flex: 0 0 auto
+.v-expansion-panel-header .rand-btn
+  flex: 0 0 auto !important
   margin-right: 10px
 .theme--dark.v-input
   margin: 0 15px
