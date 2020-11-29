@@ -117,6 +117,48 @@ library TinyBoxesRenderer {
     /**
      * @dev render a token's art
      * @param box TinyBox data structure
+     * @return markup of the SVG graphics of the token as a string
+     */
+    function perpetualRendererStr(TinyBox memory box, bool animate)
+        public
+        view
+        returns (string memory)
+    {
+        // --- Calculate Generative Shape Data ---
+        bytes32[] memory pool = Random.init(box.randomness);
+        HSL[] memory colors = Colors.generateColors(box.colorPalette);
+
+        // --- Render SVG Markup ---
+        string memory header = SVG._generateHeader();
+
+        // TODO - move to part of mirroring
+        string memory body = SVG._generateBody(box);
+
+        // generate shapes SVG markup (+ animations)
+        // TODO: mode to a group tag in defs
+        string memory shapes = "";
+        for (uint256 i = 0; i < uint256(box.shapes); i++) {
+            Shape memory shape = _generateShape(pool, i, box, colors);
+            if (animate) {
+                string memory animation = SVG._generateAnimation(box, shape, i);
+                shapes = string(abi.encodePacked(shapes, SVG._rect(shape, animation)));
+            } else
+                shapes = string(abi.encodePacked(shapes, SVG._rect(shape)));
+        }
+
+        // generate the footer
+        // TODO: rename to mirroring and reference shapes symbol
+        string memory footer = SVG._generateFooter(
+            box.mirrorPositions,
+            int256(box.scale).toDecimal(2)
+        );
+
+        return string(abi.encodePacked(header, body, shapes, footer, "</svg>"));
+    }
+
+    /**
+     * @dev render a token's art
+     * @param box TinyBox data structure
      * @return markup of the SVG graphics of the token
      */
     function perpetualRenderer(TinyBox memory box, bool animate)
