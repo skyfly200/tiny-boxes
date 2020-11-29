@@ -122,7 +122,7 @@ library TinyBoxesRenderer {
     function perpetualRenderer(TinyBox memory box, bool animate)
         public
         view
-        returns (bytes memory)
+        returns (string memory)
     {
         // --- Calculate Generative Shape Data ---
         bytes32[] memory pool = Random.init(box.randomness);
@@ -149,7 +149,7 @@ library TinyBoxesRenderer {
             int256(box.scale).toDecimal(2)
         );
 
-        return abi.encodePacked(header, metadata, defs, mirroring, '</svg>');
+        return string(abi.encodePacked(header, metadata, defs, mirroring, '</svg>'));
     }
 
     /**
@@ -172,7 +172,7 @@ library TinyBoxesRenderer {
         buffer.append(SVG._generateHeader());
         // TODO - pass slot in here with shapes, change footer to mirroring and add generateSVG
         buffer.append(SVG._generateMetadata(box));
-        buffer.append(SVG._generateBody(box));
+        buffer.append(SVG._generateBody());
 
         // write shapes to the SVG
         for (uint256 i = 0; i < uint256(box.shapes); i++) {

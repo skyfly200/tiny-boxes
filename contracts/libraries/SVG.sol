@@ -141,7 +141,7 @@ library SVG {
      * @dev render the header of the SVG markup
      * @return header string
      */
-    function _generateBody(TinyBox memory box) internal pure returns (string memory) {
+    function _generateBody() internal pure returns (string memory) {
         string memory symbols = '<symbol id="quad3"><symbol id="quad2"><symbol id="quad1"><symbol id="quad0">';
         return symbols;
     }
@@ -200,7 +200,7 @@ library SVG {
     ) internal view returns (string memory) {
         string[3] memory scales = ['-1 1', '1 -1', '-1 -1'];
         // reference shapes symbol at core of mirroring
-        string memory symbols = _g(_use('shapes'));
+        string memory symbols = string(abi.encodePacked('<symbol id="quad0">',_g(_use('shapes')),'</symbol>'));
         // loop through nested mirroring levels
         for (uint256 s = 0; s < 3; s++) {
             string memory id = string(abi.encodePacked('quad', s.toString()));

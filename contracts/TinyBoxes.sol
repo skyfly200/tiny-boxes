@@ -7,7 +7,6 @@ import "./TinyBoxesRenderer.sol";
 
 contract TinyBoxes is TinyBoxesStore {
     using TinyBoxesRenderer for TinyBox;
-    using SVGBuffer for bytes;
 
     /**
      * @dev Contract constructor.
@@ -69,7 +68,7 @@ contract TinyBoxes is TinyBoxesStore {
             mirrorPositions: [dials[9], dials[10], dials[11]],
             scale: uint16(dials[12])
         });
-        return box.perpetualRenderer(animate).toString();
+        return box.perpetualRenderer(animate);
     }
 
     /**
@@ -83,6 +82,6 @@ contract TinyBoxes is TinyBoxesStore {
         returns (string memory)
     {
         TinyBox memory box = boxes[_id];
-        return box.perpetualRenderer(animate).toString();
+        return box.perpetualRenderer(animate);
     }
 }
