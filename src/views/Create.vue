@@ -76,9 +76,10 @@
               v-btn(@click="randomizeForm") Randomize
             br
             v-expansion-panels(v-model="form.section" accordion flat tile)
-              v-expansion-panel.section(v-for="section of active" :key="section.title" ripple)
+              v-expansion-panel.section(v-for="section,s of active" :key="section.title" ripple)
                 v-expansion-panel-header(color="#3F51B5").section-title {{ section.title }}
                 v-expansion-panel-content.section-content
+                  v-btn(@click="randomizeSection(s)") Randomize
                   template(v-for="option of section.options")
                     template(v-if="!option.show || values[option.show] && !option.hide || (values[option.hide]) == false")
                       v-slider(v-if="option.type === 'slider'" v-model="values[option.key]" @change="update" thumb-label required
@@ -173,6 +174,41 @@ export default Vue.extend({
           console.log("Retrying Randomize")
           t.randomizeForm()
         });
+    },
+    randomizeSection: function(section: number) {
+      const t = this as any;
+      t.randomize(section);
+      t.update()
+        .catch((err: any) => {
+          console.error("Invalid Box Options - Call Reverted: ", err)
+          console.log("Retrying Randomize")
+          t.randomizeForm()
+        });
+    },
+    randomize: function(section: number) {
+      const t = this as any;
+      const randomSettings: any = {};
+      const s = t.sections[section];
+      if (s.rand)
+        for (const o of s.options) {
+          if (o.rand !== false && !t.values[o.hide] && t.values[o.show] !== false) {
+            const range = o.rand ? o.rand : o.range;
+            switch (o.type) {
+              case "switch":
+                randomSettings[o.key] = Math.random() > (o.randWeight ? o.randWeight : 0.5);
+                break;
+              case "range-slider":
+                randomSettings[o.key] = [range, range]
+                  .map((r) => t.between(r))
+                  .sort();
+                break;
+              default:
+                randomSettings[o.key] = t.between(range);
+                break;
+            }
+          }
+        }
+      Object.assign(t.values, randomSettings);
     },
     randomizeAll: function() {
       const t = this as any;
