@@ -362,7 +362,6 @@ export default Vue.extend({
           t.minted.art = await t.$store.state.contracts.tinyboxes.methods
             .tokenArt(t.minted.id, true)
             .call();
-          console.log(t.minted.art);
           t.overlay = "ready";
         });
     },
