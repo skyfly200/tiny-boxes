@@ -73,16 +73,19 @@
             .form-buttons
               v-btn(@click="loadFormDefaults") Reset
               v-spacer
-              v-btn(@click="randomizeForm") Randomize
+              v-tooltip(left)
+                template(v-slot:activator="{ on }")
+                  v-btn(@click.stop="randomizeForm" v-on="on" icon).rand-btn {}
+                span Randomize
             br
             v-expansion-panels(v-model="form.section" popout tile)
               v-expansion-panel.section(v-for="section,s of active" :key="section.title" ripple)
                 v-expansion-panel-header(color="#3F51B5").section-title
                   span {{ section.title }}
                   v-spacer
-                  v-tooltip(left)
+                  v-tooltip(left).rand-section
                     template(v-slot:activator="{ on }")
-                      v-btn(v-if="section.rand" @click.stop="randomizeSection(s);form.section = s" v-on="on" icon).rand-section
+                      v-btn(v-if="section.rand" @click.stop="randomizeSection(s);form.section = s" v-on="on" icon).rand-btn
                         v-icon mdi-dice-multiple
                     span Randomize
                 v-expansion-panel-content.section-content
@@ -440,7 +443,7 @@ export default Vue.extend({
   margin-top: 1rem
 .form-buttons, .price-tag
   display: flex
-.rand-section
+.rand-section, .rand-btn
   flex: 0 0 auto
   margin-right: 10px
 .theme--dark.v-input
