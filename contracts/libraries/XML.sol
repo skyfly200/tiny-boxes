@@ -4,8 +4,6 @@ pragma solidity ^0.6.4;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "@openzeppelin/contracts/utils/Strings.sol";
-
 import "./Utils.sol";
 import "./StringUtilsLib.sol";
 
