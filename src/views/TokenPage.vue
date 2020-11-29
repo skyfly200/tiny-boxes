@@ -41,16 +41,23 @@
                   p Spread: {{ data.spacing[0] }} X {{ data.spacing[1] }} Y
                   p {{ data.spacing[2] }} Rows
                   p {{ data.spacing[3] }} Columns
+                h3 Colors
+                .colors
+                  p Root Hue: {{data.palette.hue}}
+                  p Scheme: {{data.palette.scheme}}
+                  p Saturation: {{data.palette.saturation}}
+                  p Lightness: {{data.palette.lightness}}
                 h3 Advanced
                 .advanced
+                  p Animation: {{ data.animation }}
                   p Randomness: {{ data.randomness }}
                   p Hatching Mod: {{ data.hatching }}
-                  p {{ data.scale + "%" }} Scale
                 h3 Mirroring
                 .mirroring(v-if="data.mirrorPositions")
                   p {{ data.mirrorPositions[0] }}
                   p {{ data.mirrorPositions[1] }}
                   p {{ data.mirrorPositions[2] }}
+                  p {{ data.scale + "%" }} Scale
             v-card-actions.opensea
               v-spacer
               v-btn(large target="_blank" color="primary" href="//opensea.io") View on OpenSea
