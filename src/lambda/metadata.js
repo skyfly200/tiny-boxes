@@ -149,6 +149,37 @@ exports.handler = async (event, context) => {
 
     // build the metadata object from the token data and IPFS hashes
     console.log("Building Metadata");
+    const animationTitles = [
+      "Rounding Corners",
+      "Grow n Shrink",
+      "Squash n Stretch",
+      "Skew X",
+      "Skew Y",
+      "Snap Spin 1",
+      "Snap Spin 2",
+      "Snap Spin 3",
+      "Snap Spin 4",
+      "Spread",
+      "Spread Over Time",
+      "Glide",
+      "Uniform Speed Spin",
+      "2 Speed Spin",
+      "Indexed Spin",
+      "Jitter",
+      "Giggle",
+      "Jolt",
+      "Drop"
+    ];
+    const schemeTitles = [
+      "complimentary",
+      "analogous",
+      "split complimentary",
+      "triadic",
+      "complimentary and analogous",
+      "analogous and complimentary",
+      "square",
+      "tetradic"
+    ];
     const metadata = {
       name: 'TinyBox #' + id,
       description:
