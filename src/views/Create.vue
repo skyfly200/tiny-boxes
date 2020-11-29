@@ -141,7 +141,7 @@ export default Vue.extend({
   methods: {
     update: async function() {
       const t = this as any;
-      if (t.form.valid) t.loadToken();
+      if (t.form.valid) return t.loadToken();
     },
     loadStatus: async function() {
       const t = this as any;
@@ -166,11 +166,21 @@ export default Vue.extend({
     },
     randomizeForm: function() {
       const t = this as any;
+      t.randomizeAll();
+      t.update()
+        .catch((err: any) => {
+          console.error("Invalid Box Options - Call Reverted: ", err)
+          console.log("Retrying Randomize")
+          t.randomizeForm()
+        });
+    },
+    randomizeAll: function() {
+      const t = this as any;
       const randomSettings: any = {};
       for (const s of t.sections)
         if (s.rand)
           for (const o of s.options) {
-            if (o.rand !== false) {
+            if (o.rand !== false && !t.values[o.hide] && t.values[o.show] !== false) {
               const range = o.rand ? o.rand : o.range;
               switch (o.type) {
                 case "switch":
@@ -188,48 +198,55 @@ export default Vue.extend({
             }
           }
       Object.assign(t.values, randomSettings);
-      t.update();
     },
     between: function(range: any) {
       return Math.floor(
         Math.random() * (range.max - range.min + 1) + range.min
       );
     },
-    loadToken: async function() {
-      const t = this as any;
-      t.loading = true;
-      await t.loadStatus();
-      const v = t.values;
-      const palette = [
-        v.hue,
-        v.saturation,
-        v.lightness[0],
-        v.lightness[1],
-        v.scheme,
-        v.shades
-      ];
-      const dials = [
-        v.x,
-        v.y,
-        v.xSeg,
-        v.ySeg,
-        v.width[0],
-        v.width[1],
-        v.height[0],
-        v.height[1],
-        v.hatching,
-        v.mirrorAdv ? v.mirrorPos1 : (v.mirrorA ? t.defaults.mirrorPos1 : 0),
-        v.mirrorAdv ? v.mirrorPos2 : (v.mirrorB ? t.defaults.mirrorPos2 : 0),
-        v.mirrorAdv ? v.mirrorPos3 : (v.mirrorC ? t.defaults.mirrorPos3 : 0),
-        v.mirrorAdv ? v.scale : (!v.mirrorC ? (!v.mirrorB ? 400 : 200) : 100),
-      ];
-      t.data = await this.$store.state.contracts.tinyboxes.methods
-        .tokenTest(v.seed.toString(), v.shapes, palette, dials, v.animation, v.animate)
-        .call()
-        .catch((err: any) => {
-          console.error(err, t.id, v.seed);
+    loadToken: function() {
+      return new Promise((resolve, reject) => {
+        const t = this as any;
+        t.loading = true;
+        t.loadStatus().then(() => {
+          const v = t.values;
+          const palette = [
+            v.hue,
+            v.saturation,
+            v.lightness[0],
+            v.lightness[1],
+            v.scheme,
+            v.shades
+          ];
+          const dials = [
+            v.x,
+            v.y,
+            v.xSeg,
+            v.ySeg,
+            v.width[0],
+            v.width[1],
+            v.height[0],
+            v.height[1],
+            v.hatching,
+            v.mirrorAdv ? v.mirrorPos1 : (v.mirrorA ? t.defaults.mirrorPos1 : 0),
+            v.mirrorAdv ? v.mirrorPos2 : (v.mirrorB ? t.defaults.mirrorPos2 : 0),
+            v.mirrorAdv ? v.mirrorPos3 : (v.mirrorC ? t.defaults.mirrorPos3 : 0),
+            v.mirrorAdv ? v.scale : (!v.mirrorC ? (!v.mirrorB ? 400 : 200) : 100),
+          ];
+          this.$store.state.contracts.tinyboxes.methods
+            .tokenTest(v.seed.toString(), v.shapes, palette, dials, v.animation, v.animate)
+            .call()
+            .then((result: any) => {
+              t.data = result;
+              t.loading = false;
+              resolve(result);
+            })
+            .catch((err: any) => {
+              console.error(err);
+              reject(err);
+            });
         });
-      t.loading = false;
+      })
     },
     mintToken: async function() {
       const t = this as any;
