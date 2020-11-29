@@ -75,7 +75,7 @@
               v-spacer
               v-btn(@click="randomizeForm") Randomize
             br
-            v-expansion-panels(v-model="form.section" accordion flat tile)
+            v-expansion-panels(v-model="form.section" popout tile)
               v-expansion-panel.section(v-for="section,s of active" :key="section.title" ripple)
                 v-expansion-panel-header(color="#3F51B5").section-title {{ section.title }}
                 v-expansion-panel-content.section-content
