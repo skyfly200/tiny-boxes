@@ -96,7 +96,7 @@ library TinyBoxesRenderer {
         pure
         returns (Shape memory)
     {
-        // offset hatching index start by hatch modulator
+        // calculate hatching switch
         bool hatching = (
             box.hatching > 0 &&
             uint256(index).mod(box.hatching) == 0
@@ -107,7 +107,6 @@ library TinyBoxesRenderer {
             int256[2] memory size
         ) = _generateBox(pool, box.spacing, box.size, hatching);
         // pick a random color from the generated colors list
-        // and modulate selected color
         int256 selection = pool.uniform(0, int256(uint256(colors.length) - 1));
         HSL memory color = colors[
             uint256(selection)
