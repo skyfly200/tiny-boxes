@@ -1,6 +1,9 @@
 <template lang="pug">
   .token-page
     v-container(fluid)
+      v-row
+        v-col(align="center").token-title
+          h1.title Token {{ id }}
       v-row(v-if="loading")
         v-col(align="center").token-loading
             v-progress-circular(indeterminate size="75" color="primary")
@@ -8,22 +11,16 @@
       v-row(v-else no-gutters)
         v-col(cols="12" md="6" lg="5" offset-lg="1")
           v-card
-            v-card-title(align="center")
-              h2 Token {{ id }}
             Token(:id="id" :data="animate ? data.animation : data.art").token-graphic
-            v-card-text.creation
-              v-switch(v-model="animate" label="Animate")
-              h2(align="center") Minted
-              .minting-stats
-                p At {{ (new Date(data.block.timestamp)).toLocaleTimeString() }} On {{ (new Date(data.block.timestamp)).toLocaleDateString() }}
-                p In Block # {{ data.creation.blockNumber }}
-                p For {{ priceInETH }} 
-                  v-icon mdi-ethereum
-              .minting-stats
-                p By Address 
-                  a(:href="'https://rinkeby.etherscan.io/address/' + data.creation.address") {{ formatHash(data.creation.address) }}
-                p With TX 
-                  a(:href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash") {{ formatHash(data.creation.transactionHash) }}
+            v-card-actions
+              v-tooltip(right)
+                template(v-slot:activator='{ on }')
+                  v-btn(icon large v-on='on' @click="animate = !animate" v-bind:class="[animate ? 'on' : 'off']").animate-toggle
+                    v-icon mdi-animation
+                span Toggle Animation
+              v-spacer
+              a(href="https://opensea.io/" title="View on OpenSea" target="_blank")
+                img(style="width:160px; border-radius:0px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);" src="https://storage.googleapis.com/opensea-static/opensea-brand/listed-button-blue.png" alt="Listed on OpenSea badge")
         v-col(cols="12" md="6" lg="5")
           v-card.token-properties
             v-card-title(align="center")
@@ -52,7 +49,7 @@
                 h3 Advanced
                 .advanced 
                   p Animation: {{ "#" + data.tokenData.animation }} - {{ animationTitles[data.tokenData.animation] }}
-                  p Randomness: {{ data.tokenData.randomness }}
+                  p Randomness: {{ data.tokenData.randomness.toString(16) }}
                   p Hatching Mod: {{ data.tokenData.hatching }}
                 h3 Mirroring
                 .mirroring(v-if="data.tokenData.mirrorPositions")
@@ -60,9 +57,17 @@
                   p {{ data.tokenData.mirrorPositions[1] }}
                   p {{ data.tokenData.mirrorPositions[2] }}
                   p {{ data.tokenData.scale + "%" }} Scale
-            v-card-actions.opensea
-              v-spacer
-              v-btn(large target="_blank" color="primary" href="//opensea.io") View on OpenSea
+                h2(align="center") Minted
+                .minting-stats
+                  p At {{ (new Date(data.block.timestamp)).toLocaleTimeString() }} On {{ (new Date(data.block.timestamp)).toLocaleDateString() }}
+                  p In Block # {{ data.creation.blockNumber }}
+                  p For {{ priceInETH }} 
+                    v-icon mdi-ethereum
+                .minting-stats
+                  p By Address 
+                    a(:href="'https://rinkeby.etherscan.io/address/' + data.creation.address") {{ formatHash(data.creation.address) }}
+                  p With TX 
+                    a(:href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash") {{ formatHash(data.creation.transactionHash) }}
 </template>
 
 <script lang="ts">
@@ -154,7 +159,7 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
 .v-chip__content
   span
     color: #FFF !important
@@ -164,6 +169,8 @@ export default Vue.extend({
   font-size: 2rem
 .token-loading
   padding-top: 40vh
+.on
+  border-style: inset
 .token-properties
   padding: 1rem
 .token-stats
