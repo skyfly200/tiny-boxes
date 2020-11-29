@@ -10,8 +10,9 @@
           v-card
             v-card-title(align="center")
               h2 Token {{ id }}
-            Token(:id="id" :data="data.art").token-graphic
+            Token(:id="id" :data="animate ? data.animation : data.art").token-graphic
             v-card-text.creation
+              v-switch(v-model="animate" label="Animate")
               h2(align="center") Minted
               .minting-stats
                 p At {{ (new Date(data.block.timestamp)).toLocaleTimeString() }} On {{ (new Date(data.block.timestamp)).toLocaleDateString() }}
@@ -31,37 +32,37 @@
               .stats
                 h3 Counts
                 .counts
-                  p {{ data.shapes }} Shapes
+                  p {{ data.tokenData.shapes }} Shapes
                 h3 Size
-                .size(v-if="data.size")
-                  p Width: {{ data.size[0] }} to {{ data.size[1] }}
-                  p Height: {{ data.size[2] }} to {{ data.size[3] }}
+                .size(v-if="data.tokenData.size")
+                  p Width: {{ data.tokenData.size[0] }} to {{ data.tokenData.size[1] }}
+                  p Height: {{ data.tokenData.size[2] }} to {{ data.tokenData.size[3] }}
                 h3 Position
-                .position(v-if="data.spacing")
-                  p Spread: {{ data.spacing[0] }} X {{ data.spacing[1] }} Y
-                  p {{ data.spacing[2] }} Rows
-                  p {{ data.spacing[3] }} Columns
+                .position(v-if="data.tokenData.spacing")
+                  p Spread: {{ data.tokenData.spacing[0] }} X {{ data.tokenData.spacing[1] }} Y
+                  p {{ data.tokenData.spacing[2] }} Rows
+                  p {{ data.tokenData.spacing[3] }} Columns
                 h3 Colors
-                .colors
-                  p Root Hue: {{data.palette.hue}}
-                  p Scheme: {{data.palette.scheme}}
-                  p Saturation: {{data.palette.saturation}}
-                  p Lightness: {{data.palette.lightness}}
+                .colors(v-if="data.tokenData.palette")
+                  p Root Hue: {{data.tokenData.palette[0]}}
+                  p Scheme: {{data.tokenData.palette[4]}}
+                  p Saturation: {{data.tokenData.palette[1]}}
+                  p Lightness: {{data.tokenData.palette[2]}} - {{data.tokenData.palette[3]}}
+                  p Shades: {{data.tokenData.palette[5]}}
                 h3 Advanced
                 .advanced
-                  p Animation: {{ data.animation }}
-                  p Randomness: {{ data.randomness }}
-                  p Hatching Mod: {{ data.hatching }}
+                  p Animation: {{ data.tokenData.animation }}
+                  p Randomness: {{ data.tokenData.randomness }}
+                  p Hatching Mod: {{ data.tokenData.hatching }}
                 h3 Mirroring
-                .mirroring(v-if="data.mirrorPositions")
-                  p {{ data.mirrorPositions[0] }}
-                  p {{ data.mirrorPositions[1] }}
-                  p {{ data.mirrorPositions[2] }}
-                  p {{ data.scale + "%" }} Scale
+                .mirroring(v-if="data.tokenData.mirrorPositions")
+                  p {{ data.tokenData.mirrorPositions[0] }}
+                  p {{ data.tokenData.mirrorPositions[1] }}
+                  p {{ data.tokenData.mirrorPositions[2] }}
+                  p {{ data.tokenData.scale + "%" }} Scale
             v-card-actions.opensea
               v-spacer
               v-btn(large target="_blank" color="primary" href="//opensea.io") View on OpenSea
-    
 </template>
 
 <script lang="ts">
@@ -108,7 +109,7 @@ export default Vue.extend({
         this.data.art = await this.$store.state.contracts.tinyboxes.methods
           .tokenArt(this.id, false)
           .call();
-        this.data.data = await this.$store.state.contracts.tinyboxes.methods
+        this.data.tokenData = await this.$store.state.contracts.tinyboxes.methods
           .tokenData(this.id)
           .call();
         this.data.price = await this.$store.state.contracts.tinyboxes.methods.priceAt(
@@ -143,6 +144,7 @@ export default Vue.extend({
   },
   data: () => ({
     loading: true,
+    animate: true,
     data: {} as any,
   }),
 });
