@@ -87,10 +87,12 @@
                     span Randomize
                   template(v-for="option of section.options")
                     template(v-if="!option.show || values[option.show] && !option.hide || (values[option.hide]) == false")
-                      v-slider(v-if="option.type === 'slider'" v-model="values[option.key]" @change="update" thumb-label required
-                        :label="option.label" :step="option.step" :min="option.range.min" :max="option.range.max")
-                          template(v-slot:append)
-                            v-text-field(v-model="values[option.key]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
+                      template(v-if="option.type === 'slider'")
+                        v-slider(v-model="values[option.key]" @change="update" thumb-label required
+                          :label="option.label" :step="option.step" :min="option.range.min" :max="option.range.max")
+                            template(v-slot:append)
+                              v-text-field(v-model="values[option.key]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
+                        p(v-if="option.key === 'scheme' || option.key === 'animation'") {{option.key === "scheme" ? schemeTitles[values[option.key]] : (option.key === "animation" ? animationTitles[values[option.key]] : "")}}
                       v-range-slider(v-else-if="option.type === 'range-slider'" v-model="values[option.key]" @change="update" thumb-label required
                         :step="option.step" :label="option.label" :min="option.range.min" :max="option.range.max")
                           template(v-slot:prepend)
@@ -103,7 +105,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 //import { tinyboxesAddress } from "../tinyboxes-contract";
 import { sections } from "./create-form";
 import Token from "@/components/Token.vue";
@@ -134,6 +136,10 @@ export default Vue.extend({
     soldOut: function() {
       return parseInt((this as any).id) >= parseInt((this as any).limit);
     },
+    ...mapState({
+        animationTitles: 'animationTitles',
+        schemeTitles: 'schemeTitles',
+    }),
     ...mapGetters(["currentAccount"]),
   },
   mounted: async function() {
