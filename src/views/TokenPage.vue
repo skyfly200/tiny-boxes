@@ -27,47 +27,48 @@
               h2 Stats
             v-card-text
               .stats
-                h3 Counts
-                .counts
+                h2(align="center") Shapes
+                .shapes
                   p {{ data.tokenData.shapes }} Shapes
-                h3 Size
-                .size(v-if="data.tokenData.size")
+                  p Hatching Mod: {{ data.tokenData.hatching }}
                   p Width: {{ data.tokenData.size[0] }} to {{ data.tokenData.size[1] }}
                   p Height: {{ data.tokenData.size[2] }} to {{ data.tokenData.size[3] }}
-                h3 Position
-                .position(v-if="data.tokenData.spacing")
+                h2(align="center") Placement
+                .position
                   p Spread: {{ data.tokenData.spacing[0] }} X {{ data.tokenData.spacing[1] }} Y
                   p {{ data.tokenData.spacing[2] }} Rows
                   p {{ data.tokenData.spacing[3] }} Columns
-                h3 Colors
-                .colors(v-if="data.tokenData.palette")
+                h2(align="center") Colors
+                .colors
                   p Root Hue: {{ data.tokenData.palette[0] }}
                   p Scheme: {{ "#" + data.tokenData.palette[4] }} - {{ schemeTitles[data.tokenData.palette[4]] }}
                   p Saturation: {{ data.tokenData.palette[1] }}
                   p Lightness: {{ data.tokenData.palette[2] }} - {{data.tokenData.palette[3]}}
                   p Shades: {{ data.tokenData.palette[5] }}
-                h3 Advanced
-                .advanced 
-                  p Animation: {{ "#" + data.tokenData.animation }} - {{ animationTitles[data.tokenData.animation] }}
-                  p Randomness: {{ data.tokenData.randomness.toString(16) }}
-                  p Hatching Mod: {{ data.tokenData.hatching }}
-                h3 Mirroring
-                .mirroring(v-if="data.tokenData.mirrorPositions")
+                h2(align="center") Mirroring
+                .mirroring
                   p {{ data.tokenData.mirrorPositions[0] }}
                   p {{ data.tokenData.mirrorPositions[1] }}
                   p {{ data.tokenData.mirrorPositions[2] }}
                   p {{ data.tokenData.scale + "%" }} Scale
-                h2(align="center") Minted
+                h2(align="center") Advanced
+                .advanced 
+                  p Animation: {{ "#" + data.tokenData.animation }} - {{ animationTitles[data.tokenData.animation] }}
+                  p Randomness: {{ randomness }}
+                h2(align="center") Minting Info
                 .minting-stats
-                  p At {{ (new Date(data.block.timestamp)).toLocaleTimeString() }} On {{ (new Date(data.block.timestamp)).toLocaleDateString() }}
-                  p In Block # {{ data.creation.blockNumber }}
-                  p For {{ priceInETH }} 
+                  p {{ (new Date(data.block.timestamp)).toLocaleTimeString() }}
+                  p {{ (new Date(data.block.timestamp)).toLocaleDateString() }}
+                  p Block # {{ data.creation.blockNumber }}
+                  p {{ priceInETH }} 
                     v-icon mdi-ethereum
-                .minting-stats
-                  p By Address 
-                    a(:href="'https://rinkeby.etherscan.io/address/' + data.creation.address") {{ formatHash(data.creation.address) }}
-                  p With TX 
+                  p TX Hash
                     a(:href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash") {{ formatHash(data.creation.transactionHash) }}
+                  v-tooltip(top)
+                    template(v-slot:activator='{ on }')
+                      v-btn(v-on='on' text :href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash")
+                        v-icon mdi-arrow-top-right
+                    span View on Etherscan
 </template>
 
 <script lang="ts">
@@ -88,6 +89,9 @@ export default Vue.extend({
     },
     id(): number {
       return parseInt(this.$route.params.id);
+    },
+    randomness(): string {
+      return BigInt(this.data.tokenData.randomness).toString(16);
     },
     ...mapState({
         animationTitles: 'animationTitles',
