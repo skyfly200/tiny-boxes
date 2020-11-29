@@ -142,10 +142,8 @@ library SVG {
      * @return header string
      */
     function _generateBody(TinyBox memory box) internal pure returns (string memory) {
-        string memory metadata = _generateMetadata(box);
         string memory symbols = '<symbol id="quad3"><symbol id="quad2"><symbol id="quad1"><symbol id="quad0">';
-
-        return string(abi.encodePacked(metadata, symbols));
+        return symbols;
     }
 
     /**
@@ -188,6 +186,47 @@ library SVG {
         string memory animation = string(abi.encodePacked('<animation>', uint256(box.animation).toString(), '</animation>'));
 
         return string(abi.encodePacked('<metadata>', animation, palette, dials, '</metadata>'));
+    }
+
+    /**
+     * @dev render the footer string for mirring effects
+     * @param mirrorPositions for generator settings
+     * @param scale for each mirroring stage
+     * @return footer string
+     */
+    function _generateMirroring(
+        int16[3] memory mirrorPositions,
+        Decimal memory scale
+    ) internal view returns (string memory) {
+        string[3] memory scales = ['-1 1', '1 -1', '-1 -1'];
+        // reference shapes symbol at core of mirroring
+        string memory symbols = _g(_use('shapes'));
+        // loop through nested mirroring levels
+        for (uint256 s = 0; s < 3; s++) {
+            string memory id = string(abi.encodePacked('quad', s.toString()));
+            // generate unmirrored copy
+            string memory copies = _g(_use(id));
+            // check if this mirror level is active
+            if (mirrorPositions[s] > 0) {
+                string memory value = string(abi.encodePacked('-', mirrorPositions[s].toString()));
+                // generate mirrored copies
+                for (uint8 i = 0; i < 3; i++) {
+                    string memory transform = string(abi.encodePacked(
+                        'scale(', scales[i], ') translate(', (i != 1) ? value : '0', ' ', (i > 0) ? value : '0', ')'
+                    ));
+                    copies = string(abi.encodePacked(copies,_g(transform, _use(id))));
+                }
+            }
+            // wrap symbol and all copies in a new symbol
+            symbols = string(abi.encodePacked('<symbol id="quad',(s+1).toString(),'">',symbols,copies,'</symbol>')); // wrap last level in a shape tag to refer to later
+        }
+        // add final scaling transform
+        string memory scaleStr = scale.toString();
+        string memory transform = string(abi.encodePacked(
+            'scale(', scaleStr, ' ', scaleStr, ')'
+        ));
+        string memory finalScale = _g(transform, _use('quad3'));
+        return string(abi.encodePacked(symbols,finalScale));
     }
 
     /**

@@ -130,12 +130,9 @@ library TinyBoxesRenderer {
 
         // --- Render SVG Markup ---
         string memory header = SVG._generateHeader();
+        string memory metadata = SVG._generateMetadata(box);
 
-        // TODO - move to part of mirroring
-        string memory body = SVG._generateBody(box);
-
-        // generate shapes SVG markup (+ animations)
-        // TODO: mode to a group tag in defs
+        // generate shapes (+ animations)
         string memory shapes = "";
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
             Shape memory shape = _generateShape(pool, i, box, colors);
@@ -148,12 +145,12 @@ library TinyBoxesRenderer {
 
         // generate the footer
         // TODO: rename to mirroring and reference shapes symbol
-        string memory footer = SVG._generateFooter(
+        string memory mirroring = SVG._generateMirroring(
             box.mirrorPositions,
             int256(box.scale).toDecimal(2)
         );
 
-        return string(abi.encodePacked(header, body, shapes, footer, "</svg>"));
+        return string(abi.encodePacked(header, metadata, '<defs><symbol id="shapes">', shapes, '</symbol></defs>',  mirroring, '</svg>'));
     }
 
     /**
@@ -175,6 +172,7 @@ library TinyBoxesRenderer {
         bytes memory buffer = new bytes(100000);
         buffer.append(SVG._generateHeader());
         // TODO - pass slot in here with shapes, change footer to mirroring and add generateSVG
+        buffer.append(SVG._generateMetadata(box));
         buffer.append(SVG._generateBody(box));
 
         // write shapes to the SVG
