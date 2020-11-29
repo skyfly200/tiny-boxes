@@ -44,14 +44,14 @@
                   p {{ data.tokenData.spacing[3] }} Columns
                 h3 Colors
                 .colors(v-if="data.tokenData.palette")
-                  p Root Hue: {{data.tokenData.palette[0]}}
-                  p Scheme: {{data.tokenData.palette[4]}}
-                  p Saturation: {{data.tokenData.palette[1]}}
-                  p Lightness: {{data.tokenData.palette[2]}} - {{data.tokenData.palette[3]}}
-                  p Shades: {{data.tokenData.palette[5]}}
+                  p Root Hue: {{ data.tokenData.palette[0] }}
+                  p Scheme: {{ "#" + data.tokenData.palette[4] }} - {{ schemeTitles[data.tokenData.palette[4]] }}
+                  p Saturation: {{ data.tokenData.palette[1] }}
+                  p Lightness: {{ data.tokenData.palette[2] }} - {{data.tokenData.palette[3]}}
+                  p Shades: {{ data.tokenData.palette[5] }}
                 h3 Advanced
-                .advanced
-                  p Animation: {{ data.tokenData.animation }}
+                .advanced 
+                  p Animation: {{ "#" + data.tokenData.animation }} - {{ animationTitles[data.tokenData.animation] }}
                   p Randomness: {{ data.tokenData.randomness }}
                   p Hatching Mod: {{ data.tokenData.hatching }}
                 h3 Mirroring
@@ -67,7 +67,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import Token from "@/components/Token.vue";
 import { log } from 'util';
 //import { tinyboxesAddress } from "../tinyboxes-contract";
@@ -84,6 +84,10 @@ export default Vue.extend({
     id(): number {
       return parseInt(this.$route.params.id);
     },
+    ...mapState({
+        animationTitles: 'animationTitles',
+        schemeTitles: 'schemeTitles',
+    }),
     ...mapGetters(["currentAccount"]),
   },
   mounted: async function() {
