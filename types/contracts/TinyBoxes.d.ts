@@ -37,9 +37,13 @@ export class TinyBoxes extends Contract {
 
     LINK_ROLE(): TransactionObject<string>;
 
+    SCHEME_COUNT(): TransactionObject<string>;
+
     TOKEN_LIMIT(): TransactionObject<string>;
 
     TREASURER_ROLE(): TransactionObject<string>;
+
+    animationTitlesList(): TransactionObject<string>;
 
     approve(to: string, tokenId: number | string): TransactionObject<void>;
 
@@ -130,6 +134,8 @@ export class TinyBoxes extends Contract {
       to: string,
       tokenId: number | string
     ): TransactionObject<void>;
+
+    schemeTitlesList(): TransactionObject<string>;
 
     setApprovalForAll(
       operator: string,

@@ -21,7 +21,8 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     uint256 public constant TOKEN_LIMIT = 1000;
     uint256 public constant ARTIST_PRINTS = 0; // TODO: set to 2 before launch
     uint256 public constant BETA_SALE = 100; // TODO: take this into account with the paymentManager
-    uint256 public constant ANIMATION_COUNT = 18;
+    uint256 public constant ANIMATION_COUNT = 19;
+    uint256 public constant SCHEME_COUNT = 8;
     address payable constant artmuseum = 0x027Fb48bC4e3999DCF88690aEbEBCC3D1748A0Eb; //lolz
 
     // mapping to store all the boxes in
@@ -53,6 +54,30 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         // Check that the calling account has the required role
         require(hasRole(_role, msg.sender), "Caller dosn't have permission to use this function");
         _;
+    }
+
+    /**
+     * @dev return list of animation titles
+     * @return animationTitles list
+     */
+    function animationTitlesList()
+        external
+        view
+        returns (string memory)
+    {
+        return '"Rounding Corners","Grow n Shrink","Squash n Stretch","Skew X","Skew Y","Snap Spin 1","Snap Spin 2","Snap Spin 3","Snap Spin 4","Spread","Spread Over Time","Glide","Uniform Speed Spin","2 Speed Spin","Indexed Spin","Jitter","Giggle","Jolt","Drop"';
+    }
+
+    /**
+     * @dev return list of scheme titles
+     * @return schemeTitles list
+     */
+    function schemeTitlesList()
+        external
+        view
+        returns (string memory)
+    {
+        return '"Complimentary","Analogous","Split Complimentary","Triadic","Complimentary and Analogous","Analogous and Complimentary","Square","Tetradic"';
     }
 
     /**
