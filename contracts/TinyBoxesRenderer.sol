@@ -142,7 +142,7 @@ library TinyBoxesRenderer {
                 SVG._rect(shape, SVG._generateAnimation(box, shape, i)) : SVG._rect(shape)
             ));
         }
-        // wrap shapes in a symbol with id shapes
+        // wrap shapes in a symbol with the id "shapes"
         string memory defs = string(abi.encodePacked('<defs><symbol id="shapes">', shapes, '</symbol></defs>'));
 
         // generate the footer
