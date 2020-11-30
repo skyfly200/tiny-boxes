@@ -83,14 +83,12 @@ library TinyBoxesRenderer {
      * @param pool randomn numbers
      * @param index of the shape
      * @param box data to make a shape from
-     * @param colors list of colors
      * @return positions of shape
      */
     function _generateShape(
         bytes32[] memory pool,
         uint256 index,
-        TinyBox memory box,
-        HSL[] memory colors
+        TinyBox memory box
     )
         internal
         pure
@@ -106,11 +104,10 @@ library TinyBoxesRenderer {
             int256[2] memory position,
             int256[2] memory size
         ) = _generateBox(pool, box.spacing, box.size, hatching);
-        // pick a random color from the generated colors list
-        int256 selection = pool.uniform(0, int256(uint256(colors.length) - 1));
-        HSL memory color = colors[
-            uint256(selection)
-        ];
+        // lookup a random color from the color palette
+        uint8 hue = uint8(pool.uniform(0, 3));
+        uint8 shade = uint8(pool.uniform(0, box.colorPalette.shades));
+        HSL memory color = Colors.lookupColor(box.colorPalette,hue,shade);
         return Shape(position, size, color);
     }
 
@@ -134,9 +131,8 @@ library TinyBoxesRenderer {
 
         // generate shapes (shapes + animations)
         string memory shapes = "";
-        HSL[] memory colors = Colors.generateColors(box.colorPalette);
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
-            Shape memory shape = _generateShape(pool, i, box, colors);
+            Shape memory shape = _generateShape(pool, i, box);
             shapes = string(abi.encodePacked(shapes, 
                 animate ?
                 SVG._rect(shape, SVG._generateAnimation(box, shape, i)) : SVG._rect(shape)

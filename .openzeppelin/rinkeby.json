@@ -16,18 +16,18 @@
       "deployedBytecodeHash": "9879e22385686497758388def3748475b01a45b823c008c18a8a66605d3583a2"
     },
     "TinyBoxesRenderer": {
-      "address": "0x066c6BF2726A7dE4Ad85A14622941B1D59E9f0D5",
-      "constructorCode": "6157f3610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "94fa929fbe7b3aef0b93d2bc36c870668611d172630ee01b63399447fb1ce1f4",
-      "localBytecodeHash": "b129cae2ecf7591e56e41dc012e8e0464dedf2265087d94f360af44090f6cd63",
-      "deployedBytecodeHash": "104c9bdcf2cac92b5a3ebf8f256497b85a4159b8368245fb580ab1f727c7af67"
+      "address": "0x3b03c7f7d0C14B5E8D2ddf8458A50647776D63d6",
+      "constructorCode": "61574e610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "ba77ed301d1188163626475794b50a20c02fed55a3208917252a4ab5eed9da03",
+      "localBytecodeHash": "d59076488da03d26edd94c9752fd3b4cf927827329ac0af534ab8cf318bc162a",
+      "deployedBytecodeHash": "7fcb79bd1734b2523ebac1edf698c27b236dfdde0c5f73579cce55a90bf77bde"
     },
     "Colors": {
-      "address": "0xb99Af1770CB0D89B62810cE0b25eC55DA92c07D9",
-      "constructorCode": "610bec610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "29bf12ab8f1514d5f372e1d020fea41425b06055333ed6059f6108b66a06d2b2",
-      "localBytecodeHash": "e01969a5d5ebc4e2c236ad00eeb4c9eb94f2f322bb5fe7cec425684a970b3211",
-      "deployedBytecodeHash": "e01969a5d5ebc4e2c236ad00eeb4c9eb94f2f322bb5fe7cec425684a970b3211"
+      "address": "0x58b6471876a8fdbE22D74a2f4e0410dc94526a16",
+      "constructorCode": "610a6c610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "6aba96f74417cfbfd6ee0962b1ff6bf5652bab667c3b8245fab76b2e3a340949",
+      "localBytecodeHash": "fd7684000b19c156f173960afc7d4fb6c0cae483033903641435ca531ba72996",
+      "deployedBytecodeHash": "fd7684000b19c156f173960afc7d4fb6c0cae483033903641435ca531ba72996"
     }
   },
   "proxies": {
@@ -2104,6 +2104,11 @@
       },
       {
         "address": "0xd1f30ce7789BF572B1E3c8b79Ed2A64338B49842",
+        "kind": "NonProxy",
+        "bytecodeHash": "e94eba51083e799eb9ead9df6e2598bedc155cae98cbd2912ece5dedb84e53f4"
+      },
+      {
+        "address": "0x79A56Cf68FE46DB4d30E580550Ff700F99E146d0",
         "kind": "NonProxy",
         "bytecodeHash": "e94eba51083e799eb9ead9df6e2598bedc155cae98cbd2912ece5dedb84e53f4"
       }

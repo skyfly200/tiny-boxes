@@ -67,11 +67,4 @@ library Colors {
         }
         return HSL(h, s, l);
     }
-
-    function generateColors(Palette memory palette) public pure returns (HSL[] memory colors) {
-        colors = new HSL[](4 * palette.shades + 1);
-        for (uint8 h = 0; h < 4; h++)
-            for (uint8 s = 0; s <= palette.shades; s++) 
-                colors[h * palette.shades + s] = lookupColor(palette,h,s);
-    }
 }

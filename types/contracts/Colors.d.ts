@@ -21,16 +21,6 @@ export class Colors extends Contract {
   );
   clone(): Colors;
   methods: {
-    generateColors(palette: {
-      hue: number | string;
-      saturation: number | string;
-      lightnessRange: (number | string)[];
-      scheme: number | string;
-      shades: number | string;
-    }): TransactionObject<
-      { hue: string; saturation: string; lightness: string }[]
-    >;
-
     lookupColor(
       pal: {
         hue: number | string;
@@ -39,7 +29,7 @@ export class Colors extends Contract {
         scheme: number | string;
         shades: number | string;
       },
-      color: number | string,
+      colorIndex: number | string,
       shade: number | string
     ): TransactionObject<{
       hue: string;
