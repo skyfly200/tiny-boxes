@@ -125,14 +125,16 @@ library TinyBoxesRenderer {
         returns (string memory)
     {
         // --- Calculate Generative Shape Data ---
+
+        // seed PRNG
         bytes32[] memory pool = Random.init(box.randomness);
-        HSL[] memory colors = Colors.generateColors(box.colorPalette);
 
         // --- Render SVG Markup ---
         string memory metadata = SVG._generateMetadata(box);
 
-        // generate shapes (+ animations)
+        // generate shapes (shapes + animations)
         string memory shapes = "";
+        HSL[] memory colors = Colors.generateColors(box.colorPalette);
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
             Shape memory shape = _generateShape(pool, i, box, colors);
             shapes = string(abi.encodePacked(shapes, 
@@ -140,6 +142,7 @@ library TinyBoxesRenderer {
                 SVG._rect(shape, SVG._generateAnimation(box, shape, i)) : SVG._rect(shape)
             ));
         }
+        // wrap shapes in a symbol with id shapes
         string memory defs = string(abi.encodePacked('<defs><symbol id="shapes">', shapes, '</symbol></defs>'));
 
         // generate the footer
