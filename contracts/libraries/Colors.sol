@@ -51,10 +51,10 @@ library Colors {
 
     function lookupColor(
         Palette memory pal,
-        uint8 color,
+        uint8 colorIndex,
         uint8 shade
     ) public pure returns (HSL memory) {
-        uint16 h = lookupHue(pal.hue, pal.scheme, color);
+        uint16 h = lookupHue(pal.hue, pal.scheme, colorIndex);
         uint8 s = pal.saturation;
         uint8 l;
         if (pal.shades > 0) {
