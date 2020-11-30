@@ -54,12 +54,15 @@ library Metadata {
      * @return header string
      */
     function _generateShapesMetadata(TinyBox memory box) internal pure returns (string memory) {
+        string memory size = string(abi.encodePacked(
+            '<width>', uint256(box.size[0]).toString(), '-', uint256(box.size[1]).toString(), '</width>',
+            '<height>', uint256(box.size[2]).toString(), '-', uint256(box.size[3]).toString(), '</height>'
+        ));
         return string(abi.encodePacked(
             '<shapes>',
                 '<count>', uint256(box.shapes).toString(), '</count>',
                 '<hatching>', uint256(box.hatching).toString(), '</hatching>',
-                '<width>', uint256(box.size[0]).toString(), '-', uint256(box.size[1]).toString(), '</width>',
-                '<height>', uint256(box.size[2]).toString(), '-', uint256(box.size[3]).toString(), '</height>',
+                '<size>', size, '</size>',
             '</shapes>'
         ));
     }
