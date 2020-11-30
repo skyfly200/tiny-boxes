@@ -45,7 +45,9 @@ export class TinyBoxesRenderer extends Contract {
         size: (number | string)[];
         spacing: (number | string)[];
       },
-      animate: boolean
+      animate: boolean,
+      id: number | string,
+      owner: string
     ): TransactionObject<string>;
   };
   events: {

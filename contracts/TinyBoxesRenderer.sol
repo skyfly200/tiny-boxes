@@ -116,9 +116,11 @@ library TinyBoxesRenderer {
     /**
      * @dev render a token's art
      * @param box TinyBox data structure
+     * @param animate boolean flag to enable/disable animation
+     * @param id of the token rendered
      * @return markup of the SVG graphics of the token as a string
      */
-    function perpetualRenderer(TinyBox memory box, bool animate)
+    function perpetualRenderer(TinyBox memory box, bool animate, int256 id, string memory owner)
         public
         view
         returns (string memory)
@@ -129,7 +131,7 @@ library TinyBoxesRenderer {
         bytes32[] memory pool = Random.init(box.randomness);
 
         // --- Render SVG Markup ---
-        string memory metadata = box._generateMetadata('');
+        string memory metadata = box._generateMetadata(animate,id,owner);
 
         // generate shapes (shapes + animations)
         string memory shapes = "";

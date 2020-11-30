@@ -104,14 +104,39 @@ library Metadata {
      * @dev render the header of the SVG markup
      * @return header string
      */
-    function _generateMetadata(TinyBox memory box, string memory slot) internal pure returns (string memory) {
+    function _generateMetadata(TinyBox memory box, bool animate, int256 id, string memory owner) internal view returns (string memory) {
         string memory colors = _generateColorMetadata(box);
         string memory shapes = _generateShapesMetadata(box);
         string memory placement = _generatePlacementMetadata(box);
         string memory mirror = _generateMirrorMetadata(box);
 
-        string memory animation = string(abi.encodePacked('<animation>', uint256(box.animation).toString(), '</animation>'));
+        string memory animation = string(abi.encodePacked(
+            '<animation>',
+                '<animated>',
+                    animate ? 'true' : 'false',
+                '</animated>',
+                '<id>',
+                    uint256(box.animation).toString(),
+                '</id>',
+            '</animation>'
+        ));
 
-        return string(abi.encodePacked('<metadata>', animation, colors, shapes, placement, mirror, slot, '</metadata>'));
+        string memory token = id >= 0 ? string(abi.encodePacked(
+            '<token>',
+                '<id>',
+                    id.toString(),
+                '</id>',
+                '<owner>',
+                    owner,
+                '</owner>',
+                '<contract>',
+                    address(this),
+                '</contract>',
+            '</token>'
+        )) : '';
+
+        string memory renderedAt = string(abi.encodePacked('<renderedAt>',now.toString(),'</renderedAt>')); // TODO: add timestamp here
+
+        return string(abi.encodePacked('<metadata>', token, renderedAt, animation, colors, shapes, placement, mirror, '</metadata>'));
     }
 }
