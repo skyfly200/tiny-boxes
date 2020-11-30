@@ -57,30 +57,6 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     }
 
     /**
-     * @dev return list of animation titles
-     * @return animationTitles list
-     */
-    function animationTitlesList()
-        external
-        view
-        returns (string memory)
-    {
-        return '"Rounding Corners","Grow n Shrink","Squash n Stretch","Skew X","Skew Y","Snap Spin 1","Snap Spin 2","Snap Spin 3","Snap Spin 4","Spread","Spread Over Time","Glide","Uniform Speed Spin","2 Speed Spin","Indexed Spin","Jitter","Giggle","Jolt","Drop"';
-    }
-
-    /**
-     * @dev return list of scheme titles
-     * @return schemeTitles list
-     */
-    function schemeTitlesList()
-        external
-        view
-        returns (string memory)
-    {
-        return '"Complimentary","Analogous","Split Complimentary","Triadic","Complimentary and Analogous","Analogous and Complimentary","Square","Tetradic"';
-    }
-
-    /**
      * @dev Lookup all token data in one call
      * @param _id for which we want token data
      * @return randomness provided by Chainlink VRF

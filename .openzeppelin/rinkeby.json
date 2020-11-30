@@ -16,18 +16,18 @@
       "deployedBytecodeHash": "9879e22385686497758388def3748475b01a45b823c008c18a8a66605d3583a2"
     },
     "TinyBoxesRenderer": {
-      "address": "0x9D755073CbD087dD0451600f219d4f5B3fAc2D55",
-      "constructorCode": "615b4362000027600b82828239805160001a60731461001a57fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "bc8663b1a3d98e75cdb26a5b7d0492490e23b8c6e2c419507ed19529953cb44d",
-      "localBytecodeHash": "0dc5837f4f40cadc5f5b6cda461d92bbba052150b6ce5f9ea58c0255ebfb2a39",
-      "deployedBytecodeHash": "6178b52be02e19e59459808b248cbd4a0f9c2cfda12242ac1e3998f1aa57013e"
+      "address": "0x6D11FF4bB2C457EB8E78eB9A8A18acCA02437029",
+      "constructorCode": "615b4c62000027600b82828239805160001a60731461001a57fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "e2d68613750e0f274239c815449e3d35de36fec80930b68adad7c4e5f50571bb",
+      "localBytecodeHash": "2ce887b9a07145c6885a0c51705ae03e51bc36ff472548972315215c937d80c5",
+      "deployedBytecodeHash": "e3bf39d3d722ae5aef1c998a879b9654df4d0a92c3abc09bd0b9a3fc0711c8fd"
     },
     "Colors": {
-      "address": "0x7946b3B7342f9d23f8f768C77b8D896f20527Ccf",
-      "constructorCode": "610a6c610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "6aba96f74417cfbfd6ee0962b1ff6bf5652bab667c3b8245fab76b2e3a340949",
-      "localBytecodeHash": "fd7684000b19c156f173960afc7d4fb6c0cae483033903641435ca531ba72996",
-      "deployedBytecodeHash": "fd7684000b19c156f173960afc7d4fb6c0cae483033903641435ca531ba72996"
+      "address": "0x5a7b667b03a59A9E455d9EcEFD3677816c2c0F97",
+      "constructorCode": "610a86610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "abf93d26596c7ebdf3f70807b6ac94f3ac73ea3520db93072d997ba70ccd3cad",
+      "localBytecodeHash": "440c2f06b9802851ad5fc376c47568328fd807ef5d098b1a5ae8ee3fcf46307e",
+      "deployedBytecodeHash": "440c2f06b9802851ad5fc376c47568328fd807ef5d098b1a5ae8ee3fcf46307e"
     }
   },
   "proxies": {
@@ -2141,6 +2141,11 @@
         "address": "0x5Ead1475Ca389C0527d2859f027975a73f25D588",
         "kind": "NonProxy",
         "bytecodeHash": "db1fa00fb2768b11936dfa1bff5c961a275eafb18478d48be36021ea0fce04f6"
+      },
+      {
+        "address": "0x9BfCCA2c82933c2e3b468Fd02f526dA92B9feA6D",
+        "kind": "NonProxy",
+        "bytecodeHash": "db82d8314f1ce39c083577b32d7dc9eb6e79b7ad2c004520c8764c87933d3418"
       }
     ]
   },
