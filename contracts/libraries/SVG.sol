@@ -138,48 +138,6 @@ library SVG {
     }
 
     /**
-     * @dev render the header of the SVG markup
-     * @return header string
-     */
-    function _generateMetadata(TinyBox memory box) internal pure returns (string memory) {
-        string memory scheme = string(abi.encodePacked('<scheme>', uint256(box.colorPalette.scheme).toString(), '</scheme>'));
-        string memory rootHue = string(abi.encodePacked('<rootHue>', uint256(box.colorPalette.hue).toString(), '</rootHue>'));
-        string memory saturation = string(abi.encodePacked('<saturation>', uint256(box.colorPalette.saturation).toString(), '</saturation>'));
-        string memory shades = string(abi.encodePacked('<shades>', uint256(box.colorPalette.shades).toString(), '</shades>'));
-        string memory lightness = string(abi.encodePacked('<lightness>', uint256(box.colorPalette.lightnessRange[0]).toString(), '-', uint256(box.colorPalette.lightnessRange[0]).toString(), '</lightness>'));
-
-        string memory palette = string(abi.encodePacked(
-            '<colorPalette>',
-            scheme, rootHue, saturation, shades, lightness,
-            '</colorPalette>'
-        ));
-
-        string memory shapeData = string(abi.encodePacked(
-            '<shapes>', uint256(box.shapes).toString(), '</shapes>',
-            '<hatching>', uint256(box.hatching).toString(), '</hatching>',
-            '<width>', uint256(box.size[0]).toString(), '-', uint256(box.size[1]).toString(), '</width>',
-            '<height>', uint256(box.size[2]).toString(), '-', uint256(box.size[3]).toString(), '</height>'
-        ));
-
-        string memory placement = string(abi.encodePacked(
-            '<rows>', uint256(box.spacing[0]).toString(), '</rows>',
-            '<columns>', uint256(box.spacing[1]).toString(), '</columns>',
-            '<spread>', uint256(box.spacing[2]).toString(), 'x ', uint256(box.spacing[3]).toString(), 'y</spread>'
-        ));
-
-        string memory mirrorPositions = string(abi.encodePacked('<mirrorPositions>', uint256(box.mirrorPositions[0]).toString(), ',', uint256(box.mirrorPositions[1]).toString(), ',', uint256(box.mirrorPositions[2]).toString(), '</mirrorPositions>'));
-        string memory scale = string(abi.encodePacked('<scale>', uint256(box.scale).toString(), '</scale>'));
-
-        string memory dials = string(abi.encodePacked(
-            shapeData, placement, mirrorPositions, scale
-        ));
-
-        string memory animation = string(abi.encodePacked('<animation>', uint256(box.animation).toString(), '</animation>'));
-
-        return string(abi.encodePacked('<metadata>', animation, palette, dials, '</metadata>'));
-    }
-
-    /**
      * @dev render the footer string for mirring effects
      * @param mirrorPositions for generator settings
      * @param scale for each mirroring stage

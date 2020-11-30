@@ -14,6 +14,7 @@ import "./structs/HSL.sol";
 
 import "./libraries/SVGBuffer.sol";
 import "./libraries/SVG.sol";
+import "./libraries/Metadata.sol";
 import "./libraries/Random.sol";
 import "./libraries/Utils.sol";
 import "./libraries/Decimal.sol";
@@ -24,9 +25,10 @@ library TinyBoxesRenderer {
     using Math for uint256;
     using SafeMath for uint256;
     using SignedSafeMath for int256;
-    using StringUtilsLib for *;
     using SVGBuffer for bytes;
     using Random for bytes32[];
+    using Metadata for TinyBox;
+    using StringUtilsLib for *;
     using DecimalUtils for *;
     using Utils for *;
     using Colors for *;
@@ -127,15 +129,14 @@ library TinyBoxesRenderer {
         bytes32[] memory pool = Random.init(box.randomness);
 
         // --- Render SVG Markup ---
-        string memory metadata = SVG._generateMetadata(box);
+        string memory metadata = box._generateMetadata('');
 
         // generate shapes (shapes + animations)
         string memory shapes = "";
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
             Shape memory shape = _generateShape(pool, i, box);
             shapes = string(abi.encodePacked(shapes, 
-                animate ?
-                SVG._rect(shape, SVG._generateAnimation(box, shape, i)) : SVG._rect(shape)
+                animate ? SVG._rect(shape, SVG._generateAnimation(box, shape, i)) : SVG._rect(shape)
             ));
         }
         // wrap shapes in a symbol with the id "shapes"
