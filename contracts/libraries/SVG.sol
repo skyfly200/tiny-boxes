@@ -119,7 +119,7 @@ library SVG {
     }
 
     /**
-     * @dev render an use SVG tag link
+     * @dev render a use SVG tag
      */
     function _use(string memory id) internal pure returns (string memory) {
         return string(abi.encodePacked('<use xlink:href="#', id,'"/>'));
@@ -129,21 +129,12 @@ library SVG {
      * @dev render the header of the SVG markup
      * @return header string
      */
-    function _generateHeader() internal pure returns (string memory) {
+    function _generateSVG(string memory body) internal pure returns (string memory) {
         string memory xmlVersion = '<?xml version="1.0" encoding="UTF-8"?>';
         string memory doctype = '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
-        string memory openingTag = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2400 2400" style="stroke-width:0;background-color:#121212">';
+        string memory openingSVGTag = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2400 2400" style="stroke-width:0;background-color:#121212">';
 
-        return string(abi.encodePacked(xmlVersion, doctype, openingTag));
-    }
-
-    /**
-     * @dev render the header of the SVG markup
-     * @return header string
-     */
-    function _generateBody() internal pure returns (string memory) {
-        string memory symbols = '<symbol id="quad3"><symbol id="quad2"><symbol id="quad1"><symbol id="quad0">';
-        return symbols;
+        return string(abi.encodePacked(xmlVersion, doctype, openingSVGTag, body, '</svg>'));
     }
 
     /**

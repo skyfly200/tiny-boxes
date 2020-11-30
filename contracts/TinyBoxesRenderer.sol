@@ -129,7 +129,6 @@ library TinyBoxesRenderer {
         HSL[] memory colors = Colors.generateColors(box.colorPalette);
 
         // --- Render SVG Markup ---
-        string memory header = SVG._generateHeader();
         string memory metadata = SVG._generateMetadata(box);
 
         // generate shapes (+ animations)
@@ -149,52 +148,8 @@ library TinyBoxesRenderer {
             int256(box.scale).toDecimal(2)
         );
 
-        return string(abi.encodePacked(header, metadata, defs, mirroring, '</svg>'));
-    }
+        string memory svg = SVG._generateSVG(string(abi.encodePacked(metadata, defs, mirroring)));
 
-    /**
-     * @dev render a token's art
-     * @param box TinyBox data structure
-     * @return markup of the SVG graphics of the token
-     */
-    function perpetualRendererOld(TinyBox memory box, bool animate)
-        public
-        view
-        returns (bytes memory)
-    {
-        // --- Calculate Generative Shape Data ---
-        bytes32[] memory pool = Random.init(box.randomness);
-        HSL[] memory colors = Colors.generateColors(box.colorPalette);
-
-        // --- Render SVG Markup ---
-        // TODO - switch up to use abi.encodePacked(arg);
-        bytes memory buffer = new bytes(100000);
-        buffer.append(SVG._generateHeader());
-        // TODO - pass slot in here with shapes, change footer to mirroring and add generateSVG
-        buffer.append(SVG._generateMetadata(box));
-        buffer.append(SVG._generateBody());
-
-        // write shapes to the SVG
-        for (uint256 i = 0; i < uint256(box.shapes); i++) {
-            Shape memory shape = _generateShape(pool, i, box, colors);
-            if (animate) {
-                string memory animation = SVG._generateAnimation(box, shape, i);
-                buffer.append(SVG._rect(shape, animation));
-            } else
-                buffer.append(SVG._rect(shape));
-        }
-
-        // write the footer to the SVG
-        buffer.append(
-            SVG._generateFooter(
-                box.mirrorPositions,
-                int256(box.scale).toDecimal(2)
-            )
-        );
-
-        // close the svg tag
-        buffer.append("</svg>");
-
-        return buffer;
+        return svg;
     }
 }
