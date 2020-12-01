@@ -171,14 +171,16 @@ exports.handler = async (event, context) => {
       "Drop"
     ];
     const schemeTitles = [
-      "complimentary",
-      "analogous",
-      "split complimentary",
-      "triadic",
-      "complimentary and analogous",
-      "analogous and complimentary",
-      "square",
-      "tetradic"
+      "Mono",
+      "Complimentary",
+      "Analogous",
+      "Series",
+      "Split Complimentary",
+      "Triadic",
+      "Complimentary and Analogous",
+      "Analogous and Complimentary",
+      "Square",
+      "Tetradic"
     ];
     const metadata = {
       name: 'TinyBox #' + id,
