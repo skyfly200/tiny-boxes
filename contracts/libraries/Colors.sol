@@ -27,8 +27,7 @@ library Colors {
     }
     
     function lookupHue(
-        uint16 base,
-        uint8 scheme,
+        Palette memory pal,
         uint8 index
     ) public pure returns (uint16 hue) {
         uint16[3][8] memory schemes = [
@@ -42,19 +41,19 @@ library Colors {
             [uint16(60), uint16(180), uint16(240)] // tetradic
         ];
 
-        require(scheme < schemes.length, "Invalid scheme id");
+        require(pal.scheme < schemes.length, "Invalid scheme id");
         require(index < 4, "Invalid color index");
 
-        if (index == 0) hue = base;
-        else hue = uint16(uint256(base).add(schemes[scheme][index-1]));
+        if (index == 0) hue = pal.base;
+        else hue = uint16(uint256(pal.base).add(schemes[pal.scheme][index-1]));
     }
 
     function lookupColor(
         Palette memory pal,
-        uint8 colorIndex,
+        uint8 hueIndex,
         uint8 shade
     ) public pure returns (HSL memory) {
-        uint16 h = lookupHue(pal.hue, pal.scheme, colorIndex);
+        uint16 h = lookupHue(pal, hueIndex);
         uint8 s = pal.saturation;
         uint8 l;
         if (pal.shades > 0) {
