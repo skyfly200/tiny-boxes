@@ -49,7 +49,7 @@
           v-card(max-height="90vh").token-preview
             v-card-title.token-stats
               v-skeleton-loader(v-if="id === null" type="card-heading" width="20vw")
-              h1(v-else) Token {{ "#" + id }}
+              h1(v-else) Design TinyBox {{ "#" + id }}
             v-divider
             v-card-text.token-graphic
               v-fade-transition(mode="out-in")
