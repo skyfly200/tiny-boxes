@@ -54,7 +54,11 @@
                 h2(align="center") Advanced
                 .advanced 
                   p Animation: {{ "#" + data.tokenData.animation }} - {{ animationTitles[data.tokenData.animation] }}
-                  p Randomness: {{ randomness }}
+                  p Randomness:
+                  .randomness 
+                    template(v-for="chunk in randomness.match(/.{1,16}/g)")
+                      span {{ chunk }}
+                      br
                 h2(align="center") Minting Info
                 .minting-stats
                   p {{ (new Date(data.block.timestamp)).toLocaleTimeString() }}
