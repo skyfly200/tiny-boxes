@@ -30,9 +30,11 @@ library Colors {
         Palette memory pal,
         uint8 index
     ) public pure returns (uint16 hue) {
-        uint16[3][8] memory schemes = [
+        uint16[3][10] memory schemes = [
+            [uint16(0), uint16(0), uint16(0)], // mono
             [uint16(180), uint16(180), uint16(0)], // complimentary
             [uint16(30), uint16(330), uint16(0)], // analogous
+            [uint16(30), uint16(60), uint16(90)], // series
             [uint16(150), uint16(210), uint16(0)], // split complimentary
             [uint16(120), uint16(240), uint16(0)], // triadic
             [uint16(150), uint16(180), uint16(210)], // complimentary and analogous

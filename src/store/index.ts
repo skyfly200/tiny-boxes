@@ -1261,8 +1261,10 @@ const store = new Vuex.Store({
       "Drop"
     ],
     schemeTitles: [
+      "mono",
       "complimentary",
       "analogous",
+      "series",
       "split complimentary",
       "triadic",
       "complimentary and analogous",
