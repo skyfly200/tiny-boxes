@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import { tinyboxesAddress } from "../tinyboxes-contract";
 import { mapGetters } from "vuex";
 import Token from "@/components/Token.vue";
 
@@ -127,7 +126,7 @@ export default {
     listenForTokens: function() {
       const tokenSubscription = this.$store.state.web3.eth
         .subscribe("logs", {
-          address: tinyboxesAddress,
+          address: this.$store.state.tinyboxesAddress,
           topics: [
             "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
             "0x0000000000000000000000000000000000000000000000000000000000000000",

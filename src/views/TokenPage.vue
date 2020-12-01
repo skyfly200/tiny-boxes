@@ -76,9 +76,6 @@ import Vue from "vue";
 import { mapGetters, mapState } from "vuex";
 import Token from "@/components/Token.vue";
 import { log } from 'util';
-//import { tinyboxesAddress } from "../tinyboxes-contract";
-
-const tinyboxesAddress = '0xC0A5053B5CFE250954e606b53b7ccD04Da9A4ceE'
 
 export default Vue.extend({
   name: "TokenPage",
@@ -141,7 +138,7 @@ export default Vue.extend({
       return new Promise((resolve, reject) => {
         this.$store.state.web3.eth
           .subscribe("logs", {
-            address: tinyboxesAddress,
+            address: this.$store.state.tinyboxesAddress,
             fromBlock: 0,
             topics: [
               "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",

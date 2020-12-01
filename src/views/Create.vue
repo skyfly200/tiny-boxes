@@ -111,11 +111,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { mapGetters, mapState } from "vuex";
-//import { tinyboxesAddress } from "../tinyboxes-contract";
 import { sections } from "./create-form";
 import Token from "@/components/Token.vue";
-
-const tinyboxesAddress = '0xC0A5053B5CFE250954e606b53b7ccD04Da9A4ceE'
 
 export default Vue.extend({
   name: "Create",
@@ -333,7 +330,7 @@ export default Vue.extend({
       t.$store.state.web3.eth.sendTransaction(
         {
           from: this.currentAccount,
-          to: tinyboxesAddress,
+          to: this.$store.state.tinyboxesAddress,
           value: t.price,
           data: this.$store.state.contracts.tinyboxes.methods
             .buy(v.seed.toString(), shapes, palette, dials)
@@ -349,7 +346,7 @@ export default Vue.extend({
     listenForMyTokens: function() {
       this.$store.state.web3.eth
         .subscribe("logs", {
-          address: tinyboxesAddress,
+          address: this.$store.state.tinyboxesAddress,
           topics: [
             "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
             "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -368,7 +365,7 @@ export default Vue.extend({
     listenForTokens: function() {
       this.$store.state.web3.eth
         .subscribe("logs", {
-          address: tinyboxesAddress,
+          address: this.$store.state.tinyboxesAddress,
           topics: [
             "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
             "0x0000000000000000000000000000000000000000000000000000000000000000",
