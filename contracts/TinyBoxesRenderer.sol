@@ -50,7 +50,7 @@ library TinyBoxesRenderer {
         bytes32[] memory pool,
         uint16[4] memory spacing,
         uint16[4] memory size,
-        bool hatch
+        bool hatched
     )
         internal
         pure
@@ -64,10 +64,8 @@ library TinyBoxesRenderer {
                 ((pool.uniform(0, int256(spacing[3]).sub(1)).mul(800)).div(
                     int256(spacing[3])))
         ];
-        if (hatch) {
+        if (hatched) {
             int256 horizontal = pool.uniform(0, 1);
-            // 		size[0] = uint(pool.uniform(dials[4], dials[5])) + horizontal * uint(dials[6]);
-            //      size[1] = uint(dials[6]) + uint(dials[5])  - size[0] + uint256(pool.uniform(dials[7], dials[4]));
             int256 width = pool.uniform(25, 40).add(int256(700).mul(horizontal));
             dimensions = [
                 width,

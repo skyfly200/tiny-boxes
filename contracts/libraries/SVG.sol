@@ -285,42 +285,42 @@ library SVG {
                 "0 ; 50 ; 0"
             );
         } else if (animation == 5) {
-            // snap spin
+            // snap spin 1
             return _animateTransform(
                 "transform",
                 "rotate",
                 "10s",
-                "0 200 200 ; 90 200 200 ; 90 200 200 ; 360 200 200 ; 360 200 200",
+                "0 600 600 ; 90 600 600 ; 90 600 600 ; 360 600 600 ; 360 600 600",
                 "0 ; 0.2 ; 0.4 ; 0.9 ; 1",
                 "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1"
             );
         } else if (animation == 6) {
-            // snap spin
+            // snap spin 2
             return _animateTransform(
                 "transform",
                 "rotate",
                 "10s",
-                "0 200 200 ; 180 200 200 ; 180 200 200 ; 360 200 200 ; 360 200 200",
+                "0 600 600 ; 180 600 600 ; 180 600 600 ; 360 600 600 ; 360 600 600",
                 "0 ; 0.4 ; 0.6 ; 0.9 ; 1",
                 "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1"
             );
         } else if (animation == 7) {
-            // snap spin
+            // snap spin 3
             return _animateTransform(
                 "transform",
                 "rotate",
                 "10s",
-                "0 200 200 ; 270 200 200 ; 270 200 200 ; 360 200 200 ; 360 200 200",
+                "0 600 600 ; 270 600 600 ; 270 600 600 ; 360 600 600 ; 360 600 600",
                 "0 ; 0.6 ; 0.8 ; 0.9 ; 1",
                 "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1"
             );
         } else if (animation == 8) {
-            // snap spin
+            // snap spin 4
             return _animateTransform(
                 "transform",
                 "rotate",
                 "10s",
-                "0 200 200 ; 90 200 200 ; 90 200 200 ; 180 200 200 ; 180 200 200 ; 270 200 200 ; 270 200 200 ; 360 200 200 ; 360 200 200",
+                "0 600 600 ; 90 600 600 ; 90 600 600 ; 180 600 600 ; 180 600 600 ; 270 600 600 ; 270 600 600 ; 360 600 600 ; 360 600 600",
                 "0 ; 0.125 ; 0.25 ; 0.375 ; 0.5 ; 0.625 ; 0.8 ; 0.925 ; 1",
                 "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1"
             );
@@ -328,13 +328,13 @@ library SVG {
             // spread
             uint256 spread = uint256(300).div(uint256(box.shapes));
             string memory angle = shapeIndex.add(1).mul(spread).toString();
-            string memory values = string(abi.encodePacked("0 200 200 ; ",  angle, " 200 200 ; ",  angle, " 200 200 ; 360 200 200 ; 360 200 200"));
+            string memory values = string(abi.encodePacked("0 600 600 ; ",  angle, " 600 600 ; ",  angle, " 600 600 ; 360 600 600 ; 360 600 600"));
             return _animateTransform( "transform", "rotate", "10s", values, "0;0.5;0.6;0.9;1", "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1" );
         } else if (animation == 10) {
             // spread w time
             uint256 spread = uint256(300).div(uint256(box.shapes));
             string memory angle = shapeIndex.add(1).mul(spread).toString();
-            string memory values = string(abi.encodePacked("0 200 200 ; ",  angle, " 200 200 ; ",  angle, " 200 200 ; 360 200 200"));
+            string memory values = string(abi.encodePacked("0 600 600 ; ",  angle, " 600 600 ; ",  angle, " 600 600 ; 360 600 600"));
             uint256 timeShift = uint256(100).add(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
             string memory times = string(abi.encodePacked("0;0.", timeShift.toString(), ";0.9;1"));
             return _animateTransform( "transform", "rotate", "10s", values, times, "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 " );
@@ -354,7 +354,7 @@ library SVG {
                 "transform",
                 "rotate",
                 "10s",
-                "0 60 70 ; 360 60 70",
+                "0 600 600 ; 360 600 600",
                 "0 ; 1"
             );
         } else if (animation == 13) {
@@ -363,7 +363,7 @@ library SVG {
                 "transform",
                 "rotate",
                 "10s",
-                "0 60 70 ; 90 60 70 ; 270 60 70 ; 360 60 70",
+                "0 600 600 ; 90 600 600 ; 270 600 600 ; 360 600 600",
                 "0 ; 0.1 ; 0.9 ; 1"
             );
         } else if (animation == 14) {
@@ -372,7 +372,7 @@ library SVG {
                 "transform",
                 "rotate",
                 string(abi.encodePacked(uint256((10000 / box.shapes) * (shapeIndex + 1) ).toString(),"ms")),
-                "0 60 70 ; 360 60 70",
+                "0 600 600 ; 360 600 600",
                 "0;1"
             );
         } else if (animation == 15) {
