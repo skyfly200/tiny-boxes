@@ -337,6 +337,19 @@ const tinyboxesABI = [
     },
     {
       "inputs": [],
+      "name": "SCHEME_COUNT",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "TOKEN_LIMIT",
       "outputs": [
         {
