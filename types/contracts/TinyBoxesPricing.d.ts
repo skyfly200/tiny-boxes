@@ -41,8 +41,6 @@ export class TinyBoxesPricing extends Contract {
 
     TREASURER_ROLE(): TransactionObject<string>;
 
-    animationTitlesList(): TransactionObject<string>;
-
     approve(to: string, tokenId: number | string): TransactionObject<void>;
 
     balanceOf(owner: string): TransactionObject<string>;
@@ -106,8 +104,6 @@ export class TinyBoxesPricing extends Contract {
       to: string,
       tokenId: number | string
     ): TransactionObject<void>;
-
-    schemeTitlesList(): TransactionObject<string>;
 
     setApprovalForAll(
       operator: string,

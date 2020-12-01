@@ -129,14 +129,17 @@ library Metadata {
                 '<owner>',
                     owner,
                 '</owner>',
-                '<contract>',
-                    address(this),
-                '</contract>',
             '</token>'
         )) : '';
 
+        string memory contractAddress = string(abi.encodePacked(
+            '<contract>',
+                address(this),
+            '</contract>'
+        ));
+
         string memory renderedAt = string(abi.encodePacked('<renderedAt>',now.toString(),'</renderedAt>')); // TODO: add timestamp here
 
-        return string(abi.encodePacked('<metadata>', token, renderedAt, animation, colors, shapes, placement, mirror, '</metadata>'));
+        return string(abi.encodePacked('<metadata>', contractAddress, renderedAt, token, animation, colors, shapes, placement, mirror, '</metadata>'));
     }
 }
