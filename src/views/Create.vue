@@ -291,6 +291,7 @@ export default Vue.extend({
               resolve(result);
             })
             .catch((err: any) => {
+              console.log('Error Prone Inputs: ', v.seed.toString(), v.shapes, palette, dials, v.animation, v.animate);
               console.error(err);
               reject(err);
             });
