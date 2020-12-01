@@ -29,7 +29,7 @@ export class Colors extends Contract {
         scheme: number | string;
         shades: number | string;
       },
-      colorIndex: number | string,
+      hueIndex: number | string,
       shade: number | string
     ): TransactionObject<{
       hue: string;
@@ -38,8 +38,13 @@ export class Colors extends Contract {
     }>;
 
     lookupHue(
-      base: number | string,
-      scheme: number | string,
+      pal: {
+        hue: number | string;
+        saturation: number | string;
+        lightnessRange: (number | string)[];
+        scheme: number | string;
+        shades: number | string;
+      },
       index: number | string
     ): TransactionObject<string>;
 

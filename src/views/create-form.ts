@@ -95,6 +95,15 @@ export const sections: Array<object> = [
     rand: true,
     options: [
       {
+        label: "Scheme",
+        key: "scheme",
+        type: "slider",
+        range: {
+          min: 0,
+          max: 9,
+        },
+      },
+      {
         label: "Root Hue",
         key: "hue",
         type: "slider",
@@ -128,15 +137,6 @@ export const sections: Array<object> = [
         range: {
           min: 0,
           max: 8,
-        },
-      },
-      {
-        label: "Scheme",
-        key: "scheme",
-        type: "slider",
-        range: {
-          min: 0,
-          max: 7,
         },
       },
     ],
