@@ -129,7 +129,7 @@ library Metadata {
      * @dev render the header of the SVG markup
      * @return header string
      */
-    function _generateMetadata(TinyBox memory box, bool animate, int256 id, string memory owner) internal view returns (string memory) {
+    function _generateMetadata(TinyBox memory box, bool animate, int256 id, address owner) internal view returns (string memory) {
         string memory colors = _generateColorMetadata(box);
         string memory shapes = _generateShapesMetadata(box);
         string memory placement = _generatePlacementMetadata(box);
@@ -152,7 +152,7 @@ library Metadata {
                     id.toString(),
                 '</id>',
                 '<owner>',
-                    owner,
+                    toString(owner),
                 '</owner>',
             '</token>'
         )) : '';

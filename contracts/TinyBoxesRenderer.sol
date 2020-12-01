@@ -118,7 +118,7 @@ library TinyBoxesRenderer {
      * @param id of the token rendered
      * @return markup of the SVG graphics of the token as a string
      */
-    function perpetualRenderer(TinyBox memory box, bool animate, int256 id, string memory owner)
+    function perpetualRenderer(TinyBox memory box, bool animate, int256 id, address owner)
         public
         view
         returns (string memory)

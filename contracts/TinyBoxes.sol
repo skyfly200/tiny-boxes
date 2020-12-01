@@ -68,7 +68,7 @@ contract TinyBoxes is TinyBoxesStore {
             mirrorPositions: [dials[9], dials[10], dials[11]],
             scale: uint16(dials[12])
         });
-        return box.perpetualRenderer(animate, int256(-1), '');
+        return box.perpetualRenderer(animate, int256(-1), address(0));
     }
 
     /**
@@ -82,7 +82,6 @@ contract TinyBoxes is TinyBoxesStore {
         returns (string memory)
     {
         TinyBox memory box = boxes[_id];
-        string memory owner = string(abi.encodePacked(ownerOf(_id)));
-        return box.perpetualRenderer(animate, int256(_id), owner);
+        return box.perpetualRenderer(animate, int256(_id), ownerOf(_id));
     }
 }
