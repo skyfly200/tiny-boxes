@@ -309,6 +309,7 @@ library SVG {
             return _animateTransform(
                 "transform",
                 "rotate",
+                "10s",
                 "0 200 200 ; 270 200 200 ; 270 200 200 ; 360 200 200 ; 360 200 200",
                 "0 ; 0.6 ; 0.8 ; 0.9 ; 1",
                 "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1"
@@ -318,6 +319,7 @@ library SVG {
             return _animateTransform(
                 "transform",
                 "rotate",
+                "10s",
                 "0 200 200 ; 90 200 200 ; 90 200 200 ; 180 200 200 ; 180 200 200 ; 270 200 200 ; 270 200 200 ; 360 200 200 ; 360 200 200",
                 "0 ; 0.125 ; 0.25 ; 0.375 ; 0.5 ; 0.625 ; 0.8 ; 0.925 ; 1",
                 "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1"
@@ -366,11 +368,10 @@ library SVG {
             );
         } else if (animation == 14) {
             // indexed speed
-            // TODO - to fast
             return _animateTransform(
                 "transform",
                 "rotate",
-                string(abi.encodePacked(uint256(10000).div(shapeIndex + 1).toString(),"ms")),
+                string(abi.encodePacked(uint256((10000 / box.shapes) * (shapeIndex + 1) ).toString(),"ms")),
                 "0 60 70 ; 360 60 70",
                 "0;1"
             );
