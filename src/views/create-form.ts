@@ -14,7 +14,7 @@ export const sections: Array<object> = [
       },
       {
         label: "Hatching Mod",
-        key: "hatchMod",
+        key: "hatching",
         type: "slider",
         range: {
           min: 0,
