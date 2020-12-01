@@ -1272,7 +1272,7 @@ const store = new Vuex.Store({
       "Square",
       "Tetradic"
     ],
-    tinyboxesAddress: '0xaB6E71CD0328d4Fcc54d2f04c2D12012E50eFcE2',
+    tinyboxesAddress: '0x19ad15f13136AEc9f361075417Cb634aeDA085E1',
     currentAccount: "",
     web3Status: "loading",
     web3: null,
