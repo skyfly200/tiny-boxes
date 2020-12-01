@@ -43,7 +43,7 @@ library TinyBoxesRenderer {
      * @param pool randomn numbers pool
      * @param spacing for shapes
      * @param size of shapes
-     * @param hatch mode on
+     * @param hatched mode bool switch
      * @return positions of shape
      */
     function _generateBox(

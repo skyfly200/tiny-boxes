@@ -22,7 +22,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     uint256 public constant ARTIST_PRINTS = 0; // TODO: set to 2 before launch
     uint256 public constant BETA_SALE = 100; // TODO: take this into account with the paymentManager
     uint256 public constant ANIMATION_COUNT = 19;
-    uint256 public constant SCHEME_COUNT = 8;
+    uint256 public constant SCHEME_COUNT = 10;
     address payable constant artmuseum = 0x027Fb48bC4e3999DCF88690aEbEBCC3D1748A0Eb; //lolz
 
     // mapping to store all the boxes in
