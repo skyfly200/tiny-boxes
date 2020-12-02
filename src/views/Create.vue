@@ -13,7 +13,7 @@
                       h3 Mint Token {{ "#" + id }} for {{ priceInETH }} 
                         v-icon mdi-ethereum
                 .dialog-confirm(v-if="overlay === 'confirm'" key="confirm")
-                  v-card-title Awating TX Confirmations
+                  v-card-title Awaiting TX Confirmations
                   v-card-text
                     .message
                       h3 {{ confirmations }} Confirmations
