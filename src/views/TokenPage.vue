@@ -24,12 +24,14 @@
         v-col(cols="12" md="6" lg="5")
           v-card.token-properties
             v-card-title(align="center")
-              h2 Stats
+              h2 Token Stats
             v-card-text
               .stats
                 h2(align="center") Shapes
                 .shapes
-                  p {{ data.tokenData.shapes }} Shapes
+                  v-sheet(elevation="4" color="#a7a" width="30" height="30")
+                    span {{ data.tokenData.shapes }}
+                  span Shapes
                   p Hatching Mod: {{ data.tokenData.hatching }}
                   p Width: {{ data.tokenData.size[0] }} to {{ data.tokenData.size[1] }}
                   p Height: {{ data.tokenData.size[2] }} to {{ data.tokenData.size[3] }}
@@ -40,6 +42,9 @@
                   p {{ data.tokenData.spacing[3] }} Columns
                 h2(align="center") Colors
                 .colors
+                  svg(width="6em" height="3em")
+                    rect(:style="'fill: hsl('+data.tokenData.palette[0]+','+data.tokenData.palette[1]+'%,'+data.tokenData.palette[2]+'%)'" width="3em" height="3em")
+                    rect(x="3em" :style="'fill: hsl('+data.tokenData.palette[0]+','+data.tokenData.palette[1]+'%,'+data.tokenData.palette[3]+'%)'" width="3em" height="3em")
                   p Root Hue: {{ data.tokenData.palette[0] }}
                   p Scheme: {{ "#" + data.tokenData.palette[4] }} - {{ schemeTitles[data.tokenData.palette[4]] }}
                   p Saturation: {{ data.tokenData.palette[1] }}
