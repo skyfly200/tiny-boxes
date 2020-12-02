@@ -128,7 +128,7 @@
                 h2 Animation
                 .advanced
                   .animation.stat
-                    span.stat-value {{ "#" + data.tokenData.animation }}
+                    span.stat-value {{ data.tokenData.animation }}
                     .stat-title ID
                   .animation-title.stat
                     span.stat-value {{ animationTitles[data.tokenData.animation] }}
