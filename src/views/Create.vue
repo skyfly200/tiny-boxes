@@ -354,16 +354,18 @@ export default Vue.extend({
     },
     async checkConfirmations(txHash: string) {
       const t = this as any;
-      const confirm = await t.getConfirmations(txHash);
-      t.confirmations = confirm;
-      console.log("Confirmations: ",confirm);
-      if (confirm >= t.confirmationsRequired) t.overlay = "wait";
+      t.confirmations = await t.getConfirmations(txHash);
+      if (t.confirmations >= t.confirmationsRequired) {
+        if (t.overlay === 'ready') return;
+        t.overlay = "wait";
+      }
       else setTimeout(t.checkConfirmations(txHash), 5000);
     },
     async getConfirmations(txHash: string) {
       try {
         // Get transaction details
         const trx = await this.$store.state.web3.eth.getTransaction(txHash)
+        console.log(trx)
         // When transaction is unconfirmed, its block number is null
         return trx.blockNumber === null ? 0 : (await this.$store.state.web3.eth.getBlockNumber()) - trx.blockNumber
       }
@@ -372,7 +374,6 @@ export default Vue.extend({
       }
     },
     listenForMyTokens: function() {
-      // TODO: add step to change loader on VRF request
       this.$store.state.web3.eth
         .subscribe("logs", {
           address: this.$store.state.tinyboxesAddress,
@@ -413,7 +414,7 @@ export default Vue.extend({
       data: null as object | null,
       price: "",
       confirmations: 0,
-      confirmationsRequired: 3,
+      confirmationsRequired: 2,
       limit: null as number | null,
       form: {
         section: 0,
