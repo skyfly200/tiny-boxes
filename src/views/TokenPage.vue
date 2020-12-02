@@ -21,25 +21,67 @@
               v-spacer
               a(href="https://opensea.io/" title="View on OpenSea" target="_blank")
                 img(style="width:160px; border-radius:0px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);" src="https://storage.googleapis.com/opensea-static/opensea-brand/listed-button-blue.png" alt="Listed on OpenSea badge")
+            v-card-text 
+              h2 Minting Info
+              .minting-stats
+                .timestamp.stat
+                  .stat-value
+                    span.timestamp-time {{ (new Date(data.block.timestamp)).toLocaleTimeString() }}
+                    span.timestamp-date {{ (new Date(data.block.timestamp)).toLocaleDateString() }}
+                  .stat-title Minted Timestamp
+                .price.stat
+                  .stat-value
+                    v-icon mdi-ethereum
+                    span {{ priceInETH }}
+                  .stat-title Minted Price
+                .tx-hash.stat
+                  .stat-value
+                    v-tooltip(top)
+                      template(v-slot:activator='{ on }')
+                        a(v-on='on' :href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash") {{ formatHash(data.creation.transactionHash) }}
+                          v-icon mdi-arrow-top-right
+                      span View on Etherscan
+                  .stat-title TX Hash
+              .randomness.stat
+                  .stat-value
+                    .randomness-chunks
+                      template(v-for="chunk in randomness.match(/.{1,16}/g)")
+                        span.randomness-chunk {{ chunk }}
+                  .stat-title Randomness
         v-col(cols="12" md="6" lg="5")
-          v-card.token-properties
+          v-card
             v-card-title(align="center")
               h2 Token Stats
             v-card-text
               .stats
                 h2 Shapes
                 .shapes
-                  v-sheet(align="center" elevation="4" color="#a7a" width="30" height="30")
-                    span {{ data.tokenData.shapes }}
-                  span Shapes
-                  p Hatching Mod: {{ data.tokenData.hatching }}
-                  p Width: {{ data.tokenData.size[0] }} to {{ data.tokenData.size[1] }}
-                  p Height: {{ data.tokenData.size[2] }} to {{ data.tokenData.size[3] }}
+                  .shapeCount.stat
+                    span.stat-value {{ data.tokenData.shapes }}
+                    .stat-title Shapes
+                  .hatching.stat
+                    span.stat-value {{ data.tokenData.hatching }}
+                    .stat-title Hatching Mod
+                  .width.stat
+                    span.stat-value {{ data.tokenData.size[0] + '-' + data.tokenData.size[1] }}
+                    .stat-title Width
+                  .height.stat
+                    span.stat-value {{ data.tokenData.size[2] + '-' + data.tokenData.size[3] }}
+                    .stat-title Height
                 h2 Placement
                 .position
-                  p Spread: {{ data.tokenData.spacing[0] }} X {{ data.tokenData.spacing[1] }} Y
-                  p {{ data.tokenData.spacing[2] }} Rows
-                  p {{ data.tokenData.spacing[3] }} Columns
+                  .spread-x.stat
+                    span.stat-value {{ data.tokenData.spacing[0] }}
+                    .stat-title Spread X
+                  .spread-y.stat
+                    span.stat-value {{ data.tokenData.spacing[1] }}
+                    .stat-title Spread Y
+                  .rows.stat
+                    span.stat-value {{ data.tokenData.spacing[2] }}
+                    .stat-title Rows
+                  .columns.stat
+                    span.stat-value {{ data.tokenData.spacing[3] }}
+                    .stat-title Columns
                 h2 Colors
                 .colors
                   .colors-grid
@@ -48,43 +90,43 @@
                         rect(v-for="s in parseInt(data.tokenData.palette[5])+1" :x="3*(s-1)+'em'" :y="3*i+'em'" width="3em" height="3em"
                           :style="'fill: hsl('+(parseInt(data.tokenData.palette[0])+h)+','+data.tokenData.palette[1]+'%,'+calcShade(s-1)+'%)'")
                   .colors-info
-                    p Root Hue: {{ data.tokenData.palette[0] }}
-                    p Scheme: {{ "#" + data.tokenData.palette[4] }} - {{ schemeTitles[data.tokenData.palette[4]] }}
-                    p Saturation: {{ data.tokenData.palette[1] }}
-                    p Lightness: {{ data.tokenData.palette[2] }} - {{data.tokenData.palette[3]}}
-                    p Shades: {{ data.tokenData.palette[5] }}
+                    .scheme.stat
+                      span.stat-value {{ "#" + data.tokenData.palette[4] + '-' + schemeTitles[data.tokenData.palette[4]] }}
+                      .stat-title Scheme
+                    .hue.stat
+                      span.stat-value {{ data.tokenData.palette[0] + '°' }} 
+                      .stat-title Root Hue
+                    .saturation.stat
+                      span.stat-value {{ data.tokenData.palette[1] + '%' }}
+                      .stat-title Saturation
+                    .lightness.stat
+                      span.stat-value {{ data.tokenData.palette[2] + '-' + data.tokenData.palette[3] + '%' }}
+                      .stat-title Lightness
+                    .shades.stat
+                      span.stat-value {{ data.tokenData.palette[5] }}
+                      .stat-title Shades
                 h2 Mirroring
                 .mirroring
-                  p {{ data.tokenData.mirrorPositions[0] }}
-                  p {{ data.tokenData.mirrorPositions[1] }}
-                  p {{ data.tokenData.mirrorPositions[2] }}
-                  p {{ data.tokenData.scale + "%" }} Scale
-                h2 Advanced
-                .advanced 
-                  .animation
-                    p Animation:
-                    p {{ "#" + data.tokenData.animation }} 
-                    p {{ animationTitles[data.tokenData.animation] }}
-                  .randomness 
-                    p Randomness:
-                    .randomness-chunks
-                      template(v-for="chunk in randomness.match(/.{1,16}/g)")
-                        span {{ chunk }}
-                        br
-                h2 Minting Info
-                .minting-stats
-                  p {{ (new Date(data.block.timestamp)).toLocaleTimeString() }}
-                  p {{ (new Date(data.block.timestamp)).toLocaleDateString() }}
-                  p Block # {{ data.creation.blockNumber }}
-                  p {{ priceInETH }} 
-                    v-icon mdi-ethereum
-                  p TX Hash
-                    a(:href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash") {{ formatHash(data.creation.transactionHash) }}
-                  v-tooltip(top)
-                    template(v-slot:activator='{ on }')
-                      v-btn(v-on='on' text :href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash")
-                        v-icon mdi-arrow-top-right
-                    span View on Etherscan
+                  .mirror-a.stat
+                    span.stat-value {{ data.tokenData.mirrorPositions[0] }}
+                    .stat-title A
+                  .mirror-b.stat
+                    span.stat-value {{ data.tokenData.mirrorPositions[1] }}
+                    .stat-title B
+                  .mirror-c.stat
+                    span.stat-value {{ data.tokenData.mirrorPositions[2] }}
+                    .stat-title C
+                  .scale.stat
+                    span.stat-value {{ data.tokenData.scale + "%" }}
+                    .stat-title Scale
+                h2 Animation
+                .advanced
+                  .animation.stat
+                    span.stat-value {{ "#" + data.tokenData.animation }}
+                    .stat-title Animation
+                  .animation-title.stat
+                    span.stat-value {{ animationTitles[data.tokenData.animation] }}
+                    .stat-title Animation Title
 </template>
 
 <script lang="ts">
@@ -209,17 +251,41 @@ export default Vue.extend({
   padding-top: 40vh
 .on
   border-style: inset
-.token-properties
-  padding: 1rem
 .token-stats
   padding: 1rem
   display: flex
   flex-direction: row,
   justify-content: space-between
+.stat
+  text-align: -webkit-center
+  margin-top: 1rem
+.stat-value
+  font-weight: 200
+  font-size: 2rem
+  padding: 0.5rem 1rem
+  border: 1px solid #ccc
+  border-radius: 0.5rem
+.stat-title
+  margin: 1rem 0
 .v-card
   margin: 1rem
+.timestamp-date
+  margin: 1rem
+.timestamp-time
+  width: max-content
+.randomness-chunks, .timestamp .stat-value
+  display: flex
+  flex-wrap: wrap
+  justify-content: center
+  width: min-content
+  span
+    margin: 0.3rem
 .colors-grid svg g
   width: 100%
+.colors-info
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-around
 .shapes, .position, .mirroring, .advanced, .minting-stats, .colors
   display: flex
   flex-wrap: wrap
