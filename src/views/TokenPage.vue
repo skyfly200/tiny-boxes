@@ -122,13 +122,13 @@ export default Vue.extend({
             [0], // mono
             [0, 180], // complimentary
             [0, 30, 330], // analogous
-            [30, 60, 90], // series
+            [0, 30, 60, 90], // series
             [0, 150, 210], // split complimentary
             [0, 120, 240], // triadic
-            [150, 180, 210], // complimentary and analogous
-            [30, 180, 330], // analogous and complimentary
-            [90, 180, 270], // square
-            [60, 180, 240] // tetradic
+            [0, 150, 180, 210], // complimentary and analogous
+            [0, 30, 180, 330], // analogous and complimentary
+            [0, 90, 180, 270], // square
+            [0, 60, 180, 240] // tetradic
         ];
       return schemes[i];
     },
