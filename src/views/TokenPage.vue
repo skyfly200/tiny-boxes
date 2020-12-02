@@ -42,9 +42,10 @@
                   p {{ data.tokenData.spacing[3] }} Columns
                 h2(align="center") Colors
                 .colors
-                  svg(width="6em" height="3em")
-                    rect(:style="'fill: hsl('+data.tokenData.palette[0]+','+data.tokenData.palette[1]+'%,'+data.tokenData.palette[2]+'%)'" width="3em" height="3em")
-                    rect(x="3em" :style="'fill: hsl('+data.tokenData.palette[0]+','+data.tokenData.palette[1]+'%,'+data.tokenData.palette[3]+'%)'" width="3em" height="3em")
+                  svg(:width="(3*(data.tokenData.palette[5]+1)) + 'em'" :height="(3*(scheme(data.tokenData.palette[4]).length)) + 'em'")
+                    g(v-for="h,i of scheme(data.tokenData.palette[4])")
+                      rect(v-for="s in parseInt(data.tokenData.palette[5])+1" :x="3*(s-1)+'em'" :y="3*i+'em'" width="3em" height="3em"
+                        :style="'fill: hsl('+(parseInt(data.tokenData.palette[0])+h)+','+data.tokenData.palette[1]+'%,'+calcShade(s-1)+'%)'")
                   p Root Hue: {{ data.tokenData.palette[0] }}
                   p Scheme: {{ "#" + data.tokenData.palette[4] }} - {{ schemeTitles[data.tokenData.palette[4]] }}
                   p Saturation: {{ data.tokenData.palette[1] }}
@@ -110,6 +111,27 @@ export default Vue.extend({
     await (this as any).loadToken();
   },
   methods: {
+    calcShade(s: number) {
+      const range = this.data.tokenData.palette[3] - this.data.tokenData.palette[2];
+      const step = (range / this.data.tokenData.palette[5]);
+      const shade = parseInt(this.data.tokenData.palette[3]) - (step * s);
+      return shade;
+    },
+    scheme(i: number) {
+      const schemes = [
+            [0], // mono
+            [0, 180], // complimentary
+            [0, 30, 330], // analogous
+            [30, 60, 90], // series
+            [0, 150, 210], // split complimentary
+            [0, 120, 240], // triadic
+            [150, 180, 210], // complimentary and analogous
+            [30, 180, 330], // analogous and complimentary
+            [90, 180, 270], // square
+            [60, 180, 240] // tetradic
+        ];
+      return schemes[i];
+    },
     formatHash(account: string) {
       return "0x" + account.slice(2, 6) + "...." + account.slice(-4);
     },
