@@ -364,13 +364,8 @@ export default Vue.extend({
       try {
         // Get transaction details
         const trx = await this.$store.state.web3.eth.getTransaction(txHash)
-
-        // Get current block number
-        const currentBlock = await this.$store.state.web3.eth.getBlockNumber()
-
-        // When transaction is unconfirmed, its block number is null.
-        // In this case we return 0 as number of confirmations
-        return trx.blockNumber === null ? 0 : currentBlock - trx.blockNumber
+        // When transaction is unconfirmed, its block number is null
+        return trx.blockNumber === null ? 0 : (await this.$store.state.web3.eth.getBlockNumber()) - trx.blockNumber
       }
       catch (error) {
         console.log(txHash, error)
