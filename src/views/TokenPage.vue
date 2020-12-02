@@ -91,7 +91,7 @@
                           :style="'fill: hsl('+(parseInt(data.tokenData.palette[0])+h)+','+data.tokenData.palette[1]+'%,'+calcShade(s-1)+'%)'")
                   .colors-info
                     .scheme.stat
-                      span.stat-value {{ "#" + data.tokenData.palette[4] + '-' + schemeTitles[data.tokenData.palette[4]] }}
+                      span.stat-value {{ "" + data.tokenData.palette[4] + ' - ' + schemeTitles[data.tokenData.palette[4]] }}
                       .stat-title Scheme
                     .hue.stat
                       span.stat-value {{ data.tokenData.palette[0] + '°' }} 
@@ -123,10 +123,10 @@
                 .advanced
                   .animation.stat
                     span.stat-value {{ "#" + data.tokenData.animation }}
-                    .stat-title Animation
+                    .stat-title ID
                   .animation-title.stat
                     span.stat-value {{ animationTitles[data.tokenData.animation] }}
-                    .stat-title Animation Title
+                    .stat-title Title
 </template>
 
 <script lang="ts">
