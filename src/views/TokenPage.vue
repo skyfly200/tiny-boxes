@@ -27,45 +27,51 @@
               h2 Token Stats
             v-card-text
               .stats
-                h2(align="center") Shapes
+                h2 Shapes
                 .shapes
-                  v-sheet(elevation="4" color="#a7a" width="30" height="30")
+                  v-sheet(align="center" elevation="4" color="#a7a" width="30" height="30")
                     span {{ data.tokenData.shapes }}
                   span Shapes
                   p Hatching Mod: {{ data.tokenData.hatching }}
                   p Width: {{ data.tokenData.size[0] }} to {{ data.tokenData.size[1] }}
                   p Height: {{ data.tokenData.size[2] }} to {{ data.tokenData.size[3] }}
-                h2(align="center") Placement
+                h2 Placement
                 .position
                   p Spread: {{ data.tokenData.spacing[0] }} X {{ data.tokenData.spacing[1] }} Y
                   p {{ data.tokenData.spacing[2] }} Rows
                   p {{ data.tokenData.spacing[3] }} Columns
-                h2(align="center") Colors
+                h2 Colors
                 .colors
-                  svg(:width="(3*(data.tokenData.palette[5]+1)) + 'em'" :height="(3*(scheme(data.tokenData.palette[4]).length)) + 'em'")
-                    g(v-for="h,i of scheme(data.tokenData.palette[4])")
-                      rect(v-for="s in parseInt(data.tokenData.palette[5])+1" :x="3*(s-1)+'em'" :y="3*i+'em'" width="3em" height="3em"
-                        :style="'fill: hsl('+(parseInt(data.tokenData.palette[0])+h)+','+data.tokenData.palette[1]+'%,'+calcShade(s-1)+'%)'")
-                  p Root Hue: {{ data.tokenData.palette[0] }}
-                  p Scheme: {{ "#" + data.tokenData.palette[4] }} - {{ schemeTitles[data.tokenData.palette[4]] }}
-                  p Saturation: {{ data.tokenData.palette[1] }}
-                  p Lightness: {{ data.tokenData.palette[2] }} - {{data.tokenData.palette[3]}}
-                  p Shades: {{ data.tokenData.palette[5] }}
-                h2(align="center") Mirroring
+                  .colors-grid
+                    svg(:width="(3*(parseInt(data.tokenData.palette[5])+1)) + 'em'" :height="(3*(scheme(data.tokenData.palette[4]).length)) + 'em'")
+                      g(v-for="h,i of scheme(data.tokenData.palette[4])")
+                        rect(v-for="s in parseInt(data.tokenData.palette[5])+1" :x="3*(s-1)+'em'" :y="3*i+'em'" width="3em" height="3em"
+                          :style="'fill: hsl('+(parseInt(data.tokenData.palette[0])+h)+','+data.tokenData.palette[1]+'%,'+calcShade(s-1)+'%)'")
+                  .colors-info
+                    p Root Hue: {{ data.tokenData.palette[0] }}
+                    p Scheme: {{ "#" + data.tokenData.palette[4] }} - {{ schemeTitles[data.tokenData.palette[4]] }}
+                    p Saturation: {{ data.tokenData.palette[1] }}
+                    p Lightness: {{ data.tokenData.palette[2] }} - {{data.tokenData.palette[3]}}
+                    p Shades: {{ data.tokenData.palette[5] }}
+                h2 Mirroring
                 .mirroring
                   p {{ data.tokenData.mirrorPositions[0] }}
                   p {{ data.tokenData.mirrorPositions[1] }}
                   p {{ data.tokenData.mirrorPositions[2] }}
                   p {{ data.tokenData.scale + "%" }} Scale
-                h2(align="center") Advanced
+                h2 Advanced
                 .advanced 
-                  p Animation: {{ "#" + data.tokenData.animation }} - {{ animationTitles[data.tokenData.animation] }}
-                  p Randomness:
+                  .animation
+                    p Animation:
+                    p {{ "#" + data.tokenData.animation }} 
+                    p {{ animationTitles[data.tokenData.animation] }}
                   .randomness 
-                    template(v-for="chunk in randomness.match(/.{1,16}/g)")
-                      span {{ chunk }}
-                      br
-                h2(align="center") Minting Info
+                    p Randomness:
+                    .randomness-chunks
+                      template(v-for="chunk in randomness.match(/.{1,16}/g)")
+                        span {{ chunk }}
+                        br
+                h2 Minting Info
                 .minting-stats
                   p {{ (new Date(data.block.timestamp)).toLocaleTimeString() }}
                   p {{ (new Date(data.block.timestamp)).toLocaleDateString() }}
@@ -212,7 +218,9 @@ export default Vue.extend({
   justify-content: space-between
 .v-card
   margin: 1rem
-.mirroring, .advanced, .counts, .position, .size, .minting-stats
+.colors-grid svg g
+  width: 100%
+.shapes, .position, .mirroring, .advanced, .minting-stats, .colors
   display: flex
   flex-wrap: wrap
   justify-content: space-around
