@@ -46,6 +46,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     bytes32 public constant LINK_ROLE = keccak256("LINK_ROLE");
 
     event LowLINK(uint256 _balance, uint256 _remaining);
+    event RequestVRF(address _owner, uint256 _tokenId, bytes32 _requestId);
 
     /**
      * @dev Contract constructor.
@@ -234,13 +235,10 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         );
         // ensure we have enough LINK token in the contract to pay for VRF request fee
         uint256 balance = LINK_TOKEN.balanceOf(address(this));
-        uint256 remaining = TOKEN_LIMIT - (_tokenIds.current() + 1);
         require(
             balance >= fee,
             "Not enough LINK for a VRF request"
         );
-        // fire LINK_LOW event if LINK is to low to fullfill remaining VRF requests needed to sell out tokens
-        if (balance < (remaining * fee)) emit LowLINK(balance, remaining);
 
         // store the current id & increment the counter for the next call
         uint256 id = _tokenIds.current();
@@ -254,6 +252,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
 
         // send VRF request
         bytes32 _requestId = requestRandomness(KEY_HASH, fee, seed);
+        emit RequestVRF(msg.sender, id, _requestId);
 
         // map VRF requestId to next token id and owner
         requests[_requestId] = Request(msg.sender, id, seed);
@@ -280,8 +279,15 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
 
         // generate params with RNG & save to the box along with the randomness
         boxes[req.id].randomness = randomness;
+        // TODO: calculate on the fly to save one storage var of gas
         boxes[req.id].animation = uint8(randomness.mod(ANIMATION_COUNT));
 
+        // mint the new token to the creators address
         _safeMint(req.creator, req.id);
+
+        // fire LINK_LOW event if LINK is to low to fullfill remaining VRF requests needed to sell out tokens
+        uint256 balance = LINK_TOKEN.balanceOf(address(this));
+        uint256 remaining = TOKEN_LIMIT - (_tokenIds.current() + 1);
+        if (balance < (remaining * fee)) emit LowLINK(balance, remaining);
     }
 }
