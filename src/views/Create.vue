@@ -52,7 +52,7 @@
           v-card(max-height="90vh").token-preview
             v-card-title.token-stats
               v-skeleton-loader(v-if="id === null" type="card-heading" width="20vw")
-              h1(v-else) Design TinyBox {{ "#" + id }}
+              h1(v-else) Mint TinyBox {{ "#" + id }}
             v-divider
             v-card-text.token-graphic
               v-fade-transition(mode="out-in")
@@ -96,11 +96,11 @@
                   template(v-for="option of section.options")
                     template(v-if="!option.show || values[option.show] && !option.hide || (values[option.hide]) == false")
                       template(v-if="option.type === 'slider'")
-                        v-slider(v-model="values[option.key]" @change="update" thumb-label required
+                        v-slider(v-model="values[option.key]" @change="update" thumb-label required 
+                          persistent-hint :hint='option.key === "scheme" ? schemeTitles[values[option.key]] : (option.key === "animation" ? animationTitles[values[option.key]] : "")'
                           :label="option.label" :step="option.step" :min="option.range.min" :max="option.range.max")
                             template(v-slot:append)
                               v-text-field(v-model="values[option.key]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
-                        p(v-if="option.key === 'scheme' || option.key === 'animation'") {{option.key === "scheme" ? schemeTitles[values[option.key]] : (option.key === "animation" ? animationTitles[values[option.key]] : "")}}
                       v-range-slider(v-else-if="option.type === 'range-slider'" v-model="values[option.key]" @change="update" thumb-label required
                         :step="option.step" :label="option.label" :min="option.range.min" :max="option.range.max")
                           template(v-slot:prepend)
