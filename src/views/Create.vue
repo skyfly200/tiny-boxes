@@ -6,15 +6,26 @@
           v-col(md="4" sm="6" xs="12" offset-md="4" offset-sm="3")
             v-card.dialog
               v-fade-transition(appear group)
-                .dialog-confirm(v-if="overlay === 'confirm'" key="confirm")
-                  v-card-title Confirming Transaction
+                .dialog-verify(v-if="overlay === 'verify'" key="verify")
+                  v-card-title Submit The Transaction
                   v-card-text
                     .message
                       h3 Mint Token {{ "#" + id }} for {{ priceInETH }} 
                         v-icon mdi-ethereum
-                    v-progress-linear(indeterminate)
+                .dialog-confirm(v-if="overlay === 'confirm'" key="confirm")
+                  v-card-title Awating TX Confirmations
+                  v-card-text
+                    .message
+                      h3 {{ confirmations }} Confirmations
+                      h3 Hash: {{ formatHash(minted.txHash) }}
+                      v-tooltip(top)
+                        template(v-slot:activator='{ on }')
+                          v-btn(:href="'https://rinkeby.etherscan.io/tx/' + minted.txHash" v-on='on' target="new")
+                            v-icon mdi-open-in-new
+                        span View on Etherscan
+                    v-progress-linear(:value="confirmations / confirmationsRequired * 100")
                 .dialog-wait(v-else-if="overlay === 'wait'" key="wait")
-                  v-card-title Transaction Pending
+                  v-card-title Waiting For VRF Fullfillment
                   v-card-text
                     .message
                       h3 Please Wait...
@@ -23,14 +34,6 @@
                   v-skeleton-loader(:value="!minted.art" type="image")
                     Token(:id="minted.id" :data="data")
                   v-card-title Yay! You Minted Token {{ "#" + minted.id }}
-                  v-card-text
-                    .message
-                      h3 Transaction Completed
-                        v-tooltip(top)
-                          template(v-slot:activator='{ on }')
-                            span(:href="'https://rinkeby.etherscan.io/tx/' + minted.txHash" v-on='on' target="new") &nbsp;
-                              v-icon mdi-open-in-new
-                          span View on Etherscan
                   v-card-actions
                     v-btn(:to="'/token/' + minted.id") View Token
                     v-spacer
@@ -113,6 +116,7 @@ import Vue from "vue";
 import { mapGetters, mapState } from "vuex";
 import { sections } from "./create-form";
 import Token from "@/components/Token.vue";
+import { log } from 'console';
 
 export default Vue.extend({
   name: "Create",
@@ -153,6 +157,9 @@ export default Vue.extend({
     t.listenForMyTokens();
   },
   methods: {
+    formatHash(account: string) {
+      return "0x" + account.slice(2, 6) + "...." + account.slice(-4);
+    },
     update: async function() {
       const t = this as any;
       if (t.form.valid) return t.loadToken();
@@ -327,7 +334,7 @@ export default Vue.extend({
       ];
       t.price = await t.getPrice();
       t.minted = {};
-      t.overlay = "confirm";
+      t.overlay = "verify";
       t.$store.state.web3.eth.sendTransaction(
         {
           from: this.currentAccount,
@@ -337,14 +344,40 @@ export default Vue.extend({
             .buy(v.seed.toString(), shapes, palette, dials)
             .encodeABI(),
         },
-        (err: any, txHash: string) => {
+        async (err: any, txHash: string) => {
           const t = this as any;
           t.minted.txHash = txHash;
-          t.overlay = err ? "error" : "wait";
+          t.overlay = err ? "error" : "confirm";
+          t.checkConfirmations(txHash);
         }
       );
     },
+    async checkConfirmations(txHash: string) {
+      const t = this as any;
+      const confirm = await t.getConfirmations(txHash);
+      t.confirmations = confirm;
+      console.log("Confirmations: ",confirm);
+      if (confirm >= t.confirmationsRequired) t.overlay = "wait";
+      else setTimeout(t.checkConfirmations(txHash), 5000);
+    },
+    async getConfirmations(txHash: string) {
+      try {
+        // Get transaction details
+        const trx = await this.$store.state.web3.eth.getTransaction(txHash)
+
+        // Get current block number
+        const currentBlock = await this.$store.state.web3.eth.getBlockNumber()
+
+        // When transaction is unconfirmed, its block number is null.
+        // In this case we return 0 as number of confirmations
+        return trx.blockNumber === null ? 0 : currentBlock - trx.blockNumber
+      }
+      catch (error) {
+        console.log(txHash, error)
+      }
+    },
     listenForMyTokens: function() {
+      // TODO: add step to change loader on VRF request
       this.$store.state.web3.eth
         .subscribe("logs", {
           address: this.$store.state.tinyboxesAddress,
@@ -384,6 +417,8 @@ export default Vue.extend({
       overlay: "",
       data: null as object | null,
       price: "",
+      confirmations: 0,
+      confirmationsRequired: 3,
       limit: null as number | null,
       form: {
         section: 0,
