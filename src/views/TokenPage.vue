@@ -39,7 +39,6 @@
                     v-tooltip(top)
                       template(v-slot:activator='{ on }')
                         a(v-on='on' :href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash") {{ formatHash(data.creation.transactionHash) }}
-                          v-icon mdi-arrow-top-right
                       span View on Etherscan
                   .stat-title TX Hash
               .randomness.stat
