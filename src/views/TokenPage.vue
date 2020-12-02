@@ -34,6 +34,13 @@
                     v-icon mdi-ethereum
                     span {{ priceInETH }}
                   .stat-title Minted Price
+                .minter.stat
+                  .stat-value
+                    v-tooltip(top)
+                        template(v-slot:activator='{ on }')
+                          span(v-on='on') {{ formatTopic(data.creation.topics[2]) }}
+                        span {{ formatTopicLong(data.creation.topics[2]) }}
+                  .stat-title Creator
                 .tx-hash.stat
                   .stat-value
                     v-tooltip(top)
@@ -181,6 +188,12 @@ export default Vue.extend({
     },
     formatHash(account: string) {
       return "0x" + account.slice(2, 6) + "...." + account.slice(-4);
+    },
+    formatTopic(account: string) {
+      return "0x" + account.slice(26, 30) + "...." + account.slice(-4);
+    },
+    formatTopicLong(account: string) {
+      return "0x" + account.slice(-40);
     },
     loadToken: async function() {
       const t = this as any;
