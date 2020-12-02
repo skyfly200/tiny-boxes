@@ -46,7 +46,6 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     bytes32 public constant LINK_ROLE = keccak256("LINK_ROLE");
 
     event LowLINK(uint256 _balance, uint256 _remaining);
-    event RequestVRF(address _owner, uint256 _tokenId, bytes32 _requestId);
 
     /**
      * @dev Contract constructor.
@@ -252,7 +251,6 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
 
         // send VRF request
         bytes32 _requestId = requestRandomness(KEY_HASH, fee, seed);
-        emit RequestVRF(msg.sender, id, _requestId);
 
         // map VRF requestId to next token id and owner
         requests[_requestId] = Request(msg.sender, id, seed);
