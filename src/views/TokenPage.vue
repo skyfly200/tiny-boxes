@@ -90,9 +90,6 @@
                         rect(v-for="s in parseInt(data.tokenData.palette[5])+1" :x="3*(s-1)+'em'" :y="3*i+'em'" width="3em" height="3em"
                           :style="'fill: hsl('+(parseInt(data.tokenData.palette[0])+h)+','+data.tokenData.palette[1]+'%,'+calcShade(s-1)+'%)'")
                   .colors-info
-                    .scheme.stat
-                      span.stat-value {{ "" + data.tokenData.palette[4] + ' - ' + schemeTitles[data.tokenData.palette[4]] }}
-                      .stat-title Scheme
                     .hue.stat
                       span.stat-value {{ data.tokenData.palette[0] + '°' }} 
                       .stat-title Root Hue
@@ -105,6 +102,9 @@
                     .shades.stat
                       span.stat-value {{ data.tokenData.palette[5] }}
                       .stat-title Shades
+                    .scheme.stat
+                      span.stat-value {{ "" + data.tokenData.palette[4] + ' - ' + schemeTitles[data.tokenData.palette[4]] }}
+                      .stat-title Scheme
                 h2 Mirroring
                 .mirroring
                   .mirror-a.stat
