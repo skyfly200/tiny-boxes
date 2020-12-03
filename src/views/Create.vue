@@ -183,7 +183,10 @@ export default Vue.extend({
     },
     loadFormDefaults: function() {
       const t = this as any;
+      // set values to default
       Object.assign(t.values, t.defaults);
+      // overwrite with any url params
+      Object.assign(t.values, this.$route.params);
       t.update();
     },
     randomizeForm: function() {
@@ -366,7 +369,6 @@ export default Vue.extend({
       try {
         // Get transaction details
         const trx = await this.$store.state.web3.eth.getTransaction(txHash)
-        console.log(trx)
         // When transaction is unconfirmed, its block number is null
         return trx.blockNumber === null ? 0 : (await this.$store.state.web3.eth.getBlockNumber()) - trx.blockNumber
       }
