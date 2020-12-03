@@ -162,6 +162,7 @@ export default Vue.extend({
     },
     update: async function() {
       const t = this as any;
+      this.$router.replace({ path: "/create", query: t.values })
       if (t.form.valid) return t.loadToken();
     },
     loadStatus: async function() {
