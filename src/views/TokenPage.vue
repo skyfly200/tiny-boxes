@@ -7,7 +7,10 @@
       v-row(v-if="loading")
         v-col(align="center").token-loading
             v-progress-circular(indeterminate size="75" color="primary")
-            h1 Fetching Token {{ "#" + id }}
+            h1 Fetching Token
+      v-row(v-else-if="!exists")
+        v-col(align="center").token-missing
+          h1 Invalid Token ID
       v-row(v-else no-gutters)
         v-col(cols="12" md="6" lg="5" offset-lg="1")
           v-card
@@ -162,7 +165,14 @@ export default Vue.extend({
   },
   mounted: async function() {
     await this.$store.dispatch("initialize");
-    await (this as any).loadToken();
+    // check token exists
+    const total = await this.$store.state.contracts.tinyboxes.methods
+        .totalSupply()
+        .call();
+    this.exists = this.id < total;
+    if (this.exists) {
+      await (this as any).loadToken();
+    } else this.loading = false;
   },
   methods: {
     calcShade(s: number) {
@@ -213,9 +223,9 @@ export default Vue.extend({
         this.data.tokenData = await this.$store.state.contracts.tinyboxes.methods
           .tokenData(this.id)
           .call();
-        this.data.price = await this.$store.state.contracts.tinyboxes.methods.priceAt(
-          this.id
-        ).call();
+        this.data.price = await this.$store.state.contracts.tinyboxes.methods
+          .priceAt(this.id)
+          .call();
         this.data.block = await this.$store.state.web3.eth.getBlock(
           this.data.creation.blockNumber
         );
@@ -245,6 +255,7 @@ export default Vue.extend({
   },
   data: () => ({
     loading: true,
+    exists: false,
     animate: true,
     data: {} as any,
   }),
