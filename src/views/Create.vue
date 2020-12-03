@@ -173,6 +173,35 @@ export default Vue.extend({
     lookupSupply: function() {
       return this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
     },
+    assemblePalette: function() {
+      const v = (this as any).values;
+      return [
+        v.hue,
+        v.saturation,
+        v.lightness[0],
+        v.lightness[1],
+        v.scheme,
+        v.shades
+      ];
+    },
+    assembleDials: function() {
+      const v = (this as any).values;
+      return [
+        v.x,
+        v.y,
+        v.xSeg,
+        v.ySeg,
+        v.width[0],
+        v.width[1],
+        v.height[0],
+        v.height[1],
+        v.hatching,
+        v.mirrorAdv ? v.mirrorPos1 : (v.mirrorA ? t.defaults.mirrorPos1 : 0),
+        v.mirrorAdv ? v.mirrorPos2 : (v.mirrorB ? t.defaults.mirrorPos2 : 0),
+        v.mirrorAdv ? v.mirrorPos3 : (v.mirrorC ? t.defaults.mirrorPos3 : 0),
+        v.mirrorAdv ? v.scale : (!v.mirrorC ? (!v.mirrorB ? 400 : 200) : 100),
+      ];
+    },
     lookupLimit: function() {
       return this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
     },
@@ -185,8 +214,9 @@ export default Vue.extend({
       const t = this as any;
       // set values to default
       Object.assign(t.values, t.defaults);
-      // overwrite with any url params
-      Object.assign(t.values, this.$route.params);
+      // overwrite with any url query params
+      console.log(this.$route.query);
+      Object.assign(t.values, this.$route.query);
       t.update();
     },
     randomizeForm: function() {
@@ -268,74 +298,30 @@ export default Vue.extend({
       return new Promise((resolve, reject) => {
         const t = this as any;
         t.loading = true;
-        t.loadStatus().then(() => {
-          const v = t.values;
-          const palette = [
-            v.hue,
-            v.saturation,
-            v.lightness[0],
-            v.lightness[1],
-            v.scheme,
-            v.shades
-          ];
-          const dials = [
-            v.x,
-            v.y,
-            v.xSeg,
-            v.ySeg,
-            v.width[0],
-            v.width[1],
-            v.height[0],
-            v.height[1],
-            v.hatching,
-            v.mirrorAdv ? v.mirrorPos1 : (v.mirrorA ? t.defaults.mirrorPos1 : 0),
-            v.mirrorAdv ? v.mirrorPos2 : (v.mirrorB ? t.defaults.mirrorPos2 : 0),
-            v.mirrorAdv ? v.mirrorPos3 : (v.mirrorC ? t.defaults.mirrorPos3 : 0),
-            v.mirrorAdv ? v.scale : (!v.mirrorC ? (!v.mirrorB ? 400 : 200) : 100),
-          ];
-          this.$store.state.contracts.tinyboxes.methods
-            .tokenTest(v.seed.toString(), v.shapes, palette, dials, v.animation, v.animate)
-            .call()
-            .then((result: any) => {
-              t.data = result;
-              t.loading = false;
-              resolve(result);
-            })
-            .catch((err: any) => {
-              console.log('Error Prone Inputs: ', v.seed.toString(), v.shapes, palette, dials, v.animation, v.animate);
-              console.error(err);
-              reject(err);
-            });
-        });
+        t.loadStatus()
+        const v = t.values;
+        const palette = t.assemblePalette();
+        const dials = t.assembleDials();
+        this.$store.state.contracts.tinyboxes.methods
+          .tokenTest(v.seed.toString(), v.shapes, palette, dials, v.animation, v.animate)
+          .call()
+          .then((result: any) => {
+            t.data = result;
+            t.loading = false;
+            resolve(result);
+          })
+          .catch((err: any) => {
+            console.log('Error Prone Inputs: ', v.seed.toString(), v.shapes, palette, dials, v.animation, v.animate);
+            console.error(err);
+            reject(err);
+          });
       })
     },
     mintToken: async function() {
       const t = this as any;
       const v = t.values;
-      const shapes = v.shapes;
-      const palette = [
-        v.hue,
-        v.saturation,
-        v.lightness[0],
-        v.lightness[1],
-        v.scheme,
-        v.shades
-      ];
-      const dials = [
-        v.x,
-        v.y,
-        v.xSeg,
-        v.ySeg,
-        v.width[0],
-        v.width[1],
-        v.height[0],
-        v.height[1],
-        v.hatching,
-        v.mirrorAdv ? v.mirrorPos1 : (v.mirrorA ? t.defaults.mirrorPos1 : 0),
-        v.mirrorAdv ? v.mirrorPos2 : (v.mirrorB ? t.defaults.mirrorPos2 : 0),
-        v.mirrorAdv ? v.mirrorPos3 : (v.mirrorC ? t.defaults.mirrorPos3 : 0),
-        v.mirrorAdv ? v.scale : (!v.mirrorC ? (!v.mirrorB ? 400 : 200) : 100),
-      ];
+      const palette = t.assemblePalette();
+      const dials = t.assembleDials();
       t.price = await t.getPrice();
       t.minted = {};
       t.overlay = "verify";
@@ -345,7 +331,7 @@ export default Vue.extend({
           to: this.$store.state.tinyboxesAddress,
           value: t.price,
           data: this.$store.state.contracts.tinyboxes.methods
-            .buy(v.seed.toString(), shapes, palette, dials)
+            .buy(v.seed.toString(), v.shapes, palette, dials)
             .encodeABI(),
         },
         async (err: any, txHash: string) => {
