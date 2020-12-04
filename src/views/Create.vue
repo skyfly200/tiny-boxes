@@ -37,7 +37,7 @@
                   v-card-actions
                     v-btn(:to="'/token/' + minted.id") View Token
                     v-spacer
-                    v-btn(@click="overlay = ''; loadFormDefaults(); update()") Mint Another
+                    v-btn(@click="overlay = ''; update()") Mint Another
                 .dialog-error(v-else-if="overlay === 'error'" key="error")
                   v-card-title Transaction Error
                   v-card-text
@@ -50,9 +50,9 @@
       v-row(flex)
         v-col(align="center" cols="12" md="5" offset-md="1")
           v-card(max-height="90vh").token-preview
-            v-card-title.token-stats
+            v-card-title.token-stats(align="center")
               v-skeleton-loader(v-if="id === null" type="card-heading" width="20vw")
-              h1(v-else) Mint TinyBox {{ "#" + id }}
+              span(v-else) Mint TinyBox {{ "#" + id }}
             v-divider
             v-card-text.token-graphic
               v-fade-transition(mode="out-in")
@@ -116,19 +116,19 @@
                   template(v-for="option of section.options")
                     template(v-if="!option.show || values[option.show] && !option.hide || (values[option.hide]) == false")
                       template(v-if="option.type === 'slider'")
-                        v-slider(v-model="values[option.key]" @change="update" thumb-label required 
+                        v-slider(v-model="values[option.key]" @change="changed" thumb-label required 
                           persistent-hint :hint='option.key === "scheme" ? schemeTitles[values[option.key]] : (option.key === "animation" ? animationTitles[values[option.key]] : "")'
                           :label="option.label" :step="option.step" :min="option.range.min" :max="option.range.max")
                             template(v-slot:append)
-                              v-text-field(v-model="values[option.key]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
-                      v-range-slider(v-else-if="option.type === 'range-slider'" v-model="values[option.key]" @change="update" thumb-label required
+                              v-text-field(v-model="values[option.key]" @change="changed" hide-details single-line type="number" style="width: 60px").slider-text-field
+                      v-range-slider(v-else-if="option.type === 'range-slider'" v-model="values[option.key]" @change="changed" thumb-label required
                         :step="option.step" :label="option.label" :min="option.range.min" :max="option.range.max")
                           template(v-slot:prepend)
-                            v-text-field(v-model="values[option.key][0]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
+                            v-text-field(v-model="values[option.key][0]" @change="changed" hide-details single-line type="number" style="width: 60px").slider-text-field
                           template(v-slot:append)
-                            v-text-field(v-model="values[option.key][1]" @change="update" hide-details single-line type="number" style="width: 60px").slider-text-field
-                      v-switch(v-else-if="option.type === 'switch'" v-model="values[option.key]" @change="update" :label="option.label").switch
-                      v-text-field(v-else v-model="values[option.key]" @change="update" :label="option.label" required outlined type="number")
+                            v-text-field(v-model="values[option.key][1]" @change="changed" hide-details single-line type="number" style="width: 60px").slider-text-field
+                      v-switch(v-else-if="option.type === 'switch'" v-model="values[option.key]" @change="changed" :label="option.label").switch
+                      v-text-field(v-else v-model="values[option.key]" @change="changed" :label="option.label" required outlined type="number")
 </template>
 
 <script lang="ts">
@@ -142,6 +142,9 @@ export default Vue.extend({
   name: "Create",
   components: { Token },
   computed: {
+    paramsSet: function() {
+      return Object.keys(this.$route.query).length > 0
+    },
     priceInETH: function() {
       return this.$store.state.web3.utils.fromWei((this as any).price);
     },
@@ -173,10 +176,21 @@ export default Vue.extend({
     await this.$store.dispatch("initialize");
     t.limit = await t.lookupLimit();
     t.loadFormDefaults();
+    if (t.paramsSet) t.loadParams();
+    else t.setParams();
     t.listenForTokens();
     t.listenForMyTokens();
   },
   methods: {
+    loadParams() {
+      const t = this as any;
+      // overwrite with any url query params
+      // TODO: better query params parsing to match values structure
+      Object.assign(t.values, t.$route.query);
+    },
+    setParams() {
+      this.$router.push({ path: "/create", query: (this as any).values });
+    },
     formatHash(account: string) {
       return "0x" + account.slice(2, 6) + "...." + account.slice(-4);
     },
@@ -196,9 +210,13 @@ export default Vue.extend({
     copyPath() {
       console.log(this.$route.fullPath);
     },
+    changed: async function() {
+      const t = this as any;
+      t.setParams();
+      t.update();
+    },
     update: async function() {
       const t = this as any;
-      this.$router.push({ path: "/create", query: t.values })
       if (t.form.valid) return t.loadToken();
     },
     loadStatus: async function() {
@@ -251,14 +269,13 @@ export default Vue.extend({
       const t = this as any;
       // set values to default
       Object.assign(t.values, t.defaults);
-      // overwrite with any url query params
-      Object.assign(t.values, t.$route.query);
       t.update();
     },
     randomizeForm: function() {
       const t = this as any;
       t.randomizeAll();
       t.update()
+        .then(t.setParams())
         .catch((err: any) => {
           console.error("Invalid Box Options - Call Reverted: ", err)
           console.log("Retrying Randomize")
@@ -269,10 +286,11 @@ export default Vue.extend({
       const t = this as any;
       t.randomize(section);
       t.update()
+        .then(t.setParams())
         .catch((err: any) => {
           console.error("Invalid Box Options - Call Reverted: ", err)
           console.log("Retrying Randomize")
-          t.randomizeForm()
+          t.randomizeSection(section)
         });
     },
     randomize: function(section: number) {
@@ -338,7 +356,6 @@ export default Vue.extend({
         const v = t.values;
         const palette = t.assemblePalette();
         const dials = t.assembleDials();
-        console.log(v)
         this.$store.state.contracts.tinyboxes.methods
           .tokenTest(v.seed.toString(), v.shapes, palette, dials, v.animation, v.animate)
           .call()
