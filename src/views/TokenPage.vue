@@ -169,7 +169,7 @@ export default Vue.extend({
     const total = await this.$store.state.contracts.tinyboxes.methods
         .totalSupply()
         .call();
-    this.exists = this.id < total;
+    this.exists = (this as any).id < total;
     if (this.exists) {
       await (this as any).loadToken();
     } else this.loading = false;
