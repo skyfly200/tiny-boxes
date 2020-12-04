@@ -162,7 +162,7 @@ export default Vue.extend({
     },
     update: async function() {
       const t = this as any;
-      this.$router.replace({ path: "/create", query: t.values })
+      this.$router.push({ path: "/create", query: t.values })
       if (t.form.valid) return t.loadToken();
     },
     loadStatus: async function() {
@@ -185,7 +185,8 @@ export default Vue.extend({
       ];
     },
     assembleDials: function() {
-      const v = (this as any).values;
+      const t = this as any;
+      const v = t.values;
       return [
         v.x,
         v.y,
@@ -215,8 +216,7 @@ export default Vue.extend({
       // set values to default
       Object.assign(t.values, t.defaults);
       // overwrite with any url query params
-      console.log(this.$route.query);
-      Object.assign(t.values, this.$route.query);
+      Object.assign(t.values, t.$route.query);
       t.update();
     },
     randomizeForm: function() {
@@ -302,6 +302,7 @@ export default Vue.extend({
         const v = t.values;
         const palette = t.assemblePalette();
         const dials = t.assembleDials();
+        console.log(v)
         this.$store.state.contracts.tinyboxes.methods
           .tokenTest(v.seed.toString(), v.shapes, palette, dials, v.animation, v.animate)
           .call()
