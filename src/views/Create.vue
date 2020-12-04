@@ -74,13 +74,33 @@
           h1 Create a TinyBox
           v-form(v-model="form.valid").create-form
             .form-buttons
-              v-btn(@click="loadFormDefaults") Reset
               v-spacer
-              v-tooltip(left)
+              v-tooltip(bottom)
+                template(v-slot:activator="{ on }")
+                  v-btn(@click.stop="loadFormDefaults" v-on="on" icon).share-btn
+                    v-icon mdi-close
+                span Reset
+              v-tooltip(bottom)
+                template(v-slot:activator="{ on }")
+                  v-btn(@click="undo" v-on="on" icon).share-btn
+                    v-icon mdi-undo
+                span Undo
+              v-tooltip(bottom)
+                template(v-slot:activator="{ on }")
+                  v-btn(@click="redo" v-on="on" icon).share-btn
+                    v-icon mdi-redo
+                span Redo
+              v-tooltip(bottom)
                 template(v-slot:activator="{ on }")
                   v-btn(@click.stop="randomizeForm" v-on="on" icon).rand-btn
                     v-icon mdi-dice-multiple
                 span Randomize
+              v-spacer
+              v-tooltip(bottom)
+                template(v-slot:activator="{ on }")
+                  v-btn(@click="copyPath" v-on="on" icon).share-btn
+                    v-icon mdi-share
+                span Share Options
             br
             v-expansion-panels(v-model="form.section" popout tile)
               v-expansion-panel.section(v-for="section,s of active" :key="section.title" ripple)
@@ -159,6 +179,22 @@ export default Vue.extend({
   methods: {
     formatHash(account: string) {
       return "0x" + account.slice(2, 6) + "...." + account.slice(-4);
+    },
+    undo() {
+      const t = this as any;
+      history.back()
+      Object.assign(t.values, t.$route.query);
+      t.update();
+    },
+    redo() {
+      const t = this as any;
+      history.forward()
+      Object.assign(t.values, t.$route.query);
+      t.update();
+
+    },
+    copyPath() {
+      console.log(this.$route.fullPath);
     },
     update: async function() {
       const t = this as any;
