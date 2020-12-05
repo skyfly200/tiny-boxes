@@ -99,7 +99,7 @@
                 template(v-slot:activator="{ on }")
                   v-btn(@click="copyPath" v-on="on" icon).share-btn
                     v-icon mdi-share
-                span Share Options
+                span Share
             br
             v-expansion-panels(v-model="form.section" popout tile)
               v-expansion-panel.section(v-for="section,s of active" :key="section.title" ripple)
