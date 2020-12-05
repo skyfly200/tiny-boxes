@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "production": "npm run build && npm run lambda",
-    "dev": "npm run lambda && npm run serve",
+    "dev": "npm run lambda && npm run docs:build && npm run serve",
     "contract": "nodemon --exec 'npx oz compile' -e sol --verbose",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
