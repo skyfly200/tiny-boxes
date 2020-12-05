@@ -8,12 +8,13 @@
     "contract": "nodemon --exec 'npx oz compile' -e sol --verbose",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "docs:dev": "vuepress dev ./src/docs",
+    "docs:build": "vuepress build ./src/docs",
     "lambda": "netlify-lambda build ./src/lambda -c ./webpack.functions.js",
     "postinstall": "netlify-lambda install ./src/lambda",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
-    "lint": "vue-cli-service lint",
-    "make": "vue invoke generator"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@openzeppelin/contract-loader": "^0.6.1",
