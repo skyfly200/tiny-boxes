@@ -13,10 +13,9 @@
           v-col(align="center")
             v-pagination(v-model="page" circle @input="loadTokens" :length="pages")
         v-row(no-gutters)
-          v-col(v-for="t of pageTokens" :key="'row-'+t.id" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
-            v-card.token(:to="'/token/' + t.id" tile)
-              v-skeleton-loader(v-if="!tokensLoaded[t.id]" transition-group="fade-transition" height="16.666vw" type="image")
-              Token(v-else :id="t.id" :data="t.data" :key="'token-'+t.id")
+          v-col(v-for="t of pageTokens" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
+            v-card.token(:to="'/token/' + t.id" tile :key="'card-'+t.id")
+              Token(:id="t.id" :data="t.data" :key="'token-'+t.id")
               v-card-text.title {{ t.id }}
           v-col(v-if="count === 0").get-started
             v-card(align="center").get-started-card
@@ -46,7 +45,6 @@ export default {
     ownerOnly: false,
     loading: true,
     soldOut: false,
-    tokensLoaded: {},
     tokens: {}
   }),
   computed: {
@@ -109,7 +107,6 @@ export default {
       const data = {};//this.$store.state.cachedTokens[tokenID];
       this.lookupToken(tokenID, false).then(result => {
         this.$set(this.tokens, tokenID, data && data.art ? data.art : result);
-        this.$set(this.tokensLoaded, tokenID, true);
       });
     },
     listenForTokens: function() {
