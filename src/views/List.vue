@@ -13,8 +13,8 @@
           v-col(align="center")
             v-pagination(v-model="page" circle @input="loadTokens" :length="pages")
         v-row(no-gutters)
-          v-col(v-for="t of pageTokens" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
-            v-card.token(:to="'/token/' + t.id" tile :key="'card-'+t.id")
+          v-col(v-for="t of pageTokens" :key="'token-col-'+t.id" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
+            v-card.token(:to="'/token/' + t.id" tile)
               Token(:id="t.id" :data="t.data" :key="'token-'+t.id")
               v-card-text.title {{ t.id }}
           v-col(v-if="count === 0").get-started
@@ -45,7 +45,7 @@ export default {
     ownerOnly: false,
     loading: true,
     soldOut: false,
-    tokens: {}
+    tokens: []
   }),
   computed: {
     pages() {
@@ -54,12 +54,12 @@ export default {
       );
     },
     pageTokens() {
-      const start = (this.page - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage + 1;
-      const idList = Object.keys(this.tokens).slice(start, end > this.supply ? this.supply : end);
-      return idList.map(id => {
-        return { id: id, data: this.tokens[id]};
-      });
+      const items = parseInt(this.itemsPerPage);
+      const start = (this.page - 1) * items;
+      let end = start + items + 1;
+      if (end > this.supply) end = parseInt(this.supply);
+      const idList = Object.keys(this.tokens).filter(i => i>=start && i<=end);
+      return idList.map( id => ({ id: id, data: this.tokens[id]}) );
     },
     ...mapGetters(["currentAccount", "itemsPerPage"])
   },
@@ -104,9 +104,8 @@ export default {
       }
     },
     loadToken(tokenID) {
-      const data = {};//this.$store.state.cachedTokens[tokenID];
       this.lookupToken(tokenID, false).then(result => {
-        this.$set(this.tokens, tokenID, data && data.art ? data.art : result);
+        this.$set(this.tokens, tokenID, result);
       });
     },
     listenForTokens: function() {

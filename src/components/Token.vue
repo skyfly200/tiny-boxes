@@ -1,6 +1,6 @@
 <template lang="pug">
   .token
-    span(v-html="data" :key="id").token-svg
+    span(v-html="data").token-svg
 </template>
 
 <script>
