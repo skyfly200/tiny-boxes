@@ -66,12 +66,12 @@ export default {
   mounted: async function() {
     await this.$store.dispatch("initialize");
     this.itemsPerPageSelector = this.itemsPerPage;
-    // TODO: check if page param is within range
     this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
     this.loadTokens();
     this.limit = await this.lookupLimit();
     this.supply = await this.lookupSupply();
     this.soldOut = this.supply === this.limit;
+    this.loading = false;
   },
   methods: {
     selectItemsPerPage() {
@@ -84,43 +84,32 @@ export default {
     lookupSupply: function() {
       return this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
     },
+    lookupBalance: function() {
+      return this.$store.state.contracts.tinyboxes.methods.balanceOf(this.currentAccount).call();
+    },
     lookupLimit: function() {
       return this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
     },
     loadTokens: async function() {
       this.tokens = {};
       this.tokenIDs = [];
-      if (this.page > this.pages) this.page = this.pages;
-      if (this.ownerOnly) {
-        // load only tokens that you own
-        this.count = await this.$store.state.contracts.tinyboxes.methods
-          .balanceOf(this.currentAccount)
-          .call();
-        this.$store.commit("setCount", this.count);
-      }
-      const max = this.ownerOnly ? this.count : await this.lookupSupply();
+      if (this.page > this.pages) this.page = this.pages; // clamp page value in range
+      this.count = this.ownerOnly ? await this.lookupBalance() : await this.lookupSupply();
+      this.$store.commit("setCount", this.count);
       const start = (this.page - 1) * this.itemsPerPage;
-      for (let i = start; i - start < this.itemsPerPage && i < max; i++) {
-        if (this.ownerOnly)
-          this.$store.state.contracts.tinyboxes.methods
-            .tokenOfOwnerByIndex(this.currentAccount, i)
-            .call()
-            .then(id => {
-              this.loadToken(id);
-              this.$set(this.tokenIDs, i, id);
-            });
-        else {
-          this.loadToken(i);
-          this.$set(this.tokenIDs, i, i);
-        }
+      for (let i = start; i - start < this.itemsPerPage && i < this.count; i++) {
+        const id = this.ownerOnly ?
+          await this.$store.state.contracts.tinyboxes.methods.tokenOfOwnerByIndex(this.currentAccount, i).call()
+          : i;
+        this.loadToken(id);
+        this.$set(this.tokenIDs, i, id);
       }
     },
     loadToken(tokenID) {
-      const data = this.$store.state.cachedTokens[tokenID];
+      const data = {};//this.$store.state.cachedTokens[tokenID];
       this.lookupToken(tokenID, false).then(result => {
         this.$set(this.tokens, tokenID, data && data.art ? data.art : result);
         this.$set(this.tokensLoaded, tokenID, true);
-        this.loading = false;
       });
     },
     listenForTokens: function() {
@@ -136,13 +125,13 @@ export default {
         .on(
           "data",
           async function(log) {
-            const index = parseInt(log.topics[3], 16);
-            this.tokens[index] = await this.lookupToken(index, false);
+            const id = parseInt(log.topics[3], 16);
             // lookup new supply and check if sold out
             this.supply = await this.lookupSupply();
             this.soldOut = this.supply === this.limit;
             // rerender token list
-            this.loadTokens();
+            this.loadToken(id);
+            this.$set(this.tokenIDs, this.tokenIDs.length, id);
           }.bind(this)
         )
         .on("error", function(log) {
