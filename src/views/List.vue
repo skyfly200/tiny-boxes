@@ -13,11 +13,11 @@
           v-col(align="center")
             v-pagination(v-model="page" circle @input="loadTokens" :length="pages")
         v-row(no-gutters)
-          v-col(v-for="i in pageTokens" :key="i + '-token'" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
-            v-card.token(:to="'/token/' + i" tile)
-              v-skeleton-loader(v-if="!tokensLoaded[i]" transition-group="fade-transition" height="16.666vw" type="image")
-              Token(v-else :id="i" :data="tokens[i]")
-              v-card-text.title {{ i }}
+          v-col(v-for="t of pageTokens" :key="'row-'+t.id" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
+            v-card.token(:to="'/token/' + t.id" tile)
+              v-skeleton-loader(v-if="!tokensLoaded[t.id]" transition-group="fade-transition" height="16.666vw" type="image")
+              Token(v-else :id="t.id" :data="t.data" :key="'token-'+t.id")
+              v-card-text.title {{ t.id }}
           v-col(v-if="count === 0").get-started
             v-card(align="center").get-started-card
               p {{ ownerOnly ? "You dont have any tokens yet!" : "No tokens have been minted yet" }}
@@ -46,7 +46,6 @@ export default {
     ownerOnly: false,
     loading: true,
     soldOut: false,
-    tokenIDs: [],
     tokensLoaded: {},
     tokens: {}
   }),
@@ -59,7 +58,10 @@ export default {
     pageTokens() {
       const start = (this.page - 1) * this.itemsPerPage;
       const end = start + this.itemsPerPage + 1;
-      return this.tokenIDs.slice(start, end > this.supply ? this.supply : end);
+      const idList = Object.keys(this.tokens).slice(start, end > this.supply ? this.supply : end);
+      return idList.map(id => {
+        return { id: id, data: this.tokens[id]};
+      });
     },
     ...mapGetters(["currentAccount", "itemsPerPage"])
   },
@@ -92,7 +94,6 @@ export default {
     },
     loadTokens: async function() {
       this.tokens = {};
-      this.tokenIDs = [];
       if (this.page > this.pages) this.page = this.pages; // clamp page value in range
       this.count = this.ownerOnly ? await this.lookupBalance() : await this.lookupSupply();
       this.$store.commit("setCount", this.count);
@@ -102,7 +103,6 @@ export default {
           await this.$store.state.contracts.tinyboxes.methods.tokenOfOwnerByIndex(this.currentAccount, i).call()
           : i;
         this.loadToken(id);
-        this.$set(this.tokenIDs, i, id);
       }
     },
     loadToken(tokenID) {
@@ -131,7 +131,6 @@ export default {
             this.soldOut = this.supply === this.limit;
             // rerender token list
             this.loadToken(id);
-            this.$set(this.tokenIDs, this.tokenIDs.length, id);
           }.bind(this)
         )
         .on("error", function(log) {
