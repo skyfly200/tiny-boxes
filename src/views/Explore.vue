@@ -5,12 +5,10 @@
         .heading(align="center")
           .title Explore All The Boxy Variety
           p Hundreds of googols of possibilities
-      v-row(flex)
-        v-card(height="20vh" width="20vh" v-for="v,i in tokens").token-permutation
-          v-card-title.token-stats {{i}}
-          v-divider
+      v-row
+        v-card(height="20vh" width="20vh" v-for="v,i of tokens").token-permutation
           v-card-text.token-graphic
-            v-skeleton-loader(v-if="loading" tile type="image")
+            p {{i}}
             Token(:id="i" :data="v")
           v-card-actions
             v-btn(@click="") Mint
@@ -100,7 +98,7 @@ export default Vue.extend({
             resolve(result);
           })
           .catch((err: any) => {
-            console.log('Error Prone Inputs: ', v.seed.toString(), v.shapes, palette, dials, v.animation, v.animate);
+            console.log('Error With Inputs: ', v.seed.toString(), v.shapes, palette, dials, v.animation, v.animate);
             console.error(err);
             reject(err);
           });
