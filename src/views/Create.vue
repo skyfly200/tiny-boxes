@@ -52,8 +52,7 @@
           v-card(max-height="90vh").token-preview
             v-card-title.token-stats(align="center")
               v-skeleton-loader(v-if="id === null" type="card-heading" width="20vw")
-              span(v-else) Mint TinyBox {{ "#" + id }}
-            v-divider
+              span(v-else) TinyBox {{ "#" + id }}
             v-card-text.token-graphic
               v-fade-transition(mode="out-in")
                 v-skeleton-loader(v-if="loading" tile type="image")
