@@ -68,12 +68,6 @@ export default {
     links: [
       {
         type: "page",
-        icon: "mdi-information",
-        text: "About",
-        path: "/about"
-      },
-      {
-        type: "page",
         icon: "mdi-plus-box",
         text: "Create",
         path: "/create"
@@ -83,6 +77,12 @@ export default {
         icon: "mdi-scatter-plot-outline",
         text: "Boxes",
         path: "/list"
+      },
+      {
+        type: "page",
+        icon: "mdi-scatter-plot-outline",
+        text: "Explore",
+        path: "/explore"
       },
       {
         type: "link",
