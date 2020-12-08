@@ -305,7 +305,8 @@ export default Vue.extend({
       Object.assign(t.values, query);
     },
     setParams() {
-      this.$router.push({ path: "/create", query: (this as any).values });
+      const t = this as any;
+      this.$router.push({ path: "/create", query: t.values });
     },
     parseQuery(query: any) {
       const out: any = {};
