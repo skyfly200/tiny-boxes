@@ -112,8 +112,12 @@
                       span.stat-value {{ data.tokenData.palette[5] }}
                       .stat-title Shades
                     .scheme.stat
-                      span.stat-value {{ "" + data.tokenData.palette[4] + ' - ' + schemeTitles[data.tokenData.palette[4]] }}
-                      .stat-title Scheme
+                      .stat-value
+                        span {{ schemeTitles[data.tokenData.palette[4]] }}
+                      .stat-title Scheme Name
+                    .scheme.stat
+                      span.stat-value {{ data.tokenData.palette[4] }}
+                      .stat-title Scheme #
                 h2 Mirroring
                 .mirroring
                   .mirror-a.stat
@@ -134,7 +138,8 @@
                     span.stat-value {{ data.tokenData.animation }}
                     .stat-title ID
                   .animation-title.stat
-                    span.stat-value {{ animationTitles[data.tokenData.animation] }}
+                    .stat-value
+                      span {{ animationTitles[data.tokenData.animation] }}
                     .stat-title Title
 </template>
 
@@ -282,6 +287,7 @@ export default Vue.extend({
   border-radius: 0.5rem
 .stat-title
   margin: 1rem 0
+  display: block
 .v-card
   margin: 1rem
 .timestamp-date
