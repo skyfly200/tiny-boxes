@@ -174,10 +174,10 @@ export default Vue.extend({
   },
   methods: {
     calcShade(s: number) {
-      const range = this.data.tokenData.palette[3] - this.data.tokenData.palette[2];
-      const step = (range / this.data.tokenData.palette[5]);
-      const shade = parseInt(this.data.tokenData.palette[3]) - (step * s);
-      return shade;
+      const palette = this.data.tokenData.palette;
+      if (palette[5] == 0) return parseInt(palette[3]);
+      const range = palette[3] - palette[2];
+      return parseInt(palette[2]) + (range / palette[5] * s);
     },
     scheme(i: number) {
       const schemes = [
