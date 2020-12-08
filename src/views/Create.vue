@@ -400,7 +400,7 @@ export default Vue.extend({
         if (t.overlay === 'ready') return;
         t.overlay = "wait";
       }
-      else setTimeout(t.checkConfirmations(txHash), 5000);
+      else setTimeout(await t.checkConfirmations(txHash), 5000);
     },
     async getConfirmations(txHash: string) {
       try {
