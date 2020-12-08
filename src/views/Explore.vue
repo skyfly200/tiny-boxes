@@ -5,13 +5,15 @@
         .heading(align="center")
           .title Explore All The Boxy Variety
           p Hundreds of googols of possibilities
-      v-row
-        v-card(height="20vh" width="20vh" v-for="v,i of tokens").token-permutation
-          v-card-text.token-graphic
-            p {{i}}
-            Token(:id="i" :data="v")
-          v-card-actions
-            v-btn(@click="") Mint
+      v-data-iterator(:items="tokens" :items-per-page="parseInt(itemsPerPage)")
+          template(v-slot:default="{ items, isExpanded, expand }")
+            v-row(no-gutters)
+              v-col(v-for="t of items" :key="'token-col-'+t.id" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
+                v-card.token-permutation(:to="'/token/' + t.id"  :key="'token-card-'+t.id" tile)
+                  Token(:id="t.id" :data="t.art" :key="'token-'+t.id")
+                  v-card-text.title {{ t.id }}
+                  v-card-actions
+                    v-btn(@click="") Mint
 </template>
 
 <script lang="ts">
