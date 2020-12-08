@@ -320,6 +320,7 @@ export default Vue.extend({
     },
     assemblePalette: function() {
       const v = (this as any).values;
+      v.lightness = v.lightness.sort((a: any,b: any) => a - b);
       return [
         v.hue,
         v.saturation,
@@ -332,6 +333,10 @@ export default Vue.extend({
     assembleDials: function() {
       const t = this as any;
       const v = t.values;
+      console.log(v.width)
+      v.width = v.width.sort((a: any,b: any) => a - b);
+      v.height = v.height.sort((a: any,b: any) => a - b);
+      console.log(v.width)
       return [
         v.x,
         v.y,
