@@ -9,7 +9,15 @@
           h1 Fetching Tokens
           h3 Please Wait...
       template(v-else)
-        v-data-iterator(:items="tokens" :items-per-page="parseInt(itemsPerPage)")
+        v-data-iterator(:items="tokens" :items-per-page="itemsPerPageSelector")
+          template(v-slot:header)
+            v-toolbar
+              v-spacer
+              v-btn-toggle(v-model="ownerOnly" mandatory @change="changeUserOnly")
+                v-btn(large depressed color="blue" :value="false")
+                  v-icon mdi-earth
+                v-btn(large depressed color="blue" :value="true")
+                  v-icon mdi-account
           template(v-slot:default="{ items, isExpanded, expand }")
             v-row(no-gutters)
               v-col(v-for="t of items" :key="'token-col-'+t.id" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
@@ -33,7 +41,7 @@ export default {
   components: { Token },
   data: () => ({
     page: 1,
-    itemsPerPageSelector: 12,
+    itemsPerPageSelector: 10,
     count: null,
     supply: null,
     limit: null,
@@ -45,11 +53,11 @@ export default {
   computed: {
     pages() {
       return Math.floor(
-        (this.ownerOnly ? this.count : this.supply) / this.itemsPerPage + 1
+        (this.ownerOnly ? this.count : this.supply) / this.itemsPerPageSelector + 1
       );
     },
     pageTokens() {
-      const items = parseInt(this.itemsPerPage);
+      const items = parseInt(this.itemsPerPageSelector);
       const start = (this.page - 1) * items;
       let end = start + items + 1;
       if (end > this.supply) end = parseInt(this.supply);
@@ -69,8 +77,8 @@ export default {
     this.loading = false;
   },
   methods: {
-    selectItemsPerPage() {
-      this.$store.commit("setItemsPerPage", this.itemsPerPageSelector);
+    changeUserOnly() {
+      this.page = 0;
       this.loadTokens();
     },
     lookupToken: function(id, animate) {
@@ -92,9 +100,8 @@ export default {
       this.tokens = [];
       if (this.page > this.pages) this.page = this.pages; // clamp page value in range
       this.count = this.ownerOnly ? await this.lookupBalance() : await this.lookupSupply();
-      this.$store.commit("setCount", this.count);
-      const start = (this.page - 1) * this.itemsPerPage;
-      for (let i = start; i - start < this.itemsPerPage && i < this.count; i++) {
+      const start = (this.page - 1) * this.itemsPerPageSelector;
+      for (let i = start; i - start < this.itemsPerPageSelector && i < this.count; i++) {
         const id = this.ownerOnly ? await this.lookupUsersToken(i) : i;
         this.loadToken(id);
       }
