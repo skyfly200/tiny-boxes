@@ -211,25 +211,19 @@ export default Vue.extend({
         this.loading = false;
       } else {
         // load all token data
-        this.data.creation = (await t.lookupMinting()) as any;
-        this.data.animation = await this.$store.state.contracts.tinyboxes.methods
-          .tokenArt(this.id, true)
-          .call();
-        this.data.art = await this.$store.state.contracts.tinyboxes.methods
-          .tokenArt(this.id, false)
-          .call();
-        this.data.tokenData = await this.$store.state.contracts.tinyboxes.methods
-          .tokenData(this.id)
-          .call();
-        this.data.price = await this.$store.state.contracts.tinyboxes.methods
-          .priceAt(this.id)
-          .call();
-        this.data.block = await this.$store.state.web3.eth.getBlock(
-          this.data.creation.blockNumber
-        );
-
+        const creationPromise = t.lookupMinting();
+        const animationPromise = this.$store.state.contracts.tinyboxes.methods.tokenArt(this.id, true).call();
+        const artPromise = this.$store.state.contracts.tinyboxes.methods.tokenArt(this.id, false).call();
+        const tokenDataPromise = this.$store.state.contracts.tinyboxes.methods.tokenData(this.id).call();
+        const pricePromise = this.$store.state.contracts.tinyboxes.methods.priceAt(this.id).call();
+        this.data.creation = await creationPromise;
+        this.data.block = await this.$store.state.web3.eth.getBlock(this.data.creation.blockNumber);
+        this.data.animation = await animationPromise;
+        this.data.art = await artPromise;
+        this.data.tokenData = await tokenDataPromise;
+        this.data.price = await pricePromise;
         // cache token data and end loading
-        this.$store.commit("setToken", { id: this.id, data: this.data });
+        this.$store.commit("setToken", this.data);
         this.loading = false;
       }
     },
