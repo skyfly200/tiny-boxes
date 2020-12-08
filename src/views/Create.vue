@@ -37,7 +37,7 @@
                   v-card-actions
                     v-btn(:to="'/token/' + minted.id") View Token
                     v-spacer
-                    v-btn(@click="overlay = ''; update()") Mint Another
+                    v-btn(@click="overlay = ''; loadToken()") Mint Another
                 .dialog-error(v-else-if="overlay === 'error'" key="error")
                   v-card-title Transaction Error
                   v-card-text
@@ -45,7 +45,7 @@
                   v-card-actions
                     v-btn(@click="mintToken" color="success") Try Again
                     v-spacer
-                    v-btn(@click="overlay = ''; update()" color="error") Cancel
+                    v-btn(@click="overlay = ''; loadToken()" color="error") Cancel
     v-container(fluid)
       v-row(flex)
         v-col(align="center" cols="12" md="5" offset-md="1")
@@ -164,86 +164,7 @@ export default Vue.extend({
     soldOut: function() {
       return parseInt((this as any).id) >= parseInt((this as any).limit);
     },
-    ...mapState({
-        animationTitles: 'animationTitles',
-        schemeTitles: 'schemeTitles',
-    }),
-    ...mapGetters(["currentAccount"]),
-  },
-  mounted: async function() {
-    const t = this as any;
-    await this.$store.dispatch("initialize");
-    t.lookupLimit();
-    t.loadFormDefaults();
-    if (t.paramsSet) t.loadParams();
-    else t.setParams();
-    t.update();
-    t.listenForTokens();
-    t.listenForMyTokens();
-  },
-  methods: {
-    loadParams() {
-      const t = this as any;
-      // overwrite with any url query params
-      const query = t.parseQuery(t.$route.query);
-      Object.assign(t.values, query);
-    },
-    parseQuery(query: any) {
-      const out: any = {};
-      // check true, false, array, string, number
-      for (const [i,q] of Object.entries(query)) {
-        out[i] = q === "true" ? true : 
-          ( q === "false" ? false : 
-            ( Array.isArray(q) ? (q as any).map((v: any) => parseInt(v)) :
-              ( ( i === "seed" || isNaN(parseInt(q as any)) ) ? q : parseInt(q as any) ) ) );
-      }
-      return out;
-    },
-    setParams() {
-      this.$router.push({ path: "/create", query: (this as any).values });
-    },
-    formatHash(account: string) {
-      return "0x" + account.slice(2, 6) + "...." + account.slice(-4);
-    },
-    undo() {
-      const t = this as any;
-      history.back()
-      Object.assign(t.values, t.$route.query);
-      t.update();
-    },
-    redo() {
-      const t = this as any;
-      history.forward()
-      Object.assign(t.values, t.$route.query);
-      t.update();
-
-    },
-    copyPath() {
-      console.log(this.$route.fullPath);
-    },
-    changed: async function() {
-      const t = this as any;
-      t.setParams();
-      t.update();
-    },
-    update: async function() {
-      const t = this as any;
-      if (t.form.valid) return t.loadToken();
-    },
-    loadStatus: async function() {
-      const t = this as any;
-      t.id = await this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
-      t.price = await t.getPrice();
-    },
-    lookupLimit: async function() {
-      (this as any).limit = await this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
-    },
-    getPrice: function() {
-      return this.$store.state.contracts.tinyboxes.methods
-        .currentPrice()
-        .call();
-    },
-    assemblePalette: function() {
+    palette: function() {
       const v = (this as any).values;
       return [
         v.hue,
@@ -254,7 +175,7 @@ export default Vue.extend({
         v.shades
       ];
     },
-    assembleDials: function() {
+    dials: function() {
       const t = this as any;
       const v = t.values;
       return [
@@ -273,20 +194,28 @@ export default Vue.extend({
         v.mirrorAdv ? v.scale : (!v.mirrorC ? (!v.mirrorB ? 400 : 200) : 100),
       ];
     },
-    reset() {
-      const t = this as any;
-      t.loadFormDefaults();
-      t.update();
-    },
-    loadFormDefaults: function() {
-      const t = this as any;
-      // set values to default
-      Object.assign(t.values, t.defaults);
-    },
+    ...mapState({
+        animationTitles: 'animationTitles',
+        schemeTitles: 'schemeTitles',
+    }),
+    ...mapGetters(["currentAccount"]),
+  },
+  mounted: async function() {
+    const t = this as any;
+    await this.$store.dispatch("initialize");
+    t.lookupLimit();
+    t.loadFormDefaults();
+    if (t.paramsSet) t.loadParams();
+    else t.setParams();
+    t.loadToken();
+    t.listenForTokens();
+    t.listenForMyTokens();
+  },
+  methods: {
     randomizeForm: function() {
       const t = this as any;
       t.randomizeAll();
-      t.update()
+      t.loadToken()
         .then(t.setParams())
         .catch((err: any) => {
           console.error("Invalid Box Options - Call Reverted: ", err)
@@ -297,7 +226,7 @@ export default Vue.extend({
     randomizeSection: function(section: number) {
       const t = this as any;
       t.randomize(section);
-      t.update()
+      t.loadToken()
         .then(t.setParams())
         .catch((err: any) => {
           console.error("Invalid Box Options - Call Reverted: ", err)
@@ -360,16 +289,81 @@ export default Vue.extend({
         Math.random() * (range.max - range.min + 1) + range.min
       );
     },
+    formatHash(account: string) {
+      return "0x" + account.slice(2, 6) + "...." + account.slice(-4);
+    },
+    undo() {
+      const t = this as any;
+      history.back()
+      t.loadParams();
+      t.loadToken();
+    },
+    redo() {
+      const t = this as any;
+      history.forward()
+      t.loadParams();
+      t.loadToken();
+    },
+    copyPath() {
+      console.log(this.$route.fullPath);
+    },
+    changed: async function() {
+      const t = this as any;
+      t.setParams();
+      t.loadToken();
+    },
+    loadStatus: async function() {
+      const t = this as any;
+      t.id = await this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
+      t.price = await t.getPrice();
+    },
+    lookupLimit: async function() {
+      (this as any).limit = await this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
+    },
+    getPrice: function() {
+      return this.$store.state.contracts.tinyboxes.methods
+        .currentPrice()
+        .call();
+    },
+    reset() {
+      const t = this as any;
+      t.loadFormDefaults();
+      t.changed();
+    },
+    loadFormDefaults: function() {
+      const t = this as any;
+      // set values to default
+      Object.assign(t.values, t.defaults);
+    },
+    loadParams() {
+      const t = this as any;
+      // overwrite with any url query params
+      const query = t.parseQuery(t.$route.query);
+      Object.assign(t.values, query);
+    },
+    setParams() {
+      this.$router.push({ path: "/create", query: (this as any).values });
+    },
+    parseQuery(query: any) {
+      const out: any = {};
+      // check true, false, array, string, number
+      for (const [i,q] of Object.entries(query)) {
+        out[i] = q === "true" ? true : 
+          ( q === "false" ? false : 
+            ( Array.isArray(q) ? (q as any).map((v: any) => parseInt(v)) :
+              ( ( i === "seed" || isNaN(parseInt(q as any)) ) ? q : parseInt(q as any) ) ) );
+      }
+      return out;
+    },
     loadToken: function() {
       return new Promise((resolve, reject) => {
         const t = this as any;
+        if (!t.form.valid) reject("Invalid Form Values");
         t.loading = true;
         t.loadStatus()
         const v = t.values;
-        const palette = t.assemblePalette();
-        const dials = t.assembleDials();
         this.$store.state.contracts.tinyboxes.methods
-          .tokenTest(v.seed.toString(), v.shapes, palette, dials, v.animation, v.animate)
+          .tokenTest(v.seed.toString(), v.shapes, t.palette, t.dials, v.animation, v.animate)
           .call()
           .then((result: any) => {
             t.data = result;
@@ -377,7 +371,7 @@ export default Vue.extend({
             resolve(result);
           })
           .catch((err: any) => {
-            console.log('Error Prone Inputs: ', v.seed.toString(), v.shapes, palette, dials, v.animation, v.animate);
+            console.log('Error Prone Inputs: ', v);
             console.error(err);
             reject(err);
           });
@@ -386,8 +380,6 @@ export default Vue.extend({
     mintToken: async function() {
       const t = this as any;
       const v = t.values;
-      const palette = t.assemblePalette();
-      const dials = t.assembleDials();
       t.price = await t.getPrice();
       t.minted = {};
       t.overlay = "verify";
@@ -397,7 +389,7 @@ export default Vue.extend({
           to: this.$store.state.tinyboxesAddress,
           value: t.price,
           data: this.$store.state.contracts.tinyboxes.methods
-            .buy(v.seed.toString(), v.shapes, palette, dials)
+            .buy(v.seed.toString(), v.shapes, t.palette, t.dials)
             .encodeABI(),
         },
         async (err: any, txHash: string) => {
@@ -457,7 +449,7 @@ export default Vue.extend({
           ],
         })
         .on("data", (log: any) => {
-          (this as any).update();
+          (this as any).loadToken();
         });
     },
   },
