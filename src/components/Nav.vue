@@ -85,10 +85,10 @@ export default {
         path: "/list"
       },
       {
-        type: "page",
+        type: "link",
         icon: "mdi-book-open-page-variant",
-        text: "Guide",
-        path: "/guide"
+        text: "Docs",
+        path: "/docs"
       },
       {
         type: "link",
