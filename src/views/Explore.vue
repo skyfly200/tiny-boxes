@@ -1,17 +1,17 @@
 <template lang="pug">
   .token-explorer
     v-container(fluid)
-      v-row(width="100%")
-        .heading(align="center")
+      v-row
+        v-col.heading(align="center")
           .title Explore All The Boxy Variety
           p Hundreds of googols of possibilities
-        p {{ this.attribute }} 
+          p Itterating the {{ this.attribute }} value
       v-data-iterator(:items="tokens" :items-per-page="parseInt(itemsPerPage)")
           template(v-slot:default="{ items, isExpanded, expand }")
             v-row(no-gutters)
               v-col(v-for="t of items" :key="'token-col-'+t.mod" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
                 v-card.token-permutation(:key="'token-card-'+t.mod" tile)
-                  Token(:id="t.mod" :data="t.art" :key="'token-'+t.mod")
+                  span(:key="'token-'+t.mod" v-html="t.art").token-svg
                   v-card-text.title {{ t.mod }}
                   v-card-actions
                     v-btn(@click="gotoMint(t.values)") Mint
@@ -118,8 +118,8 @@ export default Vue.extend({
   data: function() {
     return {
       loading: true,
-      attribute: "animation",
-      count: 10,
+      attribute: "seed",
+      count: 15,
       tokens: [] as any,
       values: {} as any,
       defaults: {
