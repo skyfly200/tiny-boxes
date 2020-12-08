@@ -91,7 +91,7 @@
                 span Redo
               v-tooltip(bottom)
                 template(v-slot:activator="{ on }")
-                  v-btn(@click.stop="randomizeForm" v-on="on" icon).rand-btn
+                  v-btn(@click.stop="randomizeSection('all')" v-on="on" icon).rand-btn
                     v-icon mdi-dice-multiple
                 span Randomize
               v-spacer
@@ -212,51 +212,44 @@ export default Vue.extend({
     t.listenForMyTokens();
   },
   methods: {
-    randomizeForm: function() {
-      const t = this as any;
-      t.randomizeAll();
-      t.loadToken()
-        .then(t.setParams())
-        .catch((err: any) => {
-          console.error("Invalid Box Options - Call Reverted: ", err)
-          console.log("Retrying Randomize")
-          t.randomizeForm()
-        });
-    },
-    randomizeSection: function(section: number) {
+    randomizeSection: function(section: number | string) {
       const t = this as any;
       t.randomize(section);
       t.loadToken()
-        .then(t.setParams())
+        .then((art: any) => {
+          if (art) t.setParams();
+        })
         .catch((err: any) => {
           console.error("Invalid Box Options - Call Reverted: ", err)
-          console.log("Retrying Randomize")
+          console.log("Retrying Randomize...")
           t.randomizeSection(section)
         });
     },
-    randomize: function(section: number) {
+    randomize: function(section: number | string) {
       const t = this as any;
       const randomSettings: any = {};
-      const s = t.sections[section];
-      if (s.rand)
-        for (const o of s.options) {
-          if (o.rand !== false && !t.values[o.hide] && t.values[o.show] !== false) {
-            const range = o.rand ? o.rand : o.range;
-            switch (o.type) {
-              case "switch":
-                randomSettings[o.key] = Math.random() > (o.randWeight ? o.randWeight : 0.5);
-                break;
-              case "range-slider":
-                randomSettings[o.key] = [range, range]
-                  .map((r) => t.between(r))
-                  .sort();
-                break;
-              default:
-                randomSettings[o.key] = t.between(range);
-                break;
+      for (const s of (section === "all") ? t.sections : [t.sections[section]]) {
+        if (s.rand) {
+          for (const o of s.options) {
+            if (o.rand !== false && !t.values[o.hide] && t.values[o.show] !== false) {
+              const range = o.rand ? o.rand : o.range;
+              switch (o.type) {
+                case "switch":
+                  randomSettings[o.key] = Math.random() > (o.randWeight ? o.randWeight : 0.5);
+                  break;
+                case "range-slider":
+                  randomSettings[o.key] = [range, range]
+                    .map((r) => t.between(r))
+                    .sort();
+                  break;
+                default:
+                  randomSettings[o.key] = t.between(range);
+                  break;
+              }
             }
           }
         }
+      }
       Object.assign(t.values, randomSettings);
     },
     randomizeAll: function() {
