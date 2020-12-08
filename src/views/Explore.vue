@@ -118,7 +118,7 @@ export default Vue.extend({
   data: function() {
     return {
       loading: true,
-      attribute: "shapes",
+      attribute: "animation",
       count: 10,
       tokens: [] as any,
       values: {} as any,
