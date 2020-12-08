@@ -12,11 +12,13 @@
         v-row(v-if="pages > 1")
           v-col(align="center")
             v-pagination(v-model="page" circle @input="loadTokens" :length="pages")
-        v-row(no-gutters)
-          v-col(v-for="t of pageTokens" :key="'token-col-'+t.id" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
-            v-card.token(:to="'/token/' + t.id" tile)
-              Token(:id="t.id" :data="t.data" :key="'token-'+t.id")
-              v-card-text.title {{ t.id }}
+        v-data-iterator(:items="tokens" :items-per-page="parseInt(itemsPerPage)")
+          template(v-slot:default="{ items, isExpanded, expand }")
+            v-row(no-gutters)
+              v-col(v-for="t of items" :key="'token-col-'+t.id" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
+                v-card.token(:to="'/token/' + t.id" tile)
+                  Token(:id="t.id" :data="t.art" :key="'token-'+t.id")
+                  v-card-text.title {{ t.id }}
           v-col(v-if="count === 0").get-started
             v-card(align="center").get-started-card
               p {{ ownerOnly ? "You dont have any tokens yet!" : "No tokens have been minted yet" }}
@@ -91,7 +93,7 @@ export default {
       return this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
     },
     loadTokens: async function() {
-      this.tokens = {};
+      this.tokens = [];
       if (this.page > this.pages) this.page = this.pages; // clamp page value in range
       this.count = this.ownerOnly ? await this.lookupBalance() : await this.lookupSupply();
       this.$store.commit("setCount", this.count);
@@ -105,7 +107,10 @@ export default {
     },
     loadToken(tokenID) {
       this.lookupToken(tokenID, false).then(result => {
-        this.$set(this.tokens, tokenID, result);
+        this.$set(this.tokens, tokenID, {
+          id: tokenID,
+          art: result,
+        });
       });
     },
     listenForTokens: function() {
