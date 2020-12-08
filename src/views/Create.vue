@@ -164,36 +164,6 @@ export default Vue.extend({
     soldOut: function() {
       return parseInt((this as any).id) >= parseInt((this as any).limit);
     },
-    palette: function() {
-      const v = (this as any).values;
-      return [
-        v.hue,
-        v.saturation,
-        v.lightness[0],
-        v.lightness[1],
-        v.scheme,
-        v.shades
-      ];
-    },
-    dials: function() {
-      const t = this as any;
-      const v = t.values;
-      return [
-        v.x,
-        v.y,
-        v.xSeg,
-        v.ySeg,
-        v.width[0],
-        v.width[1],
-        v.height[0],
-        v.height[1],
-        v.hatching,
-        v.mirrorAdv ? v.mirrorPos1 : (v.mirrorA ? t.defaults.mirrorPos1 : 0),
-        v.mirrorAdv ? v.mirrorPos2 : (v.mirrorB ? t.defaults.mirrorPos2 : 0),
-        v.mirrorAdv ? v.mirrorPos3 : (v.mirrorC ? t.defaults.mirrorPos3 : 0),
-        v.mirrorAdv ? v.scale : (!v.mirrorC ? (!v.mirrorB ? 400 : 200) : 100),
-      ];
-    },
     ...mapState({
         animationTitles: 'animationTitles',
         schemeTitles: 'schemeTitles',
@@ -348,15 +318,45 @@ export default Vue.extend({
       }
       return out;
     },
+    assemblePalette: function() {
+      const v = (this as any).values;
+      return [
+        v.hue,
+        v.saturation,
+        v.lightness[0],
+        v.lightness[1],
+        v.scheme,
+        v.shades
+      ];
+    },
+    assembleDials: function() {
+      const t = this as any;
+      const v = t.values;
+      return [
+        v.x,
+        v.y,
+        v.xSeg,
+        v.ySeg,
+        v.width[0],
+        v.width[1],
+        v.height[0],
+        v.height[1],
+        v.hatching,
+        v.mirrorAdv ? v.mirrorPos1 : (v.mirrorA ? t.defaults.mirrorPos1 : 0),
+        v.mirrorAdv ? v.mirrorPos2 : (v.mirrorB ? t.defaults.mirrorPos2 : 0),
+        v.mirrorAdv ? v.mirrorPos3 : (v.mirrorC ? t.defaults.mirrorPos3 : 0),
+        v.mirrorAdv ? v.scale : (!v.mirrorC ? (!v.mirrorB ? 400 : 200) : 100),
+      ];
+    },
     loadToken: function() {
       return new Promise((resolve, reject) => {
         const t = this as any;
         if (!t.form.valid) reject("Invalid Form Values");
         t.loading = true;
         t.loadStatus()
-        const v = t.values;
+        const v = {...t.values, palette: t.assemblePalette(), dials: t.assembleDials()};
         this.$store.state.contracts.tinyboxes.methods
-          .tokenTest(v.seed.toString(), v.shapes, t.palette, t.dials, v.animation, v.animate)
+          .tokenTest(v.seed.toString(), v.shapes, v.palette, v.dials, v.animation, v.animate)
           .call()
           .then((result: any) => {
             t.data = result;
@@ -372,7 +372,7 @@ export default Vue.extend({
     },
     mintToken: async function() {
       const t = this as any;
-      const v = t.values;
+      const v = {...t.values, palette: t.assemblePalette(), dials: t.assembleDials()};
       t.price = await t.getPrice();
       t.minted = {};
       t.overlay = "verify";
@@ -382,7 +382,7 @@ export default Vue.extend({
           to: this.$store.state.tinyboxesAddress,
           value: t.price,
           data: this.$store.state.contracts.tinyboxes.methods
-            .buy(v.seed.toString(), v.shapes, t.palette, t.dials)
+            .buy(v.seed.toString(), v.shapes, v.palette, v.dials)
             .encodeABI(),
         },
         async (err: any, txHash: string) => {
