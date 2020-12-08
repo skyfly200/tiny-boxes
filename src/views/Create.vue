@@ -76,7 +76,7 @@
               v-spacer
               v-tooltip(bottom)
                 template(v-slot:activator="{ on }")
-                  v-btn(@click.stop="loadFormDefaults" v-on="on" icon).share-btn
+                  v-btn(@click.stop="reset" v-on="on" icon).share-btn
                     v-icon mdi-close
                 span Reset
               v-tooltip(bottom)
@@ -173,10 +173,11 @@ export default Vue.extend({
   mounted: async function() {
     const t = this as any;
     await this.$store.dispatch("initialize");
-    t.limit = await t.lookupLimit();
+    t.lookupLimit();
     t.loadFormDefaults();
     if (t.paramsSet) t.loadParams();
     else t.setParams();
+    t.update();
     t.listenForTokens();
     t.listenForMyTokens();
   },
@@ -184,8 +185,19 @@ export default Vue.extend({
     loadParams() {
       const t = this as any;
       // overwrite with any url query params
-      // TODO: better query params parsing to match values structure
-      Object.assign(t.values, t.$route.query);
+      const query = t.parseQuery(t.$route.query);
+      Object.assign(t.values, query);
+    },
+    parseQuery(query: any) {
+      const out: any = {};
+      // check true, false, array, string, number
+      for (const [i,q] of Object.entries(query)) {
+        out[i] = q === "true" ? true : 
+          ( q === "false" ? false : 
+            ( Array.isArray(q) ? (q as any).map((v: any) => parseInt(v)) :
+              ( ( i === "seed" || isNaN(parseInt(q as any)) ) ? q : parseInt(q as any) ) ) );
+      }
+      return out;
     },
     setParams() {
       this.$router.push({ path: "/create", query: (this as any).values });
@@ -220,11 +232,16 @@ export default Vue.extend({
     },
     loadStatus: async function() {
       const t = this as any;
-      t.id = await t.lookupSupply();
+      t.id = await this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
       t.price = await t.getPrice();
     },
-    lookupSupply: function() {
-      return this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
+    lookupLimit: async function() {
+      (this as any).limit = await this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
+    },
+    getPrice: function() {
+      return this.$store.state.contracts.tinyboxes.methods
+        .currentPrice()
+        .call();
     },
     assemblePalette: function() {
       const v = (this as any).values;
@@ -256,19 +273,15 @@ export default Vue.extend({
         v.mirrorAdv ? v.scale : (!v.mirrorC ? (!v.mirrorB ? 400 : 200) : 100),
       ];
     },
-    lookupLimit: function() {
-      return this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
-    },
-    getPrice: function() {
-      return this.$store.state.contracts.tinyboxes.methods
-        .currentPrice()
-        .call();
+    reset() {
+      const t = this as any;
+      t.loadFormDefaults();
+      t.update();
     },
     loadFormDefaults: function() {
       const t = this as any;
       // set values to default
       Object.assign(t.values, t.defaults);
-      t.update();
     },
     randomizeForm: function() {
       const t = this as any;
