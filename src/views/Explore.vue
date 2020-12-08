@@ -5,15 +5,16 @@
         .heading(align="center")
           .title Explore All The Boxy Variety
           p Hundreds of googols of possibilities
+        p {{ this.attribute }} 
       v-data-iterator(:items="tokens" :items-per-page="parseInt(itemsPerPage)")
           template(v-slot:default="{ items, isExpanded, expand }")
             v-row(no-gutters)
-              v-col(v-for="t of items" :key="'token-col-'+t.id" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
-                v-card.token-permutation(:to="'/token/' + t.id"  :key="'token-card-'+t.id" tile)
-                  Token(:id="t.id" :data="t.art" :key="'token-'+t.id")
-                  v-card-text.title {{ t.id }}
+              v-col(v-for="t of items" :key="'token-col-'+t.mod" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
+                v-card.token-permutation(:key="'token-card-'+t.mod" tile)
+                  Token(:id="t.mod" :data="t.art" :key="'token-'+t.mod")
+                  v-card-text.title {{ t.mod }}
                   v-card-actions
-                    v-btn(@click="") Mint
+                    v-btn(@click="gotoMint(t.values)") Mint
 </template>
 
 <script lang="ts">
@@ -30,7 +31,7 @@ export default Vue.extend({
         animationTitles: 'animationTitles',
         schemeTitles: 'schemeTitles',
     }),
-    ...mapGetters(["currentAccount"]),
+    ...mapGetters(["currentAccount", "itemsPerPage"]),
   },
   mounted: async function() {
     const t = this as any;
@@ -38,6 +39,9 @@ export default Vue.extend({
     t.loadFormDefaults();
   },
   methods: {
+    gotoMint(values: any) {
+      this.$router.push({ path: "/create", query: values });
+    },
     assemblePalette: function(v: any) {
       return [
         v.hue,
@@ -83,7 +87,11 @@ export default Vue.extend({
         const mod: any = {};
         mod[this.attribute] = t;
         Object.assign(this.values, mod);
-        this.$set(this.tokens, t, await this.loadToken(this.values));
+        this.$set(this.tokens, t, {
+          art: await this.loadToken(this.values),
+          values: this.values,
+          mod: t,
+        });
       }
       this.loading = false;
     },
