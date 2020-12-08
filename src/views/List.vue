@@ -1,6 +1,6 @@
 <template lang="pug">
   .list
-    v-btn(to="/create" color="#3F51B5" fab bottom right fixed large)
+    v-btn(to="/create" color="#3F51B5" fab bottom left fixed large)
         v-icon(large) mdi-plus-box
     v-container(fluid)
       v-row(v-if="loading")
@@ -9,9 +9,6 @@
           h1 Fetching Tokens
           h3 Please Wait...
       template(v-else)
-        v-row(v-if="pages > 1")
-          v-col(align="center")
-            v-pagination(v-model="page" circle @input="loadTokens" :length="pages")
         v-data-iterator(:items="tokens" :items-per-page="parseInt(itemsPerPage)")
           template(v-slot:default="{ items, isExpanded, expand }")
             v-row(no-gutters)
@@ -25,10 +22,6 @@
               v-btn(v-if="tokens !== {} && !soldOut" to="/create" outlined color="secondary") Mint
               span(v-if="tokens !== {} && !soldOut && ownerOnly") &nbsp;or&nbsp;
               v-btn(v-if="ownerOnly" to="opensea.io" outlined color="secondary") Buy
-        v-row(v-if="pages > 1")
-          v-col(align="center" md="2" offset-sm="5" xs="4" offset-xs="4")
-            v-pagination(v-model="page" circle @click="loadTokens" :length="pages")
-            v-combobox.page-items(v-model="itemsPerPageSelector" @change="selectItemsPerPage" dense hint="Tokens per page" label="Tokens per page" menu-props="top" :items='["12","18","24","36","48","96"]')
 </template>
 
 <script>
