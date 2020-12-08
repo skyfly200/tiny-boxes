@@ -165,14 +165,12 @@ export default Vue.extend({
   },
   mounted: async function() {
     await this.$store.dispatch("initialize");
+    const t = this as any;
     // check token exists
-    const total = await this.$store.state.contracts.tinyboxes.methods
-        .totalSupply()
-        .call();
-    this.exists = (this as any).id < total;
-    if (this.exists) {
-      await (this as any).loadToken();
-    } else this.loading = false;
+    const total = await t.$store.state.contracts.tinyboxes.methods.totalSupply().call();
+    t.exists = t.id < total && t.id >= 0;
+    if (t.exists) await t.loadToken();
+    else t.loading = false;
   },
   methods: {
     calcShade(s: number) {
