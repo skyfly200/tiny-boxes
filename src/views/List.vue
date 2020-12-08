@@ -37,7 +37,7 @@ export default {
     count: null,
     supply: null,
     limit: null,
-    ownerOnly: false,
+    ownerOnly: true,
     loading: true,
     soldOut: false,
     tokens: []
@@ -82,6 +82,9 @@ export default {
     lookupBalance: function() {
       return this.$store.state.contracts.tinyboxes.methods.balanceOf(this.currentAccount).call();
     },
+    lookupUsersToken(i) {
+      return this.$store.state.contracts.tinyboxes.methods.tokenOfOwnerByIndex(this.currentAccount, i).call();
+    },
     lookupLimit: function() {
       return this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
     },
@@ -92,18 +95,14 @@ export default {
       this.$store.commit("setCount", this.count);
       const start = (this.page - 1) * this.itemsPerPage;
       for (let i = start; i - start < this.itemsPerPage && i < this.count; i++) {
-        const id = this.ownerOnly ?
-          await this.$store.state.contracts.tinyboxes.methods.tokenOfOwnerByIndex(this.currentAccount, i).call()
-          : i;
+        const id = this.ownerOnly ? await this.lookupUsersToken(i) : i;
         this.loadToken(id);
       }
     },
-    loadToken(tokenID) {
-      this.lookupToken(tokenID, false).then(result => {
-        this.$set(this.tokens, tokenID, {
-          id: tokenID,
-          art: result,
-        });
+    async loadToken(tokenID) {
+      this.$set(this.tokens, tokenID, {
+        id: tokenID,
+        art: await this.lookupToken(tokenID, false),
       });
     },
     listenForTokens: function() {
