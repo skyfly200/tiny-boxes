@@ -68,7 +68,6 @@ export default {
   },
   mounted: async function() {
     await this.$store.dispatch("initialize");
-    this.itemsPerPageSelector = this.itemsPerPage;
     this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
     this.loadTokens();
     this.limit = await this.lookupLimit();
