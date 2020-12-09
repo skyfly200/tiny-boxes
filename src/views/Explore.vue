@@ -11,7 +11,7 @@
             v-row(no-gutters)
               v-col(v-for="t of items" :key="'token-col-'+t.mod" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
                 v-card.token-permutation(:key="'token-card-'+t.mod" tile)
-                  span(:key="'token-'+t.mod" v-html="t.art").token-svg
+                  Token(:id="t.id" :data="t.art")
                   v-card-text.title {{ t.mod }}
                   v-card-actions
                     v-btn(@click="gotoMint(t.values)") Mint
