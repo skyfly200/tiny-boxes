@@ -15,7 +15,7 @@
                   Token(:id="t.id" :data="t.art")
                   v-card-text.title {{ t.mod }}
                   v-card-actions
-                    v-btn(@click="gotoMint(t.values)") Mint
+                    v-btn(@click="gotoMint(t.values)") Create
 </template>
 
 <script lang="ts">
