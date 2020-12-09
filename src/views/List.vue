@@ -45,7 +45,7 @@ export default {
     count: null,
     supply: null,
     limit: null,
-    ownerOnly: true,
+    ownerOnly: false,
     loading: true,
     soldOut: false,
     tokens: []
