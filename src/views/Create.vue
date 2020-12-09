@@ -11,7 +11,7 @@
                   v-card-text
                     span Found some interesting options?
                     span Share them with your friends!
-                  v-text-field.url(:value="url" width="250px" append-inner:icon="mdi-copy")
+                  v-text-field.url(:value="url" width="250px" append-outer-icon="mdi-content-copy")
                   v-card-actions
                     v-spacer
                     v-btn(icon)
