@@ -510,8 +510,6 @@ export default Vue.extend({
   padding-top: 40hv
 .token-graphic
   padding: 0 !important
-.token-preview .token
-  height: 60vh
 .sold-out
   margin-top: 1rem
 .form-buttons, .price-tag
