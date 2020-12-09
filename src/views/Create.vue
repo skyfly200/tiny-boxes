@@ -222,31 +222,6 @@ export default Vue.extend({
       }
       Object.assign(t.values, randomSettings);
     },
-    randomizeAll: function() {
-      const t = this as any;
-      const randomSettings: any = {};
-      for (const s of t.sections)
-        if (s.rand)
-          for (const o of s.options) {
-            if (o.rand !== false && !t.values[o.hide] && t.values[o.show] !== false) {
-              const range = o.rand ? o.rand : o.range;
-              switch (o.type) {
-                case "switch":
-                  randomSettings[o.key] = Math.random() > (o.randWeight ? o.randWeight : 0.5);
-                  break;
-                case "range-slider":
-                  randomSettings[o.key] = [range, range]
-                    .map((r) => t.between(r))
-                    .sort();
-                  break;
-                default:
-                  randomSettings[o.key] = t.between(range);
-                  break;
-              }
-            }
-          }
-      Object.assign(t.values, randomSettings);
-    },
     between: function(range: any) {
       return Math.floor(
         Math.random() * (range.max - range.min + 1) + range.min
