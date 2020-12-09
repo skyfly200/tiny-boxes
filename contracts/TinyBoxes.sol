@@ -10,6 +10,8 @@ contract TinyBoxes is TinyBoxesStore {
 
     /**
      * @dev Contract constructor.
+     * @param _link address of the LINK token
+     * @param _feed address of the LINK/ETH price feed
      * @notice Constructor inherits from TinyBoxesStore
      */
     constructor(
@@ -22,6 +24,8 @@ contract TinyBoxes is TinyBoxesStore {
 
     /**
      * @dev Update the token URI field
+     * @param _id of a token to update
+     * @param _uri for the token
      * @dev Only the animator role can call this
      */
     function updateURI(uint256 _id, string calldata _uri)
