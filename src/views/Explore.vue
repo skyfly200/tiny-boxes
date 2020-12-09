@@ -3,10 +3,8 @@
     v-container(fluid)
       v-row
         v-col.heading(align="center")
-          .title Explore All The Boxy Variety
-          p Hundreds of googols of possibilities
-          p Scroll down to explore them all
-          p Click on one to customize and create it
+          h1.title Hundreds of googols of possibilities!
+          p Scroll to explore. Click to customize.
       v-data-iterator(:items="tokens" :items-per-page="parseInt(itemsPerPage)")
           template(v-slot:default="{ items, isExpanded, expand }")
             v-row(no-gutters)
