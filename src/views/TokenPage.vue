@@ -112,8 +112,8 @@
                       span.stat-value {{ data.tokenData.palette[5] }}
                       .stat-title Shades
                     .scheme.stat
-                      .stat-value
-                        span {{ schemeTitles[data.tokenData.palette[4]] }}
+                      div
+                        span.stat-value {{ schemeTitles[data.tokenData.palette[4]] }}
                       .stat-title Scheme Name
                     .scheme.stat
                       span.stat-value {{ data.tokenData.palette[4] }}
@@ -138,8 +138,8 @@
                     span.stat-value {{ data.tokenData.animation }}
                     .stat-title ID
                   .animation-title.stat
-                    .stat-value
-                      span {{ animationTitles[data.tokenData.animation] }}
+                    div
+                      span.stat-value {{ animationTitles[data.tokenData.animation] }}
                     .stat-title Title
 </template>
 
