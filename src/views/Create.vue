@@ -11,12 +11,15 @@
                   v-card-text
                     span Found some interesting options?
                     span Share them with your friends!
-                  v-text-field.url(:value="url" width="250px" append-outer-icon="mdi-content-copy")
+                  v-tooltip(bottom)
+                    template(v-slot:activator="{ on }")
+                      v-text-field.url#share-url(:value="url"  v-on="on" @click="copyPath" @click:append-outer="copyPath" width="250px" append-outer-icon="mdi-content-copy")
+                    span Copy URL
                   v-card-actions
                     v-spacer
-                    v-btn(icon)
+                    v-btn.twitter-share-button(v-if="false" :href="twitterPost" target="_blank" icon)
                       v-icon mdi-twitter
-                    v-btn(icon)
+                    v-btn(:href="email" target="_blank" icon)
                       v-icon mdi-email
                 .dialog-verify(v-if="overlay === 'verify'" key="verify")
                   v-card-title Submit The Transaction
@@ -110,7 +113,7 @@
               v-spacer
               v-tooltip(bottom)
                 template(v-slot:activator="{ on }")
-                  v-btn(@click.stop="share" v-on="on" icon).share-btn
+                  v-btn(@click.stop="overlay = 'share'" v-on="on" icon).share-btn
                     v-icon mdi-share
                 span Share
             br
@@ -168,6 +171,15 @@ export default Vue.extend({
     },
     url: function () {
       return window.location.origin + this.$route.fullPath;
+    },
+    twitterPost() {
+      const text = 'Check out this TinyBox! ';
+      return 'https://twitter.com/intent/tweet?text=' + encodeURI(text) + encodeURIComponent((this as any).url);
+    },
+    email() {
+      const subject = encodeURIComponent('I designed a cool TinyBox!');
+      const body = encodeURIComponent('Check out this TinyBox I designed.\n') + encodeURIComponent((this as any).url);
+      return "mailto:?subject="+subject+"&body="+body;
     },
     dialog: {
       get: function () {
@@ -264,11 +276,12 @@ export default Vue.extend({
       t.loadParams();
       t.loadToken();
     },
-    share() {
-      (this as any).overlay = "share";
-    },
     copyPath() {
-      console.log(this.$route.fullPath);
+      const copyText: any = document.querySelector("#share-url");
+      if (copyText) {
+        copyText.select();
+        document.execCommand("copy");
+      }
     },
     changed: async function() {
       const t = this as any;
