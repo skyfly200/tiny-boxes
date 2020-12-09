@@ -1,11 +1,23 @@
 <template lang="pug">
   .token-creator
-    v-dialog(:value="dialog" transition="fade" :persistent="inProgress")
+    v-dialog(:value="dialog" transition="fade" :persistent="inProgress" @click:outside="overlay=''")
       v-container(fluid)
         v-row
           v-col(md="4" sm="6" xs="12" offset-md="4" offset-sm="3")
             v-card.dialog
               v-fade-transition(appear group)
+                .dialog-share(v-if="overlay === 'share'" key="share")
+                  v-card-title Share Your Options
+                  v-card-text
+                    span Found some interesting options?
+                    span Share them with your friends!
+                  v-text-field.url(:value="url" width="250px" append-inner:icon="mdi-copy")
+                  v-card-actions
+                    v-spacer
+                    v-btn(icon)
+                      v-icon mdi-twitter
+                    v-btn(icon)
+                      v-icon mdi-email
                 .dialog-verify(v-if="overlay === 'verify'" key="verify")
                   v-card-title Submit The Transaction
                   v-card-text
@@ -98,7 +110,7 @@
               v-spacer
               v-tooltip(bottom)
                 template(v-slot:activator="{ on }")
-                  v-btn(@click="copyPath" v-on="on" icon).share-btn
+                  v-btn(@click.stop="share" v-on="on" icon).share-btn
                     v-icon mdi-share
                 span Share
             br
@@ -154,8 +166,17 @@ export default Vue.extend({
         return s;
       });
     },
-    dialog: function() {
-      return (this as any).overlay !== "";
+    url: function () {
+      return window.location.origin + this.$route.fullPath;
+    },
+    dialog: {
+      get: function () {
+        return (this as any).overlay !== "";
+      },
+      set: function (newValue) {
+        console.log(newValue);
+        (this as any).overlay = "";
+      }
     },
     inProgress: function() {
       return (
@@ -242,6 +263,9 @@ export default Vue.extend({
       history.forward()
       t.loadParams();
       t.loadToken();
+    },
+    share() {
+      (this as any).overlay = "share";
     },
     copyPath() {
       console.log(this.$route.fullPath);
@@ -495,7 +519,7 @@ export default Vue.extend({
   margin-right: 10px
 .theme--dark.v-input
   margin: 0 15px
-  width: 100%
+  width: auto
   input, textarea
     color: #121212
     background-color: #121212
@@ -508,7 +532,6 @@ export default Vue.extend({
   display: flex
   flex-wrap: wrap
 .dialog .v-card__text
-  padding: 0
   .message
     margin: 1rem
 .dialog-error .v-card__text,  .v-alert
