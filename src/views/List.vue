@@ -99,8 +99,7 @@ export default {
       this.tokens = [];
       if (this.page > this.pages) this.page = this.pages; // clamp page value in range
       this.count = this.ownerOnly ? await this.lookupBalance() : await this.lookupSupply();
-      const start = (this.page - 1) * this.itemsPerPageSelector;
-      for (let i = start; i - start < this.itemsPerPageSelector && i < this.count; i++) {
+      for (let i = 0; i < this.count; i++) {
         const id = this.ownerOnly ? await this.lookupUsersToken(i) : i;
         this.loadToken(id);
       }
