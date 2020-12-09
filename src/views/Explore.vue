@@ -5,13 +5,12 @@
         v-col.heading(align="center")
           .title Explore All The Boxy Variety
           p Hundreds of googols of possibilities
-          p Iterating the {{ attribute }} value
-          v-select(:items="attributes")
+          p Scroll down to explore them all
       v-data-iterator(:items="tokens" :items-per-page="parseInt(itemsPerPage)")
           template(v-slot:default="{ items, isExpanded, expand }")
             v-row(no-gutters)
-              v-col(v-for="t of items" :key="'token-col-'+t.mod" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
-                v-card.token-permutation(:key="'token-card-'+t.mod" tile)
+              v-col(v-for="t of items" :key="'token-col-'+t.index" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
+                v-card.token-permutation(:key="'token-card-'+t.index" tile)
                   Token(:id="t.id" :data="t.art")
                   v-card-text.title {{ t.mod }}
                   v-card-actions
@@ -21,6 +20,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { mapGetters, mapState } from "vuex";
+import { sections } from "./create-form";
 import Token from "@/components/Token.vue";
 import { log } from 'console';
 
@@ -40,10 +40,62 @@ export default Vue.extend({
     t.loadFormDefaults();
   },
   methods: {
+    randomize: function() {
+      const t = this as any;
+      const randomSettings: any = {};
+      for (const s of t.sections) {
+        if (s.rand) {
+          for (const o of s.options) {
+            if (o.rand !== false && !t.values[o.hide] && t.values[o.show] !== false) {
+              const range = o.rand ? o.rand : o.range;
+              switch (o.type) {
+                case "switch":
+                  randomSettings[o.key] = Math.random() > (o.randWeight ? o.randWeight : 0.5);
+                  break;
+                case "range-slider":
+                  randomSettings[o.key] = [range, range].map((r) => t.between(r)).sort();
+                  break;
+                default:
+                  randomSettings[o.key] = t.between(range);
+                  break;
+              }
+            }
+          }
+        }
+      }
+      Object.assign(t.values, randomSettings);
+      return randomSettings;
+    },
     gotoMint(values: any) {
       this.$router.push({ path: "/create", query: values });
     },
-    assemblePalette: function(v: any) {
+    loadFormDefaults: function() {
+      const t = this as any;
+      // set values to default
+      Object.assign(t.values, t.defaults);
+      t.loadTokens();
+    },
+    between: function(range: any) {
+      return Math.floor(
+        Math.random() * (range.max - range.min + 1) + range.min
+      );
+    },
+    loadTokens: async function() {
+      this.loading = true;
+      for (let t=0;t<this.count;t++) {
+        const randomValues = this.randomize();
+        console.log(randomValues);
+        this.$set(this.tokens, t, {
+          art: await this.loadToken(),
+          values: this.values,
+          index: t,
+        });
+      }
+      this.loading = false;
+    },
+    assemblePalette: function() {
+      const v = (this as any).values;
+      v.lightness = v.lightness.sort((a: any,b: any) => a - b);
       return [
         v.hue,
         v.saturation,
@@ -53,8 +105,11 @@ export default Vue.extend({
         v.shades
       ];
     },
-    assembleDials: function(v: any) {
+    assembleDials: function() {
       const t = this as any;
+      const v = t.values;
+      v.width = v.width.sort((a: any,b: any) => a - b);
+      v.height = v.height.sort((a: any,b: any) => a - b);
       return [
         v.x,
         v.y,
@@ -71,45 +126,19 @@ export default Vue.extend({
         v.mirrorAdv ? v.scale : (!v.mirrorC ? (!v.mirrorB ? 400 : 200) : 100),
       ];
     },
-    loadFormDefaults: function() {
-      const t = this as any;
-      // set values to default
-      Object.assign(t.values, t.defaults);
-      t.loadTokens();
-    },
-    between: function(range: any) {
-      return Math.floor(
-        Math.random() * (range.max - range.min + 1) + range.min
-      );
-    },
-    loadTokens: async function() {
-      this.loading = true;
-      for (let t=0;t<this.count;t++) {
-        const mod: any = {};
-        mod[this.attribute] = t;
-        Object.assign(this.values, mod);
-        this.$set(this.tokens, t, {
-          art: await this.loadToken(this.values),
-          values: this.values,
-          mod: t,
-        });
-      }
-      this.loading = false;
-    },
-    loadToken: function(v: any) {
+    loadToken: function() {
       return new Promise((resolve, reject) => {
         const t = this as any;
-        const palette = t.assemblePalette(v);
-        const dials = t.assembleDials(v);
+        const v = {...t.values, palette: t.assemblePalette(), dials: t.assembleDials()};
         this.$store.state.contracts.tinyboxes.methods
-          .tokenTest(v.seed.toString(), v.shapes, palette, dials, v.animation, v.animate)
+          .tokenTest(v.seed.toString(), v.shapes, v.palette, v.dials, v.animation, v.animate)
           .call()
           .then((result: any) => {
             t.data = result;
             resolve(result);
           })
           .catch((err: any) => {
-            console.log('Error With Inputs: ', v.seed.toString(), v.shapes, palette, dials, v.animation, v.animate);
+            console.log('Error Prone Inputs: ', v);
             console.error(err);
             reject(err);
           });
@@ -119,18 +148,7 @@ export default Vue.extend({
   data: function() {
     return {
       loading: true,
-      attribute: "scheme",
-      attributes: [
-        "seed",
-        "shapes",
-        "x",
-        "y",
-        "hatching",
-        "shades",
-        "scheme",
-        "animation",
-      ],
-      count: 10,
+      count: 100,
       tokens: [] as any,
       values: {} as any,
       defaults: {
@@ -159,6 +177,7 @@ export default Vue.extend({
         animate: false,
         animation: 9,
       },
+      sections: sections,
     };
   },
 });
