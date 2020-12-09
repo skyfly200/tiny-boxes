@@ -1,6 +1,6 @@
 <template lang="pug">
   .token
-    span(v-html="data" :key="id").token-svg
+    v-img(:src="src" :key="id").token-svg
 </template>
 
 <script>
@@ -10,14 +10,14 @@ export default Vue.extend({
   name: "Token",
   props: ["id", "data"],
   data: () => ({
-    size: 100
+    src: ""
   }),
   async mounted() {
     this.load();
   },
   methods: {
     load() {
-      this.size = 100;
+      this.src = URL.createObjectURL(new Blob([this.data], {type: 'image/svg+xml'}));
     }
   }
 });
