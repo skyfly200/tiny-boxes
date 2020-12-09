@@ -82,10 +82,12 @@ export default Vue.extend({
       this.loading = true;
       for (let t=0;t<this.count;t++) {
         this.randomize();
-        this.$set(this.tokens, t, {
-          art: await this.loadToken(),
-          values: JSON.parse(JSON.stringify(this.values)),
-          index: t,
+        this.loadToken().then( result => {
+          this.$set(this.tokens, t, {
+            art: result,
+            values: JSON.parse(JSON.stringify(this.values)),
+            index: t,
+          });
         });
       }
       this.loading = false;
