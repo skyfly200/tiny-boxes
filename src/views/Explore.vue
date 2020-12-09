@@ -119,7 +119,7 @@ export default Vue.extend({
   data: function() {
     return {
       loading: true,
-      attribute: "seed",
+      attribute: "scheme",
       attributes: [
         "seed",
         "shapes",
@@ -127,10 +127,10 @@ export default Vue.extend({
         "y",
         "hatching",
         "shades",
-        "schemes",
+        "scheme",
         "animation",
       ],
-      count: 15,
+      count: 10,
       tokens: [] as any,
       values: {} as any,
       defaults: {
