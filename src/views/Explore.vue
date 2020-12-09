@@ -6,12 +6,13 @@
           .title Explore All The Boxy Variety
           p Hundreds of googols of possibilities
           p Scroll down to explore them all
+          p Click on one to customize and create it
       v-data-iterator(:items="tokens" :items-per-page="parseInt(itemsPerPage)")
           template(v-slot:default="{ items, isExpanded, expand }")
             v-row(no-gutters)
               v-col(v-for="t of items" :key="'token-col-'+t.index" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
-                v-card.token-permutation(:key="'token-card-'+t.index" tile)
-                  Token(@click="gotoMint(t.values)" :id="t.id" :data="t.art")
+                v-card.token-permutation(@click="gotoMint(t.values)" :key="'token-card-'+t.index" tile)
+                  Token(:id="t.id" :data="t.art")
 </template>
 
 <script lang="ts">
@@ -83,7 +84,7 @@ export default Vue.extend({
         this.randomize();
         this.$set(this.tokens, t, {
           art: await this.loadToken(),
-          values: this.values,
+          values: JSON.parse(JSON.stringify(this.values)),
           index: t,
         });
       }
