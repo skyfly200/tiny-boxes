@@ -14,10 +14,16 @@
             v-toolbar
               v-spacer
               v-btn-toggle(v-if="web3Status === 'active'" v-model="ownerOnly" mandatory @change="changeUserOnly")
-                v-btn(large depressed color="blue" :value="false")
-                  v-icon mdi-earth
-                v-btn(large depressed color="blue" :value="true")
-                  v-icon mdi-account
+                v-tooltip(bottom).rand-section
+                    template(v-slot:activator="{ on }")
+                      v-btn(large v-on="on" depressed color="blue" :value="false")
+                        v-icon mdi-earth
+                    span All Boxes
+                v-tooltip(bottom).rand-section
+                    template(v-slot:activator="{ on }")
+                      v-btn(large v-on="on" depressed color="purple" :value="true")
+                        v-icon mdi-account
+                    span Your Boxes
           template(v-slot:default="{ items, isExpanded, expand }")
             v-row(no-gutters)
               v-col(v-for="t of items" :key="'token-col-'+t.id" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
@@ -40,7 +46,6 @@ export default {
   name: "List",
   components: { Token },
   data: () => ({
-    page: 1,
     itemsPerPageSelector: 10,
     count: null,
     supply: null,
@@ -51,19 +56,6 @@ export default {
     tokens: []
   }),
   computed: {
-    pages() {
-      return Math.floor(
-        (this.ownerOnly ? this.count : this.supply) / this.itemsPerPageSelector + 1
-      );
-    },
-    pageTokens() {
-      const items = parseInt(this.itemsPerPageSelector);
-      const start = (this.page - 1) * items;
-      let end = start + items + 1;
-      if (end > this.supply) end = parseInt(this.supply);
-      const idList = Object.keys(this.tokens).filter(i => i>=start && i<=end);
-      return idList.map( id => ({ id: id, data: this.tokens[id]}) );
-    },
     ...mapGetters(["currentAccount", "web3Status", "itemsPerPage"])
   },
   mounted: async function() {
@@ -77,7 +69,6 @@ export default {
   },
   methods: {
     changeUserOnly() {
-      this.page = 0;
       this.loadTokens();
     },
     lookupToken: function(id, animate) {
@@ -97,20 +88,24 @@ export default {
     },
     loadTokens: async function() {
       this.tokens = [];
-      if (this.page > this.pages) this.page = this.pages; // clamp page value in range
-      this.count = this.ownerOnly ? await this.lookupBalance() : await this.lookupSupply();
+      this.count = await (this.ownerOnly ? this.lookupBalance() : this.lookupSupply());
+      console.log(this.count)
       for (let i = 0; i < this.count; i++) {
-        const id = this.ownerOnly ? await this.lookupUsersToken(i) : i;
-        this.loadToken(id);
+        this.ownerOnly ?
+          this.lookupUsersToken(i).then( result => this.loadToken(result)) :
+          this.loadToken(i);
       }
     },
-    async loadToken(tokenID) {
-      this.$set(this.tokens, tokenID, {
-        id: tokenID,
-        art: await this.lookupToken(tokenID, false),
+    loadToken(tokenID) {
+      this.lookupToken(tokenID, false).then( result => {
+        this.$set(this.tokens, tokenID, {
+          id: tokenID,
+          art: result,
+        });
       });
     },
     listenForTokens: function() {
+      // TODO: copy as my tokens
       const tokenSubscription = this.$store.state.web3.eth
         .subscribe("logs", {
           address: this.$store.state.tinyboxesAddress,
