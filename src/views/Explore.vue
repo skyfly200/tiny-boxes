@@ -5,7 +5,8 @@
         v-col.heading(align="center")
           .title Explore All The Boxy Variety
           p Hundreds of googols of possibilities
-          p Itterating the {{ this.attribute }} value
+          p Iterating the {{ attribute }} value
+          v-select(:items="attributes")
       v-data-iterator(:items="tokens" :items-per-page="parseInt(itemsPerPage)")
           template(v-slot:default="{ items, isExpanded, expand }")
             v-row(no-gutters)
@@ -119,6 +120,16 @@ export default Vue.extend({
     return {
       loading: true,
       attribute: "seed",
+      attributes: [
+        "seed",
+        "shapes",
+        "x",
+        "y",
+        "hatching",
+        "shades",
+        "schemes",
+        "animation",
+      ],
       count: 15,
       tokens: [] as any,
       values: {} as any,
