@@ -83,8 +83,7 @@ export default Vue.extend({
     loadTokens: async function() {
       this.loading = true;
       for (let t=0;t<this.count;t++) {
-        const randomValues = this.randomize();
-        console.log(randomValues);
+        this.randomize();
         this.$set(this.tokens, t, {
           art: await this.loadToken(),
           values: this.values,
