@@ -48,6 +48,7 @@ export default {
   data: () => ({
     itemsPerPageSelector: 10,
     count: null,
+    userCount: null,
     supply: null,
     limit: null,
     ownerOnly: false,
@@ -59,13 +60,14 @@ export default {
     ...mapGetters(["currentAccount", "web3Status", "itemsPerPage"])
   },
   mounted: async function() {
+    this.loading = true;
     await this.$store.dispatch("initialize");
     this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
-    this.loadTokens();
     this.limit = await this.lookupLimit();
     this.supply = await this.lookupSupply();
+    this.userCount = await this.lookupBalance();
     this.soldOut = this.supply === this.limit;
-    this.loading = false;
+    this.loadTokens();
   },
   methods: {
     changeUserOnly() {
@@ -88,24 +90,23 @@ export default {
     },
     loadTokens: async function() {
       this.tokens = [];
-      this.count = await (this.ownerOnly ? this.lookupBalance() : this.lookupSupply());
-      console.log(this.count)
+      this.count = this.ownerOnly ? this.userCount : this.supply;
+      this.loading = false;
       for (let i = 0; i < this.count; i++) {
         this.ownerOnly ?
-          this.lookupUsersToken(i).then( result => this.loadToken(result)) :
+          this.lookupUsersToken(i).then( result => this.loadToken(result, i)) :
           this.loadToken(i);
       }
     },
-    loadToken(tokenID) {
+    loadToken(tokenID, index) {
       this.lookupToken(tokenID, false).then( result => {
-        this.$set(this.tokens, tokenID, {
+        this.$set(this.tokens, this.ownerOnly ? index : tokenID, {
           id: tokenID,
           art: result,
         });
       });
     },
-    listenForTokens: function() {
-      // TODO: copy as my tokens
+    listenForMyTokens: function() {
       const tokenSubscription = this.$store.state.web3.eth
         .subscribe("logs", {
           address: this.$store.state.tinyboxesAddress,
@@ -119,11 +120,34 @@ export default {
           "data",
           async function(log) {
             const id = parseInt(log.topics[3], 16);
+            // lookup new user balance
+            this.userCount = await this.lookupBalance();
+            // rerender token list
+            if (this.ownerOnly) this.loadToken(id);
+          }.bind(this)
+        )
+        .on("error", function(log) {
+          this.listenForTokens();
+        });
+    },
+    listenForTokens: function() {
+      const tokenSubscription = this.$store.state.web3.eth
+        .subscribe("logs", {
+          address: this.$store.state.tinyboxesAddress,
+          topics: [
+            "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+            "0x0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        })
+        .on(
+          "data",
+          async function(log) {
+            const id = parseInt(log.topics[3], 16);
             // lookup new supply and check if sold out
             this.supply = await this.lookupSupply();
             this.soldOut = this.supply === this.limit;
             // rerender token list
-            this.loadToken(id);
+            if (!this.ownerOnly) this.loadToken(id);
           }.bind(this)
         )
         .on("error", function(log) {
