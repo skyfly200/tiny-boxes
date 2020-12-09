@@ -11,10 +11,7 @@
             v-row(no-gutters)
               v-col(v-for="t of items" :key="'token-col-'+t.index" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
                 v-card.token-permutation(:key="'token-card-'+t.index" tile)
-                  Token(:id="t.id" :data="t.art")
-                  v-card-text.title {{ t.mod }}
-                  v-card-actions
-                    v-btn(@click="gotoMint(t.values)") Create
+                  Token(@click="gotoMint(t.values)" :id="t.id" :data="t.art")
 </template>
 
 <script lang="ts">
@@ -32,7 +29,7 @@ export default Vue.extend({
         animationTitles: 'animationTitles',
         schemeTitles: 'schemeTitles',
     }),
-    ...mapGetters(["currentAccount", "itemsPerPage"]),
+    ...mapGetters(["currentAccount"]),
   },
   mounted: async function() {
     const t = this as any;
@@ -150,6 +147,7 @@ export default Vue.extend({
       count: 100,
       tokens: [] as any,
       values: {} as any,
+      itemsPerPage: 100,
       defaults: {
         seed: Date.now(),
         shapes: 11,
