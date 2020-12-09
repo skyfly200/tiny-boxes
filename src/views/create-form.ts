@@ -122,7 +122,7 @@ export const sections: Array<object> = [
         },
       },
       {
-        label: "Lightness Range",
+        label: "Lightness",
         key: "lightness",
         type: "range-slider",
         range: {
