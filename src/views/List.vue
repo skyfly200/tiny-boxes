@@ -14,12 +14,12 @@
             v-toolbar
               v-spacer
               v-btn-toggle(v-if="web3Status === 'active'" v-model="ownerOnly" mandatory @change="changeUserOnly")
-                v-tooltip(bottom).rand-section
+                v-tooltip(bottom)
                     template(v-slot:activator="{ on }")
                       v-btn(large v-on="on" depressed color="blue" :value="false")
                         v-icon mdi-earth
                     span All Boxes
-                v-tooltip(bottom).rand-section
+                v-tooltip(bottom)
                     template(v-slot:activator="{ on }")
                       v-btn(large v-on="on" depressed color="purple" :value="true")
                         v-icon mdi-account
