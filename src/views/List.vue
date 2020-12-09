@@ -13,7 +13,7 @@
           template(v-slot:header)
             v-toolbar
               v-spacer
-              v-btn-toggle(v-model="ownerOnly" mandatory @change="changeUserOnly")
+              v-btn-toggle(v-if="web3Status === 'active'" v-model="ownerOnly" mandatory @change="changeUserOnly")
                 v-btn(large depressed color="blue" :value="false")
                   v-icon mdi-earth
                 v-btn(large depressed color="blue" :value="true")
@@ -64,7 +64,7 @@ export default {
       const idList = Object.keys(this.tokens).filter(i => i>=start && i<=end);
       return idList.map( id => ({ id: id, data: this.tokens[id]}) );
     },
-    ...mapGetters(["currentAccount", "itemsPerPage"])
+    ...mapGetters(["currentAccount", "web3Status", "itemsPerPage"])
   },
   mounted: async function() {
     await this.$store.dispatch("initialize");
