@@ -460,8 +460,9 @@ library SVG {
             ));
         } else if (animation == 21) {
             // Phased Fade
-            uint256 timeShift = uint256(100).add(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
-            string memory times = string(abi.encodePacked("0;0.", timeShift.toString(), ";0.9;1"));
+            uint256 fadeOut = uint256(100).add(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
+            uint256 fadeIn = uint256(900).sub(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
+            string memory times = string(abi.encodePacked("0;0.", fadeOut.toString(), ";0.", fadeIn.toString(), ";1"));
             return _animate("opacity", "10s", "1;0;0;1", times, "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 " );
         // TO BIG OF A CONTRACT TO USE THESE
         // } else if (animation == 21) {
