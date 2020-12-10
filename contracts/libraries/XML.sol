@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "./Utils.sol";
 import "./StringUtilsLib.sol";
 
-library SVG {
+library XML {
     using Utils for *;
     using Strings for *;
 
