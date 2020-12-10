@@ -449,6 +449,11 @@ library SVG {
                 _animate("width","10s",vals[0]),
                 _animate("height","10s",vals[1])
             ));
+        } else if (animation == 21) {
+            // Phased Fade
+            uint256 timeShift = uint256(100).add(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
+            string memory times = string(abi.encodePacked("0;0.", timeShift.toString(), ";0.9;1"));
+            return _animateTransform( "transform", "opacity", "10s", "1;1;0;0", times, "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 " );
         // TO BIG OF A CONTRACT TO USE THESE
         // } else if (animation == 21) {
         //     // wave
@@ -461,11 +466,6 @@ library SVG {
         //     string memory end = peak.add(length).toString();
         //     string memory times = string(abi.encodePacked("0;", start, ";", peak.toString(), ";", end, ";1")); 
         //     return _animateTransform( "transform", "scale", "10s", values, times, "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 " );
-        // } else if (animation == 22) {
-        //     // Phased Fade
-        //     uint256 timeShift = uint256(100).add(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
-        //     string memory times = string(abi.encodePacked("0;0.", timeShift.toString(), ";0.9;1"));
-        //     return _animateTransform( "transform", "opacity", "10s", "1;1;0;0", times, "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 " );
         // } else if (animation == 23) {
             // Swing
         // } else if (animation == 25) {
