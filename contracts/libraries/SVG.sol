@@ -455,7 +455,18 @@ library SVG {
                 _animate("width","10s",vals[0]),
                 _animate("height","10s",vals[1])
             ));
-        // } else if (animation == 21) {
+        } else if (animation == 21) {
+            // Jello - (bounce skewX w/ ease-in)
+            return _animateTransform(
+                "transform",
+                "skewX",
+                "5s",
+                "0;-60;30;-15;7.5;-3.75;1.871;-.9355;.41775;0;0",
+                "0;.1;.2;.3;.4;.5;.6;.7;.8;.9;1",
+                ".2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1"
+            );
+        // TO BIG OF A CONTRACT TO USE THESE
+        // } else if (animation == 22) {
         //     // wave
         //     string memory values = string(abi.encodePacked("1 1;1 1;1.5 1.5;1 1;1 1"));
         //     // TODO: generate decimal values and convetr to strings
@@ -466,21 +477,11 @@ library SVG {
         //     string memory end = peak.add(length).toString();
         //     string memory times = string(abi.encodePacked("0;", start, ";", peak.toString(), ";", end, ";1")); 
         //     return _animateTransform( "transform", "scale", "10s", values, times, "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 " );
-        // } else if (animation == 22) {
+        // } else if (animation == 23) {
         //     // Phased Fade
         //     uint256 timeShift = uint256(100).add(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
         //     string memory times = string(abi.encodePacked("0;0.", timeShift.toString(), ";0.9;1"));
         //     return _animateTransform( "transform", "opacity", "10s", "1;1;0;0", times, "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 " );
-        } else if (animation == 23) {
-            // Jello - (bounce skewX w/ ease-in)
-            return _animateTransform(
-                "transform",
-                "skewX",
-                "5s",
-                "0;-60;30;-15;7.5;-3.75;1.871;-.9355;.41775;0;0",
-                "0;.1;.2;.3;.4;.5;.6;.7;.8;.9;1",
-                ".2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1"
-            );
         // } else if (animation == 24) {
             // Swing
         // } else if (animation == 25) {
