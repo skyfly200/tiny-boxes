@@ -62,7 +62,7 @@ library Metadata {
      */
     function _generateColorMetadata(TinyBox memory box) internal pure returns (string memory) {
         string memory scheme = string(abi.encodePacked('<scheme>', uint256(box.colorPalette.scheme).toString(), '</scheme>'));
-        string memory rootHue = string(abi.encodePacked('<rootHue>', uint256(box.colorPalette.hue).toString(), '</rootHue>'));
+        string memory rootHue = string(abi.encodePacked('<root-hue>', uint256(box.colorPalette.hue).toString(), '</root-hue>'));
         string memory saturation = string(abi.encodePacked('<saturation>', uint256(box.colorPalette.saturation).toString(), '</saturation>'));
         string memory shades = string(abi.encodePacked('<shades>', uint256(box.colorPalette.shades).toString(), '</shades>'));
         string memory lightness = string(abi.encodePacked('<lightness>', uint256(box.colorPalette.lightnessRange[0]).toString(), '-', uint256(box.colorPalette.lightnessRange[0]).toString(), '</lightness>'));
@@ -113,11 +113,11 @@ library Metadata {
     function _generateMirrorMetadata(TinyBox memory box) internal pure returns (string memory) {
         return string(abi.encodePacked(
             '<mirror>',
-                '<mirrorPositions>',
+                '<mirror-positions>',
                     uint256(box.mirrorPositions[0]).toString(), ',',
                     uint256(box.mirrorPositions[1]).toString(), ',',
                     uint256(box.mirrorPositions[2]).toString(),
-                '</mirrorPositions>',
+                '</mirror-positions>',
                 '<scale>',
                     uint256(box.scale).toString(),
                 '</scale>',
@@ -163,7 +163,7 @@ library Metadata {
             '</contract>'
         ));
 
-        string memory renderedAt = string(abi.encodePacked('<renderedAt>',now.toString(),'</renderedAt>')); // TODO: add timestamp here
+        string memory renderedAt = string(abi.encodePacked('<rendered-at>',now.toString(),'</rendered-at>')); // TODO: add timestamp here
 
         return string(abi.encodePacked('<metadata>', contractAddress, renderedAt, token, animation, colors, shapes, placement, mirror, '</metadata>'));
     }
