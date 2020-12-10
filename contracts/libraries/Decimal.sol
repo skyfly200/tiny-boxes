@@ -10,6 +10,7 @@ import "@openzeppelin/contracts/utils/SafeCast.sol";
 
 import "./Utils.sol";
 import "./SVGBuffer.sol";
+import "./FixidityLib.sol";
 import "../structs/Decimal.sol";
 
 library DecimalUtils {
