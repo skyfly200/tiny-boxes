@@ -455,46 +455,48 @@ library SVG {
                 _animate("width","10s",vals[0]),
                 _animate("height","10s",vals[1])
             ));
-        } else if (animation == 21) {
-            // wave
-            string memory values = string(abi.encodePacked("1 1;1 1;1.5 1.5;1 1;1 1"));
-            // TODO: generate decimal values and convetr to strings
-            // start min 0, end max 1
-            uint256 length = 10; // percent of the animation length for each wave pulse
-            uint256 peak = uint256(100).add(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
-            string memory start = peak.sub(length).toString();
-            string memory end = peak.add(length).toString();
-            string memory times = string(abi.encodePacked("0;", start, ";", peak.toString(), ";", end, ";1")); 
-            return _animateTransform( "transform", "scale", "10s", values, times, "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 " );
-        } else if (animation == 22) {
-            // Phased Fade
-            uint256 timeShift = uint256(100).add(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
-            string memory times = string(abi.encodePacked("0;0.", timeShift.toString(), ";0.9;1"));
-            return _animateTransform( "transform", "opacity", "10s", "1;1;0;0", times, "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 " );
+        // } else if (animation == 21) {
+        //     // wave
+        //     string memory values = string(abi.encodePacked("1 1;1 1;1.5 1.5;1 1;1 1"));
+        //     // TODO: generate decimal values and convetr to strings
+        //     // start min 0, end max 1
+        //     uint256 length = 10; // percent of the animation length for each wave pulse
+        //     uint256 peak = uint256(100).add(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
+        //     string memory start = peak.sub(length).toString();
+        //     string memory end = peak.add(length).toString();
+        //     string memory times = string(abi.encodePacked("0;", start, ";", peak.toString(), ";", end, ";1")); 
+        //     return _animateTransform( "transform", "scale", "10s", values, times, "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 " );
+        // } else if (animation == 22) {
+        //     // Phased Fade
+        //     uint256 timeShift = uint256(100).add(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
+        //     string memory times = string(abi.encodePacked("0;0.", timeShift.toString(), ";0.9;1"));
+        //     return _animateTransform( "transform", "opacity", "10s", "1;1;0;0", times, "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 " );
         } else if (animation == 23) {
-            // Jello
+            // Jello - (bounce skewX w/ ease-in)
             return _animateTransform(
                 "transform",
                 "skewX",
-                "10s",
-                "0;50;-45;40;-35;30;-25;20;-15;10;-5;2.5;-1.25;0.625;-0.3125;0"
+                "5s",
+                "0;-60;30;-15;7.5;-3.75;1.871;-.9355;.41775;0;0",
+                "0;.1;.2;.3;.4;.5;.6;.7;.8;.9;1",
+                ".2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1;.2 .1 1 1"
             );
-        } else if (animation == 24) {
+        // } else if (animation == 24) {
             // Swing
-        } else if (animation == 25) {
-            // Platform Drop (shake first?)
-            string memory values = string(abi.encodePacked(
-                shape.position[0].toString()," ",shape.position[1].toString()," ; ",
-                shape.position[0].toString()," ",shape.position[1].sub(500).toString()
-            ));
-            return _animateTransform(
-                "transform",
-                "translate",
-                "10s",
-                values,
-                "0 ; 1",
-                "0.2 0 0.5 1 ; 0.5 0 0.5 1"
-            );
+        // } else if (animation == 25) {
+        //     // Platform Drop (shake first?)
+        //     string memory values = string(abi.encodePacked(
+        //         shape.position[0].toString()," ",shape.position[1].toString()," ; ",
+        //         shape.position[0].toString()," ",shape.position[1].sub(500).toString()
+        //     ));
+        //     return _animateTransform(
+        //         "transform",
+        //         "translate",
+        //         "10s",
+        //         values,
+        //         "0 ; 1",
+        //         "0.2 0 0.5 1 ; 0.5 0 0.5 1"
+        //     );
         }
     }
 }
