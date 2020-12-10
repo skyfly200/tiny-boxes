@@ -79,6 +79,15 @@ library SVG {
     }
 
     /**
+     * @dev render an animate SVG tag with keyTimes and keySplines
+     */
+    function _animate(string memory attribute, string memory duration, string memory values, string memory keyTimes, string memory keySplines) internal pure returns (string memory) {
+        return string(abi.encodePacked('<animate attributeName="', attribute, '" values="', values, '" dur="', duration,
+        '" keyTimes="',keyTimes,'" keySplines="',keySplines,
+        '" calcMode="spline" repeatCount="indefinite" />'));
+    }
+
+    /**
      * @dev render an animateTransform SVG tag with keyTimes and keySplines
      */
     function _animateTransform(string memory attribute, string memory typeVal, string memory duration, string memory values, string memory keyTimes, string memory keySplines) internal pure returns (string memory) {
@@ -453,7 +462,7 @@ library SVG {
             // Phased Fade
             uint256 timeShift = uint256(100).add(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
             string memory times = string(abi.encodePacked("0;0.", timeShift.toString(), ";0.9;1"));
-            return _animateTransform( "transform", "opacity", "10s", "1;1;0;0", times, "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 " );
+            return _animate("opacity", "10s", "1;0;0;1", times, "0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 " );
         // TO BIG OF A CONTRACT TO USE THESE
         // } else if (animation == 21) {
         //     // wave
