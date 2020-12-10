@@ -240,50 +240,39 @@ library SVG {
         // select animation based on animation id
         uint256 animation = box.animation;
         if (animation == 0) {
-            // Rounding corners
-            return _animate("rx","10s","0;100;0");
-        } else if (animation == 1) {
-            // grow n shrink
-            return _animateTransform(
-                "transform",
-                "scale",
-                "10s",
-                "1 1 ; 1.5 1.5 ; 1 1 ; 0.5 0.5 ; 1 1",
-                "0 ; 0.25 ; 0.5 ; 0.75 ; 1"
-            );
-        } else if (animation == 2) {
-            // squash n stretch
-            uint256 div = 7;
-            string[2] memory vals;
-            for (uint256 i = 0; i < 2; i++) {
-                uint256 size = uint256(shape.size[i]);
-                string memory avg = size.toString();
-                string memory min = size.sub(size.div(div)).toString();
-                string memory max = size.add(size.div(div)).toString();
-                vals[i] = string(abi.encodePacked(
-                    avg, ";", (i==0) ? min : max, ";", avg, ";", (i==0) ? max : min, ";", avg
-                ));
-            }
-            return string(abi.encodePacked(
-                _animate("width","10s",vals[0]),
-                _animate("height","10s",vals[1])
-            ));
-        } else if (animation == 3) {
             // skew X
             return _animateTransform(
                 "transform",
                 "skewX",
                 "10s",
-                "0 ; 50 ; 0"
+                "0 ; 50 ; -50 ; 0"
             );
-        } else if (animation == 4) {
+        } else if (animation == 1) {
             // skew Y
             return _animateTransform(
                 "transform",
                 "skewY",
                 "10s",
-                "0 ; 50 ; 0"
+                "0 ; 50 ; -50 ; 0"
             );
+        } else if (animation == 2) {
+            // skew X & Y
+            return string(abi.encodePacked(
+                _animateTransform(
+                    "transform",
+                    "skewX",
+                    "10s",
+                    "0 ; 50 ; -50 ; 0"
+                ),
+                _animateTransform(
+                    "transform",
+                    "skewY",
+                    "10s",
+                    "0 ; 50 ; -50 ; 0"
+                );
+            ));
+        } else if (animation == 3) {
+        } else if (animation == 4) {
         } else if (animation == 5) {
             // snap spin 1
             return _animateTransform(
@@ -424,6 +413,37 @@ library SVG {
                 _animate("y","250ms",vals[1])
             ));
         } else if (animation == 18) {
+            // Rounding corners
+            return _animate("rx","10s","0;100;0");
+        } else if (animation == 19) {
+            // grow n shrink
+            return _animateTransform(
+                "transform",
+                "scale",
+                "10s",
+                "1 1 ; 1.5 1.5 ; 1 1 ; 0.5 0.5 ; 1 1",
+                "0 ; 0.25 ; 0.5 ; 0.75 ; 1"
+            );
+        } else if (animation == 20) {
+            // squash n stretch
+            uint256 div = 7;
+            string[2] memory vals;
+            for (uint256 i = 0; i < 2; i++) {
+                uint256 size = uint256(shape.size[i]);
+                string memory avg = size.toString();
+                string memory min = size.sub(size.div(div)).toString();
+                string memory max = size.add(size.div(div)).toString();
+                vals[i] = string(abi.encodePacked(
+                    avg, ";", (i==0) ? min : max, ";", avg, ";", (i==0) ? max : min, ";", avg
+                ));
+            }
+            return string(abi.encodePacked(
+                _animate("width","10s",vals[0]),
+                _animate("height","10s",vals[1])
+            ));
+        } else if (animation == 21) {
+        } else if (animation == 22) {
+        } else if (animation == 23) {
             // drop (shake first?)
             string memory values = string(abi.encodePacked(
                 shape.position[0].toString()," ",shape.position[1].toString()," ; ",
