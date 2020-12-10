@@ -269,10 +269,24 @@ library SVG {
                     "skewY",
                     "10s",
                     "0 ; 50 ; -50 ; 0"
-                );
+                )
             ));
         } else if (animation == 3) {
+            // skew X half
+            return _animateTransform(
+                "transform",
+                "skewX",
+                "10s",
+                "0 ; 50 ; 0"
+            );
         } else if (animation == 4) {
+            // skew Y half
+            return _animateTransform(
+                "transform",
+                "skewY",
+                "10s",
+                "0 ; 50 ; 0"
+            );
         } else if (animation == 5) {
             // snap spin 1
             return _animateTransform(
@@ -441,9 +455,11 @@ library SVG {
                 _animate("width","10s",vals[0]),
                 _animate("height","10s",vals[1])
             ));
+        // } else if (animation == 21) {
+        // } else if (animation == 22) {
+        // } else if (animation == 23) {
+        // } else if (animation == 24) {
         } else if (animation == 21) {
-        } else if (animation == 22) {
-        } else if (animation == 23) {
             // drop (shake first?)
             string memory values = string(abi.encodePacked(
                 shape.position[0].toString()," ",shape.position[1].toString()," ; ",
