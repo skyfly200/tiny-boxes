@@ -74,13 +74,13 @@ export default {
       },
       {
         type: "page",
-        icon: "mdi-scatter-plot-outline",
+        icon: "mdi-view-grid",
         text: "Boxes",
         path: "/list"
       },
       {
         type: "page",
-        icon: "mdi-scatter-plot-outline",
+        icon: "mdi-dice-multiple",
         text: "Explore",
         path: "/explore"
       },
