@@ -2,37 +2,26 @@
 pragma solidity ^0.6.8;
 pragma experimental ABIEncoderV2;
 
-import "@openzeppelin/contracts/math/Math.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/math/SignedSafeMath.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "./structs/Decimal.sol";
 import "./structs/Shape.sol";
 import "./structs/TinyBox.sol";
 import "./structs/HSL.sol";
 
-import "./libraries/SVGBuffer.sol";
 import "./libraries/SVG.sol";
+import "./libraries/Animation.sol";
 import "./libraries/Metadata.sol";
 import "./libraries/Random.sol";
-import "./libraries/Utils.sol";
 import "./libraries/Decimal.sol";
-import "./libraries/Colors.sol";
-import "./libraries/StringUtilsLib.sol";
 
 library TinyBoxesRenderer {
-    using Math for uint256;
     using SafeMath for uint256;
     using SignedSafeMath for int256;
-    using SVGBuffer for bytes;
     using Random for bytes32[];
     using Metadata for TinyBox;
-    using StringUtilsLib for *;
     using DecimalUtils for *;
-    using Utils for *;
-    using Colors for *;
-    using Strings for *;
 
     uint256 public constant ANIMATION_FRAME_RATE = 10;
     uint256 public constant ANIMATION_SECONDS = 3;
@@ -136,7 +125,7 @@ library TinyBoxesRenderer {
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
             Shape memory shape = _generateShape(pool, i, box);
             shapes = string(abi.encodePacked(shapes, 
-                animate ? SVG._rect(shape, SVG._generateAnimation(box, shape, i)) : SVG._rect(shape)
+                animate ? SVG._rect(shape, Animation._generateAnimation(box, shape, i)) : SVG._rect(shape)
             ));
         }
         // wrap shapes in a symbol with the id "shapes"
