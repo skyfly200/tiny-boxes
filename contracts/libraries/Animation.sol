@@ -48,25 +48,47 @@ library Animation {
     /**
      * @dev render an animateTransform SVG tag with keyTimes and keySplines
      */
-    function _animateTransform(string memory typeVal, string memory duration, string memory values, string memory keyTimes, string memory keySplines) internal pure returns (string memory) {
+    function _animateTransform(string memory typeVal, string memory duration, string memory values, string memory keyTimes, string memory keySplines, bool add) internal pure returns (string memory) {
         return string(abi.encodePacked('<animateTransform attributeName="transform" attributeType="XML" type="', typeVal,'" dur="', duration, '" values="', values,
             bytes(keyTimes).length == 0 ? '' : string(abi.encodePacked('" keyTimes="', keyTimes)),
             bytes(keySplines).length == 0 ? '' : string(abi.encodePacked('" calcMode="spline" keySplines="', keySplines)),
+            add ? '" additive="sum' : '',
         '" repeatCount="indefinite" />'));
     }
 
     /**
      * @dev render an animateTransform SVG tag with keyTimes
      */
+    function _animateTransform(string memory typeVal, string memory duration, string memory values, string memory keyTimes, bool add) internal pure returns (string memory) {
+        return _animateTransform(typeVal, duration, values, keyTimes, '', add);
+    }
+
+    /**
+     * @dev render an animateTransform SVG tag
+     */
+    function _animateTransform(string memory typeVal, string memory duration, string memory values, bool add) internal pure returns (string memory) {
+        return _animateTransform(typeVal, duration, values, '', '', add);
+    }
+
+    /**
+     * @dev render an animateTransform SVG tag with keyTimes
+     */
+    function _animateTransform(string memory typeVal, string memory duration, string memory values, string memory keyTimes, string memory keySplines) internal pure returns (string memory) {
+        return _animateTransform(typeVal, duration, values, keyTimes, keySplines, false);
+    }
+
+    /**
+     * @dev render an animateTransform SVG tag with keyTimes
+     */
     function _animateTransform(string memory typeVal, string memory duration, string memory values, string memory keyTimes) internal pure returns (string memory) {
-        return _animateTransform(typeVal, duration, values, keyTimes, '');
+        return _animateTransform(typeVal, duration, values, keyTimes, '', false);
     }
 
     /**
      * @dev render an animateTransform SVG tag
      */
     function _animateTransform(string memory typeVal, string memory duration, string memory values) internal pure returns (string memory) {
-        return _animateTransform(typeVal, duration, values, '', '');
+        return _animateTransform(typeVal, duration, values, '', '', false);
     }
 
     // /**
@@ -271,12 +293,6 @@ library Animation {
             return _animateTransform(
                 "skewX", "10s", "0;16;-12;8;-4;2;-1;.5;-.25;0;0", "0;.1;.2;.3;.4;.5;.6;.7;.8;.9;1", generateSplines(10,1)
             );
-        } else if (animation == 24) {
-            // Swing
-            return string(abi.encodePacked(
-                _animateTransform( "skewX", "10s", "0;-15;0;15;0" ),
-                _animateTransform( "scale", "10s", "1 1;1 .9;1 1;1 .9;1 1" )
-            ));
         }
     }
 }
