@@ -287,21 +287,7 @@ library Animation {
         } else if (animation == 25) {
             // Alternate Skew Y - alternate skew every other up / down
             return _animateTransform( "skewY", "10s", shapeIndex%2==0 ? "0;50;-50;0" : "0;-50;50;0" );
-        // } else if (animation == 26) {
-        //     // Swing
-        // } else if (animation == 27) {
-        //     // Platform Drop (shake first?)
-        //     string memory values = string(abi.encodePacked(
-        //         shape.position[0].toString()," ",shape.position[1].toString(),";",
-        //         shape.position[0].toString()," ",shape.position[1].sub(500).toString()
-        //     ));
-        //     return _animateTransform(
-        //         "translate",
-        //         "10s",
-        //         values,
-        //         "0;1",
-        //         "0.2 0 0.5 1;0.5 0 0.5 1"
-        //     );
+        
         }
     }
 }
