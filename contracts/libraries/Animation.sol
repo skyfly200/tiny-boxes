@@ -256,9 +256,9 @@ library Animation {
         } else if (animation == 17) {
             // glide
             int256 amp = 20;
-            string memory max = string(abi.encodePacked(int256(0).add(amp).toString(), " ", int256(0).add(amp).toString()));
-            string memory min = string(abi.encodePacked(int256(0).sub(amp).toString(), " ", int256(0).sub(amp).toString()));
-            string memory values = string(abi.encodePacked( "0 0;", min, ";0 0;", max, ";0 0" ));
+            string memory max = int256(0).add(amp).toString();
+            string memory min = int256(0).sub(amp).toString();
+            string memory values = string(abi.encodePacked( "0 0;", min, " ", min, ";0 0;", max, " ", max, ";0 0" ));
             return _animateTransform("translate","10s",values);
         } else if (animation == 18) {
             // Wave
