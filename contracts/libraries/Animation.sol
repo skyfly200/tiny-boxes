@@ -102,24 +102,17 @@ library Animation {
         if (animation == 0) {
             // snap spin 90
             return _animateTransform(
-                "rotate", "10s",
-                "0;90;90;360;360",
-                "0;0.2;0.4;0.9;1",
-                generateSplines(4,0)
+                "rotate", "10s", "0;90;90;360;360", "0;0.2;0.3;0.9;1", generateSplines(4,0)
             );
         } else if (animation == 1) {
             // snap spin 180
             return _animateTransform(
-                "rotate", "10s",
-                "0;180;180;360;360",
-                "0;0.4;0.6;0.9;1",
-                generateSplines(4,0)
+                "rotate", "10s", "0;180;180;360;360", "0;0.4;0.5;0.9;1", generateSplines(4,0)
             );
         } else if (animation == 2) {
             // snap spin 270
             return _animateTransform(
-                "rotate", "10s", "0;270;270;360;360", "0;0.6;0.8;0.9;1",
-                generateSplines(4,0)
+                "rotate", "10s", "0;270;270;360;360", "0;0.6;0.7;0.9;1", generateSplines(4,0)
             );
         } else if (animation == 3) {
             // snap spin tri
@@ -241,12 +234,9 @@ library Animation {
         } else if (animation == 17) {
             // glide
             int256 amp = 20;
-            int256 posX = shape.position[0];
-            int256 posY = shape.position[1];
-            string memory avg = string(abi.encodePacked(posX.toString(), " ", posY.toString()));
-            string memory max = string(abi.encodePacked(posX.add(amp).toString(), " ", posY.add(amp).toString()));
-            string memory min = string(abi.encodePacked(posX.sub(amp).toString(), " ", posY.sub(amp).toString()));
-            string memory values = string(abi.encodePacked( avg, ";", min, ";", avg, ";", max, ";", avg ));
+            string memory max = string(abi.encodePacked(int256(0).add(amp).toString(), " ", int256(0).add(amp).toString()));
+            string memory min = string(abi.encodePacked(int256(0).sub(amp).toString(), " ", int256(0).sub(amp).toString()));
+            string memory values = string(abi.encodePacked( "0 0;", min, ";0 0;", max, ";0 0" ));
             return _animateTransform("translate","10s",values);
         } else if (animation == 18) {
             // Wave
