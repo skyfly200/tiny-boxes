@@ -80,7 +80,7 @@ library Animation {
     function generateSplines(uint8 transitions, uint8 curve) internal pure returns (string memory curves) {
         string[2] memory bezierCurves = [
             "0.5 0 0.75 1", // ease in and out fast
-            ".6 0 .4 1" // ease in fast + soft
+            ".4 0 .6 1" // ease in fast + soft
         ];
         for (uint8 i=0; i < transitions; i++)
             curves = string(abi.encodePacked(curves, i>0 ? ";" : "", bezierCurves[curve]));
@@ -241,7 +241,7 @@ library Animation {
         } else if (animation == 18) {
             // Wave
             string memory values = string(abi.encodePacked("1 1;1 1;1.5 1.5;1 1;1 1"));
-            // TODO: generate decimal values and convetr to strings
+            // TODO: generate decimal values and convert to strings
             // start min 0, end max 1
             uint256 length = 10; // percent of the animation length for each wave pulse
             uint256 peak = uint256(100).add(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
@@ -272,12 +272,11 @@ library Animation {
                 "skewX", "10s", "0;16;-12;8;-4;2;-1;.5;-.25;0;0", "0;.1;.2;.3;.4;.5;.6;.7;.8;.9;1", generateSplines(10,1)
             );
         } else if (animation == 24) {
-            // Alternate Skew X - alternate skew every other left / right
-            return _animateTransform( "skewX", "10s", shapeIndex%2==0 ? "0;50;-50;0" : "0;-50;50;0" );
-        } else if (animation == 25) {
-            // Alternate Skew Y - alternate skew every other up / down
-            return _animateTransform( "skewY", "10s", shapeIndex%2==0 ? "0;50;-50;0" : "0;-50;50;0" );
-        
+            // Swing
+            return string(abi.encodePacked(
+                _animateTransform( "skewX", "10s", "0;-15;0;15;0" ),
+                _animateTransform( "scale", "10s", "1 1;1 .9;1 1;1 .9;1 1" )
+            ));
         }
     }
 }
