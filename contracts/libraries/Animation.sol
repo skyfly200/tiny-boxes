@@ -80,7 +80,7 @@ library Animation {
     function generateSplines(uint8 transitions, uint8 curve) internal pure returns (string memory curves) {
         string[2] memory bezierCurves = [
             "0.5 0 0.75 1", // ease in and out fast
-            ".2 .1 1 1" // ease in fast + soft
+            ".6 0 .4 1" // ease in fast + soft
         ];
         for (uint8 i=0; i < transitions; i++)
             curves = string(abi.encodePacked(curves, i>0 ? ";" : "", bezierCurves[curve]));
@@ -279,14 +279,14 @@ library Animation {
         } else if (animation == 23) {
             // Jello - (bounce skewX w/ ease-in)
             return _animateTransform(
-                "skewX", "5s", "0;32;-16;8;-4;2;-1;.5;-.25;0;0", "0;.1;.2;.3;.4;.5;.6;.7;.8;.9;1", generateSplines(10,1)
+                "skewX", "10s", "0;16;-12;8;-4;2;-1;.5;-.25;0;0", "0;.1;.2;.3;.4;.5;.6;.7;.8;.9;1", generateSplines(10,1)
             );
-        // } else if (animation == 24) {
-        //     // Alternate Skew X - alternate skew every other left / right
-        //     // look at indexed spin
-        // } else if (animation == 25) {
-        //     // Alternate Skew Y - alternate skew every other up / down
-        //     // look at indexed spin
+        } else if (animation == 24) {
+            // Alternate Skew X - alternate skew every other left / right
+            return _animateTransform( "skewX", "10s", shapeIndex%2==0 ? "0;50;-50;0" : "0;-50;50;0" );
+        } else if (animation == 25) {
+            // Alternate Skew Y - alternate skew every other up / down
+            return _animateTransform( "skewY", "10s", shapeIndex%2==0 ? "0;50;-50;0" : "0;-50;50;0" );
         // } else if (animation == 26) {
         //     // Swing
         // } else if (animation == 27) {
