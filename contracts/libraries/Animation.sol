@@ -69,31 +69,24 @@ library Animation {
         return _animateTransform(typeVal, duration, values, '', '');
     }
 
-    // TODO: reduce strings used here
-
     // /**
-    //  * @dev create a values string from a list of values and a template array of two strings
+    //  * @dev creata a keyTimes string, based on a range and division count
     //  */
-    // function unpackValues(uint256[] memory values, string[2] memory template) internal pure returns (string memory) {
-    //     string memory valuesString = "";
-    //     for (uint i = 0; i < values.length; i++)
-    //         valuesString = string(abi.encode(valuesString, template[0], values[i], template[1]));
-    //     return valuesString;
-    // }
+    // function generateTimes() internal pure returns (string memory times) {}
 
-    // /**
-    //  * @dev creata a keyTimes string 
-    //  */
-    // function generateTimes() internal pure returns (string memory) {
-    //     return "";
-    // }
-
-    // /**
-    //  * @dev creata a keySplines string, with a bezier curve for each value transition
-    //  */
-    // function generateSplines() internal pure returns (string memory) {
-    //     return "";
-    // }
+    /**
+     * @dev creata a keySplines string, with a bezier curve for each value transition
+     */
+    function generateSplines(uint8[] memory curveNumbers) internal pure returns (string memory curves) {
+        string[4] memory bezierCurves = [
+            "0.5 0 0.5 1", // ease in and out
+            "0.2 0 0.5 1", // ease in fast and out
+            "0.5 0 0.75 1", // ease in and out fast
+            ".2 .1 1 1" // ease in fast + soft
+        ];
+        for (uint8 i=0; i < curveNumbers.length; i++)
+            curves = string(abi.encode(curves, i>0 ? ";" : "", bezierCurves[curveNumbers[i]]));
+    }
 
     /**
      * @dev select the animation
@@ -113,7 +106,7 @@ library Animation {
             return _animateTransform(
                 "rotate",
                 "10s",
-                "0 600 600;90 600 600;90 600 600;360 600 600;360 600 600",
+                "0;90;90;360;360",
                 "0;0.2;0.4;0.9;1",
                 "0.5 0 0.75 1;0.5 0 0.5 1;0.5 0 0.75 1;0.5 0 0.5 1"
             );
@@ -122,7 +115,7 @@ library Animation {
             return _animateTransform(
                 "rotate",
                 "10s",
-                "0 600 600;180 600 600;180 600 600;360 600 600;360 600 600",
+                "0;180;180;360;360",
                 "0;0.4;0.6;0.9;1",
                 "0.5 0 0.75 1;0.5 0 0.5 1;0.5 0 0.75 1;0.5 0 0.5 1"
             );
@@ -131,7 +124,7 @@ library Animation {
             return _animateTransform(
                 "rotate",
                 "10s",
-                "0 600 600;270 600 600;270 600 600;360 600 600;360 600 600",
+                "0;270;270;360;360",
                 "0;0.6;0.8;0.9;1",
                 "0.5 0 0.75 1;0.5 0 0.5 1;0.5 0 0.75 1;0.5 0 0.5 1"
             );
@@ -140,7 +133,7 @@ library Animation {
             return _animateTransform(
                 "rotate",
                 "10s",
-                "0 600 600;120 600 600;120 600 600;240 600 600;240 600 600;360 600 600;360 600 600",
+                "0;120;120;240;240;360;360",
                 "0;0.166;0.333;0.5;0.666;0.833;1",
                 "0.5 0 0.75 1;0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1"
             );
@@ -149,7 +142,7 @@ library Animation {
             return _animateTransform(
                 "rotate",
                 "10s",
-                "0 600 600;90 600 600;90 600 600;180 600 600;180 600 600;270 600 600;270 600 600;360 600 600;360 600 600",
+                "0;90;90;180;180;270;270;360;360",
                 "0;0.125;0.25;0.375;0.5;0.625;0.8;0.925;1",
                 "0.5 0 0.75 1;0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.75 1;0.5 0 0.5 1"
             );
@@ -158,7 +151,7 @@ library Animation {
             return _animateTransform(
                 "rotate",
                 "10s",
-                "0 600 600;72 600 600;72 600 600;144 600 600;144 600 600;216 600 600;216 600 600;278 600 600;278 600 600;360 600 600;360 600 600",
+                "0;72;72;144;144;216;216;278;278;360;360",
                 "0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1",
                 "0.5 0 0.75 1;0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.75 1;0.5 0 0.5 1"
             );
@@ -167,7 +160,7 @@ library Animation {
             return _animateTransform(
                 "rotate",
                 "10s",
-                "0 600 600;360 600 600",
+                "0;360",
                 "0;1"
             );
         } else if (animation == 7) {
@@ -175,7 +168,7 @@ library Animation {
             return _animateTransform(
                 "rotate",
                 "10s",
-                "0 600 600;90 600 600;270 600 600;360 600 600",
+                "0;90;270;360",
                 "0;0.1;0.9;1"
             );
         } else if (animation == 8) {
@@ -183,20 +176,20 @@ library Animation {
             return _animateTransform(
                 "rotate",
                 string(abi.encodePacked(uint256((10000 / box.shapes) * (shapeIndex + 1) ).toString(),"ms")),
-                "0 600 600;360 600 600",
+                "0;360",
                 "0;1"
             );
         } else if (animation == 9) {
             // spread
             uint256 spread = uint256(300).div(uint256(box.shapes));
             string memory angle = shapeIndex.add(1).mul(spread).toString();
-            string memory values = string(abi.encodePacked("0 600 600;",  angle, " 600 600;",  angle, " 600 600;360 600 600;360 600 600"));
+            string memory values = string(abi.encodePacked("0;",  angle, ";",  angle, ";360;360"));
             return _animateTransform( "rotate", "10s", values, "0;0.5;0.6;0.9;1", "0.5 0 0.75 1;0.5 0 0.5 1;0.5 0 0.75 1;0.5 0 0.5 1" );
         } else if (animation == 10) {
             // spread w time
             uint256 spread = uint256(300).div(uint256(box.shapes));
             string memory angle = shapeIndex.add(1).mul(spread).toString();
-            string memory values = string(abi.encodePacked("0 600 600;",  angle, " 600 600;",  angle, " 600 600;360 600 600"));
+            string memory values = string(abi.encodePacked("0;",  angle, ";",  angle, ";360"));
             uint256 timeShift = uint256(100).add(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
             string memory times = string(abi.encodePacked("0;0.", timeShift.toString(), ";0.9;1"));
             return _animateTransform( "rotate", "10s", values, times, "0.5 0 0.75 1;0.5 0 0.5 1;0.5 0 0.75 1 " );

@@ -32,7 +32,7 @@ library SVG {
             shape.size[0].toString(),
             '" height="',
             shape.size[1].toString(),
-            '" style="fill:',
+            '" transform-origin="center" style="fill:',
             shape.color.toString(),
             bytes(slot).length == 0 ?
                 '"/>' :
