@@ -16,14 +16,14 @@
       "deployedBytecodeHash": "9879e22385686497758388def3748475b01a45b823c008c18a8a66605d3583a2"
     },
     "TinyBoxesRenderer": {
-      "address": "0xfCB4Ac6547B7c93c702a9F43cA00a1C1AD77833A",
-      "constructorCode": "615242610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "6d34d7ea66718d23dce6b8c34813a8371c9a51edde63d4289c5d2845ec9e9b0b",
-      "localBytecodeHash": "0a25db3e3aba8f1ceef613c8a136f2c61c422f7143f5aaa518b002fae6bdc08a",
-      "deployedBytecodeHash": "1b9e98fbbe99ef90807a738c13ad0d81c980837d198ff68003d07e9c9c8ecd04"
+      "address": "0x134fbf9E6803987dB110E43532D257FE4a62f6B7",
+      "constructorCode": "615f2262000027600b82828239805160001a60731461001a57fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "f01daeff2809242aea068a876c046a0947d21033fc49f12f8f085938445b06da",
+      "localBytecodeHash": "ebd77b8e6df70c485a8059c8bd554a67a86a20de4705707afbd2e38fa49a024d",
+      "deployedBytecodeHash": "2204a692d7a8f6c32f718f38fa1452698256cabbec449a7decdb63aafdcbb18a"
     },
     "Colors": {
-      "address": "0x6D5e4FADE92cFfeC493F5BA6d388460800B2718c",
+      "address": "0x7b7241C129F214E6C78dD47a17c1984dd9F6fc5f",
       "constructorCode": "610ac9610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
       "bodyBytecodeHash": "4a9f16c8a06186cd638960e8c3734af25a6370940b08d7fc1dd166c1f50b6138",
       "localBytecodeHash": "e0277265fe1f9a3d884bc4b7fa849f93cfd76e0b4670098eda81ca4e2eba57ab",
@@ -2409,6 +2409,16 @@
       },
       {
         "address": "0x8002913B9722Aae6647403757cc10771f056D96B",
+        "kind": "NonProxy",
+        "bytecodeHash": "cb237036d38a623f4dc8a5cbae8a50d0d2dd73d64cd22ba2622b608a85d03c9d"
+      },
+      {
+        "address": "0x1190a5FC79F5327B429341cBCC1E40AbA2bC4535",
+        "kind": "NonProxy",
+        "bytecodeHash": "cb237036d38a623f4dc8a5cbae8a50d0d2dd73d64cd22ba2622b608a85d03c9d"
+      },
+      {
+        "address": "0xB3bc64A61B31eDA6DD1Dc412E7EbaA8174139D95",
         "kind": "NonProxy",
         "bytecodeHash": "cb237036d38a623f4dc8a5cbae8a50d0d2dd73d64cd22ba2622b608a85d03c9d"
       }
