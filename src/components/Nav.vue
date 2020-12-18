@@ -47,13 +47,13 @@
       v-card.pa-4(align="center")
         v-icon(large color="warning") mdi-alert
         p Wrong network.
-        p Please connect to {{ $store.state.targetNetwork }}.
+        p Please connect to {{ targetNetwork }}.
         
 </template>
 
 <script>
 import Vue from "vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import Gravatar from "vue-gravatar";
 
 Vue.component("v-gravatar", Gravatar);
@@ -116,7 +116,8 @@ export default {
     ]
   }),
   computed: {
-    ...mapGetters(["currentAccount", "web3Status", "wrongNetwork"])
+    ...mapGetters(["currentAccount", "web3Status", "wrongNetwork"]),
+    ...mapState(["network", "targetNetwork"]),
   }
 };
 </script>
