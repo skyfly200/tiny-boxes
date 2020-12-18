@@ -127,9 +127,9 @@ exports.handler = async (event, context) => {
     
     console.log('Lookup Complete!')
 
-    // convert art stream from SVG to PNG
+    // convert static art from SVG to PNG
 
-    // capture MP4 stream of animation
+    // capture MP4 video of SVG animation
 
     // console.log('Creating ReadableStrings')
     // // needs to be converted to a file without writing to fs
