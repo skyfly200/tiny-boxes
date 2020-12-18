@@ -43,7 +43,7 @@
         span.address.address-tooltip {{ currentAccount !== '' ? formatAccount(currentAccount) : "loading" }}
       v-btn(@click="drawer = !drawer" text).mobile-menu-btn
         v-icon mdi-menu
-    v-dialog(v-model="wrongNetwork" width="300")
+    v-dialog(v-model="wrongNetworkFlag" width="300")
       v-card.pa-4(align="center")
         v-icon(large color="warning") mdi-alert
         p Wrong network.
@@ -67,9 +67,11 @@ export default {
   },
   mounted: async function() {
     await this.$store.dispatch("initialize");
+    this.wrongNetworkFlag = this.wrongNetwork;
   },
   data: () => ({
     drawer: false,
+    wrongNetworkFlag: false,
     links: [
       {
         type: "page",
