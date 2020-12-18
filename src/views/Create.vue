@@ -3,8 +3,8 @@
     v-dialog(:value="dialog" transition="fade" :persistent="inProgress" @click:outside="overlay=''")
       v-container(fluid)
         v-row
-          v-col(md="4" sm="6" xs="12" offset-md="4" offset-sm="3")
-            v-card.dialog(width="300")
+          v-col(md="6" sm="8" xs="12" offset-md="3" offset-sm="2")
+            v-card.dialog(width="500")
               v-fade-transition(appear group)
                 .dialog-share(v-if="overlay === 'share'" key="share")
                   v-card-title Share Your Options
@@ -39,7 +39,7 @@
                             a(:href="'https://rinkeby.etherscan.io/tx/' + minted.txHash" v-on='on' target="new")
                               v-icon mdi-open-in-new
                           span View on Etherscan
-                      h3 {{ confirmations > 0 ? confirmations + " Confirmations" : "Pending" }} 
+                      h3 {{ confirmations > 0 ? " Confirmed" : "Pending" }} 
                     v-progress-linear(:value="confirmations / confirmationsRequired * 100")
                 .dialog-wait(v-else-if="overlay === 'wait'" key="wait")
                   v-card-title Waiting For VRF Fullfillment
@@ -473,7 +473,7 @@ export default Vue.extend({
       data: null as object | null,
       price: "",
       confirmations: 0,
-      confirmationsRequired: 2,
+      confirmationsRequired: 1,
       limit: null as number | null,
       form: {
         section: 0,
