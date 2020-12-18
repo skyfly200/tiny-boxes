@@ -11,10 +11,7 @@
                   v-card-text
                     span Found some interesting options?
                     span Share them with your friends!
-                  v-tooltip(bottom)
-                    template(v-slot:activator="{ on }")
-                      v-text-field.url#share-url(:value="url"  v-on="on" @click="copyPath" @click:append-outer="copyPath" width="250px" append-outer-icon="mdi-content-copy")
-                    span Copy URL
+                  CopyField(:url="url")
                   v-card-actions
                     v-spacer
                     v-btn.twitter-share-button(v-if="false" :href="twitterPost" target="_blank" icon)
@@ -150,14 +147,15 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { log } from 'console';
 import { mapGetters, mapState } from "vuex";
 import { sections } from "./create-form";
 import Token from "@/components/Token.vue";
-import { log } from 'console';
+import CopyField from "@/components/CopyField.vue";
 
 export default Vue.extend({
   name: "Create",
-  components: { Token },
+  components: { Token, CopyField },
   computed: {
     paramsSet: function() {
       return Object.keys(this.$route.query).length > 0
@@ -277,13 +275,6 @@ export default Vue.extend({
       history.forward()
       t.loadParams();
       t.loadToken();
-    },
-    copyPath() {
-      const copyText: any = document.querySelector("#share-url");
-      if (copyText) {
-        copyText.select();
-        document.execCommand("copy");
-      }
     },
     changed: async function() {
       const t = this as any;
