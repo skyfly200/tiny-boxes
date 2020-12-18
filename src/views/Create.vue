@@ -150,6 +150,8 @@ export default Vue.extend({
       overlay: "",
       data: null as object | null,
       price: "",
+      tx: {},
+      gasEstimate: null,
       confirmations: 0,
       confirmationsRequired: 1,
       limit: null as number | null,
@@ -406,17 +408,18 @@ export default Vue.extend({
       const t = this as any;
       const v = {...t.values, palette: t.assemblePalette(), dials: t.assembleDials()};
       t.price = await t.getPrice();
+      t.tx = {
+        from: this.currentAccount,
+        to: this.$store.state.tinyboxesAddress,
+        value: t.price,
+        data: this.$store.state.contracts.tinyboxes.methods
+          .buy(v.seed.toString(), v.shapes, v.palette, v.dials)
+          .encodeABI(),
+      };
+      //t.gasEstimate = await t.$store.state.web3.eth.estimateGas(t.tx);
       t.minted = {};
       t.overlay = "verify";
-      t.$store.state.web3.eth.sendTransaction(
-        {
-          from: this.currentAccount,
-          to: this.$store.state.tinyboxesAddress,
-          value: t.price,
-          data: this.$store.state.contracts.tinyboxes.methods
-            .buy(v.seed.toString(), v.shapes, v.palette, v.dials)
-            .encodeABI(),
-        },
+      t.$store.state.web3.eth.sendTransaction(t.tx,
         async (err: any, txHash: string) => {
           const t = this as any;
           t.minted.txHash = txHash;
