@@ -4,62 +4,49 @@
       v-container(fluid)
         v-row
           v-col(md="6" sm="8" xs="12" offset-md="3" offset-sm="2")
-            v-card.dialog(width="500")
-              v-fade-transition(appear group)
-                .dialog-share(v-if="overlay === 'share'" key="share")
-                  v-card-title Share Your Options
-                  v-card-text
-                    span Found some interesting options?
-                    span Share them with your friends!
-                  CopyField(:url="url")
-                  v-card-actions
+            Share.dialog-share(v-if="overlay === 'share'" key="share")
+            v-card.dialog-verify(v-else-if="overlay === 'verify'" key="verify")
+              v-card-title Submit The Transaction
+              v-card-text
+                .message
+                  h3 Mint Token {{ "#" + id }} for {{ priceInETH }} 
+                    v-icon mdi-ethereum
+            v-card.dialog-confirm(v-else-if="overlay === 'confirm'" key="confirm")
+              v-card-title Awaiting TX Confirmation
+              v-card-text
+                .message                      
+                  .d-flex
+                    h3 Hash: {{ formatHash(minted.txHash) }}
                     v-spacer
-                    v-btn.twitter-share-button(v-if="false" :href="twitterPost" target="_blank" icon)
-                      v-icon mdi-twitter
-                    v-btn(:href="email" target="_blank" icon)
-                      v-icon mdi-email
-                .dialog-verify(v-if="overlay === 'verify'" key="verify")
-                  v-card-title Submit The Transaction
-                  v-card-text
-                    .message
-                      h3 Mint Token {{ "#" + id }} for {{ priceInETH }} 
-                        v-icon mdi-ethereum
-                .dialog-confirm(v-if="overlay === 'confirm'" key="confirm")
-                  v-card-title Awaiting TX Confirmation
-                  v-card-text
-                    .message                      
-                      .d-flex
-                        h3 Hash: {{ formatHash(minted.txHash) }}
-                        v-spacer
-                        v-tooltip(top)
-                          template(v-slot:activator='{ on }')
-                            a(:href="'https://rinkeby.etherscan.io/tx/' + minted.txHash" v-on='on' target="new")
-                              v-icon mdi-open-in-new
-                          span View on Etherscan
-                      h3 {{ confirmations > 0 ? " Confirmed" : "Pending" }} 
-                    v-progress-linear(:value="confirmations / confirmationsRequired * 100")
-                .dialog-wait(v-else-if="overlay === 'wait'" key="wait")
-                  v-card-title Waiting For VRF Fullfillment
-                  v-card-text
-                    .message
-                      h3 Please Wait...
-                    v-progress-linear(indeterminate)
-                .dialog-ready(v-else-if="overlay === 'ready'" key="ready")
-                  v-skeleton-loader(:value="!minted.art" type="image")
-                    Token(:id="minted.id+'-preview'" :data="data")
-                  v-card-title.text-center Yay! You Minted Token {{ "#" + minted.id }}
-                  v-card-actions
-                    v-btn(:to="'/token/' + minted.id" color="primary") View Token
-                    v-spacer
-                    v-btn(@click="overlay = ''; loadToken()" color="success") Mint Another
-                .dialog-error(v-else-if="overlay === 'error'" key="error")
-                  v-card-title Transaction Error
-                  v-card-text
-                    v-alert(type="error" border="left") An error occured while minting your token
-                  v-card-actions
-                    v-btn(@click="mintToken" color="success") Try Again
-                    v-spacer
-                    v-btn(@click="overlay = ''; loadToken()" color="error") Cancel
+                    v-tooltip(top)
+                      template(v-slot:activator='{ on }')
+                        a(:href="'https://rinkeby.etherscan.io/tx/' + minted.txHash" v-on='on' target="new")
+                          v-icon mdi-open-in-new
+                      span View on Etherscan
+                  h3 {{ confirmations > 0 ? " Confirmed" : "Pending" }} 
+                v-progress-linear(:value="confirmations / confirmationsRequired * 100" :indeterminate="!confirmations")
+            v-card.dialog-wait(v-else-if="overlay === 'wait'" key="wait")
+              v-card-title Waiting For VRF Fullfillment
+              v-card-text
+                .message
+                  h3 Please Wait...
+                v-progress-linear(indeterminate)
+            v-card.dialog-ready(v-else-if="overlay === 'ready'" key="ready")
+              v-skeleton-loader(:value="!minted.art" type="image")
+                Token(:id="minted.id+'-preview'" :data="data")
+              v-card-title.text-center Yay! You Minted Token {{ "#" + minted.id }}
+              v-card-actions
+                v-btn(:to="'/token/' + minted.id" color="primary") View Token
+                v-spacer
+                v-btn(@click="overlay = ''; loadToken()" color="success") Mint Another
+            v-card.dialog-error(v-else-if="overlay === 'error'" key="error")
+              v-card-title Transaction Error
+              v-card-text
+                v-alert(type="error" border="left") An error occured while minting your token
+              v-card-actions
+                v-btn(@click="mintToken" color="success") Try Again
+                v-spacer
+                v-btn(@click="overlay = ''; loadToken()" color="error") Cancel
     v-container(fluid)
       v-row(flex)
         v-col(align="center" cols="12" md="5" offset-md="1")
@@ -151,11 +138,56 @@ import { log } from 'console';
 import { mapGetters, mapState } from "vuex";
 import { sections } from "./create-form";
 import Token from "@/components/Token.vue";
-import CopyField from "@/components/CopyField.vue";
+import Share from "@/components/Share.vue";
 
 export default Vue.extend({
   name: "Create",
-  components: { Token, CopyField },
+  components: { Token, Share },
+  data: function() {
+    return {
+      id: null as number | null,
+      loading: true,
+      overlay: "",
+      data: null as object | null,
+      price: "",
+      confirmations: 0,
+      confirmationsRequired: 1,
+      limit: null as number | null,
+      form: {
+        section: 0,
+        valid: true,
+      },
+      minted: {} as any,
+      values: {} as any,
+      defaults: {
+        seed: Date.now(),
+        shapes: 11,
+        x: 200,
+        y: 200,
+        xSeg: 2,
+        ySeg: 2,
+        width: [200, 300],
+        height: [200, 300],
+        hatching: 0,
+        mirrorAdv: false,
+        mirrorA: true,
+        mirrorB: true,
+        mirrorC: true,
+        mirrorPos1: 600,
+        mirrorPos2: 1200,
+        mirrorPos3: 2400,
+        scale: 100,
+        hue: Date.now() % 360,
+        saturation: 80,
+        lightness: [30,70],
+        shades: 3,
+        scheme: 0,
+        animate: false,
+        animation: 9,
+      },
+      sections: sections,
+    };
+  },
   computed: {
     paramsSet: function() {
       return Object.keys(this.$route.query).length > 0
@@ -168,18 +200,6 @@ export default Vue.extend({
         s.options.filter((o: any) => !o.hide || (this as any).values[o.hide]);
         return s;
       });
-    },
-    url: function () {
-      return window.location.origin + this.$route.fullPath;
-    },
-    twitterPost() {
-      const text = 'Check out this TinyBox! ';
-      return 'https://twitter.com/intent/tweet?text=' + encodeURI(text) + encodeURIComponent((this as any).url);
-    },
-    email() {
-      const subject = encodeURIComponent('I designed a cool TinyBox!');
-      const body = encodeURIComponent('Check out this TinyBox I designed.\n') + encodeURIComponent((this as any).url);
-      return "mailto:?subject="+subject+"&body="+body;
     },
     dialog: {
       get: function () {
@@ -410,7 +430,7 @@ export default Vue.extend({
       t.confirmations = await t.getConfirmations(txHash);
       if (t.confirmations >= t.confirmationsRequired) {
         if (t.overlay === 'ready') return;
-        t.overlay = "wait";
+        setTimeout(() => { t.overlay = "wait"; }, 500); // show confirmed for half a second
       }
       else setTimeout(await t.checkConfirmations(txHash), 5000);
     },
@@ -438,9 +458,7 @@ export default Vue.extend({
         .on("data", async (log: any) => {
           const t = this as any;
           t.minted.id = parseInt(log.topics[3], 16);
-          t.minted.art = await t.$store.state.contracts.tinyboxes.methods
-            .tokenArt(t.minted.id, true)
-            .call();
+          t.minted.art = await t.$store.state.contracts.tinyboxes.methods.tokenArt(t.minted.id, true).call();
           t.overlay = "ready";
         });
     },
@@ -457,51 +475,6 @@ export default Vue.extend({
           (this as any).loadToken();
         });
     },
-  },
-  data: function() {
-    return {
-      id: null as number | null,
-      loading: true,
-      overlay: "",
-      data: null as object | null,
-      price: "",
-      confirmations: 0,
-      confirmationsRequired: 1,
-      limit: null as number | null,
-      form: {
-        section: 0,
-        valid: true,
-      },
-      minted: {} as any,
-      values: {} as any,
-      defaults: {
-        seed: Date.now(),
-        shapes: 11,
-        x: 200,
-        y: 200,
-        xSeg: 2,
-        ySeg: 2,
-        width: [200, 300],
-        height: [200, 300],
-        hatching: 0,
-        mirrorAdv: false,
-        mirrorA: true,
-        mirrorB: true,
-        mirrorC: true,
-        mirrorPos1: 600,
-        mirrorPos2: 1200,
-        mirrorPos3: 2400,
-        scale: 100,
-        hue: Date.now() % 360,
-        saturation: 80,
-        lightness: [30,70],
-        shades: 3,
-        scheme: 0,
-        animate: false,
-        animation: 9,
-      },
-      sections: sections,
-    };
   },
 });
 </script>
