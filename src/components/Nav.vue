@@ -43,8 +43,11 @@
         span.address.address-tooltip {{ currentAccount !== '' ? formatAccount(currentAccount) : "loading" }}
       v-btn(@click="drawer = !drawer" text).mobile-menu-btn
         v-icon mdi-menu
-      template(v-slot:extension color="warning" )
-        v-banner(v-if="true" one-line icon="mdi-alert") Wrong network. Please connect to Rinkeby.
+    v-dialog(v-model="wrongNetwork" width="300")
+      v-card.pa-4(align="center")
+        v-icon(large color="warning") mdi-alert
+        p Wrong network.
+        p Please connect to {{ $store.state.targetNetwork }}.
         
 </template>
 
@@ -60,7 +63,7 @@ export default {
   methods: {
     formatAccount(account) {
       return "0x" + account.slice(2, 6) + "...." + account.slice(-4);
-    }
+    },
   },
   mounted: async function() {
     await this.$store.dispatch("initialize");
@@ -113,7 +116,7 @@ export default {
     ]
   }),
   computed: {
-    ...mapGetters(["currentAccount", "web3Status"])
+    ...mapGetters(["currentAccount", "web3Status", "wrongNetwork"])
   }
 };
 </script>

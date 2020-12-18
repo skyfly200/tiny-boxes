@@ -1368,11 +1368,11 @@ const store = new Vuex.Store({
             if (err) reject(err);
             else {
               context.commit("setAccount", resp[0]);
-              context.state.web3.eth.net.getNetworkType((err: any, network: any)=> {
-                console.log(network);
-                context.commit("setNetwork", network);
-                resolve(resp[0]);
-              });
+              if (context.state.web3 !== null)
+                context.state.web3.eth.net.getNetworkType((err: any, network: any)=> {
+                  context.commit("setNetwork", network);
+                  resolve(resp[0]);
+                });
             }
           });
         } else reject();
@@ -1400,6 +1400,9 @@ const store = new Vuex.Store({
     },
     web3Status: (state) => {
       return state.web3Status;
+    },
+    wrongNetwork: (state) => {
+      return state.network !== null && state.network !== state.targetNetwork;
     },
   },
 });
