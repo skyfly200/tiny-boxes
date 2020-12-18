@@ -1368,7 +1368,7 @@ const store = new Vuex.Store({
             if (err) reject(err);
             else {
               context.commit("setAccount", resp[0]);
-              await context.state.web3.eth.net.getNetworkType((err: any, network: any)=> {
+              context.state.web3.eth.net.getNetworkType((err: any, network: any)=> {
                 console.log(network);
                 context.commit("setNetwork", network);
                 resolve(resp[0]);

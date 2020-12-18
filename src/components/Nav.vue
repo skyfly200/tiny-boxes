@@ -43,6 +43,8 @@
         span.address.address-tooltip {{ currentAccount !== '' ? formatAccount(currentAccount) : "loading" }}
       v-btn(@click="drawer = !drawer" text).mobile-menu-btn
         v-icon mdi-menu
+      template(v-slot:extension color="warning" )
+        v-banner(v-if="true" one-line icon="mdi-alert") Wrong network. Please connect to Rinkeby.
         
 </template>
 
