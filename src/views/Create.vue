@@ -202,18 +202,20 @@ export default Vue.extend({
         animationTitles: 'animationTitles',
         schemeTitles: 'schemeTitles',
     }),
-    ...mapGetters(["currentAccount"]),
+    ...mapGetters(["currentAccount", "wrongNetwork"]),
   },
   mounted: async function() {
     const t = this as any;
     await this.$store.dispatch("initialize");
-    t.lookupLimit();
-    t.loadFormDefaults();
-    if (t.paramsSet) t.loadParams();
-    else t.setParams();
-    t.loadToken();
-    t.listenForTokens();
-    t.listenForMyTokens();
+    if (!this.wrongNetwork) {
+      t.lookupLimit();
+      t.loadFormDefaults();
+      if (t.paramsSet) t.loadParams();
+      else t.setParams();
+      t.loadToken();
+      t.listenForTokens();
+      t.listenForMyTokens();
+    }
   },
   methods: {
     randomizeSection: function(section: number | string) {
