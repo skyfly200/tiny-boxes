@@ -3,7 +3,7 @@
     v-dialog(:value="dialog" transition="fade" :persistent="inProgress" @click:outside="overlay=''")
       v-container(fluid)
         v-row
-          v-col(md="6" sm="8" xs="12" offset-md="3" offset-sm="2")
+          v-col(md="4" sm="6" xs="12" offset-md="4" offset-sm="3")
             Share.dialog-share(v-if="overlay === 'share'" key="share")
             v-card.dialog-verify(v-else-if="overlay === 'verify'" key="verify")
               v-card-title Submit The Transaction
