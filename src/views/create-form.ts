@@ -219,33 +219,4 @@ export const sections: Array<object> = [
       },
     ],
   },
-  {
-    title: "Miscellaneous",
-    options: [
-      {
-        label: "RNG Seed",
-        key: "seed",
-        type: "slider",
-        range: {
-          min: 0,
-          max: 2 ** 53,
-        },
-      },
-      {
-        label: "Sample Animation",
-        key: "animate",
-        type: "switch",
-      },
-      {
-        label: "Animation #",
-        key: "animation",
-        type: "slider",
-        show: "animate",
-        range: {
-          min: 0,
-          max: 18,
-        },
-      },
-    ],
-  },
 ];
