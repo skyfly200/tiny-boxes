@@ -93,31 +93,26 @@
                     .stat-title Columns
                 h2 Colors
                 .colors
-                  .colors-grid
-                    svg(:width="(3*(parseInt(data.tokenData.palette[5])+1)) + 'em'" :height="(3*(scheme(data.tokenData.palette[4]).length)) + 'em'")
-                      g(v-for="h,i of scheme(data.tokenData.palette[4])")
-                        rect(v-for="s in parseInt(data.tokenData.palette[5])+1" :x="3*(s-1)+'em'" :y="3*i+'em'" width="3em" height="3em"
-                          :style="'fill: hsl('+(parseInt(data.tokenData.palette[0])+h)+','+data.tokenData.palette[1]+'%,'+calcShade(s-1)+'%)'")
-                  .colors-info
-                    .hue.stat
-                      span.stat-value {{ data.tokenData.palette[0] + '°' }} 
-                      .stat-title Root Hue
-                    .saturation.stat
-                      span.stat-value {{ data.tokenData.palette[1] + '%' }}
-                      .stat-title Saturation
-                    .lightness.stat
-                      span.stat-value {{ data.tokenData.palette[2] + '-' + data.tokenData.palette[3] + '%' }}
-                      .stat-title Lightness
-                    .shades.stat
-                      span.stat-value {{ data.tokenData.palette[5] }}
-                      .stat-title Shades
-                    .scheme.stat
-                      div
-                        span.stat-value {{ schemeTitles[data.tokenData.palette[4]] }}
-                      .stat-title Scheme Name
-                    .scheme.stat
-                      span.stat-value {{ data.tokenData.palette[4] }}
-                      .stat-title Scheme #
+                  ColorsGrid(:palette="data.tokenData.palette")
+                  .hue.stat
+                    span.stat-value {{ data.tokenData.palette[0] + '°' }} 
+                    .stat-title Root Hue
+                  .saturation.stat
+                    span.stat-value {{ data.tokenData.palette[1] + '%' }}
+                    .stat-title Saturation
+                  .lightness.stat
+                    span.stat-value {{ data.tokenData.palette[2] + '-' + data.tokenData.palette[3] + '%' }}
+                    .stat-title Lightness
+                  .shades.stat
+                    span.stat-value {{ data.tokenData.palette[5] }}
+                    .stat-title Shades
+                  .scheme.stat
+                    div
+                      span.stat-value {{ schemeTitles[data.tokenData.palette[4]] }}
+                    .stat-title Scheme Name
+                  .scheme.stat
+                    span.stat-value {{ data.tokenData.palette[4] }}
+                    .stat-title Scheme #
                 h2 Mirroring
                 .mirroring
                   .mirror-a.stat
@@ -147,11 +142,12 @@
 import Vue from "vue";
 import { mapGetters, mapState } from "vuex";
 import Token from "@/components/Token.vue";
+import ColorsGrid from "@/components/ColorsGrid.vue";
 import { log } from 'util';
 
 export default Vue.extend({
   name: "TokenPage",
-  components: { Token },
+  components: { Token, ColorsGrid },
   computed: {
     priceInETH: function() {
       return this.$store.state.web3.utils.fromWei((this as any).data.price.toString());
@@ -178,27 +174,6 @@ export default Vue.extend({
     else t.loading = false;
   },
   methods: {
-    calcShade(s: number) {
-      const palette = this.data.tokenData.palette;
-      if (palette[5] == 0) return parseInt(palette[3]);
-      const range = palette[3] - palette[2];
-      return parseInt(palette[2]) + (range / palette[5] * s);
-    },
-    scheme(i: number) {
-      const schemes = [
-            [0], // mono
-            [0, 180], // complimentary
-            [0, 30, 330], // analogous
-            [0, 30, 60, 90], // series
-            [0, 150, 210], // split complimentary
-            [0, 120, 240], // triadic
-            [0, 150, 180, 210], // complimentary and analogous
-            [0, 30, 180, 330], // analogous and complimentary
-            [0, 90, 180, 270], // square
-            [0, 60, 180, 240] // tetradic
-        ];
-      return schemes[i];
-    },
     formatHash(account: string) {
       return "0x" + account.slice(2, 6) + "...." + account.slice(-4);
     },
@@ -301,12 +276,6 @@ export default Vue.extend({
   width: min-content
   span
     margin: 0.3rem
-.colors-grid svg g
-  width: 100%
-.colors-info
-  display: flex
-  flex-wrap: wrap
-  justify-content: space-around
 .shapes, .position, .mirroring, .advanced, .minting-stats, .colors
   display: flex
   flex-wrap: wrap
