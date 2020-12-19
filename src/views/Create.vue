@@ -3,7 +3,7 @@
     v-dialog(:value="dialog" transition="fade" :persistent="inProgress" @click:outside="overlay=''")
       v-container(fluid)
         v-row
-          v-col(md="4" sm="6" xs="12" offset-md="4" offset-sm="3")
+          v-col(lg="4" md="4" sm="6" xs="12" offset-lg="4" offset-md="4" offset-sm="3")
             Share.dialog-share(v-if="overlay === 'share'" key="share")
             v-card.dialog-verify(v-else-if="overlay === 'verify'" key="verify")
               v-card-title Submit The Transaction
@@ -33,8 +33,8 @@
                 v-progress-linear(indeterminate)
             v-card.dialog-ready(v-else-if="overlay === 'ready'" key="ready")
               v-skeleton-loader(:value="!minted.art" type="image")
-                Token(:id="minted.id+'-preview'" :data="data")
-              v-card-title.text-center Yay! You Minted Token {{ "#" + minted.id }}
+                Token(:id="minted.id+'-preview'" :data="minted.art")
+              v-card-title.text-center You Minted Token {{ "#" + minted.id }}
               v-card-actions
                 v-btn(:to="'/token/' + minted.id" color="primary") View Token
                 v-spacer
