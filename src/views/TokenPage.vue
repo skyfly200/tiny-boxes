@@ -63,69 +63,71 @@
               h2 Token Stats
             v-card-text
               .stats
-                  .shapeCount.stat
-                    span.stat-value {{ data.tokenData.shapes }}
-                    .stat-title Shapes
-                  .hatching.stat
-                    span.stat-value {{ data.tokenData.hatching }}
-                    .stat-title Hatching Mod
-                  .width.stat
-                    span.stat-value {{ data.tokenData.size[0] + '-' + data.tokenData.size[1] }}
-                    .stat-title Width
-                  .height.stat
-                    span.stat-value {{ data.tokenData.size[2] + '-' + data.tokenData.size[3] }}
-                    .stat-title Height
-                  .spread-x.stat
-                    span.stat-value {{ data.tokenData.spacing[0] }}
-                    .stat-title Spread X
-                  .spread-y.stat
-                    span.stat-value {{ data.tokenData.spacing[1] }}
-                    .stat-title Spread Y
-                  .rows.stat
-                    span.stat-value {{ data.tokenData.spacing[2] }}
-                    .stat-title Rows
-                  .columns.stat
-                    span.stat-value {{ data.tokenData.spacing[3] }}
-                    .stat-title Columns
-                  ColorsGrid(:palette="data.tokenData.palette")
-                  .hue.stat
-                    span.stat-value {{ data.tokenData.palette[0] + '°' }} 
-                    .stat-title Root Hue
-                  .saturation.stat
-                    span.stat-value {{ data.tokenData.palette[1] + '%' }}
-                    .stat-title Saturation
-                  .lightness.stat
-                    span.stat-value {{ data.tokenData.palette[2] + '-' + data.tokenData.palette[3] + '%' }}
-                    .stat-title Lightness
-                  .shades.stat
-                    span.stat-value {{ data.tokenData.palette[5] }}
-                    .stat-title Shades
-                  .scheme.stat
-                    div
-                      span.stat-value {{ schemeTitles[data.tokenData.palette[4]] }}
-                    .stat-title Scheme Name
-                  .scheme.stat
-                    span.stat-value {{ data.tokenData.palette[4] }}
-                    .stat-title Scheme #
-                  .mirror-a.stat
-                    span.stat-value {{ data.tokenData.mirrorPositions[0] }}
-                    .stat-title A
-                  .mirror-b.stat
-                    span.stat-value {{ data.tokenData.mirrorPositions[1] }}
-                    .stat-title B
-                  .mirror-c.stat
-                    span.stat-value {{ data.tokenData.mirrorPositions[2] }}
-                    .stat-title C
-                  .scale.stat
-                    span.stat-value {{ data.tokenData.scale + "%" }}
-                    .stat-title Scale
-                  .animation.stat
-                    span.stat-value {{ data.tokenData.animation }}
-                    .stat-title ID
-                  .animation-title.stat
-                    div
-                      span.stat-value {{ animationTitles[data.tokenData.animation] }}
-                    .stat-title Title
+                ColorsGrid(:palette="data.tokenData.palette")
+                .hue.stat
+                  span.stat-value {{ data.tokenData.palette[0] + '°' }} 
+                  .stat-title Root Hue
+                .saturation.stat
+                  span.stat-value {{ data.tokenData.palette[1] + '%' }}
+                  .stat-title Saturation
+                .lightness.stat
+                  span.stat-value {{ data.tokenData.palette[2] + "%" }}
+                  .stat-title Lightness Min
+                .lightness.stat
+                  span.stat-value {{ data.tokenData.palette[3] + '%' }}
+                  .stat-title Lightness Max
+                .shades.stat
+                  span.stat-value {{ data.tokenData.palette[5] }}
+                  .stat-title Shades
+                .scheme.stat
+                  span.stat-value {{ schemeTitles[data.tokenData.palette[4]] }}
+                  .stat-title Scheme Name
+                .scheme.stat
+                  span.stat-value {{ data.tokenData.palette[4] }}
+                  .stat-title Scheme ID
+                .shapeCount.stat
+                  span.stat-value {{ data.tokenData.shapes }}
+                  .stat-title Shapes
+                .hatching.stat
+                  span.stat-value {{ data.tokenData.hatching }}
+                  .stat-title Hatching Mod
+                .width.stat
+                  span.stat-value {{ data.tokenData.size[0] + '-' + data.tokenData.size[1] }}
+                  .stat-title Width
+                .height.stat
+                  span.stat-value {{ data.tokenData.size[2] + '-' + data.tokenData.size[3] }}
+                  .stat-title Height
+                .spread-x.stat
+                  span.stat-value {{ data.tokenData.spacing[0] }}
+                  .stat-title Spread X
+                .spread-y.stat
+                  span.stat-value {{ data.tokenData.spacing[1] }}
+                  .stat-title Spread Y
+                .rows.stat
+                  span.stat-value {{ data.tokenData.spacing[2] }}
+                  .stat-title Rows
+                .columns.stat
+                  span.stat-value {{ data.tokenData.spacing[3] }}
+                  .stat-title Columns
+                .mirror-a.stat
+                  span.stat-value {{ data.tokenData.mirrorPositions[0] }}
+                  .stat-title A
+                .mirror-b.stat
+                  span.stat-value {{ data.tokenData.mirrorPositions[1] }}
+                  .stat-title B
+                .mirror-c.stat
+                  span.stat-value {{ data.tokenData.mirrorPositions[2] }}
+                  .stat-title C
+                .scale.stat
+                  span.stat-value {{ data.tokenData.scale + "%" }}
+                  .stat-title Scale
+                .animation.stat
+                  span.stat-value {{ data.tokenData.animation }}
+                  .stat-title Animation ID
+                .animation-title.stat
+                  div
+                    span.stat-value {{ animationTitles[data.tokenData.animation] }}
+                  .stat-title Animation Title
 </template>
 
 <script lang="ts">
