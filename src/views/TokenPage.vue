@@ -51,20 +51,18 @@
                         a(v-on='on' :href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash") {{ formatHash(data.creation.transactionHash) }}
                       span View on Etherscan
                   .stat-title TX Hash
-              .randomness.stat
-                  .stat-value
-                    .randomness-chunks
-                      template(v-for="chunk in randomness.match(/.{1,16}/g)")
-                        span.randomness-chunk {{ chunk }}
-                  .stat-title Randomness
+                .randomness.stat
+                    .stat-value
+                      .randomness-chunks
+                        template(v-for="chunk in randomness.match(/.{1,16}/g)")
+                          span.randomness-chunk {{ chunk }}
+                    .stat-title Randomness
         v-col(cols="12" md="6" lg="5")
           v-card
             v-card-title(align="center")
               h2 Token Stats
             v-card-text
               .stats
-                h2 Shapes
-                .shapes
                   .shapeCount.stat
                     span.stat-value {{ data.tokenData.shapes }}
                     .stat-title Shapes
@@ -77,8 +75,6 @@
                   .height.stat
                     span.stat-value {{ data.tokenData.size[2] + '-' + data.tokenData.size[3] }}
                     .stat-title Height
-                h2 Placement
-                .position
                   .spread-x.stat
                     span.stat-value {{ data.tokenData.spacing[0] }}
                     .stat-title Spread X
@@ -91,8 +87,6 @@
                   .columns.stat
                     span.stat-value {{ data.tokenData.spacing[3] }}
                     .stat-title Columns
-                h2 Colors
-                .colors
                   ColorsGrid(:palette="data.tokenData.palette")
                   .hue.stat
                     span.stat-value {{ data.tokenData.palette[0] + '°' }} 
@@ -113,8 +107,6 @@
                   .scheme.stat
                     span.stat-value {{ data.tokenData.palette[4] }}
                     .stat-title Scheme #
-                h2 Mirroring
-                .mirroring
                   .mirror-a.stat
                     span.stat-value {{ data.tokenData.mirrorPositions[0] }}
                     .stat-title A
@@ -127,8 +119,6 @@
                   .scale.stat
                     span.stat-value {{ data.tokenData.scale + "%" }}
                     .stat-title Scale
-                h2 Animation
-                .advanced
                   .animation.stat
                     span.stat-value {{ data.tokenData.animation }}
                     .stat-title ID
@@ -253,15 +243,19 @@ export default Vue.extend({
   justify-content: space-between
 .stat
   text-align: -webkit-center
-  margin-top: 1rem
+  margin: 0.2rem
+  padding: 1rem
+  border: 1px solid #ccc
+  border-radius: 0.5rem
+  width: min-content
+  height: min-content
 .stat-value
   font-weight: 200
   font-size: 2rem
-  padding: 0.5rem 1rem
-  border: 1px solid #ccc
-  border-radius: 0.5rem
+  margin: 1rem
 .stat-title
-  margin: 1rem 0
+  margin: 0.5rem 0 -0.5rem 0
+  line-height: normal
   display: block
 .v-card
   margin: 1rem
@@ -276,12 +270,10 @@ export default Vue.extend({
   width: min-content
   span
     margin: 0.3rem
-.shapes, .position, .mirroring, .advanced, .minting-stats, .colors
+.stats
   display: flex
   flex-wrap: wrap
   justify-content: space-around
-  p
-    margin-top: 0
 .v-card__text
   width: auto !important
 .feature
