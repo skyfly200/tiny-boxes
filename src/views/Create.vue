@@ -233,7 +233,7 @@ export default Vue.extend({
       t.lookupLimit();
       t.loadFormDefaults();
       if (t.paramsSet) t.loadParams();
-      else t.setParams();
+      else t.updateParams();
       t.loadToken();
       t.listenForTokens();
       t.listenForMyTokens();
@@ -334,13 +334,10 @@ export default Vue.extend({
       const query = t.parseQuery(t.$route.query);
       Object.assign(t.values, query);
     },
-    setParams() {
-      const t = this as any;
-      this.$router.replace({ path: "/create", query: t.values });
-    },
     updateParams() {
       const t = this as any;
-      this.$router.push({ path: "/create", query: t.values });
+      if (t.$route.query === {}) this.$router.replace({ path: "/create", query: t.values });
+      else this.$router.push({ path: "/create", query: t.values });
     },
     parseQuery(query: any) {
       const out: any = {};
