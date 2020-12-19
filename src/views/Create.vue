@@ -245,7 +245,7 @@ export default Vue.extend({
       t.randomize(section);
       t.loadToken()
         .then((art: any) => {
-          if (art) t.setParams();
+          if (art) t.updateParams();
         })
         .catch((err: any) => {
           console.error("Invalid Box Options - Call Reverted: ", err)
@@ -302,7 +302,7 @@ export default Vue.extend({
     },
     changed: async function() {
       const t = this as any;
-      t.setParams();
+      t.updateParams();
       t.loadToken();
     },
     loadStatus: async function() {
@@ -335,6 +335,10 @@ export default Vue.extend({
       Object.assign(t.values, query);
     },
     setParams() {
+      const t = this as any;
+      this.$router.replace({ path: "/create", query: t.values });
+    },
+    updateParams() {
       const t = this as any;
       this.$router.push({ path: "/create", query: t.values });
     },
