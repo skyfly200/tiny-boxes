@@ -22,10 +22,87 @@
                     v-icon mdi-animation
                 span Toggle Animation
               v-spacer
+              .anim-title
+                .caption Animation
+                h3 {{ animationTitles[data.tokenData.animation] }}
+              v-spacer
               a(href="https://opensea.io/" title="View on OpenSea" target="_blank")
                 img(style="width:160px; border-radius:0px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);" src="https://storage.googleapis.com/opensea-static/opensea-brand/listed-button-blue.png" alt="Listed on OpenSea badge")
-            v-card-text 
-              h2 Minting Info
+        v-col(cols="12" md="6" lg="5")
+          v-card
+            v-card-title(align="center") Color Palette
+            v-card-text
+              .stats
+                ColorsGrid.stat(:palette="data.tokenData.palette")
+                .lightness.stat
+                  .d-flex.flex-column
+                    span.stat-value {{ data.tokenData.palette[2] + '%' }}
+                    span to
+                    span.stat-value {{ data.tokenData.palette[3] + '%' }}
+                  .stat-title Lightness Range
+                .hue.stat
+                  span.stat-value {{ data.tokenData.palette[0] + '°' }} 
+                  .stat-title Root Hue
+                .saturation.stat
+                  span.stat-value {{ data.tokenData.palette[1] + '%' }}
+                  .stat-title Saturation
+                .shades.stat
+                  span.stat-value {{ data.tokenData.palette[5] }}
+                  .stat-title Shades
+                .scheme.stat
+                  span.stat-value {{ schemeTitles[data.tokenData.palette[4]] }}
+                  .stat-title Scheme Name
+        v-col(cols="12" md="6" lg="5")
+          v-card
+            v-card-title(align="center") Shapes
+            v-card-text
+              .stats
+                .shapeCount.stat
+                  span.stat-value {{ data.tokenData.shapes }}
+                  .stat-title Shapes
+                .hatching.stat
+                  span.stat-value {{ data.tokenData.hatching }}
+                  .stat-title Hatching Mod
+                .width.stat
+                  span.stat-value {{ data.tokenData.size[0] + '-' + data.tokenData.size[1] }}
+                  .stat-title Width
+                .height.stat
+                  span.stat-value {{ data.tokenData.size[2] + '-' + data.tokenData.size[3] }}
+                  .stat-title Height
+                .spread-x.stat
+                  span.stat-value {{ data.tokenData.spacing[0] }}
+                  .stat-title Spread X
+                .spread-y.stat
+                  span.stat-value {{ data.tokenData.spacing[1] }}
+                  .stat-title Spread Y
+                .rows.stat
+                  span.stat-value {{ data.tokenData.spacing[2] }}
+                  .stat-title Rows
+                .columns.stat
+                  span.stat-value {{ data.tokenData.spacing[3] }}
+                  .stat-title Columns
+        v-col(cols="12" md="6" lg="5")
+          v-card
+            v-card-title(align="center") Mirroring
+            v-card-text
+              .stats
+                .mirror-a.stat
+                  span.stat-value {{ data.tokenData.mirrorPositions[0] }}
+                  .stat-title A
+                .mirror-b.stat
+                  span.stat-value {{ data.tokenData.mirrorPositions[1] }}
+                  .stat-title B
+                .mirror-c.stat
+                  span.stat-value {{ data.tokenData.mirrorPositions[2] }}
+                  .stat-title C
+                .scale.stat
+                  span.stat-value {{ data.tokenData.scale + "%" }}
+                  .stat-title Scale
+      v-row
+        v-col(cols="12")
+          v-card
+            v-card-title(align="center") Minting Info
+            v-card-text
               .minting-stats
                 .timestamp.stat
                   .stat-value
@@ -57,77 +134,6 @@
                         template(v-for="chunk in randomness.match(/.{1,16}/g)")
                           span.randomness-chunk {{ chunk }}
                     .stat-title Randomness
-        v-col(cols="12" md="6" lg="5")
-          v-card
-            v-card-title(align="center")
-              h2 Token Stats
-            v-card-text
-              .stats
-                ColorsGrid(:palette="data.tokenData.palette")
-                .hue.stat
-                  span.stat-value {{ data.tokenData.palette[0] + '°' }} 
-                  .stat-title Root Hue
-                .saturation.stat
-                  span.stat-value {{ data.tokenData.palette[1] + '%' }}
-                  .stat-title Saturation
-                .lightness.stat
-                  span.stat-value {{ data.tokenData.palette[2] + "%" }}
-                  .stat-title Lightness Min
-                .lightness.stat
-                  span.stat-value {{ data.tokenData.palette[3] + '%' }}
-                  .stat-title Lightness Max
-                .shades.stat
-                  span.stat-value {{ data.tokenData.palette[5] }}
-                  .stat-title Shades
-                .scheme.stat
-                  span.stat-value {{ schemeTitles[data.tokenData.palette[4]] }}
-                  .stat-title Scheme Name
-                .scheme.stat
-                  span.stat-value {{ data.tokenData.palette[4] }}
-                  .stat-title Scheme ID
-                .shapeCount.stat
-                  span.stat-value {{ data.tokenData.shapes }}
-                  .stat-title Shapes
-                .hatching.stat
-                  span.stat-value {{ data.tokenData.hatching }}
-                  .stat-title Hatching Mod
-                .width.stat
-                  span.stat-value {{ data.tokenData.size[0] + '-' + data.tokenData.size[1] }}
-                  .stat-title Width
-                .height.stat
-                  span.stat-value {{ data.tokenData.size[2] + '-' + data.tokenData.size[3] }}
-                  .stat-title Height
-                .spread-x.stat
-                  span.stat-value {{ data.tokenData.spacing[0] }}
-                  .stat-title Spread X
-                .spread-y.stat
-                  span.stat-value {{ data.tokenData.spacing[1] }}
-                  .stat-title Spread Y
-                .rows.stat
-                  span.stat-value {{ data.tokenData.spacing[2] }}
-                  .stat-title Rows
-                .columns.stat
-                  span.stat-value {{ data.tokenData.spacing[3] }}
-                  .stat-title Columns
-                .mirror-a.stat
-                  span.stat-value {{ data.tokenData.mirrorPositions[0] }}
-                  .stat-title A
-                .mirror-b.stat
-                  span.stat-value {{ data.tokenData.mirrorPositions[1] }}
-                  .stat-title B
-                .mirror-c.stat
-                  span.stat-value {{ data.tokenData.mirrorPositions[2] }}
-                  .stat-title C
-                .scale.stat
-                  span.stat-value {{ data.tokenData.scale + "%" }}
-                  .stat-title Scale
-                .animation.stat
-                  span.stat-value {{ data.tokenData.animation }}
-                  .stat-title Animation ID
-                .animation-title.stat
-                  div
-                    span.stat-value {{ animationTitles[data.tokenData.animation] }}
-                  .stat-title Animation Title
 </template>
 
 <script lang="ts">
