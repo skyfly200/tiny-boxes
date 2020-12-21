@@ -26,7 +26,7 @@
                 .caption Animation
                 h3 {{ animationTitles[data.tokenData.animation] }}
               v-spacer
-              a(href="https://opensea.io/" title="View on OpenSea" target="_blank")
+              a(:href="openseaTokenURL + id" title="View on OpenSea" target="_blank")
                 img(style="width:160px; border-radius:0px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);" src="https://storage.googleapis.com/opensea-static/opensea-brand/listed-button-blue.png" alt="Listed on OpenSea badge")
         v-col(cols="12" md="6" lg="5")
           v-card
@@ -159,6 +159,7 @@ export default Vue.extend({
     ...mapState({
         animationTitles: 'animationTitles',
         schemeTitles: 'schemeTitles',
+        openseaTokenURL: 'openseaTokenURL',
     }),
     ...mapGetters(["currentAccount"]),
   },

@@ -1286,6 +1286,8 @@ const store = new Vuex.Store({
       "Tetradic"
     ],
     tinyboxesAddress: '0x552d39E7db6FA5f40C1e6760e6127Cfd93837c5b',
+    openseaStoreURL: 'https://testnets.opensea.io/collection/tinyboxes-v41',
+    openseaTokenURL: 'https://testnets.opensea.io/assets/0x552d39e7db6fa5f40c1e6760e6127cfd93837c5b/',
     currentAccount: "",
     web3Status: "loading",
     web3: null,
@@ -1368,11 +1370,10 @@ const store = new Vuex.Store({
             if (err) reject(err);
             else {
               context.commit("setAccount", resp[0]);
-              if (context.state.web3 !== null)
-                context.state.web3.eth.net.getNetworkType((err: any, network: any)=> {
-                  context.commit("setNetwork", network);
-                  resolve(resp[0]);
-                });
+              web3.eth.net.getNetworkType((err: any, network: any)=> {
+                context.commit("setNetwork", network);
+                resolve(resp[0]);
+              });
             }
           });
         } else reject();
