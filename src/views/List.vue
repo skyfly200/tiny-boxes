@@ -3,50 +3,56 @@
     v-btn(to="/create" color="#3F51B5" fab bottom left fixed large)
         v-icon(large) mdi-plus-box
     v-container(fluid)
-      v-row(v-if="loading")
-        v-col(align="center").tokens-loading
-          v-progress-circular(indeterminate size="75" color="primary")
-          h1 Fetching Tokens
-          h3 Please Wait...
-      template(v-else)
-        v-data-iterator(:items="tokens" :page="page" :items-per-page="itemsPerPageSelector")
-          template(v-slot:header)
-            v-toolbar
-              v-spacer
-              v-btn-toggle(v-if="web3Status === 'active'" v-model="mode" mandatory @change="changeMode")
-                v-tooltip(bottom)
-                    template(v-slot:activator="{ on }")
-                      v-btn(large v-on="on" :depressed="mode === 'all'" color="blue" value="all")
-                        v-icon mdi-earth
-                    span All Boxes
-                v-tooltip(bottom)
-                    template(v-slot:activator="{ on }")
-                      v-btn(large v-on="on" :depressed="mode === 'owned'" color="purple" value="owned")
-                        v-icon mdi-account
-                    span Your Boxes
-          template(v-slot:default="{ items, isExpanded, expand }")
-            v-row
-              v-col(v-for="t of items" :key="'token-col-'+t.id" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
-                v-card.token(:to="'/token/' + t.id" tile)
-                  Token(:id="t.id" :data="t.art")
-                  v-card-text.title {{ t.id }}
-          v-col(v-if="count === 0").get-started
-            v-card(align="center").get-started-card
-              p {{ ownerOnly ? "You dont have any tokens yet!" : "No tokens have been minted yet" }}
-              v-btn(v-if="tokens !== {} && !soldOut" to="/create" outlined color="secondary") Mint
-              span(v-if="tokens !== {} && !soldOut && ownerOnly") &nbsp;or&nbsp;
-              v-btn(v-if="ownerOnly" to="opensea.io" outlined color="secondary") Buy
+      v-data-iterator(:items="loadedTokens" :page.sync="page" @update:page="setPage" :loading="loading" :items-per-page.sync="itemsPerPageSelector")
+        template(v-slot:header)
+          v-toolbar
+            v-text-field(
+              v-if="false"
+              v-model="search"
+              clearable
+              flat
+              solo-inverted
+              hide-details
+              prepend-inner-icon="mdi-magnify"
+              label="Search")
+            v-spacer
+            v-tooltip(v-if="web3Status === 'active'" bottom)
+                template(v-slot:activator="{ on }")
+                  v-btn(large icon v-on="on" @click="owned = !owned" :depressed="owned" color="purple")
+                    v-icon {{ owned ? "mdi-globe" : "mdi-treasure-chest"}}
+                span {{ owned ? "All Boxes" : "Your Boxes" }}
+        template(v-slot:loading)
+          v-row
+            v-col(align="center").tokens-loading
+              v-progress-circular(indeterminate size="75" color="primary")
+              h1 Fetching Tokens
+              h3 Please Wait...
+        template(v-slot:default="{ items, isExpanded, expand }")
+          v-row
+            v-col(v-for="t of items" :key="'token-col-'+t.id" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
+              v-card.token(:to="'/token/' + t.id" tile)
+                Token(:id="t.id" :data="t.art")
+                v-card-text.title {{ t.id }}
+        template(v-slot:no-data)
+          v-row.get-started
+            v-col(cols="12")
+              v-card(align="center").get-started-card
+                p {{ owned ? "You dont have any tokens yet!" : "No tokens have been minted yet" }}
+                v-btn(v-if="!soldOut" to="/create" outlined color="secondary") Create
+                span(v-if="tokens !== {} && !soldOut && owned") &nbsp;or&nbsp;
+                v-btn(v-if="tokens !== {} && owned" :to="openseaStoreURL" outlined color="secondary") Buy
 </template>
 
 <script lang="ts">
-import { mapGetters } from "vuex";
+import { mapGetters. mapState } from "vuex";
 import Token from "@/components/Token.vue";
 
 export default {
   name: "List",
   components: { Token },
   data: () => ({
-    mode: "",
+    owned: false,
+    page: 1,
     itemsPerPageSelector: 20,
     count: null,
     userCount: null,
@@ -54,22 +60,18 @@ export default {
     limit: null,
     loading: true,
     soldOut: false,
-    tokens: [] as any,
+    tokens: {} as any,
     values: {} as any,
   }),
   computed: {
-    page: {
-      get() {
-        return parseInt(this.$route.params.page);
-      },
-      set(page: number) {
-        this.$route.params.page = page.toString;
-      }
+    loadedTokens() {
+      return Object.keys(this.tokens)
+        .sort( (a,b) => parseInt(a) - parseInt(b))
+        .map( t => this.tokens[t] )
+        .filter( t => (this.owned ? t.owner === this.currentAccount : true) );
     },
-    ownerOnly() {
-      return this.mode === "owned";
-    },
-    ...mapGetters(["currentAccount", "web3Status", "itemsPerPage"])
+    ...mapGetters(["currentAccount", "web3Status", "itemsPerPage"]),
+    ...mapState(["openseaStoreURL"]),
   },
   mounted: async function() {
     this.loading = true;
@@ -79,14 +81,19 @@ export default {
     this.supply = await this.lookupSupply();
     this.userCount = await this.lookupBalance();
     this.soldOut = this.supply === this.limit;
+    this.page = parseInt(this.$route.params.page, 10);
     this.loadTokens();
   },
   methods: {
-    changeMode() {
-      this.loadTokens();
+    setPage(e: any) {
+      console.log(e)
+      this.$router.push({ params: {page: e} })
     },
-    lookupToken: function(id: any, animate: any) {
+    lookupArt: function(id: any, animate: any) {
       return this.$store.state.contracts.tinyboxes.methods.tokenArt(id, animate).call();
+    },
+    lookupOwner: function(id: any) {
+      return this.$store.state.contracts.tinyboxes.methods.ownerOf(id).call();
     },
     lookupSupply: function() {
       return this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
@@ -101,46 +108,19 @@ export default {
       return this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
     },
     loadTokens: async function() {
-      this.tokens = [];
-      this.count = this.ownerOnly ? this.userCount : this.supply;
+      this.tokens = {};
+      this.count = this.owned ? this.userCount : this.supply;
+      for (let i = 0; i < this.count; i++) this.loadToken(i);
       this.loading = false;
-      for (let i = 0; i < this.count; i++) {
-        this.ownerOnly ?
-          this.lookupUsersToken(i).then( (result: any) => this.loadToken(result, i)) :
-          this.loadToken(i);
-      }
     },
-    loadToken(tokenID: any, index: any) {
-      this.lookupToken(tokenID, false).then( (result: any) => {
-        this.$set(this.tokens, this.ownerOnly ? index : tokenID, {
-          id: tokenID,
-          art: result,
-        });
+    loadToken: async function(tokenID: any) {
+      const art = await this.lookupArt(tokenID, false);
+      const owner = await this.lookupOwner(tokenID);
+      this.$set(this.tokens, tokenID, {
+        id: tokenID,
+        art: art,
+        owner: owner,
       });
-    },
-    listenForMyTokens: function() {
-      const tokenSubscription = this.$store.state.web3.eth
-        .subscribe("logs", {
-          address: this.$store.state.tinyboxesAddress,
-          topics: [
-            "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-            "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "0x000000000000000000000000" + this.currentAccount.slice(2)
-          ]
-        })
-        .on(
-          "data",
-          async function(log: any) {
-            const id = parseInt(log.topics[3], 16);
-            // lookup new user balance
-            this.userCount = await this.lookupBalance();
-            // rerender token list
-            if (this.ownerOnly) this.loadToken(id);
-          }.bind(this)
-        )
-        .on("error", function(log: any) {
-          this.listenForTokens();
-        });
     },
     listenForTokens: function() {
       const tokenSubscription = this.$store.state.web3.eth
@@ -159,7 +139,7 @@ export default {
             this.supply = await this.lookupSupply();
             this.soldOut = this.supply === this.limit;
             // rerender token list
-            if (!this.ownerOnly) this.loadToken(id);
+            if (!this.owned) this.loadToken(id);
           }.bind(this)
         )
         .on("error", function(log: any) {
