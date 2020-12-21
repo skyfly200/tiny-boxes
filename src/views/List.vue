@@ -13,15 +13,15 @@
           template(v-slot:header)
             v-toolbar
               v-spacer
-              v-btn-toggle(v-if="web3Status === 'active'" v-model="ownerOnly" mandatory @change="changeUserOnly")
+              v-btn-toggle(v-if="web3Status === 'active'" v-model="mode" mandatory @change="changeMode")
                 v-tooltip(bottom)
                     template(v-slot:activator="{ on }")
-                      v-btn(large v-on="on" depressed color="blue" :value="false")
+                      v-btn(large v-on="on" :depressed="mode === 'all'" color="blue" value="all")
                         v-icon mdi-earth
                     span All Boxes
                 v-tooltip(bottom)
                     template(v-slot:activator="{ on }")
-                      v-btn(large v-on="on" depressed color="purple" :value="true")
+                      v-btn(large v-on="on" :depressed="mode === 'owned'" color="purple" value="owned")
                         v-icon mdi-account
                     span Your Boxes
           template(v-slot:default="{ items, isExpanded, expand }")
@@ -38,7 +38,7 @@
               v-btn(v-if="ownerOnly" to="opensea.io" outlined color="secondary") Buy
 </template>
 
-<script>
+<script lang="ts">
 import { mapGetters } from "vuex";
 import Token from "@/components/Token.vue";
 
@@ -46,23 +46,27 @@ export default {
   name: "List",
   components: { Token },
   data: () => ({
+    mode: "",
     itemsPerPageSelector: 10,
     count: null,
     userCount: null,
     supply: null,
     limit: null,
-    ownerOnly: false,
     loading: true,
     soldOut: false,
-    tokens: []
+    tokens: [] as any,
+    values: {} as any,
   }),
   computed: {
+    ownerOnly() {
+      return this.mode === "owned";
+    },
     ...mapGetters(["currentAccount", "web3Status", "itemsPerPage"])
   },
   mounted: async function() {
     this.loading = true;
     await this.$store.dispatch("initialize");
-    this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
+    //this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
     this.limit = await this.lookupLimit();
     this.supply = await this.lookupSupply();
     this.userCount = await this.lookupBalance();
@@ -70,10 +74,10 @@ export default {
     this.loadTokens();
   },
   methods: {
-    changeUserOnly() {
+    changeMode() {
       this.loadTokens();
     },
-    lookupToken: function(id, animate) {
+    lookupToken: function(id: any, animate: any) {
       return this.$store.state.contracts.tinyboxes.methods.tokenArt(id, animate).call();
     },
     lookupSupply: function() {
@@ -82,7 +86,7 @@ export default {
     lookupBalance: function() {
       return this.$store.state.contracts.tinyboxes.methods.balanceOf(this.currentAccount).call();
     },
-    lookupUsersToken(i) {
+    lookupUsersToken(i: any) {
       return this.$store.state.contracts.tinyboxes.methods.tokenOfOwnerByIndex(this.currentAccount, i).call();
     },
     lookupLimit: function() {
@@ -94,12 +98,12 @@ export default {
       this.loading = false;
       for (let i = 0; i < this.count; i++) {
         this.ownerOnly ?
-          this.lookupUsersToken(i).then( result => this.loadToken(result, i)) :
+          this.lookupUsersToken(i).then( (result: any) => this.loadToken(result, i)) :
           this.loadToken(i);
       }
     },
-    loadToken(tokenID, index) {
-      this.lookupToken(tokenID, false).then( result => {
+    loadToken(tokenID: any, index: any) {
+      this.lookupToken(tokenID, false).then( (result: any) => {
         this.$set(this.tokens, this.ownerOnly ? index : tokenID, {
           id: tokenID,
           art: result,
@@ -118,7 +122,7 @@ export default {
         })
         .on(
           "data",
-          async function(log) {
+          async function(log: any) {
             const id = parseInt(log.topics[3], 16);
             // lookup new user balance
             this.userCount = await this.lookupBalance();
@@ -126,7 +130,7 @@ export default {
             if (this.ownerOnly) this.loadToken(id);
           }.bind(this)
         )
-        .on("error", function(log) {
+        .on("error", function(log: any) {
           this.listenForTokens();
         });
     },
@@ -141,7 +145,7 @@ export default {
         })
         .on(
           "data",
-          async function(log) {
+          async function(log: any) {
             const id = parseInt(log.topics[3], 16);
             // lookup new supply and check if sold out
             this.supply = await this.lookupSupply();
@@ -150,7 +154,7 @@ export default {
             if (!this.ownerOnly) this.loadToken(id);
           }.bind(this)
         )
-        .on("error", function(log) {
+        .on("error", function(log: any) {
           this.listenForTokens();
         });
     }
