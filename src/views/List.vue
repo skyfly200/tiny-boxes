@@ -9,7 +9,7 @@
           h1 Fetching Tokens
           h3 Please Wait...
       template(v-else)
-        v-data-iterator(:items="tokens" :items-per-page="itemsPerPageSelector")
+        v-data-iterator(:items="tokens" :page="page" :items-per-page="itemsPerPageSelector")
           template(v-slot:header)
             v-toolbar
               v-spacer
@@ -25,7 +25,7 @@
                         v-icon mdi-account
                     span Your Boxes
           template(v-slot:default="{ items, isExpanded, expand }")
-            v-row(no-gutters)
+            v-row
               v-col(v-for="t of items" :key="'token-col-'+t.id" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
                 v-card.token(:to="'/token/' + t.id" tile)
                   Token(:id="t.id" :data="t.art")
@@ -47,7 +47,7 @@ export default {
   components: { Token },
   data: () => ({
     mode: "",
-    itemsPerPageSelector: 10,
+    itemsPerPageSelector: 20,
     count: null,
     userCount: null,
     supply: null,
@@ -58,6 +58,14 @@ export default {
     values: {} as any,
   }),
   computed: {
+    page: {
+      get() {
+        return parseInt(this.$route.params.page);
+      },
+      set(page: number) {
+        this.$route.params.page = page.toString;
+      }
+    },
     ownerOnly() {
       return this.mode === "owned";
     },
