@@ -74,7 +74,6 @@ export default {
     ...mapState(["openseaStoreURL"]),
   },
   mounted: async function() {
-    this.loading = true;
     await this.$store.dispatch("initialize");
     //this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
     this.limit = await this.lookupLimit();
@@ -111,16 +110,18 @@ export default {
       this.tokens = {};
       this.count = this.owned ? this.userCount : this.supply;
       for (let i = 0; i < this.count; i++) this.loadToken(i);
-      this.loading = false;
     },
     loadToken: async function(tokenID: any) {
-      const art = await this.lookupArt(tokenID, false);
-      const owner = await this.lookupOwner(tokenID);
+      const artPromise = this.lookupArt(tokenID, false);
+      const ownerPromise = this.lookupOwner(tokenID);
+      const art = await artPromise;
+      const owner = await ownerPromise;
       this.$set(this.tokens, tokenID, {
         id: tokenID,
         art: art,
         owner: owner,
       });
+      this.loading = false;
     },
     listenForTokens: function() {
       const tokenSubscription = this.$store.state.web3.eth
