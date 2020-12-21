@@ -8,9 +8,9 @@
       v-data-iterator(:items="tokens" :items-per-page="parseInt(itemsPerPage)" hide-default-footer)
           template(v-slot:default="{ items, isExpanded, expand }")
             v-row
-              v-col(v-for="t of items" :key="'token-col-'+t.index" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
-                v-card.token-permutation(@click="gotoMint(t.values)" :key="'token-card-'+t.index" tile)
-                  Token(:id="t.id" :data="t.art")
+              v-col(v-for="(t,i) of items" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
+                v-card.token-permutation(@click="gotoMint(t.values)" tile)
+                  Token(:id="i" :data="t.art")
           template(v-slot:footer)
             v-row
               v-col(align="center" cols="12")
@@ -90,7 +90,6 @@ export default Vue.extend({
           this.$set(this.tokens, t, {
             art: result,
             values: JSON.parse(JSON.stringify(this.values)),
-            index: t,
           });
         });
       }
@@ -101,12 +100,9 @@ export default Vue.extend({
       this.loading = true;
       for (let t=0;t<this.count;t++) {
         this.randomize();
-        this.loadToken().then( result => {
-          this.$set(this.tokens, t, {
-            art: result,
-            values: JSON.parse(JSON.stringify(this.values)),
-            index: t,
-          });
+        this.$set(this.tokens, t, {
+          art: await this.loadToken(),
+          values: JSON.parse(JSON.stringify(this.values)),
         });
       }
       this.loading = false;
