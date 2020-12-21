@@ -5,12 +5,16 @@
         v-col.heading(align="center")
           h1.title Hundreds of googols of possibilities!
           p Scroll to explore. Click to customize.
-      v-data-iterator(:items="tokens" :items-per-page="parseInt(itemsPerPage)")
+      v-data-iterator(:items="tokens" :items-per-page="parseInt(itemsPerPage)" hide-default-footer)
           template(v-slot:default="{ items, isExpanded, expand }")
             v-row
               v-col(v-for="t of items" :key="'token-col-'+t.index" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
                 v-card.token-permutation(@click="gotoMint(t.values)" :key="'token-card-'+t.index" tile)
                   Token(:id="t.id" :data="t.art")
+          template(v-slot:footer)
+            v-row
+              v-col(align="center" cols="12")
+                v-btn(@click="more") Load More
 </template>
 
 <script lang="ts">
@@ -19,6 +23,7 @@ import { mapGetters, mapState } from "vuex";
 import { sections } from "./create-form";
 import Token from "@/components/Token.vue";
 import { log } from 'console';
+import { start } from "repl";
 
 export default Vue.extend({
   name: "Explore",
@@ -75,6 +80,22 @@ export default Vue.extend({
       return Math.floor(
         Math.random() * (range.max - range.min + 1) + range.min
       );
+    },
+    more: async function() {
+      this.loading = true;
+      const start = this.tokens.length;
+      for (let t=start;t<(this.count+start);t++) {
+        this.randomize();
+        this.loadToken().then( result => {
+          this.$set(this.tokens, t, {
+            art: result,
+            values: JSON.parse(JSON.stringify(this.values)),
+            index: t,
+          });
+        });
+      }
+      this.itemsPerPage = this.itemsPerPage * 2;
+      this.loading = false;
     },
     loadTokens: async function() {
       this.loading = true;
@@ -145,7 +166,7 @@ export default Vue.extend({
   data: function() {
     return {
       loading: true,
-      count: 100,
+      count: 60,
       tokens: [] as any,
       values: {} as any,
       itemsPerPage: 100,
