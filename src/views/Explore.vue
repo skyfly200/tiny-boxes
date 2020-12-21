@@ -7,7 +7,7 @@
           p Scroll to explore. Click to customize.
       v-data-iterator(:items="tokens" :items-per-page="parseInt(itemsPerPage)")
           template(v-slot:default="{ items, isExpanded, expand }")
-            v-row(no-gutters)
+            v-row
               v-col(v-for="t of items" :key="'token-col-'+t.index" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
                 v-card.token-permutation(@click="gotoMint(t.values)" :key="'token-card-'+t.index" tile)
                   Token(:id="t.id" :data="t.art")
