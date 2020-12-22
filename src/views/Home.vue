@@ -23,7 +23,7 @@
         v-col(md=8 sm=10 xs=12 offset-md=2 offset-sm=1)
           v-container(fluid)
             v-row
-              v-col(v-for="c of cards" align="center" cols=6)
+              v-col(v-for="c of cards" align="center" md=6 cols=12)
                 v-card.ma-2.card
                   v-card-title.card-title {{ c.title }}
                   v-divider(width="50%")
