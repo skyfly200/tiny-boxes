@@ -11,7 +11,7 @@
           br
           v-divider(width="50%")
           .social-links.ma-4
-            v-btn(v-if="false" icon large href="" target="_blank")
+            v-btn(icon large href="https://discord.gg/2wWANVfCuE" target="_blank")
               v-icon mdi-discord
             v-btn(icon large href="https://twitter.com/tinyboxeseth" target="_blank")
               v-icon mdi-twitter
