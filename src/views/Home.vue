@@ -8,6 +8,8 @@
         v-col(sm=6 xs=12 offset-sm=3 align="center")
           h1.font-weight-bold Boxes Upon Boxes
           h3.text--secondary Animated On-Chain Generative Art NFTs
+          br
+          v-divider(width="50%")
           .social-links.ma-4
             v-btn(v-if="false" icon large href="" target="_blank")
               v-icon mdi-discord
@@ -15,14 +17,16 @@
               v-icon mdi-twitter
             v-btn(icon large href="https://medium.com/@nonfungibleteam" target="_blank")
               v-icon mdi-typewriter
+            v-btn(icon large href="#mc_embed_signup")
+              v-icon mdi-email
       v-row
         v-col(md=8 sm=10 xs=12 offset-md=2 offset-sm=1)
           v-container(fluid)
             v-row
               v-col(v-for="c of cards" align="center" cols=6)
-                v-card(height="14rem")
+                v-card.ma-2.card
+                  v-card-title.card-title {{ c.title }}
                   v-card-text
-                    h1.title {{ c.title }}
                     h3.font-weight-thin {{ c.lines[0] }}
                     h3.font-weight-thin {{ c.lines[1] }}
       v-row
@@ -38,7 +42,11 @@
                   input(type='text' name='b_81d0c7a7aabdc5c89bc737456_e8ca8b83a1' tabindex='-1' value='')
                 .clear
                   v-btn(type='submit' name='subscribe' color="green") Subscribe
-    v-footer.text-center &copy; NonFungibleTeam 2020
+    v-footer
+      v-container.pa-0
+        v-row
+          v-col.pa-0(align="center")
+            .text-center.font-weight-thin.text--secondary &copy; NonFungibleTeam 2020
 </template>
 
 <script>
@@ -97,9 +105,13 @@ export default {
 .logo
   width: 80vh
 .v-card__text
-  height: 100%
   display: flex
   flex-direction: column
+  justify-content: center
+  align-content: center
+.card
+  height: 14em
+.card-title
   justify-content: center
 .landing-text
   margin: 20vh 0
