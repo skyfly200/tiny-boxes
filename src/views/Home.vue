@@ -1,49 +1,56 @@
 <template lang="pug">
   .home
-    v-container
+    v-container(fluid)
       v-row.landing-logo
         v-col(align="center" cols=12)
           v-img.logo(src="/img/logo.svg")
       v-row.landing-text
         v-col(sm=6 xs=12 offset-sm=3 align="center")
-          h1 Boxes Upon Boxes
-          h1 Animated On-Chain Generative Art NFTs
+          h1.font-weight-bold Boxes Upon Boxes
+          h3.text--secondary Animated On-Chain Generative Art NFTs
+          .social-links
+            v-btn(icon large href="" target="_blank")
+              v-icon mdi-discord
+            v-btn(icon large href="https://twitter.com/tinyboxeseth" target="_blank")
+              v-icon mdi-twitter
+            v-btn(icon large href="https://medium.com/@nonfungibleteam" target="_blank")
+              v-icon mdi-blog
       v-row
         v-col(md=8 sm=10 xs=12 offset-md=2 offset-sm=1)
           v-container(fluid)
             v-row
               v-col(align="center" cols=6)
-                v-card(height="10rem")
+                v-card(height="14rem")
                   v-card-text
-                    h1.title Vast Generative Posibilities
+                    h1.title Vast Posibilities
                     h3 An Advanced Generative On-Chain Algorithm
                     h3 Hundreds of googols of possible outcomes
               v-col(align="center" cols=6)
-                v-card(height="10rem")
+                v-card(height="14rem")
                   v-card-text
                     h1.title Art Thats Forever
                     h3 The Immutible & Decentralized Perpetual Renderer 
                     h3 That means art thats accesible forever and fully owned by you
               v-col(align="center" cols=6)
-                v-card(height="10rem")
+                v-card(height="14rem")
                   v-card-text
                     h1.title Animations
                     h3 Animation effects built into the on chain renderer
                     h3 Static and animated art on chain and saved to IPFS
               v-col(align="center" cols=6)
-                v-card(height="10rem")
+                v-card(height="14rem")
                   v-card-text
                     h1.title Creative Options + Mystery
                     h3 Tweak the sliders, explore the posibilities
                     h3 You never know what you will get, thanks to a dash of RNG on minting
               v-col(align="center" cols=6)
-                v-card(height="10rem")
+                v-card(height="14rem")
                   v-card-text
                     h1.title Chainlink VRF
                     h3 Using the latest secure RNG solution from Chainlink
                     h3 Assuring your tokens are minted fairly with truly random values
               v-col(align="center" cols=6)
-                v-card(height="10rem")
+                v-card(height="14rem")
                   v-card-text
                     h1.title Accepting LINK
                     h3 Buy TinyBoxes in LINK token
