@@ -42,7 +42,7 @@
             v-card.dialog-error(v-else-if="overlay === 'error'" key="error")
               v-card-title Transaction Error
               v-card-text
-                v-alert(type="error" border="left") An error occured while minting your token
+                v-alert(type="error" border="left") An error occured while atempting to mint your token
               v-card-actions
                 v-btn(@click="mintToken" color="success") Try Again
                 v-spacer
@@ -423,9 +423,12 @@ export default Vue.extend({
       t.$store.state.web3.eth.sendTransaction(t.tx,
         async (err: any, txHash: string) => {
           const t = this as any;
-          t.minted.txHash = txHash;
-          t.overlay = err ? "error" : "confirm";
-          t.checkConfirmations(txHash);
+          if (err) t.overlay = err.code === 4001 ? "" : "error";
+          else {
+            t.minted.txHash = txHash;
+            t.overlay =  "confirm";
+            t.checkConfirmations(txHash);
+          }
         }
       );
     },
