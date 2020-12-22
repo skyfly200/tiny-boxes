@@ -1,6 +1,6 @@
 <template lang="pug">
   .home
-    v-container(fluid)
+    v-container
       v-row.landing-logo
         v-col(align="center" cols=12)
           v-img.logo(src="/img/logo.svg")
