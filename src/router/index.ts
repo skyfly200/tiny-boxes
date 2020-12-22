@@ -10,18 +10,6 @@ const routes = [
     component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
   },
   {
-    path: '/about',
-    name: 'About',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '../views/About.vue'),
-  },
-  {
-    path: '/guide/:topic?/:subtopic?',
-    name: 'Guide',
-    component: () =>
-      import(/* webpackChunkName: "guide" */ '../views/Guide.vue'),
-  },
-  {
     path: '/*',
     name: '404',
     component: () => import(/* webpackChunkName: "404" */ '../views/404.vue'),

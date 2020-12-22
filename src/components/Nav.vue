@@ -64,18 +64,6 @@ export default {
     drawer: false,
     links: [
       {
-        type: "page",
-        icon: "mdi-information",
-        text: "About",
-        path: "/about",
-      },
-      {
-        type: "page",
-        icon: "mdi-book-open-page-variant",
-        text: "Guide",
-        path: "/guide",
-      },
-      {
         type: "link",
         icon: "mdi-discord",
         text: "Discord",
