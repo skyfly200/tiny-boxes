@@ -26,6 +26,7 @@
               v-col(v-for="c of cards" align="center" cols=6)
                 v-card.ma-2.card
                   v-card-title.card-title {{ c.title }}
+                  v-divider(width="50%")
                   v-card-text
                     h3.font-weight-thin {{ c.lines[0] }}
                     h3.font-weight-thin {{ c.lines[1] }}
@@ -109,10 +110,12 @@ export default {
   flex-direction: column
   justify-content: space-around
   height: 10rem
+  padding-top: 0
 .card
   height: 14em
 .card-title
   justify-content: center
+  padding-bottom: 8px
 .landing-text
   margin: 20vh 0
 #mc_embed_signup
