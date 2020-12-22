@@ -3,7 +3,7 @@
     v-container(fluid)
       v-row.landing-logo
         v-col(align="center" cols=12)
-          v-img(src="/img/logo.png" min-width="250px" max-width="400px")
+          v-img.logo(src="/img/logo.svg")
       v-row.landing-text
         v-col(sm=6 xs=12 offset-sm=3 align="center")
           h1 Boxes Upon Boxes
@@ -78,7 +78,9 @@ export default {
 
 <style lang="sass" scoped>
 .landing-logo
-  margin: 20vh 0
+  margin: 10vh 0
+.logo
+  width: 80vh
 .landing-text
   margin: 20vh 0
 #mc_embed_signup
