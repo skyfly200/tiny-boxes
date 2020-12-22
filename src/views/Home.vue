@@ -34,7 +34,7 @@
         v-col(md=6 sm=8 xs=12 offset-md=3 offset-sm=2)
           v-card#mc_embed_signup.pb-3
             v-form#mc-embedded-subscribe-form.validate(action='https://shop.us17.list-manage.com/subscribe/post?u=81d0c7a7aabdc5c89bc737456&id=e8ca8b83a1' method='post' name='mc-embedded-subscribe-form' target='_blank' novalidate='')
-              v-card-title.font-weight-medium Subscribe to our mailing list!
+              v-card-title.font-weight-medium.subscribe-title Subscribe to our mailing list!
               v-card-subtitle Be the first to know when we launch
               #mc_embed_signup_scroll
                 v-text-field#mce-EMAIL.email(type='email' value='' name='EMAIL' placeholder='email address' required='')
@@ -120,6 +120,8 @@ export default {
   margin: 20vh 0
 #mc_embed_signup
   margin: 20vh 0
+  .subscribe-title
+    justify-content: center
   #mc_embed_signup_scroll
     margin: 0 1rem
 </style>
