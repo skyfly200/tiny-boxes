@@ -107,8 +107,8 @@ export default {
 .v-card__text
   display: flex
   flex-direction: column
-  justify-content: center
-  align-content: center
+  justify-content: space-around
+  height: 10rem
 .card
   height: 14em
 .card-title
