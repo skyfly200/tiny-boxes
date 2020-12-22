@@ -81,6 +81,11 @@ export default {
   margin: 10vh 0
 .logo
   width: 80vh
+.v-card__text
+  height: 100%
+  display: flex
+  flex-direction: column
+  justify-content: center
 .landing-text
   margin: 20vh 0
 #mc_embed_signup
