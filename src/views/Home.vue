@@ -9,7 +9,7 @@
           h1.font-weight-bold Boxes Upon Boxes
           h3.text--secondary Animated On-Chain Generative Art NFTs
           .social-links.ma-4
-            v-btn(icon large href="" target="_blank")
+            v-btn(v-if="false" icon large href="" target="_blank")
               v-icon mdi-discord
             v-btn(icon large href="https://twitter.com/tinyboxeseth" target="_blank")
               v-icon mdi-twitter
