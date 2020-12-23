@@ -7,7 +7,7 @@ module.exports = {
   themeConfig: {
     logo: '../img/logo.png',
     nav: [
-      { text: 'Back to DAPP', link: '../' },
+      { text: 'DAPP', link: 'https://tinybox.shop/' },
     ],
     sidebar: 'auto',
   },
