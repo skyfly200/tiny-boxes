@@ -42,8 +42,8 @@
                 use(xlink:href="#quad2")
             g(transform="scale(-1 -1) translate(-2400 -2400)")
                 use(xlink:href="#quad2")
-      g(transform="scale(1 1)")
-        use(xlink:href="#quad3")
+        g(transform="scale(1 1)")
+            use(xlink:href="#quad3")
 </template>
 
 <script lang="ts">
