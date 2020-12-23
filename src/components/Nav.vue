@@ -10,11 +10,6 @@
                 h4.account-label Active Account
                 span.address {{ currentAccount !== '' ? formatAccount(currentAccount) : "loading" }}
           v-divider
-        .mobile-link
-          v-list-item(link to="/")
-            v-list-item-icon
-              v-icon mdi-home
-            v-list-item-content Home
         .mobile-link(v-for="l,i in links" :key="i")
           v-list-item(v-if="l.type === 'page'" :to="l.path" link)
             v-list-item-icon
@@ -27,9 +22,7 @@
         
     v-app-bar(app color="primary" dark)
       router-link(to="/")
-        v-img.logo(src="/img/logo.png" width="55" height="55")
-      v-toolbar-title
-        router-link(to="/" text).mr-2.title TinyBoxes
+        v-img.logo.mt-2(src="/img/logo.png" width="55" height="55")
       v-spacer
       .link(v-for="l in links")
         v-btn(v-if="l.type === 'page'" :to="l.path" text)
@@ -73,6 +66,12 @@ export default {
     drawer: false,
     wrongNetworkFlag: false,
     links: [
+      {
+        type: "page",
+        icon: "mdi-home",
+        text: "Home",
+        path: "/"
+      },
       {
         type: "page",
         icon: "mdi-plus-box",
