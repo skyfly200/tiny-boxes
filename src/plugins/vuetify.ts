@@ -1,10 +1,12 @@
 import Vue from "vue";
 import Vuetify from "vuetify/lib";
 import "./overrides.sass";
+import { preset } from 'vue-cli-plugin-vuetify-preset-shrine/preset'
 
 Vue.use(Vuetify);
 
 export default new Vuetify({
+  preset,
   theme: {
     dark: true,
     themes: {
