@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 0 260 250">
+  <g id="Squares" data-name="Squares" transform="translate(0 5)">
+    <rect x="45" y="26" width="130" height="130" transform-origin="110 91" style="fill:#fff;stroke:#231f20;stroke-miterlimit:10;stroke-width:3px">
+      <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="10s" values="0;15;15;360;360" keyTimes="0;0.025;0.9;0.95;1"  keySplines="0 0 0.1 1;.5 0 .5 1;.5 0 .5 1;.5 0 .5 1" calcMode="spline" repeatCount="indefinite" />
+    </rect>
+    <rect x="45" y="26" width="130" height="130" transform-origin="110 91" style="fill:#f2f2f2;stroke:#231f20;stroke-miterlimit:10;stroke-width:3px">
+      <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="10s" values="0;30;30;360;360" keyTimes="0;0.05;0.9;0.95;1"  keySplines="0 0 0.1 1;.5 0 .5 1;.5 0 .5 1;.5 0 .5 1" calcMode="spline" repeatCount="indefinite" />
+    </rect>
+    <rect x="45" y="26" width="130" height="130" transform-origin="110 91" style="fill:#e6e6e6;stroke:#231f20;stroke-miterlimit:10;stroke-width:3px">
+      <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="10s" values="0;45;45;360;360" keyTimes="0;0.075;0.9;0.95;1"  keySplines="0 0 0.1 1;.5 0 .5 1;.5 0 .5 1;.5 0 .5 1" calcMode="spline" repeatCount="indefinite" />
+    </rect>
+    <rect x="45" y="26" width="130" height="130" transform-origin="110 91" style="fill:#dddddd;stroke:#231f20;stroke-miterlimit:10;stroke-width:3px">
+      <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="10s" values="0;60;60;360;360" keyTimes="0;0.1;0.9;0.95;1"  keySplines="0 0 0.1 1;.5 0 .5 1;.5 0 .5 1;.5 0 .5 1" calcMode="spline" repeatCount="indefinite" />
+    </rect>
+    <rect x="45" y="26" width="130" height="130" transform-origin="110 91" style="fill:#d1d1d1;stroke:#231f20;stroke-miterlimit:10;stroke-width:3px">
+      <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="10s" values="0;75;75;360;360" keyTimes="0;0.125;0.9;0.95;1"  keySplines="0 0 0.1 1;.5 0 .5 1;.5 0 .5 1;.5 0 .5 1" calcMode="spline" repeatCount="indefinite" />
+    </rect>
+    <rect x="45" y="26" width="130" height="130" transform-origin="110 91" style="fill:#bebebe;stroke:#231f20;stroke-miterlimit:10;stroke-width:3px">
+      <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="10s" values="0;90;90;360;360" keyTimes="0;0.15;0.9;0.95;1"  keySplines="0 0 0.1 1;.5 0 .5 1;.5 0 .5 1;.5 0 .5 1" calcMode="spline" repeatCount="indefinite" />
+    </rect>
+  </g>
+  <g id="TINY" transform-origin="110 97.5">
+    <animate attributeName="opacity" dur="10s" values="0;1;1;0;0" keyTimes="0;0.175;0.9;0.95;1" repeatCount="indefinite" />
+    <animateTransform attributeName="transform" attributeType="XML" type="scale" dur="10s" values="0 0;1 1;1 1;0 0;0 0" keyTimes="0;0.175;0.89;0.95;1" keySplines="0 .5 .5 1;.5 0 .5 1;.5 .5 0 1;.5 0 .5 1" calcMode="spline" repeatCount="indefinite" />
+    <path d="M84.31,42.83V88.57h-12V42.83H55.19V34.32H101.4v8.51Z" style="fill:#231f20" transform-origin="50% 50%" transform="translate(0 4)" />
+    <path d="M122.1,42.67V34.32h39.43v8.35H147.78V80.14h13.75v8.43H122.1V80.14h13.75V42.67Z" style="fill:#231f20" transform="translate(0 4)" />
+    <path d="M86.74,150.57,70,118.2l-3.44-7v39.35H55.91V96.32H70.32l17,32.58,3,6.35V96.32h10.69v54.25Z" style="fill:#231f20" transform="translate(0 4)" />
+    <path d="M147.64,131.35v19.22H135.71V131.44L115.42,96.32h13l9.16,16.77,4.2,8.22,4.2-8.47,9.6-16.52h12.5Z" style="fill:#231f20" transform="translate(0 4)" />
+  </g>
+  <g id="BOXES" transform="translate(0 20)">
+    <g id="B">
+      <animateTransform attributeName="transform" attributeType="XML" type="translate" dur="3s" values="0 0;0.3 0.5;-0.2 0.2;-0.5 -0.3;-0.2 0.4;0.5 0.2;0 0.5;-0.4 0;0.2 -0.5;-0.3 0.3;0 0" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" repeatCount="indefinite" />
+      <rect y="171.22" width="39.9" height="39.9" style="fill:#231f20"  />
+      <path d="M11.47,200.7V175.17h8.25q4.35,0,6.53,1.52a5.27,5.27,0,0,1,2.18,4.61,7.79,7.79,0,0,1-.23,1.87,6,6,0,0,1-.69,1.67,5.21,5.21,0,0,1-2.83,2.26,6,6,0,0,1,1.82.62A5.53,5.53,0,0,1,28,188.91a5.64,5.64,0,0,1,1,1.73,6.07,6.07,0,0,1,.38,2.23,6.89,6.89,0,0,1-2.61,5.87c-1.75,1.3-4.27,2-7.56,2Zm12-18.56a3.47,3.47,0,0,0-.24-1.31,2.26,2.26,0,0,0-.75-1,3.75,3.75,0,0,0-1.33-.64,7.41,7.41,0,0,0-2-.22H16.24v6.76h2.91a6,6,0,0,0,2-.29,3.55,3.55,0,0,0,1.33-.78,2.92,2.92,0,0,0,.74-1.14A4.18,4.18,0,0,0,23.43,182.14ZM19.6,196.77a6.47,6.47,0,0,0,2-.29,4.46,4.46,0,0,0,1.46-.81,3.4,3.4,0,0,0,.88-1.22,3.64,3.64,0,0,0,.31-1.51A3.08,3.08,0,0,0,23,190.35a6.27,6.27,0,0,0-3.8-.94h-3v7.36Z" transform="translate(0 2.12)" style="fill:#fff" />
+    </g>
+    <g id="O">
+      <animateTransform attributeName="transform" attributeType="XML" type="translate" dur="3s" values="0 0;-0.4 0;-0.2 0.4;-0.3 0.3;0.3 0.5;0.5 0.2;0 0.5;0.2 -0.5;-0.2 0.2;-0.5 -0.3;0 0" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" repeatCount="indefinite" />
+      <rect x="45.48" y="163.51" width="39.9" height="39.9" style="fill:#414042" />
+      <path d="M75.71,180.12a19.71,19.71,0,0,1-.81,6,11.51,11.51,0,0,1-2.23,4.14,8.76,8.76,0,0,1-3.32,2.4,10.65,10.65,0,0,1-4.07.78q-5,0-7.58-3.35t-2.54-9.74a19.68,19.68,0,0,1,.81-6,11.51,11.51,0,0,1,2.23-4.14,8.76,8.76,0,0,1,3.32-2.4,10.47,10.47,0,0,1,4.07-.79c3.36,0,5.89,1.12,7.58,3.34S75.71,175.85,75.71,180.12Zm-5.08.23q0-4.53-1.21-6.75a4.18,4.18,0,0,0-4-2.23,4.53,4.53,0,0,0-2.37.58,4.38,4.38,0,0,0-1.61,1.69,8.72,8.72,0,0,0-.93,2.74,21.86,21.86,0,0,0-.29,3.74,14.6,14.6,0,0,0,1.22,6.76,4.19,4.19,0,0,0,4,2.22,4.67,4.67,0,0,0,2.37-.57,4.45,4.45,0,0,0,1.61-1.69,8.79,8.79,0,0,0,.92-2.75A21.78,21.78,0,0,0,70.63,180.35Z" transform="translate(0 2.12)" style="fill:#fff" />
+    </g>
+    <g id="X">
+      <animateTransform attributeName="transform" attributeType="XML" type="translate" dur="3s" values="0 0;0.3 0.5;0.5 0.2;0 0.5;-0.4 0;0.2 -0.5;-0.2 0.2;-0.5 -0.3;-0.2 0.4;-0.3 0.3;0 0" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" repeatCount="indefinite" />
+      <rect x="90.5" y="168.16" width="39.9" height="39.9" style="fill:#231f20" />
+      <path d="M115.17,197.64l-4.92-9.4-4.84,9.4h-5.8L107,184.55l-6.87-12.44h5.64l4.63,8.89,4.47-8.89h5.65l-6.84,12.44,7.64,13.09Z" transform="translate(0 2.12)" style="fill:#fff" />
+    </g>
+    <g id="E">
+      <animateTransform attributeName="transform" attributeType="XML" type="translate" dur="3s" values="0 0;-0.2 0.2;0.3 0.5;-0.5 -0.3;-0.2 0.4;0 0.5;-0.4 0;0.5 0.2;0.2 -0.5;-0.3 0.3;0 0" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" repeatCount="indefinite" />
+      <rect x="135.08" y="161.52" width="39.9" height="39.9" style="fill:#414042" />
+      <path d="M147.63,191V165.47H163v4.06H152.51v6.35h10v4h-10v7.09H163V191Z" transform="translate(0 2.12)" style="fill:#fff" />
+    </g>
+    <g id="S">
+      <animateTransform attributeName="transform" attributeType="XML" type="translate" dur="3s" values="0 0;0.2 -0.5;-0.3 0.3;0.3 0.5;-0.2 0.2;-0.5 -0.3;-0.2 0.4;0.5 0.2;0 0.5;-0.4 0;0 0" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" repeatCount="indefinite" />
+      <rect x="180.1" y="169.88" width="39.9" height="39.9" style="fill:#231f20" />
+      <path d="M209,191.65a8,8,0,0,1-.78,3.63,6.9,6.9,0,0,1-2.15,2.55,9.6,9.6,0,0,1-3.3,1.49,16.7,16.7,0,0,1-4.18.49,32.54,32.54,0,0,1-3.89-.23,23.77,23.77,0,0,1-3.71-.78v-4.75c.6.21,1.22.4,1.87.59s1.31.34,2,.47,1.31.25,2,.33a17.69,17.69,0,0,0,1.89.11,9.81,9.81,0,0,0,2.33-.23,4.7,4.7,0,0,0,1.56-.65,2.46,2.46,0,0,0,.88-1,2.89,2.89,0,0,0,.27-1.25,2.37,2.37,0,0,0-.53-1.57,5,5,0,0,0-1.42-1.13,13.33,13.33,0,0,0-2-.88c-.75-.26-1.51-.54-2.29-.84s-1.53-.63-2.28-1a8.44,8.44,0,0,1-2-1.41,6.69,6.69,0,0,1-1.41-2,6.6,6.6,0,0,1-.54-2.8,7.35,7.35,0,0,1,.55-2.85,6.07,6.07,0,0,1,1.72-2.36,8.67,8.67,0,0,1,3-1.6,14.36,14.36,0,0,1,4.43-.59q.76,0,1.59.06c.55.05,1.1.11,1.64.18s1.06.16,1.56.25,1,.2,1.38.31v4.39a13.06,13.06,0,0,0-1.37-.43c-.49-.13-1-.24-1.53-.34s-1.06-.17-1.59-.23-1-.07-1.52-.07a9.41,9.41,0,0,0-2.15.2,4.77,4.77,0,0,0-1.45.57,2.11,2.11,0,0,0-.82.89,2.64,2.64,0,0,0-.25,1.17,2,2,0,0,0,.53,1.38,5.43,5.43,0,0,0,1.43,1,16,16,0,0,0,2,.86c.75.27,1.52.55,2.31.86a22.52,22.52,0,0,1,2.3,1,8.81,8.81,0,0,1,2,1.43,6.44,6.44,0,0,1,1.43,2A6.3,6.3,0,0,1,209,191.65Z" transform="translate(0 2.12)" style="fill:#fff" />
+    </g>
+  </g>
+</svg>

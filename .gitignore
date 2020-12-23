@@ -14,10 +14,8 @@ node_modules
 
 # images
 /frames/*.svg
-*.png
-*.gif
-*.mp4
-*.jpg
+/src/*.png
+/src/*.gif
 
 # Secrets
 secrets.json
