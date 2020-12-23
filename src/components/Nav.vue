@@ -117,7 +117,7 @@ export default {
       {
         type: "link",
         icon: "mdi-typewriter",
-        text: "Medium",
+        text: "Blog",
         path: "https://medium.com/@nonfungibleteam"
       },
     ]
