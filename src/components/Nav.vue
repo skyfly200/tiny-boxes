@@ -68,12 +68,6 @@ export default {
     links: [
       {
         type: "page",
-        icon: "mdi-home",
-        text: "Home",
-        path: "/"
-      },
-      {
-        type: "page",
         icon: "mdi-plus-box",
         text: "Create",
         path: "/create"
