@@ -14,7 +14,8 @@
       v-row(v-else no-gutters)
         v-col(cols="12" md="6" lg="5" offset-lg="1")
           v-card
-            Token(:id="id" :data="animate ? data.animation : data.art").token-graphic
+            Token(v-if="animate" :id="id+'A'" :data="data.animation" key="anim").token-graphic
+            Token(v-else :id="id" :data="data.art" key="static").token-graphic
             v-card-actions
               v-tooltip(right)
                 template(v-slot:activator='{ on }')
