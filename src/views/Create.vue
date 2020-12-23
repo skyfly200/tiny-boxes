@@ -62,7 +62,7 @@
                   h2 {{ priceInETH }}
                   v-icon(large) mdi-ethereum
                 v-spacer
-                v-btn(@click="mintToken" :disabled="!form.valid || soldOut || loading") Mint
+                v-btn(@click="mintToken" :disabled="!form.valid || soldOut || loading" large color="success") Mint
           v-alert(v-if="!loading && !form.valid" type="error" prominent outlined border="left").invalid-options Invalid Box Options!
           v-alert(v-if="!loading && soldOut" type="warning" prominent outlined border="left").sold-out
             p All boxes have sold, minting is disabled.
@@ -102,7 +102,7 @@
             br
             v-expansion-panels(v-model="form.section" popout tile)
               v-expansion-panel.section(v-for="section,s of active" :key="section.title" ripple)
-                v-expansion-panel-header(color="#3F51B5").section-title
+                v-expansion-panel-header(color="secondary").section-title
                   span {{ section.title }}
                   v-spacer
                   v-tooltip(left).rand-section
