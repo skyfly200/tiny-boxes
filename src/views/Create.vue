@@ -1,52 +1,49 @@
 <template lang="pug">
   .token-creator
-    v-dialog(:value="dialog" transition="fade" :persistent="inProgress" @click:outside="overlay=''")
-      v-container(fluid)
-        v-row
-          v-col(lg="4" md="4" sm="6" xs="12" offset-lg="4" offset-md="4" offset-sm="3")
-            Share.dialog-share(v-if="overlay === 'share'" key="share")
-            v-card.dialog-verify(v-else-if="overlay === 'verify'" key="verify")
-              v-card-title Submit The Transaction
-              v-card-text
-                .message
-                  h3 Mint Token {{ "#" + id }} for {{ priceInETH }} 
-                    v-icon mdi-ethereum
-            v-card.dialog-confirm(v-else-if="overlay === 'confirm'" key="confirm")
-              v-card-title Awaiting TX Confirmation
-              v-card-text
-                .message                      
-                  .d-flex
-                    h3 Hash: {{ formatHash(minted.txHash) }}
-                    v-spacer
-                    v-tooltip(top)
-                      template(v-slot:activator='{ on }')
-                        a(:href="'https://rinkeby.etherscan.io/tx/' + minted.txHash" v-on='on' target="new")
-                          v-icon mdi-open-in-new
-                      span View on Etherscan
-                  h3 {{ confirmations > 0 ? " Confirmed" : "Pending" }} 
-                v-progress-linear(:value="confirmations / confirmationsRequired * 100" :indeterminate="!confirmations")
-            v-card.dialog-wait(v-else-if="overlay === 'wait'" key="wait")
-              v-card-title Waiting For VRF Fullfillment
-              v-card-text
-                .message
-                  h3 Please Wait...
-                v-progress-linear(indeterminate)
-            v-card.dialog-ready(v-else-if="overlay === 'ready'" key="ready")
-              v-skeleton-loader(:value="!minted.art" type="image")
-                Token(:id="minted.id+'-preview'" :data="minted.art")
-              v-card-title.text-center You Minted Token {{ "#" + minted.id }}
-              v-card-actions
-                v-btn(:to="'/token/' + minted.id" color="primary") View Token
-                v-spacer
-                v-btn(@click="overlay = ''; loadToken()" color="success") Mint Another
-            v-card.dialog-error(v-else-if="overlay === 'error'" key="error")
-              v-card-title Transaction Error
-              v-card-text
-                v-alert(type="error" border="left") An error occured while atempting to mint your token
-              v-card-actions
-                v-btn(@click="mintToken" color="success") Try Again
-                v-spacer
-                v-btn(@click="overlay = ''; loadToken()" color="error") Cancel
+    v-dialog(:value="dialog" transition="fade" :persistent="inProgress" @click:outside="overlay=''" width="500")
+      Share.dialog-share(v-if="overlay === 'share'" key="share")
+      v-card.dialog-verify(v-else-if="overlay === 'verify'" key="verify")
+        v-card-title Submit The Transaction
+        v-card-text
+          .message
+            h3 Mint Token {{ "#" + id }} for {{ priceInETH }} 
+              v-icon mdi-ethereum
+      v-card.dialog-confirm(v-else-if="overlay === 'confirm'" key="confirm")
+        v-card-title Awaiting TX Confirmation
+        v-card-text
+          .message                      
+            .d-flex
+              h3 Hash: {{ formatHash(minted.txHash) }}
+              v-spacer
+              v-tooltip(top)
+                template(v-slot:activator='{ on }')
+                  a(:href="'https://rinkeby.etherscan.io/tx/' + minted.txHash" v-on='on' target="new")
+                    v-icon mdi-open-in-new
+                span View on Etherscan
+            h3 {{ confirmations > 0 ? " Confirmed" : "Pending" }} 
+          v-progress-linear(:value="confirmations / confirmationsRequired * 100" :indeterminate="!confirmations")
+      v-card.dialog-wait(v-else-if="overlay === 'wait'" key="wait")
+        v-card-title Waiting For VRF Fullfillment
+        v-card-text
+          .message
+            h3 Please Wait...
+          v-progress-linear(indeterminate)
+      v-card.dialog-ready(v-else-if="overlay === 'ready'" key="ready")
+        v-skeleton-loader(:value="!minted.art" type="image")
+          Token(:id="minted.id+'-preview'" :data="minted.art")
+        v-card-title.text-center You Minted Token {{ "#" + minted.id }}
+        v-card-actions
+          v-btn(:to="'/token/' + minted.id" color="primary") View Token
+          v-spacer
+          v-btn(@click="overlay = ''; loadToken()" color="success") Mint Another
+      v-card.dialog-error(v-else-if="overlay === 'error'" key="error")
+        v-card-title Transaction Error
+        v-card-text
+          v-alert(type="error" border="left") An error occured while atempting to mint your token
+        v-card-actions
+          v-btn(@click="mintToken" color="success") Try Again
+          v-spacer
+          v-btn(@click="overlay = ''; loadToken()" color="error") Cancel
     v-container(fluid)
       v-row(flex)
         v-col(align="center" cols="12" md="5" offset-md="1")
