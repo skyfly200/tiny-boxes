@@ -106,14 +106,20 @@ export default {
         type: "link",
         icon: "mdi-discord",
         text: "Discord",
-        path: "https://discord.gg/upwdYAh"
+        path: "https://discord.gg/2wWANVfCuE"
       },
       {
         type: "link",
         icon: "mdi-twitter",
         text: "Twitter",
-        path: "https://twitter.com/MicroverseLife"
-      }
+        path: "https://twitter.com/tinyboxeseth"
+      },
+      {
+        type: "link",
+        icon: "mdi-twpewritter",
+        text: "Medium",
+        path: "https://medium.com/@nonfungibleteam"
+      },
     ]
   }),
   computed: {
