@@ -23,16 +23,28 @@ contract TinyBoxes is TinyBoxesStore {
     {}
 
     /**
-     * @dev Update the token URI field
+     * @dev Set the tokens URI
      * @param _id of a token to update
      * @param _uri for the token
      * @dev Only the animator role can call this
      */
-    function updateURI(uint256 _id, string calldata _uri)
+    function setTokenURI(uint256 _id, string calldata _uri)
         external
         onlyRole(ANIMATOR_ROLE)
     {
         _setTokenURI(_id, _uri);
+    }
+
+    /**
+     * @dev Update the base URI field
+     * @param _uri base for all tokens 
+     * @dev Only the admin role can call this
+     */
+    function setBaseURI(string calldata _uri)
+        external
+        onlyRole(ADMIN_ROLE)
+    {
+        _setBaseURI(_uri);
     }
 
     /**
