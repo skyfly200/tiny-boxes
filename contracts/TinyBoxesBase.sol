@@ -32,7 +32,6 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     bytes32 public constant ARTIST_ROLE = keccak256("ARTIST_ROLE");
     bytes32 public constant ANIMATOR_ROLE = keccak256("ANIMATOR_ROLE");
-    bytes32 public constant TREASURER_ROLE = keccak256("TREASURER_ROLE");
 
     /**
      * @dev Contract constructor.
@@ -44,7 +43,6 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         _setupRole(ADMIN_ROLE, msg.sender);
         _setupRole(ARTIST_ROLE, msg.sender);
         _setupRole(ANIMATOR_ROLE, msg.sender);
-        _setupRole(TREASURER_ROLE, msg.sender);
     }
 
     /**
