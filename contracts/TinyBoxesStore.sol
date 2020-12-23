@@ -230,13 +230,13 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         // make sure caller is never the 0 address
         require(
             msg.sender != address(0),
-            "token recipient man not be the zero address"
+            "0x00 Recipient Invalid"
         );
         // ensure we have enough LINK token in the contract to pay for VRF request fee
         uint256 balance = LINK_TOKEN.balanceOf(address(this));
         require(
             balance >= fee,
-            "Not enough LINK for a VRF request"
+            "Low LINK 4 VRF"
         );
 
         // store the current id & increment the counter for the next call
@@ -246,7 +246,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         // register the new box data
         boxes[id] = box;
 
-        // add block number and new token id into the seed value
+        // add block number and new token id to the seed value
         uint256 seed = _seed.add(block.number).add(id).mod(uint256(2**64));
 
         // send VRF request
@@ -273,11 +273,9 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         Request memory req = requests[requestId];
 
         // TODO - generate animation with RNG weighted non uniformly for varying rarity types
-        //        maybe use log base 2 of a number in a range 2 to the animation counts
 
         // generate params with RNG & save to the box along with the randomness
         boxes[req.id].randomness = randomness;
-        // TODO: calculate on the fly to save one storage var of gas
         boxes[req.id].animation = uint8(randomness.mod(ANIMATION_COUNT));
 
         // mint the new token to the creators address
