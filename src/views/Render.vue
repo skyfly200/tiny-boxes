@@ -71,12 +71,12 @@ import Vue from "vue";
 import { log } from 'console';
 import { mapGetters, mapState } from "vuex";
 import { sections } from "./create-form";
-import Token from "@/components/Token.vue";
 import Share from "@/components/Share.vue";
+import RenderSVG from "@/components/RenderSVG.vue";
 
 export default Vue.extend({
   name: "Create",
-  components: { Token, Share },
+  components: { Share, RenderSVG },
   data: function() {
     return {
       loading: true,
