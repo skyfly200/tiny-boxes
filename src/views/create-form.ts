@@ -51,7 +51,7 @@ export const sections: Array<object> = [
         type: "slider",
         range: {
           min: 1,
-          max: 500,
+          max: 600,
         },
       },
       {
@@ -60,7 +60,7 @@ export const sections: Array<object> = [
         type: "slider",
         range: {
           min: 1,
-          max: 500,
+          max: 600,
         },
       },
       {
@@ -69,11 +69,11 @@ export const sections: Array<object> = [
         type: "slider",
         rand: {
           min: 1,
-          max: 20,
+          max: 8,
         },
         range: {
           min: 1,
-          max: 50,
+          max: 8,
         },
       },
       {
@@ -82,11 +82,11 @@ export const sections: Array<object> = [
         type: "slider",
         rand: {
           min: 1,
-          max: 20,
+          max: 8,
         },
         range: {
           min: 1,
-          max: 50,
+          max: 8,
         },
       },
     ],
