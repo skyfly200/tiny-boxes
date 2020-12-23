@@ -16,6 +16,12 @@ const routes = [
       import(/* webpackChunkName: "create" */ "../views/Create.vue")
   },
   {
+    path: "/render",
+    name: "Render",
+    component: () =>
+      import(/* webpackChunkName: "render" */ "../views/Render.vue")
+  },
+  {
     path: "/explore",
     name: "Explore",
     component: () =>
