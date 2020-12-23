@@ -92,12 +92,6 @@ export default {
       },
       {
         type: "link",
-        icon: "mdi-github",
-        text: "GitHub",
-        path: "https://github.com/skyfly200/tiny-boxes"
-      },
-      {
-        type: "link",
         icon: "mdi-discord",
         text: "Discord",
         path: "https://discord.gg/2wWANVfCuE"

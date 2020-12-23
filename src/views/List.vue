@@ -3,7 +3,8 @@
     v-btn(to="/create" color="#3F51B5" fab bottom left fixed large)
         v-icon(large) mdi-plus-box
     v-container(fluid)
-      v-data-iterator(:items="loadedTokens" :page.sync="page" @update:page="setPage" :loading="loading" :items-per-page.sync="itemsPerPageSelector")
+      v-data-iterator(:items="loadedTokens" :page.sync="page" @update:page="setPage"
+        :loading="loading" :items-per-page.sync="itemsPerPageSelector")
         template(v-slot:header)
           v-toolbar
             v-text-field(
