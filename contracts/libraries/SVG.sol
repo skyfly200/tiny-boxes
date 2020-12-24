@@ -97,7 +97,7 @@ library SVG {
     function _generateMirroring(
         int16[3] memory mirrorPositions,
         Decimal memory scale
-    ) internal view returns (string memory) {
+    ) internal pure returns (string memory) {
         string[3] memory scales = ['-1 1', '1 -1', '-1 -1'];
         // reference shapes symbol at core of mirroring
         string memory symbols = string(abi.encodePacked('<symbol id="quad0">',_g(_use('shapes')),'</symbol>'));
