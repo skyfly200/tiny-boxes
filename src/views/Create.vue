@@ -136,10 +136,11 @@ import { mapGetters, mapState } from "vuex";
 import { sections } from "./create-form";
 import Token from "@/components/Token.vue";
 import Share from "@/components/Share.vue";
+import TooltipIconBtn from "@/components/TooltipIconBtn.vue";
 
 export default Vue.extend({
   name: "Create",
-  components: { Token, Share },
+  components: { Token, Share, TooltipIconBtn },
   data: function() {
     return {
       id: null as number | null,
