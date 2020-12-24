@@ -22,7 +22,7 @@ library SVG {
      * @param shape object
      * @param slot for nested tags (animations)
      */
-    function _rect(Shape memory shape, string memory slot) internal view returns (string memory) {
+    function _rect(Shape memory shape, string memory slot) internal pure returns (string memory) {
         return string(abi.encodePacked(
             '<rect x="',
             shape.position[0].toString(),
@@ -44,7 +44,7 @@ library SVG {
      * @dev render a rectangle SVG tag
      * @param shape object
      */
-    function _rect(Shape memory shape) internal view returns (string memory) {
+    function _rect(Shape memory shape) internal pure returns (string memory) {
         return _rect(shape, '');
     }
 
