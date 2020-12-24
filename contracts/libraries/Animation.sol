@@ -118,7 +118,7 @@ library Animation {
         TinyBox memory box,
         Shape memory shape,
         uint256 shapeIndex
-    ) internal view returns (string memory) {
+    ) internal pure returns (string memory) {
         // select animation based on animation id
         uint256 animation = box.animation;
         if (animation == 0) {
