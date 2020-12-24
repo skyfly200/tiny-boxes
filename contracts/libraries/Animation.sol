@@ -263,13 +263,12 @@ library Animation {
         } else if (animation == 18) {
             // Wave
             string memory values = string(abi.encodePacked("1 1;1 1;1.5 1.5;1 1;1 1"));
-            // TODO: generate decimal values and convert to strings
-            // start min 0, end max 1
-            uint256 length = 10; // percent of the animation length for each wave pulse
-            uint256 peak = uint256(100).add(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
-            string memory start = peak.sub(length).toString();
-            string memory end = peak.add(length).toString();
-            string memory times = string(abi.encodePacked("0;", start, ";", peak.toString(), ";", end, ";1")); 
+            int256 div = int256(10000).div(int256(box.shapes + 1));
+            int256 peak = int256(10000).sub(div.mul(int256(shapeIndex).add(1)));
+            string memory start = peak.sub(div).toDecimal(4).toString();
+            string memory end = peak.add(div).toDecimal(4).toString();
+            // zero pad vals less than 1000 in Decimal toString
+            string memory times = string(abi.encodePacked("0;", start, ";", peak.toDecimal(4).toString(), ";", end, ";1")); 
             return _animateTransform( "scale", "10s", values, times, generateSplines(4,0) );
         } else if (animation == 19) {
             // Phased Fade
