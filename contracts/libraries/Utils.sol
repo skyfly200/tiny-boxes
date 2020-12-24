@@ -29,28 +29,6 @@ library Utils {
         }
     }
 
-    function decimalToString(int256 value, uint8 decimals)
-        public
-        view
-        returns (string memory)
-    {
-        bytes memory buffer = new bytes(8192);
-        //buffer.append(toString(value));
-        //     FixidityLib.fromFixed(
-        //         FixidityLib.integer(value)
-        //     , decimals))
-        // );
-        buffer.append(".");
-        buffer.append(toString(
-            FixidityLib.fromFixed(
-                FixidityLib.fractional(
-                    FixidityLib.abs(value)
-                ), decimals)
-            )
-        );
-        return buffer.toString();
-    }
-
     // special toString for signed ints
     function toString(int256 val) public view returns (string memory) {
         bytes memory buffer = new bytes(8192);

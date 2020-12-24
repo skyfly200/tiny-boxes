@@ -21,11 +21,6 @@ export class Utils extends Contract {
   );
   clone(): Utils;
   methods: {
-    decimalToString(
-      value: number | string,
-      decimals: number | string
-    ): TransactionObject<string>;
-
     toString(val: number | string): TransactionObject<string>;
   };
   events: {
