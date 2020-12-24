@@ -1,9 +1,10 @@
 <template lang="pug">
-    v-tooltip(left).tooltip-icon-btn
+    v-tooltip(:bottom="bottom" :top="top" :left="left" :right="right").tooltip-icon-btn
         template(v-slot:activator="{ on }")
-            v-btn(@click.stop="" v-on="on" icon)
+            v-btn(@click="$emit('click')" v-on="on" icon)
                 v-icon {{ icon }}
-        span {{ tip }}
+        span(v-if="tip !== ''") {{ tip }}
+        slot
 </template>
 
 <script lang="ts">
@@ -11,7 +12,7 @@ import Vue from "vue";
 
 export default Vue.extend({
   name: "TooltipIconBtn",
-  props: ["tip", "icon"],
+  props: ["tip", "icon", "bottom", "top", "left", "right"],
 });
 </script>
 

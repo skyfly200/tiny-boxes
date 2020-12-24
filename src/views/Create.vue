@@ -73,32 +73,12 @@
           v-form(v-model="form.valid").create-form
             .form-buttons
               v-spacer
-              v-tooltip(bottom)
-                template(v-slot:activator="{ on }")
-                  v-btn(@click.stop="reset" v-on="on" icon).share-btn
-                    v-icon mdi-close
-                span Reset
-              v-tooltip(bottom)
-                template(v-slot:activator="{ on }")
-                  v-btn(@click="undo" v-on="on" icon).share-btn
-                    v-icon mdi-undo
-                span Undo
-              v-tooltip(bottom)
-                template(v-slot:activator="{ on }")
-                  v-btn(@click="redo" v-on="on" icon).share-btn
-                    v-icon mdi-redo
-                span Redo
-              v-tooltip(bottom)
-                template(v-slot:activator="{ on }")
-                  v-btn(@click.stop="randomizeSection('all')" v-on="on" icon).rand-btn
-                    v-icon mdi-dice-multiple
-                span Randomize
+              TooltipIconBtn(icon="mdi-close" tip="Reset" @click="reset" bottom).reset-btn
+              TooltipIconBtn(icon="mdi-undo" tip="Undo" @click="undo" bottom).undo-btn
+              TooltipIconBtn(icon="mdi-redo" tip="Redo" @click="redo" bottom).redo-btn
+              TooltipIconBtn(icon="mdi-dice-multiple" tip="Randomize" @click="randomizeSection('all')" bottom).randomize-btn
               v-spacer
-              v-tooltip(bottom)
-                template(v-slot:activator="{ on }")
-                  v-btn(@click.stop="overlay = 'share'" v-on="on" icon).share-btn
-                    v-icon mdi-share
-                span Share
+              TooltipIconBtn(icon="mdi-share" tip="Share" @click="overlay = 'share'" bottom).share-btn
             br
             v-expansion-panels(v-model="form.section" popout tile)
               v-expansion-panel.section(v-for="section,s of active" :key="section.title" ripple)
