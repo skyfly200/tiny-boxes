@@ -41,8 +41,6 @@ export class TinyBoxes extends Contract {
 
     TOKEN_LIMIT(): TransactionObject<string>;
 
-    TREASURER_ROLE(): TransactionObject<string>;
-
     approve(to: string, tokenId: number | string): TransactionObject<void>;
 
     balanceOf(owner: string): TransactionObject<string>;
@@ -138,6 +136,10 @@ export class TinyBoxes extends Contract {
       approved: boolean
     ): TransactionObject<void>;
 
+    setBaseURI(_uri: string): TransactionObject<void>;
+
+    setTokenURI(_id: number | string, _uri: string): TransactionObject<void>;
+
     startPrice(): TransactionObject<string>;
 
     supportsInterface(
@@ -196,8 +198,6 @@ export class TinyBoxes extends Contract {
       to: string,
       tokenId: number | string
     ): TransactionObject<void>;
-
-    updateURI(_id: number | string, _uri: string): TransactionObject<void>;
 
     withdrawLINK(amount: number | string): TransactionObject<boolean>;
   };

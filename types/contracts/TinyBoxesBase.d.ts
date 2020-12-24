@@ -39,8 +39,6 @@ export class TinyBoxesBase extends Contract {
 
     TOKEN_LIMIT(): TransactionObject<string>;
 
-    TREASURER_ROLE(): TransactionObject<string>;
-
     approve(to: string, tokenId: number | string): TransactionObject<void>;
 
     balanceOf(owner: string): TransactionObject<string>;

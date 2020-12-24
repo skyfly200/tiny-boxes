@@ -103,7 +103,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
      * @param amount of link to withdraw (in smallest divisions of 10**18)
      */
     // TODO: make a version that checks to see we have enough link to fullfill randomness for remaining unminted tokens
-    function withdrawLINK(uint256 amount) external onlyRole(TREASURER_ROLE) returns (bool) {
+    function withdrawLINK(uint256 amount) external onlyRole(ADMIN_ROLE) returns (bool) {
         // ensure we have at least that much LINK
         // not needed as it is already checked for in the LINK contract
         // require(
