@@ -121,9 +121,8 @@ library SVG {
             symbols = string(abi.encodePacked('<symbol id="quad',(s+1).toString(),'">',symbols,copies,'</symbol>')); // wrap last level in a shape tag to refer to later
         }
         // add final scaling transform
-        string memory scaleStr = scale.toString();
         string memory transform = string(abi.encodePacked(
-            'scale(', scaleStr, ' ', scaleStr, ')'
+            'scale(', scale.toString(), ' ', scale.toString(), ')'
         ));
         string memory finalScale = _g(transform, _use('quad3'));
         return string(abi.encodePacked(symbols,finalScale));
