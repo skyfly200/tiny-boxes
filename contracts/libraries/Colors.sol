@@ -5,7 +5,6 @@ pragma experimental ABIEncoderV2;
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/SafeCast.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
-import "@openzeppelin/contracts/math/SignedSafeMath.sol";
 
 import "./Utils.sol";
 
@@ -16,8 +15,6 @@ library Colors {
     using Strings for *;
     using SafeCast for *;
     using SafeMath for *;
-    using SignedSafeMath for *;
-    using Utils for *;
 
     function toString(HSL calldata color) external pure returns (string memory) {
         return string(abi.encodePacked("hsl(", uint256(color.hue).toString(), ",", uint256(color.saturation).toString(), "%,", uint256(color.lightness).toString(), "%)"));
