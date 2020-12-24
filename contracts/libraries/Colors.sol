@@ -8,7 +8,6 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/math/SignedSafeMath.sol";
 
 import "./Utils.sol";
-import "./FixidityLib.sol";
 import "./SVGBuffer.sol";
 
 import "../structs/HSL.sol";
