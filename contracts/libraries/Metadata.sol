@@ -24,7 +24,6 @@ library Metadata {
     using SafeMath for uint256;
     using SignedSafeMath for int256;
     using StringUtilsLib for *;
-    using SVGBuffer for bytes;
     using Random for bytes32[];
     using DecimalUtils for *;
     using Utils for *;

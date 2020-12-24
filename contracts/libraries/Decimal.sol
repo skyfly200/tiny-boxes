@@ -9,34 +9,28 @@ import "@openzeppelin/contracts/utils/SafeCast.sol";
 
 
 import "./Utils.sol";
-import "./SVGBuffer.sol";
 import "./FixidityLib.sol";
 import "../structs/Decimal.sol";
 
 library DecimalUtils {
     using SafeMath for uint256;
     using SignedSafeMath for int256;
-    using SVGBuffer for *;
     using Strings for *;
     using Utils for *;
     using SafeCast for *;
 
     // convert a Decimal to a string
-    function toString(Decimal memory number) internal view returns (string memory) {
-        bytes memory buffer = new bytes(8192);
-        buffer.append(
-            FixidityLib.fromFixed(
-                number.value
-            ).toString()
-        );
+    function toString(Decimal memory number) internal pure returns (string memory out) {
+        out = string(abi.encodePacked(
+            FixidityLib.fromFixed(number.value).toString()
+        ));
         int256 fraction = FixidityLib.fractional(FixidityLib.abs(number.value));
         if (fraction > 0) {
-            buffer.append(".");
-            buffer.append(
+            out = string(abi.encodePacked(
+                ".",
                 FixidityLib.fromFixed(fraction, number.decimals).toString()
-            );
+            ));
         }
-        return buffer.toString();
     }
 
     // add two decimals

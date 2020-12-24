@@ -6,10 +6,8 @@ import "@openzeppelin/contracts/math/SignedSafeMath.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "./FixidityLib.sol";
-import "./SVGBuffer.sol";
 
 library Utils {
-    using SVGBuffer for bytes;
     using SignedSafeMath for int256;
     using Strings for *;
 
@@ -29,33 +27,11 @@ library Utils {
         }
     }
 
-    function decimalToString(int256 value, uint8 decimals)
-        public
-        view
-        returns (string memory)
-    {
-        bytes memory buffer = new bytes(8192);
-        //buffer.append(toString(value));
-        //     FixidityLib.fromFixed(
-        //         FixidityLib.integer(value)
-        //     , decimals))
-        // );
-        buffer.append(".");
-        buffer.append(toString(
-            FixidityLib.fromFixed(
-                FixidityLib.fractional(
-                    FixidityLib.abs(value)
-                ), decimals)
-            )
-        );
-        return buffer.toString();
-    }
-
     // special toString for signed ints
-    function toString(int256 val) public view returns (string memory) {
-        bytes memory buffer = new bytes(8192);
-        if (val < 0) buffer.append("-");
-        buffer.append(uint256(val < 0 ? val.mul(-1) : val).toString());
-        return buffer.toString();
+    function toString(int256 val) public pure returns (string memory out) {
+        out = string(abi.encodePacked(
+            (val < 0) ? "-" : "",
+            uint256(val < 0 ? val.mul(-1) : val).toString()
+        ));
     }
 }
