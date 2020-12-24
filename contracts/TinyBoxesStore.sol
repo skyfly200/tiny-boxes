@@ -5,7 +5,6 @@ pragma experimental ABIEncoderV2;
 // Chainlink Contracts
 import "./chainlink/VRFConsumerBase.sol";
 
-import "./libraries/SVGBuffer.sol";
 import "./libraries/StringUtilsLib.sol";
 
 import "./TinyBoxesPricing.sol";
@@ -15,7 +14,6 @@ import "./structs/Palette.sol";
 contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     using SafeMath for uint256;
     using Utils for *;
-    using SVGBuffer for bytes;
     using StringUtilsLib for *;
 
     // Chainlink VRF and Feed Stuff
@@ -131,7 +129,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         // --- Unpack parameters from raw data bytes ---
 
         // create data and delimiter slices
-        StringUtilsLib.slice memory s = data.toString().toSlice();
+        StringUtilsLib.slice memory s = string(abi.encode(data)).toSlice();
         StringUtilsLib.slice memory delim = ",".toSlice();
 
         // check correct number of parameters are available
