@@ -72,6 +72,7 @@
           h1 Create a TinyBox
           v-form(v-model="form.valid").create-form
             .form-buttons
+              TooltipIconBtn(icon="mdi-seed" tip="New Seed" @click="reseed" bottom).reseed-btn
               v-spacer
               TooltipIconBtn(icon="mdi-close" tip="Reset" @click="reset" bottom).reset-btn
               TooltipIconBtn(icon="mdi-undo" tip="Undo" @click="undo" bottom).undo-btn
@@ -299,6 +300,11 @@ export default Vue.extend({
     reset() {
       const t = this as any;
       t.loadFormDefaults();
+      t.changed();
+    },
+    reseed() {
+      const t = this as any;
+      t.values.seed = Date.now();
       t.changed();
     },
     loadFormDefaults: function() {
