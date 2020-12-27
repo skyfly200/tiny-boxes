@@ -47,7 +47,7 @@
                 div(style='position: absolute; left: -5000px;' aria-hidden='true')
                   input(type='text' name='b_81d0c7a7aabdc5c89bc737456_e8ca8b83a1' tabindex='-1' value='')
                 .clear
-                  v-btn(type='submit' name='subscribe' color="green") Subscribe
+                  v-btn(type='submit' large name='subscribe' color="green") Subscribe
     v-footer
       v-container.pa-0
         v-row
