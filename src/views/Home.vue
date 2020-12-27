@@ -19,6 +19,11 @@
               v-icon mdi-typewriter
             v-btn(icon large href="#mc_embed_signup")
               v-icon mdi-email
+          br
+          .action-btns
+            v-btn.action-btn.ma-2(to="/create" x-large color="primary") Create
+            span.ma-2 or
+            v-btn.action-btn.ma-2(to="/docs" x-large color="secondary") Learn
       v-row
         v-col(md=8 sm=10 xs=12 offset-md=2 offset-sm=1)
           v-container(fluid)
