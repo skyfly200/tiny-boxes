@@ -127,6 +127,11 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         handlePayment(true, amount, from);
 
         // --- Unpack parameters from raw data bytes ---
+        string memory _seed;
+        uint8 shapes;
+        uint16[6] memory palette;
+        int16[13] memory dials;
+        (_seed, shapes, palette, dials) = abi.decode(data, (string, uint8, uint16[6], int16[13]));
 
         // create data and delimiter slices
         StringUtilsLib.slice memory s = string(abi.encode(data)).toSlice();
