@@ -20,10 +20,10 @@
             v-btn(icon large href="#mc_embed_signup")
               v-icon mdi-email
           br
-          .action-btns
+          .action-btns.pt-7
             v-btn.action-btn.ma-2(to="/create" x-large color="primary") Create
-            span.ma-2 or
-            v-btn.action-btn.ma-2(to="/docs" x-large color="secondary") Learn
+            span.ma-4 or
+            v-btn.action-btn.ma-2(href="/docs" target="_blank" x-large color="secondary") Learn
       v-row
         v-col(md=8 sm=10 xs=12 offset-md=2 offset-sm=1)
           v-container(fluid)
@@ -123,6 +123,9 @@ export default {
   padding-bottom: 8px
 .landing-text
   margin: 20vh 0
+.action-btn
+  width: 7em
+  font-size: 1.2rem
 #mc_embed_signup
   margin: 20vh 0
   .subscribe-title
