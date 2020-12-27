@@ -7,7 +7,6 @@ import "@openzeppelin/contracts/math/SignedSafeMath.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/SafeCast.sol";
 
-
 import "./Utils.sol";
 import "./FixidityLib.sol";
 import "../structs/Decimal.sol";
@@ -21,16 +20,25 @@ library DecimalUtils {
 
     // convert a Decimal to a string
     function toString(Decimal memory number) internal pure returns (string memory out) {
-        out = string(abi.encodePacked(
-            FixidityLib.fromFixed(number.value).toString()
-        ));
+        int256 whole = FixidityLib.fromFixed(number.value);
         int256 fraction = FixidityLib.fractional(FixidityLib.abs(number.value));
-        if (fraction > 0) {
-            out = string(abi.encodePacked(
-                ".",
-                FixidityLib.fromFixed(fraction, number.decimals).toString()
-            ));
-        }
+        if (whole > 0) out = string(abi.encodePacked(whole.toString()));
+        if (fraction > 0) out = string(abi.encodePacked( out, ".", fraction.toString() ));
+    }
+
+    // convert a Decimal to a string with zero padding
+    function toString(Decimal memory number, uint256 places) internal pure returns (string memory out) {
+        int256 whole = FixidityLib.fromFixed(number.value);
+        int256 fraction = FixidityLib.fractional(FixidityLib.abs(number.value));
+        if (whole > 0) out = string(abi.encodePacked(whole.toString()));
+        if (fraction > 0) out = string(abi.encodePacked( out, ".", zeroPad(fraction, places) ));
+    }
+
+    function zeroPad(int256 value, uint256 places) internal pure returns (string memory out) {
+        out = value.toString();
+        for (uint i=(places-1); i>0; i--)
+            if (value < int256(10**i))
+                out = string(abi.encodePacked("0", out));
     }
 
     // add two decimals

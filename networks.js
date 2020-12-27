@@ -27,7 +27,7 @@ module.exports = {
           mnemonic,
           `https://rinkeby.infura.io/v3/${projectId}`,
         ),
-      gasPrice: 10e9,
+      gasPrice: 1e9,
       gasLimit: 750000,
       networkId: '4',
     },

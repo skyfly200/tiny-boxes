@@ -265,10 +265,10 @@ library Animation {
             string memory values = string(abi.encodePacked("1 1;1 1;1.5 1.5;1 1;1 1"));
             int256 div = int256(10000).div(int256(box.shapes + 1));
             int256 peak = int256(10000).sub(div.mul(int256(shapeIndex).add(1)));
-            string memory start = peak.sub(div).toDecimal(4).toString();
-            string memory end = peak.add(div).toDecimal(4).toString();
-            // zero pad vals less than 1000 in Decimal toString
-            string memory times = string(abi.encodePacked("0;", start, ";", peak.toDecimal(4).toString(), ";", end, ";1")); 
+            string memory mid = peak.toDecimal(4).toString(4);
+            string memory start = peak.sub(div).toDecimal(4).toString(4);
+            string memory end = peak.add(div).toDecimal(4).toString(4);
+            string memory times = string(abi.encodePacked("0;", start, ";", mid, ";", end, ";1")); 
             return _animateTransform( "scale", "10s", values, times, generateSplines(4,0) );
         } else if (animation == 19) {
             // Phased Fade
