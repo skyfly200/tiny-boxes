@@ -42,7 +42,7 @@
               v-card-title.font-weight-medium.subscribe-title Subscribe to our mailing list!
               v-card-subtitle Be the first to know when we launch
               #mc_embed_signup_scroll
-                v-text-field#mce-EMAIL.email(type='email' value='' name='EMAIL' placeholder='email address' required='')
+                v-text-field#mce-EMAIL.email(type='email' value='' name='EMAIL' placeholder='email' required='')
                 // real people should not fill this in and expect good things - do not remove this or risk form bot signups
                 div(style='position: absolute; left: -5000px;' aria-hidden='true')
                   input(type='text' name='b_81d0c7a7aabdc5c89bc737456_e8ca8b83a1' tabindex='-1' value='')
