@@ -26,9 +26,6 @@
               .anim-title
                 .caption Animation
                 h3 {{ animationTitles[data.tokenData.animation] }}
-              v-spacer
-              a(:href="openseaTokenURL + id" title="View on OpenSea" target="_blank")
-                img(style="width:160px; border-radius:0px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);" src="https://storage.googleapis.com/opensea-static/opensea-brand/listed-button-blue.png" alt="Listed on OpenSea badge")
         v-col(cols="12" md="6" lg="5")
           v-card
             v-card-title(align="center") Color Palette
@@ -104,17 +101,14 @@
           v-card
             v-card-title(align="center") Minting Info
             v-card-text
-              .minting-stats
+              .stats.minting-stats
+                a(:href="openseaTokenURL + id" title="View on OpenSea" target="_blank")
+                  img(style="width:160px; border-radius:0px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);" src="https://storage.googleapis.com/opensea-static/opensea-brand/listed-button-blue.png" alt="Listed on OpenSea badge")
                 .timestamp.stat
                   .stat-value
                     span.timestamp-time {{ (new Date(data.block.timestamp)).toLocaleTimeString() }}
                     span.timestamp-date {{ (new Date(data.block.timestamp)).toLocaleDateString() }}
                   .stat-title Minted Timestamp
-                .price.stat
-                  .stat-value
-                    v-icon mdi-ethereum
-                    span {{ priceInETH }}
-                  .stat-title Minted Price
                 .minter.stat
                   .stat-value
                     v-tooltip(top)
