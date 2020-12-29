@@ -5,10 +5,14 @@ module.exports = {
   port: 8081,
   dest: "public/docs",
   themeConfig: {
+    smoothScroll: true,
     logo: '../img/logo.png',
     nav: [
       { text: 'DAPP', link: 'https://tinybox.shop/' },
     ],
+    repo: 'skyfly200/tiny-boxes',
+    docsDir: 'src/docs',
+    editLinks: false,
     sidebar: 'auto',
   },
 }
