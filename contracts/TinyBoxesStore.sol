@@ -151,7 +151,6 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
             from
         );
 
-        // TODO: base this of response from createBox > requestRandomness > VRF
         // pass back to the LINK contract with a success state
         return true;
     }
