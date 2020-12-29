@@ -57,6 +57,17 @@ export class TinyBoxesStore extends Contract {
       mirroring: (number | string)[]
     ): TransactionObject<string>;
 
+    buyFor(
+      _seed: string,
+      shapes: number | string,
+      hatching: number | string,
+      palette: (number | string)[],
+      size: (number | string)[],
+      spacing: (number | string)[],
+      mirroring: (number | string)[],
+      recipient: string
+    ): TransactionObject<string>;
+
     currentLinkPrice(): TransactionObject<string>;
 
     currentPrice(): TransactionObject<string>;

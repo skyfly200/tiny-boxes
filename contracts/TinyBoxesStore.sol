@@ -124,6 +124,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         uint256 amount,
         bytes calldata data
     ) external onlyRole(LINK_ROLE) notSoldOut returns (bool) {
+        // check payment and give change
         handlePayment(true, amount, from);
 
         // --- Unpack parameters from raw data bytes ---
@@ -136,19 +137,21 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         uint8[4] memory mirroring;
         (_seed, shapes, hatching, palette, size, spacing, mirroring) = abi.decode(data, (string, uint8, uint8, uint16[6], uint8[4], uint8[4], uint8[4]));
 
-        // create a new box object
-        TinyBox memory box = TinyBox({
-            shapes: shapes,
-            hatching: hatching,
-            colorPalette: Palette(palette[0],uint8(palette[1]),[uint8(palette[2]),uint8(palette[3])],uint8(palette[4]),uint8(palette[5])),
-            size: size,
-            spacing: spacing,
-            mirroring: mirroring
-        });
+        // create a new box
+        createBox(
+            TinyBox({
+                shapes: shapes,
+                hatching: hatching,
+                colorPalette: Palette(palette[0],uint8(palette[1]),[uint8(palette[2]),uint8(palette[3])],uint8(palette[4]),uint8(palette[5])),
+                size: size,
+                spacing: spacing,
+                mirroring: mirroring
+            }),
+            _seed.stringToUint(),
+            from
+        );
 
-        // register the new box
-        createBox(box, _seed.stringToUint(), from);
-
+        // TODO: base this of response from createBox > requestRandomness > VRF
         // pass back to the LINK contract with a success state
         return true;
     }
@@ -198,21 +201,22 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         uint8[4] memory mirroring,
         address recipient
     ) public payable notSoldOut returns (bytes32) {
-        // check pament params
+        // check payment and give change
         handlePayment(false, msg.value, msg.sender);
 
         // create a new box object
-        TinyBox memory box = TinyBox({
-            shapes: shapes,
-            hatching: hatching,
-            colorPalette: Palette(palette[0],uint8(palette[1]),[uint8(palette[2]),uint8(palette[3])],uint8(palette[4]),uint8(palette[5])),
-            size: size,
-            spacing: spacing,
-            mirroring: mirroring
-        });
-
-        // register the new box
-        return createBox(box, _seed.stringToUint(), recipient);
+        return createBox(
+            TinyBox({
+                shapes: shapes,
+                hatching: hatching,
+                colorPalette: Palette(palette[0],uint8(palette[1]),[uint8(palette[2]),uint8(palette[3])],uint8(palette[4]),uint8(palette[5])),
+                size: size,
+                spacing: spacing,
+                mirroring: mirroring
+            }),
+            _seed.stringToUint(),
+            recipient
+        );
     }
 
     /**
