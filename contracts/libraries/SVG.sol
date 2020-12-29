@@ -2,6 +2,7 @@
 
 pragma solidity ^0.6.4;
 
+import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "../structs/Decimal.sol";
@@ -12,6 +13,7 @@ import "./Decimal.sol";
 import "./Colors.sol";
 
 library SVG {
+    using SafeMath for uint256;
     using DecimalUtils for *;
     using Utils for *;
     using Colors for *;
@@ -106,7 +108,7 @@ library SVG {
             string memory copies = _g(_use(id));
             // check if this mirror level is active
             if (mirroring[s] > 0) {
-                string memory value = string(abi.encodePacked('-', uint256(mirroring[s]).toString()));
+                string memory value = string(abi.encodePacked('-', uint256(mirroring[s]).mul(10).toString()));
                 // generate mirrored copies
                 for (uint8 i = 0; i < 3; i++) {
                     string memory transform = string(abi.encodePacked(
@@ -119,7 +121,7 @@ library SVG {
             symbols = string(abi.encodePacked('<symbol id="quad',(s+1).toString(),'">',symbols,copies,'</symbol>')); // wrap last level in a shape tag to refer to later
         }
         // add final scaling transform
-        Decimal memory scale = int256(mirroring[3]).toDecimal(2);
+        Decimal memory scale = int256(mirroring[3]).toDecimal(1);
         string memory transform = string(abi.encodePacked(
             'scale(', scale.toString(), ' ', scale.toString(), ')'
         ));
