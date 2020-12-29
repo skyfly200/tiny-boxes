@@ -34,7 +34,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     uint256 constant DATA_PARAMETER_COUNT = 19;
 
     struct Request {
-        address creator;
+        address recipient;
         uint256 id;
         uint256 seed;
     }
@@ -147,7 +147,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         });
 
         // register the new box
-        createBox(box, _seed.stringToUint());
+        createBox(box, _seed.stringToUint(), from);
 
         // pass back to the LINK contract with a success state
         return true;
@@ -173,6 +173,31 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         uint8[4] calldata spacing,
         uint8[4] calldata mirroring
     ) external payable notSoldOut returns (bytes32) {
+        return buyFor(_seed, shapes, hatching, palette, size, spacing, mirroring, msg.sender);
+    }
+
+    /**
+     * @dev Create a new TinyBox Token
+     * @param _seed of token
+     * @param shapes count
+     * @param hatching mod value
+     * @param palette of colors for the shapes
+     * @param size range for boxes
+     * @param spacing grid and spread params
+     * @param mirroring center points for the levels and final scale
+     * @param recipient of the token
+     * @return _requestId of the VRF call
+     */
+    function buyFor(
+        string memory _seed,
+        uint8 shapes,
+        uint8 hatching,
+        uint16[6] memory palette,
+        uint8[4] memory size,
+        uint8[4] memory spacing,
+        uint8[4] memory mirroring,
+        address recipient
+    ) public payable notSoldOut returns (bytes32) {
         // check pament params
         handlePayment(false, msg.value, msg.sender);
 
@@ -187,25 +212,27 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         });
 
         // register the new box
-        return createBox(box, _seed.stringToUint());
+        return createBox(box, _seed.stringToUint(), recipient);
     }
 
     /**
      * @dev Create a new TinyBox Token
-     * @param box object of token data
+     * @param box object of token options
+     * @param _seed for the VRF request
+     * @param recipient of the new TinyBox token
      * @return _requestId of the VRF call
      */
-    function createBox(TinyBox memory box, uint256 _seed) internal returns (bytes32) {
+    function createBox(TinyBox memory box, uint256 _seed, address recipient) internal returns (bytes32) {
         // make sure caller is never the 0 address
         require(
-            msg.sender != address(0),
+            recipient != address(0),
             "0x00 Recipient Invalid"
         );
         // ensure we have enough LINK token in the contract to pay for VRF request fee
         uint256 balance = LINK_TOKEN.balanceOf(address(this));
         require(
             balance >= fee,
-            "Low LINK 4 VRF"
+            "LINK 2 Low 4 VRF"
         );
 
         // store the current id & increment the counter for the next call
@@ -222,7 +249,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         bytes32 _requestId = requestRandomness(KEY_HASH, fee, seed);
 
         // map VRF requestId to next token id and owner
-        requests[_requestId] = Request(msg.sender, id, seed);
+        requests[_requestId] = Request(recipient, id, seed);
 
         return _requestId;
     }
@@ -238,14 +265,14 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         internal
         override
     {
-        // lookup VRF Request by id
+        // lookup VRF Request
         Request memory req = requests[requestId];
 
         // save randomness to a mapping
         boxRand[req.id] = randomness;
 
-        // mint the new token to the creators address
-        _safeMint(req.creator, req.id);
+        // mint the new token to the recipient address
+        _safeMint(req.recipient, req.id);
 
         // fire LINK_LOW event if LINK is too low to fullfill remaining VRF requests needed to sell out tokens
         uint256 balance = LINK_TOKEN.balanceOf(address(this));
