@@ -51,40 +51,32 @@ contract TinyBoxes is TinyBoxesStore {
      * @dev Generate the token SVG art preview for given parameters
      * @param _seed for renderer RNG
      * @param shapes count
+     * @param hatching mod
      * @param palette for color selection
-     * @param dials for perpetual renderer
+     * @param size for shapes
+     * @param spacing grid and spread
+     * @param mirroring positions and scale
      * @return preview SVG art
      */
     function tokenTest(
         string memory _seed,
         uint8 shapes,
+        uint8 hatching,
         uint16[6] memory palette,
-        int16[13] memory dials,
-        uint8 animation,
+        uint8[4] memory size,
+        uint8[4] memory spacing,
+        uint8[4] memory mirroring,
         bool animate
     ) public view returns (string memory) {
         TinyBox memory box = TinyBox({
-            randomness: _seed.stringToUint(),
-            animation: animation,
             shapes: shapes,
+            hatching: hatching,
             colorPalette: Palette(palette[0],uint8(palette[1]),[uint8(palette[2]),uint8(palette[3])],uint8(palette[4]),uint8(palette[5])),
-            spacing: [
-                uint16(dials[0]),
-                uint16(dials[1]),
-                uint16(dials[2]),
-                uint16(dials[3])
-            ],
-            size: [
-                uint16(dials[4]),
-                uint16(dials[5]),
-                uint16(dials[6]),
-                uint16(dials[7])
-            ],
-            hatching: uint16(dials[8]),
-            mirrorPositions: [dials[9], dials[10], dials[11]],
-            scale: uint16(dials[12])
+            size: size,
+            spacing: spacing,
+            mirroring: mirroring
         });
-        return box.perpetualRenderer(animate, int256(-1), address(0));
+        return box.perpetualRenderer(_seed.stringToUint(), animate, _tokenIds.current(), address(0));
     }
 
     /**
@@ -98,6 +90,7 @@ contract TinyBoxes is TinyBoxesStore {
         returns (string memory)
     {
         TinyBox memory box = boxes[_id];
-        return box.perpetualRenderer(animate, int256(_id), ownerOf(_id));
+        uint256 randomness = boxRand[_id];
+        return box.perpetualRenderer(randomness, animate, _id, ownerOf(_id));
     }
 }

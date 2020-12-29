@@ -113,12 +113,12 @@ library Metadata {
         return string(abi.encodePacked(
             '<mirror>',
                 '<mirror-positions>',
-                    uint256(box.mirrorPositions[0]).toString(), ',',
-                    uint256(box.mirrorPositions[1]).toString(), ',',
-                    uint256(box.mirrorPositions[2]).toString(),
+                    uint256(box.mirroring[0]).toString(), ',',
+                    uint256(box.mirroring[1]).toString(), ',',
+                    uint256(box.mirroring[2]).toString(),
                 '</mirror-positions>',
                 '<scale>',
-                    uint256(box.scale).toString(),
+                    uint256(box.mirroring[3]).toString(),
                 '</scale>',
             '</mirror>'
         ));
@@ -128,7 +128,7 @@ library Metadata {
      * @dev render the header of the SVG markup
      * @return header string
      */
-    function _generateMetadata(TinyBox memory box, bool animate, int256 id, address owner) internal view returns (string memory) {
+    function _generateMetadata(TinyBox memory box, uint8 animationID, bool animate, uint256 id, address owner) internal view returns (string memory) {
         string memory colors = _generateColorMetadata(box);
         string memory shapes = _generateShapesMetadata(box);
         string memory placement = _generatePlacementMetadata(box);
@@ -140,7 +140,7 @@ library Metadata {
                     animate ? 'true' : 'false',
                 '</animated>',
                 '<id>',
-                    uint256(box.animation).toString(),
+                    uint256(animationID).toString(),
                 '</id>',
             '</animation>'
         ));

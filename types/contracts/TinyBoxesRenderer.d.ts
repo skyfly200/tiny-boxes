@@ -21,17 +21,15 @@ export class TinyBoxesRenderer extends Contract {
   );
   clone(): TinyBoxesRenderer;
   methods: {
-    ANIMATION_FRAMES(): TransactionObject<string>;
-
-    ANIMATION_FRAME_RATE(): TransactionObject<string>;
-
-    ANIMATION_SECONDS(): TransactionObject<string>;
+    ANIMATION_COUNT(): TransactionObject<string>;
 
     perpetualRenderer(
       box: {
-        randomness: number | string;
-        animation: number | string;
         shapes: number | string;
+        hatching: number | string;
+        mirroring: (number | string)[];
+        size: (number | string)[];
+        spacing: (number | string)[];
         colorPalette: {
           hue: number | string;
           saturation: number | string;
@@ -39,12 +37,8 @@ export class TinyBoxesRenderer extends Contract {
           scheme: number | string;
           shades: number | string;
         };
-        hatching: number | string;
-        scale: number | string;
-        mirrorPositions: (number | string)[];
-        size: (number | string)[];
-        spacing: (number | string)[];
       },
+      randomness: number | string,
       animate: boolean,
       id: number | string,
       owner: string

@@ -116,11 +116,11 @@ library Animation {
      */
     function _generateAnimation(
         TinyBox memory box,
+        uint8 animation,
         Shape memory shape,
         uint256 shapeIndex
     ) internal pure returns (string memory) {
         // select animation based on animation id
-        uint256 animation = box.animation;
         if (animation == 0) {
             // snap spin 90
             return _animateTransform(

@@ -23,9 +23,7 @@ library TinyBoxesRenderer {
     using Metadata for TinyBox;
     using DecimalUtils for *;
 
-    uint256 public constant ANIMATION_FRAME_RATE = 10;
-    uint256 public constant ANIMATION_SECONDS = 3;
-    uint256 public constant ANIMATION_FRAMES = ANIMATION_FRAME_RATE * ANIMATION_SECONDS;
+    uint8 public constant ANIMATION_COUNT = 24;
 
     /**
      * @dev generate a shape
@@ -37,8 +35,8 @@ library TinyBoxesRenderer {
      */
     function _generateBox(
         bytes32[] memory pool,
-        uint16[4] memory spacing,
-        uint16[4] memory size,
+        uint8[4] memory spacing,
+        uint8[4] memory size,
         bool hatched
     )
         internal
@@ -109,7 +107,7 @@ library TinyBoxesRenderer {
      * @param id of the token rendered
      * @return markup of the SVG graphics of the token as a string
      */
-    function perpetualRenderer(TinyBox memory box, bool animate, int256 id, address owner)
+    function perpetualRenderer(TinyBox memory box, uint256 randomness, bool animate, uint256 id, address owner)
         public
         view
         returns (string memory)
@@ -117,27 +115,25 @@ library TinyBoxesRenderer {
         // --- Calculate Generative Shape Data ---
 
         // seed PRNG
-        bytes32[] memory pool = Random.init(box.randomness);
+        bytes32[] memory pool = Random.init(randomness);
+        uint8 animation = uint8(randomness.mod(ANIMATION_COUNT));
 
         // --- Render SVG Markup ---
-        string memory metadata = box._generateMetadata(animate,id,owner);
+        string memory metadata = box._generateMetadata(animation,animate,id,owner);
 
         // generate shapes (shapes + animations)
         string memory shapes = "";
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
             Shape memory shape = _generateShape(pool, i, box);
             shapes = string(abi.encodePacked(shapes, 
-                animate ? SVG._rect(shape, Animation._generateAnimation(box, shape, i)) : SVG._rect(shape)
+                animate ? SVG._rect(shape, Animation._generateAnimation(box,animation,shape,i)) : SVG._rect(shape)
             ));
         }
         // wrap shapes in a symbol with the id "shapes"
         string memory defs = string(abi.encodePacked('<defs><symbol id="shapes">', shapes, '</symbol></defs>'));
 
         // generate the footer
-        string memory mirroring = SVG._generateMirroring(
-            box.mirrorPositions,
-            int256(box.scale).toDecimal(2)
-        );
+        string memory mirroring = SVG._generateMirroring(box.mirroring);
 
         string memory svg = SVG._generateSVG(string(abi.encodePacked(metadata, defs, mirroring)));
 

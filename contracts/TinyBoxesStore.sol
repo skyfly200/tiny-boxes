@@ -129,50 +129,25 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         // --- Unpack parameters from raw data bytes ---
         string memory _seed;
         uint8 shapes;
+        uint8 hatching;
         uint16[6] memory palette;
-        int16[13] memory dials;
-        (_seed, shapes, palette, dials) = abi.decode(data, (string, uint8, uint16[6], int16[13]));
+        uint8[4] memory size;
+        uint8[4] memory spacing;
+        uint8[4] memory mirroring;
+        (_seed, shapes, hatching, palette, size, spacing, mirroring) = abi.decode(data, (string, uint8, uint8, uint16[6], uint8[4], uint8[4], uint8[4]));
 
-        // create data and delimiter slices
-        StringUtilsLib.slice memory s = string(abi.encode(data)).toSlice();
-        StringUtilsLib.slice memory delim = ",".toSlice();
-
-        // check correct number of parameters are available
-        require(s.count(delim) + 1 == DATA_PARAMETER_COUNT,"Invalid number of data parameters");
-
-        // split by a comma delimiter into a string array
-        string[] memory parts = new string[](s.count(delim) + 1);
-        for(uint i = 0; i < parts.length; i++) {
-            parts[i] = s.split(delim).toString();
-        }
-
-        uint256 seed = parts[0].stringToUint();
-
-        // create a new box object from the unpacked parameters
+        // create a new box object
         TinyBox memory box = TinyBox({
-            randomness: 0,
-            animation: 0,
-            shapes: uint8(parts[1].stringToUint()),
-            colorPalette: Palette(222,80,[30,70],6,3),//uint8(parts[2].stringToUint()),
-            spacing: [
-                uint16(parts[3].stringToUint()),
-                uint16(parts[4].stringToUint()),
-                uint16(parts[5].stringToUint()),
-                uint16(parts[6].stringToUint())
-            ],
-            size: [
-                uint16(parts[7].stringToUint()),
-                uint16(parts[8].stringToUint()),
-                uint16(parts[9].stringToUint()),
-                uint16(parts[10].stringToUint())
-            ],
-            hatching: uint16(parts[11].stringToUint()),
-            mirrorPositions: [int16(parts[12].stringToUint()), int16(parts[13].stringToUint()), int16(parts[14].stringToUint())],
-            scale: uint16(parts[15].stringToUint())
+            shapes: shapes,
+            hatching: hatching,
+            colorPalette: Palette(palette[0],uint8(palette[1]),[uint8(palette[2]),uint8(palette[3])],uint8(palette[4]),uint8(palette[5])),
+            size: size,
+            spacing: spacing,
+            mirroring: mirroring
         });
 
         // register the new box
-        createBox(box, seed);
+        createBox(box, _seed.stringToUint());
 
         // pass back to the LINK contract with a success state
         return true;
@@ -182,46 +157,37 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
      * @dev Create a new TinyBox Token
      * @param _seed of token
      * @param shapes count
-     * @param palette token colors
-     * @param dials of token renderer
+     * @param hatching mod value
+     * @param palette of colors for the shapes
+     * @param size range for boxes
+     * @param spacing grid and spread params
+     * @param mirroring center points for the levels and final scale
      * @return _requestId of the VRF call
      */
     function buy(
         string calldata _seed,
         uint8 shapes,
+        uint8 hatching,
         uint16[6] calldata palette,
-        int16[13] calldata dials
+        uint8[4] calldata size,
+        uint8[4] calldata spacing,
+        uint8[4] calldata mirroring
     ) external payable notSoldOut returns (bytes32) {
+        // check pament params
         handlePayment(false, msg.value, msg.sender);
-
-        // convert user seed from string to uint
-        uint256 seed = _seed.stringToUint();
 
         // create a new box object
         TinyBox memory box = TinyBox({
-            randomness: 0,
-            animation: 0,
             shapes: shapes,
+            hatching: hatching,
             colorPalette: Palette(palette[0],uint8(palette[1]),[uint8(palette[2]),uint8(palette[3])],uint8(palette[4]),uint8(palette[5])),
-            spacing: [
-                uint16(dials[0]),
-                uint16(dials[1]),
-                uint16(dials[2]),
-                uint16(dials[3])
-            ],
-            size: [
-                uint16(dials[4]),
-                uint16(dials[5]),
-                uint16(dials[6]),
-                uint16(dials[7])
-            ],
-            hatching: uint16(dials[8]),
-            mirrorPositions: [dials[9], dials[10], dials[11]],
-            scale: uint16(dials[12])
+            size: size,
+            spacing: spacing,
+            mirroring: mirroring
         });
 
         // register the new box
-        return createBox(box, seed);
+        return createBox(box, _seed.stringToUint());
     }
 
     /**
@@ -275,16 +241,13 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         // lookup VRF Request by id
         Request memory req = requests[requestId];
 
-        // TODO - generate animation with RNG weighted non uniformly for varying rarity types
-
-        // generate params with RNG & save to the box along with the randomness
-        boxes[req.id].randomness = randomness;
-        boxes[req.id].animation = uint8(randomness.mod(ANIMATION_COUNT));
+        // save randomness to a mapping
+        boxRand[req.id] = randomness;
 
         // mint the new token to the creators address
         _safeMint(req.creator, req.id);
 
-        // fire LINK_LOW event if LINK is to low to fullfill remaining VRF requests needed to sell out tokens
+        // fire LINK_LOW event if LINK is too low to fullfill remaining VRF requests needed to sell out tokens
         uint256 balance = LINK_TOKEN.balanceOf(address(this));
         uint256 remaining = TOKEN_LIMIT - (_tokenIds.current() + 1);
         if (balance < (remaining * fee)) emit LowLINK(balance, remaining);

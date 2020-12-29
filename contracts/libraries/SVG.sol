@@ -90,13 +90,11 @@ library SVG {
 
     /**
      * @dev render the footer string for mirring effects
-     * @param mirrorPositions for generator settings
-     * @param scale of the outermost transform level. For scaling art to fill the frame.
+     * @param mirroring generator settings
      * @return footer string
      */
     function _generateMirroring(
-        int16[3] memory mirrorPositions,
-        Decimal memory scale
+        uint8[4] memory mirroring
     ) internal pure returns (string memory) {
         string[3] memory scales = ['-1 1', '1 -1', '-1 -1'];
         // reference shapes symbol at core of mirroring
@@ -107,8 +105,8 @@ library SVG {
             // generate unmirrored copy
             string memory copies = _g(_use(id));
             // check if this mirror level is active
-            if (mirrorPositions[s] > 0) {
-                string memory value = string(abi.encodePacked('-', mirrorPositions[s].toString()));
+            if (mirroring[s] > 0) {
+                string memory value = string(abi.encodePacked('-', uint256(mirroring[s]).toString()));
                 // generate mirrored copies
                 for (uint8 i = 0; i < 3; i++) {
                     string memory transform = string(abi.encodePacked(
@@ -121,6 +119,7 @@ library SVG {
             symbols = string(abi.encodePacked('<symbol id="quad',(s+1).toString(),'">',symbols,copies,'</symbol>')); // wrap last level in a shape tag to refer to later
         }
         // add final scaling transform
+        Decimal memory scale = int256(mirroring[3]).toDecimal(2);
         string memory transform = string(abi.encodePacked(
             'scale(', scale.toString(), ' ', scale.toString(), ')'
         ));

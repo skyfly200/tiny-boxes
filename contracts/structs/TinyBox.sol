@@ -4,13 +4,10 @@ pragma solidity ^0.6.4;
 import './Palette.sol';
 
 struct TinyBox {
-    uint256 randomness;
-    uint8 animation;
     uint8 shapes;
+    uint8 hatching;
+    uint8[4] mirroring;
+    uint8[4] size;
+    uint8[4] spacing;
     Palette colorPalette;
-    uint16 hatching;
-    uint16 scale;
-    int16[3] mirrorPositions;
-    uint16[4] size;
-    uint16[4] spacing;
 }

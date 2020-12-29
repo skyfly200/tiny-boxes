@@ -25,8 +25,9 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     uint256 public constant SCHEME_COUNT = 10;
     address payable constant artmuseum = 0x027Fb48bC4e3999DCF88690aEbEBCC3D1748A0Eb; //lolz
 
-    // mapping to store all the boxes in
+    // mapping to store all the boxes info
     mapping(uint256 => TinyBox) internal boxes;
+    mapping(uint256 => uint256) internal boxRand;
 
     // Create role identifiers
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
@@ -57,34 +58,31 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     /**
      * @dev Lookup all token data in one call
      * @param _id for which we want token data
-     * @return randomness provided by Chainlink VRF
      * @return animation of token
      * @return shapes of token
      * @return hatching of token
-     * @return palette of token
      * @return size of token
      * @return spacing of token
-     * @return mirrorPositions of token
-     * @return scale of token
+     * @return mirroring of token
+     * @return palette of token
      */
     function tokenData(uint256 _id)
         external
         view
         returns (
-            uint256 randomness,
-            uint8 animation,
+            uint256 animation,
             uint8 shapes,
-            uint16 hatching,
-            uint16[6] memory palette,
-            uint16[4] memory size,
-            uint16[4] memory spacing,
-            int16[3] memory mirrorPositions,
-            uint16 scale
+            uint8 hatching,
+            uint8[4] memory size,
+            uint8[4] memory spacing,
+            uint8[4] memory mirroring,
+            uint16[6] memory palette
         )
     {
         TinyBox memory box = boxes[_id];
-        randomness = box.randomness;
-        animation = box.animation;
+
+        // TODO - generate animation with RNG weighted non uniformly for varying rarity types
+        animation = boxRand[_id] % ANIMATION_COUNT;
         shapes = box.shapes;
         hatching = box.hatching;
         palette = [
@@ -97,7 +95,6 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         ];
         size = box.size;
         spacing = box.spacing;
-        mirrorPositions = box.mirrorPositions;
-        scale = box.scale;
+        mirroring = box.mirroring;
     }
 }

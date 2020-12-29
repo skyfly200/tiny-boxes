@@ -50,8 +50,11 @@ export class TinyBoxes extends Contract {
     buy(
       _seed: string,
       shapes: number | string,
+      hatching: number | string,
       palette: (number | string)[],
-      dials: (number | string)[]
+      size: (number | string)[],
+      spacing: (number | string)[],
+      mirroring: (number | string)[]
     ): TransactionObject<string>;
 
     currentLinkPrice(): TransactionObject<string>;
@@ -155,24 +158,20 @@ export class TinyBoxes extends Contract {
     tokenData(
       _id: number | string
     ): TransactionObject<{
-      randomness: string;
       animation: string;
       shapes: string;
       hatching: string;
-      palette: string[];
       size: string[];
       spacing: string[];
-      mirrorPositions: string[];
-      scale: string;
+      mirroring: string[];
+      palette: string[];
       0: string;
       1: string;
       2: string;
-      3: string;
+      3: string[];
       4: string[];
       5: string[];
       6: string[];
-      7: string[];
-      8: string;
     }>;
 
     tokenOfOwnerByIndex(
@@ -183,9 +182,11 @@ export class TinyBoxes extends Contract {
     tokenTest(
       _seed: string,
       shapes: number | string,
+      hatching: number | string,
       palette: (number | string)[],
-      dials: (number | string)[],
-      animation: number | string,
+      size: (number | string)[],
+      spacing: (number | string)[],
+      mirroring: (number | string)[],
       animate: boolean
     ): TransactionObject<string>;
 
