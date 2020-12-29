@@ -1,16 +1,16 @@
 ---
 home: true
 heroImage: /hero.png
-heroText: Hero Title
-tagline: Hero subtitle
+heroText: TinyBoxes Guide
+tagline: Learn the tricks to minting the best Boxes
 actionText: Get Started →
-actionLink: /guide/
+actionLink: /dapp
 features:
-- title: Simplicity First
-  details: Minimal setup with markdown-centered project structure helps you focus on writing.
-- title: Vue-Powered
-  details: Enjoy the dev experience of Vue + webpack, use Vue components in markdown, and develop custom themes with Vue.
-- title: Performant
-  details: VuePress generates pre-rendered static HTML for each page, and runs as an SPA once a page is loaded.
-footer: GNU-V3 Licensed | Copyright © 2020 NonFungibleTeam
+- title: DAPP
+  details: Learn how to get the most out of the TinyBoxes UI
+- title: ART
+  details: Discover all the differentiating features and your options as a box artist.
+- title: Contract
+  details: Find out whats special about our NFTs smart contract logic.
+footer: © 2021 NonFungibleTeam
 ---
