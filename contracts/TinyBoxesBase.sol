@@ -64,7 +64,10 @@ contract TinyBoxesBase is ERC721, AccessControl  {
      * @return size of token
      * @return spacing of token
      * @return mirroring of token
-     * @return palette of token
+     * @return color for palette root
+     * @return contrast of the palette
+     * @return shades for palette
+     * @return scheme for palette
      */
     function tokenData(uint256 _id)
         external
@@ -76,7 +79,10 @@ contract TinyBoxesBase is ERC721, AccessControl  {
             uint8[4] memory size,
             uint8[4] memory spacing,
             uint8[4] memory mirroring,
-            uint16[6] memory palette
+            HSL memory color,
+            uint8 contrast,
+            uint8 shades,
+            uint8 scheme
         )
     {
         TinyBox memory box = boxes[_id];
@@ -85,14 +91,10 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         animation = boxRand[_id] % ANIMATION_COUNT;
         shapes = box.shapes;
         hatching = box.hatching;
-        palette = [
-            box.colorPalette.hue,
-            box.colorPalette.saturation,
-            box.colorPalette.lightnessRange[0],
-            box.colorPalette.lightnessRange[1],
-            box.colorPalette.scheme,
-            box.colorPalette.shades
-        ];
+        color = box.color;
+        contrast = box.contrast;
+        shades = box.shades;
+        schemes = box.scheme;
         size = box.size;
         spacing = box.spacing;
         mirroring = box.mirroring;

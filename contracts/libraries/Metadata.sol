@@ -60,15 +60,16 @@ library Metadata {
      * @return header string
      */
     function _generateColorMetadata(TinyBox memory box) internal pure returns (string memory) {
-        string memory scheme = string(abi.encodePacked('<scheme>', uint256(box.colorPalette.scheme).toString(), '</scheme>'));
-        string memory rootHue = string(abi.encodePacked('<root-hue>', uint256(box.colorPalette.hue).toString(), '</root-hue>'));
-        string memory saturation = string(abi.encodePacked('<saturation>', uint256(box.colorPalette.saturation).toString(), '</saturation>'));
-        string memory shades = string(abi.encodePacked('<shades>', uint256(box.colorPalette.shades).toString(), '</shades>'));
-        string memory lightness = string(abi.encodePacked('<lightness>', uint256(box.colorPalette.lightnessRange[0]).toString(), '-', uint256(box.colorPalette.lightnessRange[0]).toString(), '</lightness>'));
+        string memory scheme = string(abi.encodePacked('<scheme>', uint256(box.scheme).toString(), '</scheme>'));
+        string memory rootHue = string(abi.encodePacked('<hue>', uint256(box.color.hue).toString(), '</hue>'));
+        string memory saturation = string(abi.encodePacked('<saturation>', uint256(box.color.saturation).toString(), '</saturation>'));
+        string memory lightness = string(abi.encodePacked('<lightness>', uint256(box.color.lightness).toString(), '</lightness>'));
+        string memory contrast = string(abi.encodePacked('<contrast>', uint256(box.contrast).toString(), '</contrast>'));
+        string memory shades = string(abi.encodePacked('<shades>', uint256(box.shades).toString(), '</shades>'));
 
         return string(abi.encodePacked(
             '<color>',
-            scheme, rootHue, saturation, shades, lightness,
+            scheme, rootHue, saturation, lightness, contrast, shades, 
             '</color>'
         ));
     }

@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: Unlicensed
 pragma solidity ^0.6.4;
 
-import './Palette.sol';
+import './HSL.sol';
 
 struct TinyBox {
     uint8 shapes;
@@ -9,5 +9,8 @@ struct TinyBox {
     uint8[4] mirroring;
     uint8[4] size;
     uint8[4] spacing;
-    Palette colorPalette;
+    HSL color;
+    uint8 contrast;
+    uint8 scheme;
+    uint8 shades;
 }

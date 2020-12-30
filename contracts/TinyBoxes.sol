@@ -52,7 +52,10 @@ contract TinyBoxes is TinyBoxesStore {
      * @param _seed for renderer RNG
      * @param shapes count
      * @param hatching mod
-     * @param palette for color selection
+     * @param color for palette root
+     * @param contrast of the palette
+     * @param shades for palette
+     * @param scheme for palette
      * @param size for shapes
      * @param spacing grid and spread
      * @param mirroring positions and scale
@@ -62,7 +65,10 @@ contract TinyBoxes is TinyBoxesStore {
         string memory _seed,
         uint8 shapes,
         uint8 hatching,
-        uint16[6] memory palette,
+        uint16[3] memory color,
+        uint8 contrast,
+        uint8 shades,
+        uint8 scheme,
         uint8[4] memory size,
         uint8[4] memory spacing,
         uint8[4] memory mirroring,
@@ -71,7 +77,10 @@ contract TinyBoxes is TinyBoxesStore {
         TinyBox memory box = TinyBox({
             shapes: shapes,
             hatching: hatching,
-            colorPalette: Palette(palette[0],uint8(palette[1]),[uint8(palette[2]),uint8(palette[3])],uint8(palette[4]),uint8(palette[5])),
+            color: HSL(color[0],uint8(color[1]),uint8(color[2])),
+            contrast: contrast,
+            shades: shades,
+            scheme: scheme,
             size: size,
             spacing: spacing,
             mirroring: mirroring
