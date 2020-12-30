@@ -196,7 +196,7 @@ export class TinyBoxes extends Contract {
       index: number | string
     ): TransactionObject<string>;
 
-    tokenTest(
+    tokenPreview(
       _seed: string,
       shapes: number | string,
       hatching: number | string,

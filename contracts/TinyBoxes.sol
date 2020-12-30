@@ -58,7 +58,7 @@ contract TinyBoxes is TinyBoxesStore {
      * @param mirroring positions and scale
      * @return preview SVG art
      */
-    function tokenTest(
+    function tokenPreview(
         string memory _seed,
         uint8 shapes,
         uint8 hatching,
