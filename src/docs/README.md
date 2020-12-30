@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: ./Anim-16.svg
+heroImage: null
 heroText: TinyBoxes Guide
 tagline: Learn the tricks to minting the best Boxes
 actionText: Get Started →
