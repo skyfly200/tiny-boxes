@@ -1,6 +1,6 @@
 <template lang="pug">
   .list
-    v-btn(to="/create" color="#3F51B5" fab bottom left fixed large)
+    v-btn(to="/create" color="secondary" fab bottom left fixed large)
         v-icon(large) mdi-plus-box
     v-container(fluid)
       v-data-iterator(:items="loadedTokens" :page.sync="page" @update:page="setPage"
