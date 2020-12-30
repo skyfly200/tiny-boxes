@@ -19,11 +19,8 @@ library DecimalUtils {
     using SafeCast for *;
 
     // convert a Decimal to a string
-    function toString(Decimal memory number) internal pure returns (string memory out) {
-        int256 whole = FixidityLib.fromFixed(number.value);
-        int256 fraction = FixidityLib.fractional(FixidityLib.abs(number.value));
-        if (whole > 0) out = string(abi.encodePacked(whole.toString()));
-        if (fraction > 0) out = string(abi.encodePacked( out, ".", fraction.toString() ));
+    function toString(Decimal memory number) internal pure returns (string memory) {
+        return toString(number, 0);
     }
 
     // convert a Decimal to a string with zero padding
@@ -31,7 +28,7 @@ library DecimalUtils {
         int256 whole = FixidityLib.fromFixed(number.value);
         int256 fraction = FixidityLib.fractional(FixidityLib.abs(number.value));
         if (whole > 0) out = string(abi.encodePacked(whole.toString()));
-        if (fraction > 0) out = string(abi.encodePacked( out, ".", zeroPad(fraction, places) ));
+        if (fraction > 0) out = string(abi.encodePacked( out, ".", ( places > 0 ? zeroPad(fraction, places) : fraction.toString() ) ));
     }
 
     function zeroPad(int256 value, uint256 places) internal pure returns (string memory out) {

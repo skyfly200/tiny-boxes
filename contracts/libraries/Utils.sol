@@ -29,9 +29,8 @@ library Utils {
 
     // special toString for signed ints
     function toString(int256 val) public pure returns (string memory out) {
-        out = string(abi.encodePacked(
-            (val < 0) ? "-" : "",
-            uint256(val < 0 ? val.mul(-1) : val).toString()
-        ));
+        out = (val < 0) ? 
+            string(abi.encodePacked("-", uint256(val.mul(-1)).toString())) :
+            uint256(val).toString();
     }
 }
