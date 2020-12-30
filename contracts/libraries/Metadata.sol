@@ -16,14 +16,12 @@ import "./Random.sol";
 import "./Utils.sol";
 import "./Decimal.sol";
 import "./Colors.sol";
-import "./StringUtilsLib.sol";
 import "../structs/Decimal.sol";
 
 library Metadata {
     using Math for uint256;
     using SafeMath for uint256;
     using SignedSafeMath for int256;
-    using StringUtilsLib for *;
     using Random for bytes32[];
     using DecimalUtils for *;
     using Utils for *;

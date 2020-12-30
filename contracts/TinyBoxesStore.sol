@@ -5,8 +5,6 @@ pragma experimental ABIEncoderV2;
 // Chainlink Contracts
 import "./chainlink/VRFConsumerBase.sol";
 
-import "./libraries/StringUtilsLib.sol";
-
 import "./TinyBoxesPricing.sol";
 
 import "./structs/Palette.sol";
@@ -14,7 +12,6 @@ import "./structs/Palette.sol";
 contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     using SafeMath for uint256;
     using Utils for *;
-    using StringUtilsLib for *;
 
     // Chainlink VRF and Feed Stuff
     LinkTokenInterface LINK_TOKEN;
