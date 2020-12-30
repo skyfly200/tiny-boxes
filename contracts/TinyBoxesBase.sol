@@ -79,7 +79,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
             uint8[4] memory size,
             uint8[4] memory spacing,
             uint8[4] memory mirroring,
-            HSL memory color,
+            uint16[3] memory color,
             uint8 contrast,
             uint8 shades,
             uint8 scheme
@@ -91,10 +91,10 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         animation = boxRand[_id] % ANIMATION_COUNT;
         shapes = box.shapes;
         hatching = box.hatching;
-        color = box.color;
+        color = [box.color.hue, box.color.saturation, box.color.lightness];
         contrast = box.contrast;
         shades = box.shades;
-        schemes = box.scheme;
+        scheme = box.scheme;
         size = box.size;
         spacing = box.spacing;
         mirroring = box.mirroring;

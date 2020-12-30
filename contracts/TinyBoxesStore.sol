@@ -131,24 +131,21 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         string memory _seed;
         uint8 shapes;
         uint8 hatching;
-        uint16[3] memory color;
-        uint8 contrast;
-        uint8 shades;
-        uint8 scheme;
+        uint16[6] memory palette;
         uint8[4] memory size;
         uint8[4] memory spacing;
         uint8[4] memory mirroring;
-        (_seed, shapes, hatching, color, contrast, shades, scheme, size, spacing, mirroring) = abi.decode(data, (string, uint8, uint8, uint16[3], uint8, uint8, uint8, uint8[4], uint8[4], uint8[4]));
+        (_seed, shapes, hatching, palette, size, spacing, mirroring) = abi.decode(data, (string, uint8, uint8, uint16[6], uint8[4], uint8[4], uint8[4]));
 
         // create a new box
         createBox(
             TinyBox({
                 shapes: shapes,
                 hatching: hatching,
-                color: HSL(color[0],uint8(color[1]),uint8(color[2])),
-                contrast: contrast,
-                shades: shades,
-                scheme: scheme,
+                color: HSL(palette[0],uint8(palette[1]),uint8(palette[2])),
+                contrast: uint8(palette[3]),
+                shades: uint8(palette[4]),
+                scheme: uint8(palette[5]),
                 size: size,
                 spacing: spacing,
                 mirroring: mirroring
