@@ -80,7 +80,6 @@ contract TinyBoxes is TinyBoxesStore {
             color: HSL(color[0],uint8(color[1]),uint8(color[2])),
             contrast: contrast,
             shades: shades,
-            scheme: scheme,
             size: size,
             spacing: spacing,
             mirroring: mirroring

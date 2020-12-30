@@ -59,8 +59,8 @@ library Metadata {
      * @dev render the header of the SVG markup
      * @return header string
      */
-    function _generateColorMetadata(TinyBox memory box) internal pure returns (string memory) {
-        string memory scheme = string(abi.encodePacked('<scheme>', uint256(box.scheme).toString(), '</scheme>'));
+    function _generateColorMetadata(TinyBox memory box, uint8 scheme) internal pure returns (string memory) {
+        string memory scheme = string(abi.encodePacked('<scheme>', uint256(scheme).toString(), '</scheme>'));
         string memory rootHue = string(abi.encodePacked('<hue>', uint256(box.color.hue).toString(), '</hue>'));
         string memory saturation = string(abi.encodePacked('<saturation>', uint256(box.color.saturation).toString(), '</saturation>'));
         string memory lightness = string(abi.encodePacked('<lightness>', uint256(box.color.lightness).toString(), '</lightness>'));
@@ -129,8 +129,8 @@ library Metadata {
      * @dev render the header of the SVG markup
      * @return header string
      */
-    function _generateMetadata(TinyBox memory box, uint8 animationID, bool animate, uint256 id, address owner) internal view returns (string memory) {
-        string memory colors = _generateColorMetadata(box);
+    function _generateMetadata(TinyBox memory box, uint8 animationID, bool animate, uint256 id, address owner, uint8 scheme) internal view returns (string memory) {
+        string memory colors = _generateColorMetadata(box, scheme);
         string memory shapes = _generateShapesMetadata(box);
         string memory placement = _generatePlacementMetadata(box);
         string memory mirror = _generateMirrorMetadata(box);

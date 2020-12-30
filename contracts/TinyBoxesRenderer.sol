@@ -77,7 +77,8 @@ library TinyBoxesRenderer {
     function _generateShape(
         bytes32[] memory pool,
         uint256 index,
-        TinyBox memory box
+        TinyBox memory box,
+        uint8 scheme
     )
         internal
         pure
@@ -96,7 +97,7 @@ library TinyBoxesRenderer {
         // lookup a random color from the color palette
         uint8 hue = uint8(pool.uniform(0, 3));
         uint8 shade = uint8(pool.uniform(0, box.shades));
-        HSL memory color = Colors.lookupColor(Palette(box.color, box.contrast, box.shades, box.scheme),hue,shade);
+        HSL memory color = Colors.lookupColor(Palette(box.color, box.contrast, box.shades, scheme),hue,shade);
         return Shape(position, size, color);
     }
 
@@ -116,15 +117,18 @@ library TinyBoxesRenderer {
 
         // seed PRNG
         bytes32[] memory pool = Random.init(randomness);
+
+        // calculate deteministicaly random values
         uint8 animation = uint8(randomness.mod(ANIMATION_COUNT));
+        uint8 scheme = uint8(id.div(1000));
 
         // --- Render SVG Markup ---
-        string memory metadata = box._generateMetadata(animation,animate,id,owner);
+        string memory metadata = box._generateMetadata(animation,animate,id,owner,scheme);
 
         // generate shapes (shapes + animations)
         string memory shapes = "";
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
-            Shape memory shape = _generateShape(pool, i, box);
+            Shape memory shape = _generateShape(pool, i, box, scheme);
             shapes = string(abi.encodePacked(shapes, 
                 animate ? SVG._rect(shape, Animation._generateAnimation(box,animation,shape,i)) : SVG._rect(shape)
             ));

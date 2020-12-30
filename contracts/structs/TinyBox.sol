@@ -11,6 +11,5 @@ struct TinyBox {
     uint8[4] spacing;
     HSL color;
     uint8 contrast;
-    uint8 scheme;
     uint8 shades;
 }

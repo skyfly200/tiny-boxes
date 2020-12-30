@@ -131,11 +131,11 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         string memory _seed;
         uint8 shapes;
         uint8 hatching;
-        uint16[6] memory palette;
+        uint16[5] memory palette;
         uint8[4] memory size;
         uint8[4] memory spacing;
         uint8[4] memory mirroring;
-        (_seed, shapes, hatching, palette, size, spacing, mirroring) = abi.decode(data, (string, uint8, uint8, uint16[6], uint8[4], uint8[4], uint8[4]));
+        (_seed, shapes, hatching, palette, size, spacing, mirroring) = abi.decode(data, (string, uint8, uint8, uint16[5], uint8[4], uint8[4], uint8[4]));
 
         // create a new box
         createBox(
@@ -145,7 +145,6 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
                 color: HSL(palette[0],uint8(palette[1]),uint8(palette[2])),
                 contrast: uint8(palette[3]),
                 shades: uint8(palette[4]),
-                scheme: uint8(palette[5]),
                 size: size,
                 spacing: spacing,
                 mirroring: mirroring
@@ -166,7 +165,6 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
      * @param color for palette root
      * @param contrast of the palette
      * @param shades for palette
-     * @param scheme for palette
      * @param size range for boxes
      * @param spacing grid and spread params
      * @param mirroring center points for the levels and final scale
@@ -179,12 +177,11 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         uint16[3] calldata color,
         uint8 contrast,
         uint8 shades,
-        uint8 scheme,
         uint8[4] calldata size,
         uint8[4] calldata spacing,
         uint8[4] calldata mirroring
     ) external payable notSoldOut returns (bytes32) {
-        return buyFor(_seed, shapes, hatching, color, contrast, shades, scheme, size, spacing, mirroring, msg.sender);
+        return buyFor(_seed, shapes, hatching, color, contrast, shades, size, spacing, mirroring, msg.sender);
     }
 
     /**
@@ -195,7 +192,6 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
      * @param color for palette root
      * @param contrast of the palette
      * @param shades for palette
-     * @param scheme for palette
      * @param size range for boxes
      * @param spacing grid and spread params
      * @param mirroring center points for the levels and final scale
@@ -209,7 +205,6 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         uint16[3] memory color,
         uint8 contrast,
         uint8 shades,
-        uint8 scheme,
         uint8[4] memory size,
         uint8[4] memory spacing,
         uint8[4] memory mirroring,
@@ -226,7 +221,6 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
                 color: HSL(color[0],uint8(color[1]),uint8(color[2])),
                 contrast: contrast,
                 shades: shades,
-                scheme: scheme,
                 size: size,
                 spacing: spacing,
                 mirroring: mirroring
