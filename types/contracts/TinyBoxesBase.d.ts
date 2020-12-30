@@ -113,7 +113,10 @@ export class TinyBoxesBase extends Contract {
       size: string[];
       spacing: string[];
       mirroring: string[];
-      palette: string[];
+      color: string[];
+      contrast: string;
+      shades: string;
+      scheme: string;
       0: string;
       1: string;
       2: string;
@@ -121,6 +124,9 @@ export class TinyBoxesBase extends Contract {
       4: string[];
       5: string[];
       6: string[];
+      7: string;
+      8: string;
+      9: string;
     }>;
 
     tokenOfOwnerByIndex(

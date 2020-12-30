@@ -30,13 +30,13 @@ export class TinyBoxesRenderer extends Contract {
         mirroring: (number | string)[];
         size: (number | string)[];
         spacing: (number | string)[];
-        colorPalette: {
+        color: {
           hue: number | string;
           saturation: number | string;
-          lightnessRange: (number | string)[];
-          scheme: number | string;
-          shades: number | string;
+          lightness: number | string;
         };
+        contrast: number | string;
+        shades: number | string;
       },
       randomness: number | string,
       animate: boolean,

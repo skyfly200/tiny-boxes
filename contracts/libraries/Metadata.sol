@@ -57,8 +57,8 @@ library Metadata {
      * @dev render the header of the SVG markup
      * @return header string
      */
-    function _generateColorMetadata(TinyBox memory box, uint8 scheme) internal pure returns (string memory) {
-        string memory scheme = string(abi.encodePacked('<scheme>', uint256(scheme).toString(), '</scheme>'));
+    function _generateColorMetadata(TinyBox memory box, uint8 schemeId) internal pure returns (string memory) {
+        string memory scheme = string(abi.encodePacked('<scheme>', uint256(schemeId).toString(), '</scheme>'));
         string memory rootHue = string(abi.encodePacked('<hue>', uint256(box.color.hue).toString(), '</hue>'));
         string memory saturation = string(abi.encodePacked('<saturation>', uint256(box.color.saturation).toString(), '</saturation>'));
         string memory lightness = string(abi.encodePacked('<lightness>', uint256(box.color.lightness).toString(), '</lightness>'));

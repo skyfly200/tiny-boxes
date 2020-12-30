@@ -7,8 +7,6 @@ import "./chainlink/VRFConsumerBase.sol";
 
 import "./TinyBoxesPricing.sol";
 
-import "./structs/Palette.sol";
-
 contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     using SafeMath for uint256;
     using Utils for *;
@@ -159,9 +157,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
      * @param _seed of token
      * @param shapes count
      * @param hatching mod value
-     * @param color for palette root
-     * @param contrast of the palette
-     * @param shades for palette
+     * @param color settings (hue, sat, light, contrast, shades)
      * @param size range for boxes
      * @param spacing grid and spread params
      * @param mirroring center points for the levels and final scale
@@ -171,14 +167,12 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         string calldata _seed,
         uint8 shapes,
         uint8 hatching,
-        uint16[3] calldata color,
-        uint8 contrast,
-        uint8 shades,
+        uint16[5] calldata color,
         uint8[4] calldata size,
         uint8[4] calldata spacing,
         uint8[4] calldata mirroring
     ) external payable notSoldOut returns (bytes32) {
-        return buyFor(_seed, shapes, hatching, color, contrast, shades, size, spacing, mirroring, msg.sender);
+        return buyFor(_seed, shapes, hatching, color, size, spacing, mirroring, msg.sender);
     }
 
     /**
@@ -186,9 +180,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
      * @param _seed of token
      * @param shapes count
      * @param hatching mod value
-     * @param color for palette root
-     * @param contrast of the palette
-     * @param shades for palette
+     * @param color settings (hue, sat, light, contrast, shades)
      * @param size range for boxes
      * @param spacing grid and spread params
      * @param mirroring center points for the levels and final scale
@@ -199,9 +191,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         string memory _seed,
         uint8 shapes,
         uint8 hatching,
-        uint16[3] memory color,
-        uint8 contrast,
-        uint8 shades,
+        uint16[5] memory color,
         uint8[4] memory size,
         uint8[4] memory spacing,
         uint8[4] memory mirroring,
@@ -216,8 +206,8 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
                 shapes: shapes,
                 hatching: hatching,
                 color: HSL(color[0],uint8(color[1]),uint8(color[2])),
-                contrast: contrast,
-                shades: shades,
+                contrast: uint8(color[3]),
+                shades: uint8(color[4]),
                 size: size,
                 spacing: spacing,
                 mirroring: mirroring

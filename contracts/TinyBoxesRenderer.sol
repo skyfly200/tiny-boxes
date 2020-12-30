@@ -106,6 +106,7 @@ library TinyBoxesRenderer {
      * @param box TinyBox data structure
      * @param animate boolean flag to enable/disable animation
      * @param id of the token rendered
+     * @param owner of the token rendered
      * @return markup of the SVG graphics of the token as a string
      */
     function perpetualRenderer(TinyBox memory box, uint256 randomness, bool animate, uint256 id, address owner)
@@ -119,18 +120,22 @@ library TinyBoxesRenderer {
         bytes32[] memory pool = Random.init(randomness);
 
         // calculate deteministicaly random values
-        uint8 animation = uint8(randomness.mod(ANIMATION_COUNT));
-        uint8 scheme = uint8(id.div(1000));
+        uint8[2] memory rngVals = [
+            uint8(randomness.mod(ANIMATION_COUNT)), // animation
+            uint8(id.div(1000)) // scheme
+        ];
 
         // --- Render SVG Markup ---
-        string memory metadata = box._generateMetadata(animation,animate,id,owner,scheme);
+
+        // generate the metadata
+        string memory metadata = box._generateMetadata(rngVals[0],animate,id,owner,rngVals[1]);
 
         // generate shapes (shapes + animations)
         string memory shapes = "";
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
-            Shape memory shape = _generateShape(pool, i, box, scheme);
+            Shape memory shape = _generateShape(pool, i, box, rngVals[1]);
             shapes = string(abi.encodePacked(shapes, 
-                animate ? SVG._rect(shape, Animation._generateAnimation(box,animation,shape,i)) : SVG._rect(shape)
+                animate ? SVG._rect(shape, Animation._generateAnimation(box,rngVals[0],shape,i)) : SVG._rect(shape)
             ));
         }
         // wrap shapes in a symbol with the id "shapes"
