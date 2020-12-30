@@ -21,5 +21,6 @@ module.exports = {
       ['/contract', 'Contract'],
       ['/faq', 'FAQ'],
     ],
+    sidebarDepth: 2,
   },
 }
