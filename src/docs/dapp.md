@@ -3,8 +3,21 @@
 - Explore
 - List
 
-### Create
+## Create
+Set your options
+- Shapes
+- Hatching
+- Color Palette
+- Size 
+- Position 
+- Mirroring
+Share settings
 
-### Explore
+## Mint
+LINK
 
-### List
+## Explore
+Scroll to find cool options
+
+## List
+Select between viewing all or just your owned boxes
