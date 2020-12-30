@@ -33,4 +33,11 @@ library Utils {
             string(abi.encodePacked("-", uint256(val.mul(-1)).toString())) :
             uint256(val).toString();
     }
+
+    function zeroPad(int256 value, uint256 places) internal pure returns (string memory out) {
+        out = value.toString();
+        for (uint i=(places-1); i>0; i--)
+            if (value < int256(10**i))
+                out = string(abi.encodePacked("0", out));
+    }
 }
