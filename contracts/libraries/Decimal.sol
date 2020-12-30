@@ -26,16 +26,6 @@ library DecimalUtils {
         if (fraction > 0) out = string(abi.encodePacked( out, ".", ( number.decimals > 0 ? fraction.zeroPad(number.decimals) : fraction.toString() ) ));
     }
 
-    // add two decimals
-    function add(Decimal memory a, Decimal memory b) internal pure returns (Decimal memory result) {
-        // decide the order to add by decimal length
-        (Decimal memory x, Decimal memory y) = a.decimals > b.decimals ? (a, b) : (b, a);
-        // scale less precise value to match larger decimals
-        int256 scaled = y.value.mul(int256(10)**(x.decimals - y.decimals));
-        // add scaled values and return a new decimal
-        return Decimal(scaled.add(x.value), x.decimals);
-    }
-
     // create a new Decimal
     function toDecimal(int256 value, uint8 decimals, uint8 significant) internal pure returns (Decimal memory result) {
         // scale value and return a new decimal
