@@ -2836,6 +2836,16 @@
         "address": "0x64bb7F3e11E8942D32b51DF810a9B6e43B9805d2",
         "kind": "NonProxy",
         "bytecodeHash": "c45a7aceb5548393c116a7afad58e191a60dd1592270202dae71e6df4ae05f66"
+      },
+      {
+        "address": "0xa5D00e966133c30f9aE78f1beBDDdcf79A10e2E5",
+        "kind": "NonProxy",
+        "bytecodeHash": "c45a7aceb5548393c116a7afad58e191a60dd1592270202dae71e6df4ae05f66"
+      },
+      {
+        "address": "0x3b0B0a8fCA604D51e253a0e49d56F9232133DEaE",
+        "kind": "NonProxy",
+        "bytecodeHash": "c45a7aceb5548393c116a7afad58e191a60dd1592270202dae71e6df4ae05f66"
       }
     ]
   },
