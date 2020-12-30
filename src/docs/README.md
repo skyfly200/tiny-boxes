@@ -7,10 +7,10 @@ actionText: Get Started →
 actionLink: /dapp
 features:
 - title: ART
-  details: Discover all the differentiating features and your options as a box artist.
+  details: Discover all the differentiating features and options
 - title: DAPP
-  details: Learn how to get the most out of the TinyBoxes UI
+  details: Learn how to get the most out of the TinyBoxes
 - title: Contract
-  details: Find out whats special about our NFTs smart contract logic.
+  details: Find out whats special about our NFT
 footer: © 2021 NonFungibleTeam
 ---
