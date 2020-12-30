@@ -35,7 +35,7 @@ library Utils {
     }
 
     function zeroPad(int256 value, uint256 places) internal pure returns (string memory out) {
-        out = value.toString();
+        out = toString(value);
         for (uint i=(places-1); i>0; i--)
             if (value < int256(10**i))
                 out = string(abi.encodePacked("0", out));

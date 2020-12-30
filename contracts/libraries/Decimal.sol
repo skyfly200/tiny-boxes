@@ -23,7 +23,7 @@ library DecimalUtils {
         int256 whole = FixidityLib.fromFixed(number.value);
         int256 fraction = FixidityLib.fromFixed(FixidityLib.fractional(FixidityLib.abs(number.value)), number.decimals);
         if (whole > 0) out = string(abi.encodePacked(whole.toString()));
-        if (fraction > 0) out = string(abi.encodePacked( out, ".", ( number.decimals > 0 ? zeroPad(fraction, number.decimals) : fraction.toString() ) ));
+        if (fraction > 0) out = string(abi.encodePacked( out, ".", ( number.decimals > 0 ? fraction.zeroPad(number.decimals) : fraction.toString() ) ));
     }
 
     // add two decimals
