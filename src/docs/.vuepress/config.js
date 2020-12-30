@@ -13,6 +13,13 @@ module.exports = {
     repo: 'skyfly200/tiny-boxes',
     docsDir: 'src/docs',
     editLinks: false,
-    sidebar: 'auto',
+    sidebar: [
+      ['/', 'Home'],
+      ['/art', 'Art'],
+      ['/dapp', 'DApp'],
+      ['/metadata', 'Metadata'],
+      ['/contract', 'Contract'],
+      ['/faq', 'FAQ'],
+    ],
   },
 }
