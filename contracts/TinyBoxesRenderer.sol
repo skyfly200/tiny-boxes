@@ -4,6 +4,7 @@ pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/math/SignedSafeMath.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "./structs/Decimal.sol";
 import "./structs/Shape.sol";
@@ -22,6 +23,7 @@ library TinyBoxesRenderer {
     using Random for bytes32[];
     using Metadata for TinyBox;
     using DecimalUtils for *;
+    using Strings for *;
 
     uint8 public constant ANIMATION_COUNT = 24;
 
@@ -102,6 +104,45 @@ library TinyBoxesRenderer {
     }
 
     /**
+     * @dev render the footer string for mirring effects
+     * @param mirroring generator settings
+     * @return footer string
+     */
+    function _generateMirroring(
+        uint8[4] memory mirroring
+    ) internal pure returns (string memory) {
+        string[3] memory scales = ['-1 1', '1 -1', '-1 -1'];
+        // reference shapes symbol at core of mirroring
+        string memory symbols = string(abi.encodePacked('<symbol id="quad0">',SVG._g(SVG._use('shapes')),'</symbol>'));
+        // loop through nested mirroring levels
+        for (uint256 s = 0; s < 3; s++) {
+            string memory id = string(abi.encodePacked('quad', s.toString()));
+            // generate unmirrored copy
+            string memory copies = SVG._g(SVG._use(id));
+            // check if this mirror level is active
+            if (mirroring[s] > 0) {
+                string memory value = string(abi.encodePacked('-', uint256(mirroring[s]).mul(10).toString()));
+                // generate mirrored copies
+                for (uint8 i = 0; i < 3; i++) {
+                    string memory transform = string(abi.encodePacked(
+                        'scale(', scales[i], ') translate(', (i != 1) ? value : '0', ' ', (i > 0) ? value : '0', ')'
+                    ));
+                    copies = string(abi.encodePacked(copies,SVG._g(transform, SVG._use(id))));
+                }
+            }
+            // wrap symbol and all copies in a new symbol
+            symbols = string(abi.encodePacked('<symbol id="quad',(s+1).toString(),'">',symbols,copies,'</symbol>')); // wrap last level in a shape tag to refer to later
+        }
+        // add final scaling transform
+        Decimal memory scale = int256(mirroring[3]).toDecimal(1);
+        string memory transform = string(abi.encodePacked(
+            'scale(', scale.toString(), ' ', scale.toString(), ')'
+        ));
+        string memory finalScale = SVG._g(transform, SVG._use('quad3'));
+        return string(abi.encodePacked(symbols,finalScale));
+    }
+
+    /**
      * @dev render a token's art
      * @param box TinyBox data structure
      * @param animate boolean flag to enable/disable animation
@@ -142,9 +183,9 @@ library TinyBoxesRenderer {
         string memory defs = string(abi.encodePacked('<defs><symbol id="shapes">', shapes, '</symbol></defs>'));
 
         // generate the footer
-        string memory mirroring = SVG._generateMirroring(box.mirroring);
+        string memory mirroring = _generateMirroring(box.mirroring);
 
-        string memory svg = SVG._generateSVG(string(abi.encodePacked(metadata, defs, mirroring)));
+        string memory svg = SVG._SVG(string(abi.encodePacked(metadata, defs, mirroring)));
 
         return svg;
     }

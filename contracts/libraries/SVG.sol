@@ -82,50 +82,11 @@ library SVG {
      * @param body of the SVG markup
      * @return header string
      */
-    function _generateSVG(string memory body) internal pure returns (string memory) {
+    function _SVG(string memory body) internal pure returns (string memory) {
         string memory xmlVersion = '<?xml version="1.0" encoding="UTF-8"?>';
         string memory doctype = '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
         string memory openingSVGTag = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2400 2400" style="stroke-width:0;background-color:#121212;margin: auto;height: -webkit-fill-available">';
 
         return string(abi.encodePacked(xmlVersion, doctype, openingSVGTag, body, '</svg>'));
-    }
-
-    /**
-     * @dev render the footer string for mirring effects
-     * @param mirroring generator settings
-     * @return footer string
-     */
-    function _generateMirroring(
-        uint8[4] memory mirroring
-    ) internal pure returns (string memory) {
-        string[3] memory scales = ['-1 1', '1 -1', '-1 -1'];
-        // reference shapes symbol at core of mirroring
-        string memory symbols = string(abi.encodePacked('<symbol id="quad0">',_g(_use('shapes')),'</symbol>'));
-        // loop through nested mirroring levels
-        for (uint256 s = 0; s < 3; s++) {
-            string memory id = string(abi.encodePacked('quad', s.toString()));
-            // generate unmirrored copy
-            string memory copies = _g(_use(id));
-            // check if this mirror level is active
-            if (mirroring[s] > 0) {
-                string memory value = string(abi.encodePacked('-', uint256(mirroring[s]).mul(10).toString()));
-                // generate mirrored copies
-                for (uint8 i = 0; i < 3; i++) {
-                    string memory transform = string(abi.encodePacked(
-                        'scale(', scales[i], ') translate(', (i != 1) ? value : '0', ' ', (i > 0) ? value : '0', ')'
-                    ));
-                    copies = string(abi.encodePacked(copies,_g(transform, _use(id))));
-                }
-            }
-            // wrap symbol and all copies in a new symbol
-            symbols = string(abi.encodePacked('<symbol id="quad',(s+1).toString(),'">',symbols,copies,'</symbol>')); // wrap last level in a shape tag to refer to later
-        }
-        // add final scaling transform
-        Decimal memory scale = int256(mirroring[3]).toDecimal(1);
-        string memory transform = string(abi.encodePacked(
-            'scale(', scale.toString(), ' ', scale.toString(), ')'
-        ));
-        string memory finalScale = _g(transform, _use('quad3'));
-        return string(abi.encodePacked(symbols,finalScale));
     }
 }
