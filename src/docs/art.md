@@ -5,30 +5,30 @@
 - Mirroring
 - Animation
 
-### Shapes
+## Shapes
 Shape Count
 Hatching
 Size Range
 
-### Positioning
+## Positioning
 Grid
 Spread
 
-### Colors
+## Colors
 HSL
 Root Color
 Schemes - sample grids
 Shades
 
-### Mirroring
+## Mirroring
 Levels
 Positions
 Scale
 
-### Animation
+## Animation
 Titles
 
-#### Samples
+### Samples
 [Animation 0](./img/Anim-0.svg)
 [Animation 1](./img/Anim-1.svg)
 [Animation 2](./img/Anim-2.svg)
@@ -54,4 +54,4 @@ Titles
 [Animation 22](./img/Anim-22.svg)
 [Animation 23](./img/Anim-23.svg)
 
-Animate Flag
+Animated vs Static
