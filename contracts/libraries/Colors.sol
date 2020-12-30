@@ -40,8 +40,8 @@ library Colors {
         require(pal.scheme < schemes.length, "Invalid scheme id");
         require(index < 4, "Invalid color index");
 
-        if (index == 0) hue = pal.hue;
-        else hue = uint16(uint256(pal.hue).add(schemes[pal.scheme][index-1]));
+        if (index == 0) hue = pal.root.hue;
+        else hue = uint16(uint256(pal.root.hue).add(schemes[pal.scheme][index-1]));
     }
 
     function lookupColor(
@@ -50,15 +50,15 @@ library Colors {
         uint8 shade
     ) public pure returns (HSL memory) {
         uint16 h = lookupHue(pal, hueIndex);
-        uint8 s = pal.saturation;
+        uint8 s = pal.root.saturation;
         uint8 l;
         if (pal.shades > 0) {
-            uint256 range = uint256(pal.lightnessRange[1]).sub(pal.lightnessRange[0]);
+            uint256 range = uint256(pal.contrast);
             uint256 step = range.div(uint256(pal.shades));
             uint256 offset = uint256(shade.mul(step));
-            l = uint8(uint256(pal.lightnessRange[1]).sub(offset));
+            l = uint8(uint256(pal.root.lightness).sub(offset));
         } else {
-            l = pal.lightnessRange[1];
+            l = pal.root.lightness;
         }
         return HSL(h, s, l);
     }
