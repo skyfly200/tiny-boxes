@@ -21,9 +21,9 @@
               v-icon mdi-email
           br
           .action-btns.pt-7
-            v-btn.action-btn.ma-2(to="/create" x-large color="primary") Create
+            v-btn.action-btn.ma-2(to="/create" x-large color="secondary") Create
             span.ma-4 or
-            v-btn.action-btn.ma-2(href="/docs" target="_blank" x-large color="secondary") Learn
+            v-btn.action-btn.ma-2(href="/docs" target="_blank" x-large color="primary") Learn
       v-row
         v-col(md=8 sm=10 xs=12 offset-md=2 offset-sm=1)
           v-container(fluid)
@@ -47,7 +47,7 @@
                 div(style='position: absolute; left: -5000px;' aria-hidden='true')
                   input(type='text' name='b_81d0c7a7aabdc5c89bc737456_e8ca8b83a1' tabindex='-1' value='')
                 .clear
-                  v-btn(type='submit' large name='subscribe' color="green") Subscribe
+                  v-btn(type='submit' large name='subscribe' color="secondary") Subscribe
     v-footer
       v-container.pa-0
         v-row

@@ -62,7 +62,7 @@
                   h2 {{ priceInETH }}
                   v-icon(large) mdi-ethereum
                 v-spacer
-                v-btn(@click="mintToken" :disabled="!form.valid || soldOut || loading" large color="success") Mint
+                v-btn(@click="mintToken" :disabled="!form.valid || soldOut || loading" large color="primary") Mint
           v-alert(v-if="!loading && !form.valid" type="error" prominent outlined border="left").invalid-options Invalid Box Options!
           v-alert(v-if="!loading && soldOut" type="warning" prominent outlined border="left").sold-out
             p All boxes have sold, minting is disabled.
