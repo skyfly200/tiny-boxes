@@ -55,7 +55,6 @@ contract TinyBoxes is TinyBoxesStore {
      * @param color for palette root
      * @param contrast of the palette
      * @param shades for palette
-     * @param scheme for palette
      * @param size for shapes
      * @param spacing grid and spread
      * @param mirroring positions and scale
@@ -68,7 +67,6 @@ contract TinyBoxes is TinyBoxesStore {
         uint16[3] memory color,
         uint8 contrast,
         uint8 shades,
-        uint8 scheme,
         uint8[4] memory size,
         uint8[4] memory spacing,
         uint8[4] memory mirroring,
