@@ -31,7 +31,10 @@
             v-card-title(align="center") Color Palette
             v-card-text
               .stats
-                ColorsGrid.stat(v-bind="data.tokenData")
+                .scheme
+                  h3 {{ schemeTitles[data.tokenData.scheme] }}
+                  span Scheme
+                ColorsGrid.stat(v-bind="palette")
                 .hue.stat
                   span.stat-value {{ data.tokenData.color[0] + '°' }} 
                   .stat-title Hue
@@ -49,9 +52,6 @@
                 .shades.stat
                   span.stat-value {{ parseInt(data.tokenData.shades) + 1 }}
                   .stat-title Shades
-                .scheme.stat
-                  span.stat-value {{ schemeTitles[data.tokenData.scheme] }}
-                  .stat-title Scheme Name
         v-col(cols="12" md="6" lg="5")
           v-card
             v-card-title(align="center") Shapes
@@ -150,6 +150,14 @@ export default Vue.extend({
     id(): number {
       return parseInt(this.$route.params.id);
     },
+    palette() {
+      return {
+        color: this.data.tokenData.color,
+        contrast: this.data.tokenData.contrast,
+        shades: this.data.tokenData.shades,
+        scheme: this.data.tokenData.scheme,
+      };
+    },
     randomness(): string {
       return this.data.tokenData == undefined ? "" : BigInt(this.data.tokenData.randomness).toString(16);
     },
@@ -182,7 +190,6 @@ export default Vue.extend({
     loadToken: async function() {
       const t = this as any;
       const cached = this.$store.state.cachedTokens[t.id];
-      console.log("loading: ", t.id)
       if (cached && typeof cached === "object") {
         this.data = cached;
         this.loading = false;
