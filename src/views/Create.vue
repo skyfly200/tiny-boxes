@@ -372,7 +372,7 @@ export default Vue.extend({
         t.loadStatus()
         const v = {...t.values, ...t.assembleDials(), colors: t.assemblePalette()};
         this.$store.state.contracts.tinyboxes.methods
-          .tokenTest(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.position, v.mirroring, v.animate)
+          .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.position, v.mirroring, v.animate)
           .call()
           .then((result: any) => {
             t.data = result;
