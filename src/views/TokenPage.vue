@@ -31,24 +31,26 @@
             v-card-title(align="center") Color Palette
             v-card-text
               .stats
-                ColorsGrid.stat(:palette="data.tokenData.palette")
+                ColorsGrid.stat(:data="data.tokenData")
+                .hue.stat
+                  span.stat-value {{ data.tokenData.color[0] + '°' }} 
+                  .stat-title Hue
+                .saturation.stat
+                  span.stat-value {{ data.tokenData.color[1] + '%' }}
+                  .stat-title Saturation
                 .lightness.stat
                   .d-flex.flex-column
-                    span.stat-value {{ data.tokenData.palette[2] + '%' }}
-                    span to
-                    span.stat-value {{ data.tokenData.palette[3] + '%' }}
-                  .stat-title Lightness Range
-                .hue.stat
-                  span.stat-value {{ data.tokenData.palette[0] + '°' }} 
-                  .stat-title Root Hue
-                .saturation.stat
-                  span.stat-value {{ data.tokenData.palette[1] + '%' }}
-                  .stat-title Saturation
+                    span.stat-value {{ data.tokenData.color[2] + '%' }}
+                  .stat-title Lightness
+                .contrast.stat
+                  .d-flex.flex-column
+                    span.stat-value {{ data.tokenData.contrast + '%' }}
+                  .stat-title Contrast
                 .shades.stat
-                  span.stat-value {{ data.tokenData.palette[5] }}
+                  span.stat-value {{ data.tokenData.shades }}
                   .stat-title Shades
                 .scheme.stat
-                  span.stat-value {{ schemeTitles[data.tokenData.palette[4]] }}
+                  span.stat-value {{ schemeTitles[data.tokenData.scheme] }}
                   .stat-title Scheme Name
         v-col(cols="12" md="6" lg="5")
           v-card
@@ -69,15 +71,12 @@
                   .stat-title Height
                 .spread-x.stat
                   span.stat-value {{ data.tokenData.spacing[0] }}
-                  .stat-title Spread X
-                .spread-y.stat
-                  span.stat-value {{ data.tokenData.spacing[1] }}
-                  .stat-title Spread Y
+                  .stat-title Spread
                 .rows.stat
-                  span.stat-value {{ data.tokenData.spacing[2] }}
+                  span.stat-value {{ Math.floor(data.tokenData.spacing[1] / 16) }}
                   .stat-title Rows
                 .columns.stat
-                  span.stat-value {{ data.tokenData.spacing[3] }}
+                  span.stat-value {{ Math.floor(data.tokenData.spacing[1] % 16) }}
                   .stat-title Columns
         v-col(cols="12" md="6" lg="5")
           v-card
@@ -85,16 +84,16 @@
             v-card-text
               .stats
                 .mirror-a.stat
-                  span.stat-value {{ data.tokenData.mirrorPositions[0] }}
+                  span.stat-value {{ data.tokenData.mirroring[0] }}
                   .stat-title A
                 .mirror-b.stat
-                  span.stat-value {{ data.tokenData.mirrorPositions[1] }}
+                  span.stat-value {{ data.tokenData.mirroring[1] }}
                   .stat-title B
                 .mirror-c.stat
-                  span.stat-value {{ data.tokenData.mirrorPositions[2] }}
+                  span.stat-value {{ data.tokenData.mirroring[2] }}
                   .stat-title C
                 .scale.stat
-                  span.stat-value {{ data.tokenData.scale + "%" }}
+                  span.stat-value {{ data.tokenData.mirroring[3] + "%" }}
                   .stat-title Scale
       v-row
         v-col(cols="12")
@@ -104,19 +103,19 @@
               .stats.minting-stats
                 a(:href="openseaTokenURL + id" title="View on OpenSea" target="_blank")
                   img(style="width:160px; border-radius:0px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);" src="https://storage.googleapis.com/opensea-static/opensea-brand/listed-button-blue.png" alt="Listed on OpenSea badge")
-                .timestamp.stat
+                .timestamp.stat(v-if="data.block !== undefined")
                   .stat-value
                     span.timestamp-time {{ (new Date(data.block.timestamp)).toLocaleTimeString() }}
                     span.timestamp-date {{ (new Date(data.block.timestamp)).toLocaleDateString() }}
                   .stat-title Minted Timestamp
-                .minter.stat
+                .minter.stat(v-if="data.creation !== undefined && data.creation.topics.length > 0")
                   .stat-value
                     v-tooltip(top)
                         template(v-slot:activator='{ on }')
                           span(v-on='on') {{ formatTopic(data.creation.topics[2]) }}
                         span {{ formatTopicLong(data.creation.topics[2]) }}
                   .stat-title Creator
-                .tx-hash.stat
+                .tx-hash.stat(v-if="data.creation !== undefined")
                   .stat-value
                     v-tooltip(top)
                       template(v-slot:activator='{ on }')
@@ -145,11 +144,14 @@ export default Vue.extend({
     priceInETH: function() {
       return this.$store.state.web3.utils.fromWei((this as any).data.price.toString());
     },
+    priceInLINK: function() {
+      return ((this as any).data.linkPrice / (10**18)).toString();
+    },
     id(): number {
       return parseInt(this.$route.params.id);
     },
     randomness(): string {
-      return BigInt(this.data.tokenData.randomness).toString(16);
+      return this.data.tokenData == undefined ? "" : BigInt(this.data.tokenData.randomness).toString(16);
     },
     ...mapState({
         animationTitles: 'animationTitles',
@@ -161,9 +163,9 @@ export default Vue.extend({
   mounted: async function() {
     await this.$store.dispatch("initialize");
     const t = this as any;
+    const owner = await t.$store.state.contracts.tinyboxes.methods.ownerOf(t.id).call();
     // check token exists
-    const total = await t.$store.state.contracts.tinyboxes.methods.totalSupply().call();
-    t.exists = t.id < total && t.id >= 0;
+    t.exists = owner > 0;
     if (t.exists) await t.loadToken();
     else t.loading = false;
   },
@@ -180,6 +182,7 @@ export default Vue.extend({
     loadToken: async function() {
       const t = this as any;
       const cached = this.$store.state.cachedTokens[t.id];
+      console.log("loading: ", t.id)
       if (cached && typeof cached === "object") {
         this.data = cached;
         this.loading = false;
@@ -198,6 +201,7 @@ export default Vue.extend({
         this.data.price = await pricePromise;
         // cache token data and end loading
         this.$store.commit("setToken", this.data);
+        console.log("loaded: ", t.data)
         this.loading = false;
       }
     },
