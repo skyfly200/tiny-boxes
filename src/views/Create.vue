@@ -224,14 +224,14 @@ export default Vue.extend({
         .then((art: any) => {
           if (art) {
             t.updateParams();
-            this.retryCount = 0
+            t.retryCount = 0
           }
         })
         .catch((err: any) => {
           console.error("Invalid Box Options - Call Reverted: ", err)
-          if (this.retryCount < 3) {
-            console.log("Retrying Randomize...")\
-            this.retryCount++
+          if (t.retryCount < 3) {
+            console.log("Retrying Randomize...")
+            t.retryCount++
             t.randomizeSection(section)
           }
         });
