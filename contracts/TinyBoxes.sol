@@ -69,6 +69,7 @@ contract TinyBoxes is TinyBoxesStore {
         uint8[4] memory mirroring,
         bool animate
     ) public view returns (string memory) {
+
         TinyBox memory box = TinyBox({
             shapes: shapes,
             hatching: hatching,

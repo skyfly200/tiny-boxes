@@ -94,6 +94,14 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         }
     }
 
+    function validateParams(uint16[4] memory color, uint8[4] memory mirroring) internal {
+        require(color[0] >= 0 && color[0] <= 360, "invalid hue");
+        require(color[1] >= 0 && color[1] <= 100, "invalid saturation");
+        require(color[2] >= 0 && color[2] <= 100, "invalid lightness");
+        require(int256(color[2]).sub(color[3]) >= 0, "invalid contrast");
+        require(mirroring[3] >= 10 && mirroring[3] <= 50, "invalid scale");
+    }
+
     /**
      * @dev Withdraw LINK tokens from the contract balance to contract owner
      * @param amount of link to withdraw (in smallest divisions of 10**18)
@@ -129,19 +137,22 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         string memory _seed;
         uint8 shapes;
         uint8 hatching;
-        uint16[4] memory palette;
+        uint16[4] memory color;
         uint8[4] memory size;
         uint8[2] memory spacing;
         uint8[4] memory mirroring;
-        (_seed, shapes, hatching, palette, size, spacing, mirroring) = abi.decode(data, (string, uint8, uint8, uint16[4], uint8[4], uint8[2], uint8[4]));
+        (_seed, shapes, hatching, color, size, spacing, mirroring) = abi.decode(data, (string, uint8, uint8, uint16[4], uint8[4], uint8[2], uint8[4]));
+
+        // check box parameters
+        validateParams(color, mirroring);
 
         // create a new box
         createBox(
             TinyBox({
                 shapes: shapes,
                 hatching: hatching,
-                color: HSL(palette[0],uint8(palette[1]),uint8(palette[2])),
-                contrast: uint8(palette[3]),
+                color: HSL(color[0],uint8(color[1]),uint8(color[2])),
+                contrast: uint8(color[3]),
                 size: size,
                 spacing: spacing,
                 mirroring: mirroring
@@ -200,11 +211,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         address recipient
     ) public payable notSoldOut returns (bytes32) {
         // check box parameters
-        require(color[0] >= 0 && color[0] <= 360, "invalid hue");
-        require(color[1] >= 0 && color[1] <= 100, "invalid saturation");
-        require(color[2] >= 0 && color[2] <= 100, "invalid lightness");
-        require(int256(color[2]).sub(color[3]) >= 0, "invalid contrast");
-        require(mirroring[3] >= 10 && mirroring[3] <= 50, "invalid scale");
+        validateParams(color, mirroring);
 
         // check payment and give change
         handlePayment(false, msg.value, msg.sender);
