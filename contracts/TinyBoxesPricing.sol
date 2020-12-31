@@ -57,8 +57,8 @@ contract TinyBoxesPricing is TinyBoxesBase, ChainlinkClient {
      * @return price in wei of token id
      */
     function priceAt(uint256 _id) public view returns (uint256 price) {
-        uint256 tokeninflation = (_id / 2) * priceIncrease; // add .001 eth to price per 2 tokens minted
-        price = startPrice + tokeninflation;
+        //uint256 tokeninflation = (_id / 2) * priceIncrease; // add .001 eth to price per 2 tokens minted
+        price = startPrice; //+ tokeninflation;
     }
 
     /**
