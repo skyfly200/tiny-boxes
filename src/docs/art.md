@@ -6,24 +6,43 @@
 - Animation
 
 ## Shapes
-Shape Count
-Hatching
-Size Range
+### Shape Count
+### Hatching
+### Size Range
+The range of width and height to select box sizes from
 
 ## Positioning
-Grid
-Spread
+### Grid
+### Spread
 
 ## Colors
-HSL
-Root Color
-Schemes - sample grids
-Shades
+### HSL
+HSL stands for Hue, Saturation and Lightness
+
+Hue is a value from 0 to 360 degrees
+
+Saturation and Lightness are both percentages from 0 to 100 
+
+
+### Root Color
+A HSL color that the color palette is based on
+
+### Schemes
+A set or relationships for complimenting hues based on the root hue
+
+### Palettes
+Sample grids
+
+### Shades
+She number of lightness levels in a tokens palette
+
+Distributed in a range from the root lightness minus the contrast to the root lightness
 
 ## Mirroring
-Levels
-Positions
-Scale
+3 Levels
+Each has its own position from 0 to 2400 in increments of 100
+This specifies a position for an axis in the X and Y dimension
+A final scale value for zooming in on basic mirroring schemes, default is 10 (100%)
 
 ## Animation
 Titles
