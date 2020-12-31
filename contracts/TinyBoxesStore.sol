@@ -128,9 +128,9 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         uint8 hatching;
         uint16[5] memory palette;
         uint8[4] memory size;
-        uint8[4] memory spacing;
+        uint8[2] memory spacing;
         uint8[4] memory mirroring;
-        (_seed, shapes, hatching, palette, size, spacing, mirroring) = abi.decode(data, (string, uint8, uint8, uint16[5], uint8[4], uint8[4], uint8[4]));
+        (_seed, shapes, hatching, palette, size, spacing, mirroring) = abi.decode(data, (string, uint8, uint8, uint16[5], uint8[4], uint8[2], uint8[4]));
 
         // create a new box
         createBox(
@@ -169,7 +169,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         uint8 hatching,
         uint16[5] calldata color,
         uint8[4] calldata size,
-        uint8[4] calldata spacing,
+        uint8[2] calldata spacing,
         uint8[4] calldata mirroring
     ) external payable notSoldOut returns (bytes32) {
         return buyFor(_seed, shapes, hatching, color, size, spacing, mirroring, msg.sender);
@@ -193,7 +193,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         uint8 hatching,
         uint16[5] memory color,
         uint8[4] memory size,
-        uint8[4] memory spacing,
+        uint8[2] memory spacing,
         uint8[4] memory mirroring,
         address recipient
     ) public payable notSoldOut returns (bytes32) {

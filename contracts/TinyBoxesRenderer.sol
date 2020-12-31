@@ -37,7 +37,7 @@ library TinyBoxesRenderer {
      */
     function _generateBox(
         bytes32[] memory pool,
-        uint8[4] memory spacing,
+        uint8[2] memory spacing,
         uint8[4] memory size,
         bool hatched
     )
@@ -47,12 +47,10 @@ library TinyBoxesRenderer {
     {
         // PRNG for box position
         positions = [
+            pool.uniform( -(int256(spacing[0])), int256(spacing[0])) +
+            ((pool.uniform(0, int256(spacing[1] % 16).sub(1)).mul(800)).div(int256(spacing[1] % 16))),
             pool.uniform(-(int256(spacing[0])), int256(spacing[0])) +
-                ((pool.uniform(0, int256(spacing[2]).sub(1)).mul(800)).div(
-                    int256(spacing[2]))),
-            pool.uniform(-(int256(spacing[1])), int256(spacing[1])) +
-                ((pool.uniform(0, int256(spacing[3]).sub(1)).mul(800)).div(
-                    int256(spacing[3])))
+            ((pool.uniform(0, int256(spacing[1] / 16).sub(1)).mul(800)).div(int256(spacing[1] / 16)))
         ];
         // PRNG for box size
         if (hatched) {

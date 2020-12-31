@@ -65,7 +65,7 @@ contract TinyBoxes is TinyBoxesStore {
         uint8 hatching,
         uint16[5] memory color,
         uint8[4] memory size,
-        uint8[4] memory spacing,
+        uint8[2] memory spacing,
         uint8[4] memory mirroring,
         bool animate
     ) public view returns (string memory) {

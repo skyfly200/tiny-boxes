@@ -8,7 +8,7 @@ struct TinyBox {
     uint8 hatching;
     uint8[4] mirroring;
     uint8[4] size;
-    uint8[4] spacing;
+    uint8[2] spacing;
     HSL color;
     uint8 contrast;
     uint8 shades;

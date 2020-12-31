@@ -77,7 +77,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
             uint8 shapes,
             uint8 hatching,
             uint8[4] memory size,
-            uint8[4] memory spacing,
+            uint8[2] memory spacing,
             uint8[4] memory mirroring,
             uint16[3] memory color,
             uint8 contrast,

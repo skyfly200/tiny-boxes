@@ -97,9 +97,9 @@ library Metadata {
     function _generatePlacementMetadata(TinyBox memory box) internal pure returns (string memory) {
         return string(abi.encodePacked(
             '<placement>',
-                '<rows>', uint256(box.spacing[0]).toString(), '</rows>',
-                '<columns>', uint256(box.spacing[1]).toString(), '</columns>',
-                '<spread>', uint256(box.spacing[2]).toString(), 'x ', uint256(box.spacing[3]).toString(), 'y</spread>',
+                '<rows>', uint256(box.spacing[1] % 16).toString(), '</rows>',
+                '<columns>', uint256(box.spacing[1] / 16).toString(), '</columns>',
+                '<spread>', uint256(box.spacing[0]).toString(), '</spread>',
             '</placement>'
         ));
     }
