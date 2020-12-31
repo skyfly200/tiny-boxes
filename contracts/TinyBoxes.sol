@@ -56,6 +56,7 @@ contract TinyBoxes is TinyBoxesStore {
      * @param size for shapes
      * @param spacing grid and spread
      * @param mirroring positions and scale
+     * @param animate switch to turn on or off animation
      * @return preview SVG art
      */
     function tokenPreview(
@@ -84,6 +85,7 @@ contract TinyBoxes is TinyBoxesStore {
     /**
      * @dev Generate the token SVG art of a specified frame
      * @param _id for which we want art
+     * @param animate switch to turn on or off animation
      * @return animated SVG art of token _id at _frame.
      */
     function tokenArt(uint256 _id, bool animate)
