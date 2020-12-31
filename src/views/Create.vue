@@ -62,6 +62,7 @@
                   h2 {{ priceInETH }}
                   v-icon(large) mdi-ethereum
                 v-spacer
+                v-btn(@click="mintTokenLINK" :disabled="!form.valid || soldOut || loading" large color="primary") Mint w LINK
                 v-btn(@click="mintToken" :disabled="!form.valid || soldOut || loading" large color="primary") Mint
           v-alert(v-if="!loading && !form.valid" type="error" prominent outlined border="left").invalid-options Invalid Box Options!
           v-alert(v-if="!loading && soldOut" type="warning" prominent outlined border="left").sold-out
@@ -388,7 +389,6 @@ export default Vue.extend({
         t.loading = true;
         t.loadStatus()
         const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette()};
-        console.log(v);
         this.$store.state.contracts.tinyboxes.methods
           .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.mirroring, v.animate)
           .call()
@@ -436,9 +436,10 @@ export default Vue.extend({
       const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette()};
       const data = t.$store.state.web3.eth.abi.encodeParameters(
         ['string', 'uint8', 'uint8', 'uint16[4]', 'uint8[4]', 'uint8[2]', 'uint8[4]'],
-        v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.mirroring
+        [v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.mirroring]
       );
-      t.linkPrice = await t.getLinkPrice();
+      t.linkPrice = await t.getLINKPrice();
+      console.log(data, v, t.linkPrice)
       t.tx = {
         from: this.currentAccount,
         to: this.$store.state.linkAddress,
