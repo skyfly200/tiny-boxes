@@ -1285,9 +1285,9 @@ const store = new Vuex.Store({
       "Square",
       "Tetradic"
     ],
-    tinyboxesAddress: '0x552d39E7db6FA5f40C1e6760e6127Cfd93837c5b',
+    tinyboxesAddress: '0x2218FD375e26f2000777CC292d8BB74AFb4652AE',
     openseaStoreURL: 'https://testnets.opensea.io/collection/tinyboxes-v41',
-    openseaTokenURL: 'https://testnets.opensea.io/assets/0x552d39e7db6fa5f40c1e6760e6127cfd93837c5b/',
+    openseaTokenURL: 'https://testnets.opensea.io/assets/0x2218FD375e26f2000777CC292d8BB74AFb4652AE/',
     currentAccount: "",
     web3Status: "loading",
     web3: null,
