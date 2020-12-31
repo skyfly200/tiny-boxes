@@ -150,6 +150,10 @@ export class TinyBoxesStore extends Contract {
       approved: boolean
     ): TransactionObject<void>;
 
+    setLINKPremium(amount: number | string): TransactionObject<void>;
+
+    setPrice(amount: number | string): TransactionObject<void>;
+
     startPrice(): TransactionObject<string>;
 
     supportsInterface(
