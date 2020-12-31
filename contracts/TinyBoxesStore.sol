@@ -5,10 +5,13 @@ pragma experimental ABIEncoderV2;
 // Chainlink Contracts
 import "./chainlink/VRFConsumerBase.sol";
 
+import "@openzeppelin/contracts/math/SignedSafeMath.sol";
+
 import "./TinyBoxesPricing.sol";
 
 contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     using SafeMath for uint256;
+    using SignedSafeMath for int256;
     using Utils for *;
 
     // Chainlink VRF and Feed Stuff
@@ -166,7 +169,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         string calldata _seed,
         uint8 shapes,
         uint8 hatching,
-        uint16[5] calldata color,
+        uint16[4] calldata color,
         uint8[4] calldata size,
         uint8[2] calldata spacing,
         uint8[4] calldata mirroring
@@ -190,12 +193,19 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         string memory _seed,
         uint8 shapes,
         uint8 hatching,
-        uint16[5] memory color,
+        uint16[4] memory color,
         uint8[4] memory size,
         uint8[2] memory spacing,
         uint8[4] memory mirroring,
         address recipient
     ) public payable notSoldOut returns (bytes32) {
+        // check box parameters
+        require(color[0] >= 0 && color[0] <= 360, "invalid hue");
+        require(color[1] >= 0 && color[1] <= 100, "invalid saturation");
+        require(color[2] >= 0 && color[2] <= 100, "invalid lightness");
+        require(int256(color[2]).sub(color[3]) >= 0, "invalid contrast");
+        require(mirroring[3] >= 10 && mirroring[3] <= 50, "invalid scale");
+
         // check payment and give change
         handlePayment(false, msg.value, msg.sender);
 

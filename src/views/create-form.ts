@@ -46,17 +46,8 @@ export const sections: Array<object> = [
     rand: true,
     options: [
       {
-        label: "X Spread",
+        label: "Spread",
         key: "x",
-        type: "slider",
-        range: {
-          min: 1,
-          max: 600,
-        },
-      },
-      {
-        label: "Y Spread",
-        key: "y",
         type: "slider",
         range: {
           min: 1,
@@ -95,16 +86,7 @@ export const sections: Array<object> = [
     rand: true,
     options: [
       {
-        label: "Scheme",
-        key: "scheme",
-        type: "slider",
-        range: {
-          min: 0,
-          max: 9,
-        },
-      },
-      {
-        label: "Root Hue",
+        label: "Hue",
         key: "hue",
         type: "slider",
         range: {
@@ -131,12 +113,12 @@ export const sections: Array<object> = [
         },
       },
       {
-        label: "Shades",
-        key: "shades",
+        label: "Contrast",
+        key: "contrast",
         type: "slider",
         range: {
           min: 0,
-          max: 8,
+          max: 100,
         },
       },
     ],
