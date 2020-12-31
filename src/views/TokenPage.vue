@@ -31,20 +31,14 @@
             v-card-title(align="center") Color Palette
             v-card-text
               .stats
-                .scheme
-                  h3 {{ schemeTitles[data.tokenData.scheme] }}
-                  span Scheme
-                ColorsGrid.stat(v-bind="palette")
-                .hue.stat
-                  span.stat-value {{ data.tokenData.color[0] + '°' }} 
-                  .stat-title Hue
-                .saturation.stat
-                  span.stat-value {{ data.tokenData.color[1] + '%' }}
-                  .stat-title Saturation
-                .lightness.stat
-                  .d-flex.flex-column
-                    span.stat-value {{ data.tokenData.color[2] + '%' }}
-                  .stat-title Lightness
+                .palette
+                  .scheme
+                    span Scheme
+                    h2 {{ schemeTitles[data.tokenData.scheme] }}
+                  ColorsGrid(v-bind="palette")
+                .root-color.stat
+                  span.stat-value {{ data.tokenData.color[0] + '°,' + data.tokenData.color[1] + '%,' + data.tokenData.color[2] + '%' }} 
+                  .stat-title Root Color
                 .contrast.stat
                   .d-flex.flex-column
                     span.stat-value {{ data.tokenData.contrast + '%' }}
@@ -272,6 +266,10 @@ export default Vue.extend({
   margin: 0.5rem 0 -0.5rem 0
   line-height: normal
   display: block
+.palette
+  display: flex
+  flex-direction: column
+  align-items: center
 .v-card
   margin: 1rem
 .timestamp-date
