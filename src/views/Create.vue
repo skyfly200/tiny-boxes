@@ -344,7 +344,7 @@ export default Vue.extend({
         v.hue,
         v.saturation,
         v.lightness,
-        v.contrast
+        v.contrast <= v.lightness ? v.contrast : v.lightness
       ];
     },
     assembleDials: function() {
