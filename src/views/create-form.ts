@@ -27,7 +27,7 @@ export const sections: Array<object> = [
         type: "range-slider",
         range: {
           min: 1,
-          max: 255,
+          max: 767,
         },
       },
       {
@@ -36,7 +36,7 @@ export const sections: Array<object> = [
         type: "range-slider",
         range: {
           min: 1,
-          max: 255,
+          max: 767,
         },
       },
     ],
@@ -193,7 +193,7 @@ export const sections: Array<object> = [
         type: "slider",
         show: "mirrorAdv",
         rand: false,
-        step: 100,
+        step: 10,
         range: {
           min: 100,
           max: 800,
