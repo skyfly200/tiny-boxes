@@ -143,13 +143,12 @@ export default Vue.extend({
       defaults: {
         seed: Date.now(),
         shapes: 11,
-        x: 200,
-        y: 200,
-        xSeg: 2,
-        ySeg: 2,
+        hatching: 0,
         width: [200, 300],
         height: [200, 300],
-        hatching: 0,
+        spread: 200,
+        rows: 2,
+        cols: 2,
         mirrorAdv: false,
         mirrorA: true,
         mirrorB: true,
@@ -160,11 +159,9 @@ export default Vue.extend({
         scale: 100,
         hue: Date.now() % 360,
         saturation: 80,
-        lightness: [30,70],
-        shades: 3,
-        scheme: 0,
+        lightness: 70,
+        contrast: 40,
         animate: false,
-        animation: 9,
       },
       sections: sections,
     };
@@ -336,14 +333,11 @@ export default Vue.extend({
     },
     assemblePalette: function() {
       const v = (this as any).values;
-      v.lightness = v.lightness.sort((a: any,b: any) => a - b);
       return [
         v.hue,
         v.saturation,
-        v.lightness[0],
-        v.lightness[1],
-        v.scheme,
-        v.shades
+        v.lightness,
+        v.contrast
       ];
     },
     assembleDials: function() {
@@ -351,21 +345,24 @@ export default Vue.extend({
       const v = t.values;
       v.width = v.width.sort((a: any,b: any) => a - b);
       v.height = v.height.sort((a: any,b: any) => a - b);
-      return [
-        v.x,
-        v.y,
-        v.xSeg,
-        v.ySeg,
-        v.width[0],
-        v.width[1],
-        v.height[0],
-        v.height[1],
-        v.hatching,
-        v.mirrorAdv ? v.mirrorPos1 : (v.mirrorA ? t.defaults.mirrorPos1 : 0),
-        v.mirrorAdv ? v.mirrorPos2 : (v.mirrorB ? t.defaults.mirrorPos2 : 0),
-        v.mirrorAdv ? v.mirrorPos3 : (v.mirrorC ? t.defaults.mirrorPos3 : 0),
-        v.mirrorAdv ? v.scale : (!v.mirrorC ? (!v.mirrorB ? 400 : 200) : 100),
-      ];
+      return {
+        spacing: [
+          v.spread,
+          (v.rows * 16) + v.cols,
+        ],
+        size: [
+          v.width[0],
+          v.width[1],
+          v.height[0],
+          v.height[1],
+        ],
+        mirroring: [
+          (v.mirrorAdv ? v.mirrorPos1 : (v.mirrorA ? t.defaults.mirrorPos1 : 0)) / 10,
+          (v.mirrorAdv ? v.mirrorPos2 : (v.mirrorB ? t.defaults.mirrorPos2 : 0)) / 10,
+          (v.mirrorAdv ? v.mirrorPos3 : (v.mirrorC ? t.defaults.mirrorPos3 : 0)) / 10,
+          (v.mirrorAdv ? v.scale : (!v.mirrorC ? (!v.mirrorB ? 400 : 200) : 100)) / 10
+        ]
+      };
     },
     loadToken: function() {
       return new Promise((resolve, reject) => {
@@ -373,9 +370,9 @@ export default Vue.extend({
         if (!t.form.valid) reject("Invalid Form Values");
         t.loading = true;
         t.loadStatus()
-        const v = {...t.values, palette: t.assemblePalette(), dials: t.assembleDials()};
+        const v = {...t.values, ...t.assembleDials(), colors: t.assemblePalette()};
         this.$store.state.contracts.tinyboxes.methods
-          .tokenTest(v.seed.toString(), v.shapes, v.palette, v.dials, v.animation, v.animate)
+          .tokenTest(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.position, v.mirroring, v.animate)
           .call()
           .then((result: any) => {
             t.data = result;
@@ -398,7 +395,7 @@ export default Vue.extend({
         to: this.$store.state.tinyboxesAddress,
         value: t.price,
         data: this.$store.state.contracts.tinyboxes.methods
-          .buy(v.seed.toString(), v.shapes, v.palette, v.dials)
+          .buy(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.position, v.mirroring)
           .encodeABI(),
       };
       //t.gasEstimate = await t.$store.state.web3.eth.estimateGas(t.tx);

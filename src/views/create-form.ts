@@ -47,7 +47,7 @@ export const sections: Array<object> = [
     options: [
       {
         label: "Spread",
-        key: "x",
+        key: "spread",
         type: "slider",
         range: {
           min: 1,
@@ -56,7 +56,7 @@ export const sections: Array<object> = [
       },
       {
         label: "Columns",
-        key: "xSeg",
+        key: "cols",
         type: "slider",
         rand: {
           min: 1,
@@ -69,7 +69,7 @@ export const sections: Array<object> = [
       },
       {
         label: "Rows",
-        key: "ySeg",
+        key: "rows",
         type: "slider",
         rand: {
           min: 1,
@@ -106,7 +106,7 @@ export const sections: Array<object> = [
       {
         label: "Lightness",
         key: "lightness",
-        type: "range-slider",
+        type: "slider",
         range: {
           min: 0,
           max: 100,
@@ -159,7 +159,7 @@ export const sections: Array<object> = [
         key: "mirrorPos1",
         type: "slider",
         show: "mirrorAdv",
-        step: 25,
+        step: 10,
         range: {
           min: 0,
           max: 2400,
@@ -170,7 +170,7 @@ export const sections: Array<object> = [
         key: "mirrorPos2",
         type: "slider",
         show: "mirrorAdv",
-        step: 25,
+        step: 10,
         range: {
           min: 0,
           max: 2400,
@@ -181,7 +181,7 @@ export const sections: Array<object> = [
         key: "mirrorPos3",
         type: "slider",
         show: "mirrorAdv",
-        step: 25,
+        step: 10,
         range: {
           min: 0,
           max: 2400,
