@@ -1,9 +1,9 @@
 <template lang="pug">
     .colors-grid
-      svg(:width="(3*(parseInt(palette[5])+1)) + 'em'" :height="(3*(scheme(palette[4]).length)) + 'em'")
-        g(v-for="h,i of scheme(palette[4])")
-          rect(v-for="s in parseInt(palette[5])+1" :x="3*(s-1)+'em'" :y="3*i+'em'" width="3em" height="3em"
-            :style="'fill: hsl('+(parseInt(palette[0])+h)+','+palette[1]+'%,'+calcShade(s-1)+'%)'")
+      svg(:width="(3*(parseInt(shades)+1)) + 'em'" :height="(3*(schemeH(scheme).length)) + 'em'")
+        g(v-for="h,i of schemeH(scheme)")
+          rect(v-for="s in parseInt(shades)+1" :x="3*(s-1)+'em'" :y="3*i+'em'" width="3em" height="3em"
+            :style="'fill: hsl('+(parseInt(color[0])+h)+','+color[1]+'%,'+calcShade(s-1)+'%)'")
 </template>
 
 <script lang="ts">
@@ -11,16 +11,15 @@ import Vue from "vue";
 
 export default Vue.extend({
   name: "ColorsGrid",
-  props: ["palette"],
+  props: ["color", "contrast", "shades", "scheme"],
   
   methods: {
     calcShade(s: number): any {
-      const palette = this.palette;
-      if (palette[5] == 0) return parseInt(palette[3]);
-      const range = palette[3] - palette[2];
-      return parseInt(palette[2]) + (range / palette[5] * s);
+      return (this.shades == 0) ?
+        parseInt(this.color[2]) :
+        parseInt(this.color[2]) + (this.contrast / this.shades * s);
     },
-    scheme(i: number) {
+    schemeH(i: number) {
       const schemes = [
             [0], // mono
             [0, 180], // complimentary

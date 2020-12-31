@@ -31,7 +31,7 @@
             v-card-title(align="center") Color Palette
             v-card-text
               .stats
-                ColorsGrid.stat(:data="data.tokenData")
+                ColorsGrid.stat(v-bind="data.tokenData")
                 .hue.stat
                   span.stat-value {{ data.tokenData.color[0] + '°' }} 
                   .stat-title Hue
@@ -47,7 +47,7 @@
                     span.stat-value {{ data.tokenData.contrast + '%' }}
                   .stat-title Contrast
                 .shades.stat
-                  span.stat-value {{ data.tokenData.shades }}
+                  span.stat-value {{ parseInt(data.tokenData.shades) + 1 }}
                   .stat-title Shades
                 .scheme.stat
                   span.stat-value {{ schemeTitles[data.tokenData.scheme] }}
