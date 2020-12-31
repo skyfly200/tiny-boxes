@@ -134,6 +134,7 @@ export default Vue.extend({
       confirmations: 0,
       confirmationsRequired: 1,
       limit: null as number | null,
+      retryCount: 0,
       form: {
         section: 0,
         valid: true,
@@ -221,12 +222,18 @@ export default Vue.extend({
       t.randomize(section);
       t.loadToken()
         .then((art: any) => {
-          if (art) t.updateParams();
+          if (art) {
+            t.updateParams();
+            this.retryCount = 0
+          }
         })
         .catch((err: any) => {
           console.error("Invalid Box Options - Call Reverted: ", err)
-          console.log("Retrying Randomize...")
-          t.randomizeSection(section)
+          if (this.retryCount < 3) {
+            console.log("Retrying Randomize...")\
+            this.retryCount++
+            t.randomizeSection(section)
+          }
         });
     },
     randomize: function(section: number | string) {
