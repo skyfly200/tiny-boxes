@@ -256,8 +256,6 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
 
     /**
      * @notice Callback function used by VRF Coordinator
-     * @dev Important! Add a modifier to only allow this function to be called by the VRFCoordinator
-     * @dev This is where you do something with randomness!
      * @dev The VRF Coordinator will only send this function verified responses.
      * @dev The VRF Coordinator will not pass randomness that could not be verified.
      */

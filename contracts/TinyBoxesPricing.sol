@@ -70,6 +70,20 @@ contract TinyBoxesPricing is TinyBoxesBase, ChainlinkClient {
     }
 
     /**
+     * @dev Set the price of a token
+     */
+    function setPrice(uint256 amount) external onlyRole(ADMIN_ROLE) {
+        startPrice = amount;
+    }
+
+    /**
+     * @dev Set the link premium
+     */
+    function setLINKPremium(uint256 amount) external onlyRole(ADMIN_ROLE) {
+        linkPremium = amount;
+    }
+
+    /**
      * @dev Get the current price of a token in LINK (Chainlink Token)
      * @return price in LINK of a token currently
      */
