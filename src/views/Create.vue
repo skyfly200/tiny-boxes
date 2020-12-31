@@ -351,10 +351,10 @@ export default Vue.extend({
           (v.rows * 16) + v.cols,
         ],
         size: [
-          v.width[0],
-          v.width[1],
-          v.height[0],
-          v.height[1],
+          Math.round(v.width[0] / 3),
+          Math.round(v.width[1] / 3),
+          Math.round(v.height[0] / 3),
+          Math.round(v.height[1] / 3),
         ],
         mirroring: [
           (v.mirrorAdv ? v.mirrorPos1 : (v.mirrorA ? t.defaults.mirrorPos1 : 0)) / 10,
@@ -370,9 +370,10 @@ export default Vue.extend({
         if (!t.form.valid) reject("Invalid Form Values");
         t.loading = true;
         t.loadStatus()
-        const v = {...t.values, ...t.assembleDials(), colors: t.assemblePalette()};
+        const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette()};
+        console.log(v);
         this.$store.state.contracts.tinyboxes.methods
-          .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.position, v.mirroring, v.animate)
+          .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.mirroring, v.animate)
           .call()
           .then((result: any) => {
             t.data = result;
@@ -388,14 +389,14 @@ export default Vue.extend({
     },
     mintToken: async function() {
       const t = this as any;
-      const v = {...t.values, palette: t.assemblePalette(), dials: t.assembleDials()};
+      const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette()};
       t.price = await t.getPrice();
       t.tx = {
         from: this.currentAccount,
         to: this.$store.state.tinyboxesAddress,
         value: t.price,
         data: this.$store.state.contracts.tinyboxes.methods
-          .buy(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.position, v.mirroring)
+          .buy(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.mirroring)
           .encodeABI(),
       };
       //t.gasEstimate = await t.$store.state.web3.eth.estimateGas(t.tx);

@@ -27,7 +27,7 @@ export const sections: Array<object> = [
         type: "range-slider",
         range: {
           min: 1,
-          max: 500,
+          max: 255,
         },
       },
       {
@@ -36,7 +36,7 @@ export const sections: Array<object> = [
         type: "range-slider",
         range: {
           min: 1,
-          max: 500,
+          max: 255,
         },
       },
     ],
@@ -50,8 +50,8 @@ export const sections: Array<object> = [
         key: "spread",
         type: "slider",
         range: {
-          min: 1,
-          max: 600,
+          min: 0,
+          max: 255,
         },
       },
       {
