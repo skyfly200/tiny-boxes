@@ -421,6 +421,36 @@ export default Vue.extend({
         }
       );
     },
+    mintTokenLINK: async function() {
+      const t = this as any;
+      const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette()};
+      const data = t.$store.state.web3.eth.abi.encodeParameters(
+        ['string', 'uint8', 'uint8', 'uint16[4]', 'uint8[4]', 'uint8[2]', 'uint8[4]'],
+        v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.mirroring
+      );
+      t.price = await t.getPrice();
+      t.tx = {
+        from: this.currentAccount,
+        to: this.$store.state.linkAddress,
+        data: this.$store.state.contracts.link.methods
+          .transferAndCall(this.$store.state.tinyboxesAddress, t.linkPrice, data)
+          .encodeABI(),
+      };
+      //t.gasEstimate = await t.$store.state.web3.eth.estimateGas(t.tx);
+      t.minted = {};
+      t.overlay = "verify";
+      t.$store.state.web3.eth.sendTransaction(t.tx,
+        async (err: any, txHash: string) => {
+          const t = this as any;
+          if (err) t.overlay = err.code === 4001 ? "" : "error";
+          else {
+            t.minted.txHash = txHash;
+            t.overlay =  "confirm";
+            t.checkConfirmations(txHash);
+          }
+        }
+      );
+    },
     async checkConfirmations(txHash: string) {
       const t = this as any;
       t.confirmations = await t.getConfirmations(txHash);
