@@ -36,7 +36,6 @@ export class TinyBoxesRenderer extends Contract {
           lightness: number | string;
         };
         contrast: number | string;
-        shades: number | string;
       },
       randomness: number | string,
       animate: boolean,

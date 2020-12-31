@@ -57,13 +57,13 @@ library Metadata {
      * @dev render the header of the SVG markup
      * @return header string
      */
-    function _generateColorMetadata(TinyBox memory box, uint8 schemeId) internal pure returns (string memory) {
+    function _generateColorMetadata(TinyBox memory box, uint8 schemeId, uint8 shadesCount) internal pure returns (string memory) {
         string memory scheme = string(abi.encodePacked('<scheme>', uint256(schemeId).toString(), '</scheme>'));
         string memory rootHue = string(abi.encodePacked('<hue>', uint256(box.color.hue).toString(), '</hue>'));
         string memory saturation = string(abi.encodePacked('<saturation>', uint256(box.color.saturation).toString(), '</saturation>'));
         string memory lightness = string(abi.encodePacked('<lightness>', uint256(box.color.lightness).toString(), '</lightness>'));
         string memory contrast = string(abi.encodePacked('<contrast>', uint256(box.contrast).toString(), '</contrast>'));
-        string memory shades = string(abi.encodePacked('<shades>', uint256(box.shades).toString(), '</shades>'));
+        string memory shades = string(abi.encodePacked('<shades>', uint256(shadesCount).toString(), '</shades>'));
 
         return string(abi.encodePacked(
             '<color>',
@@ -127,8 +127,8 @@ library Metadata {
      * @dev render the header of the SVG markup
      * @return header string
      */
-    function _generateMetadata(TinyBox memory box, uint8 animationID, bool animate, uint256 id, address owner, uint8 scheme) internal view returns (string memory) {
-        string memory colors = _generateColorMetadata(box, scheme);
+    function _generateMetadata(TinyBox memory box, uint8[3] memory dVals, bool animate, uint256 id, address owner) internal view returns (string memory) {
+        string memory colors = _generateColorMetadata(box, dVals[1], dVals[2]);
         string memory shapes = _generateShapesMetadata(box);
         string memory placement = _generatePlacementMetadata(box);
         string memory mirror = _generateMirrorMetadata(box);
@@ -139,7 +139,7 @@ library Metadata {
                     animate ? 'true' : 'false',
                 '</animated>',
                 '<id>',
-                    uint256(animationID).toString(),
+                    uint256(dVals[0]).toString(),
                 '</id>',
             '</animation>'
         ));

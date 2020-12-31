@@ -89,12 +89,12 @@ contract TinyBoxesBase is ERC721, AccessControl  {
 
         // TODO - generate animation with RNG weighted non uniformly for varying rarity types
         animation = boxRand[_id] % ANIMATION_COUNT;
+        shades = uint8(boxRand[_id] % 8) + 1;
         scheme = uint8(_id.div(1000));
         shapes = box.shapes;
         hatching = box.hatching;
         color = [box.color.hue, box.color.saturation, box.color.lightness];
         contrast = box.contrast;
-        shades = box.shades;
         size = box.size;
         spacing = box.spacing;
         mirroring = box.mirroring;

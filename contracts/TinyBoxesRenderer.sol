@@ -78,7 +78,8 @@ library TinyBoxesRenderer {
         bytes32[] memory pool,
         uint256 index,
         TinyBox memory box,
-        uint8 scheme
+        uint8 scheme,
+        uint8 shades
     )
         internal
         pure
@@ -96,8 +97,8 @@ library TinyBoxesRenderer {
         ) = _generateBox(pool, box.spacing, box.size, hatching);
         // lookup a random color from the color palette
         uint8 hue = uint8(pool.uniform(0, 3));
-        uint8 shade = uint8(pool.uniform(0, box.shades));
-        HSL memory color = Colors.lookupColor(Palette(box.color, box.contrast, box.shades, scheme),hue,shade);
+        uint8 shade = uint8(pool.uniform(0, shades));
+        HSL memory color = Colors.lookupColor(Palette(box.color, box.contrast, shades, scheme),hue,shade);
         return Shape(position, size, color);
     }
 
@@ -158,23 +159,24 @@ library TinyBoxesRenderer {
         // seed PRNG
         bytes32[] memory pool = Random.init(randomness);
 
-        // calculate deteministicaly random values
-        uint8[2] memory rngVals = [
+        // calculate deterministic values
+        uint8[3] memory dVals = [
             uint8(randomness.mod(ANIMATION_COUNT)), // animation
-            uint8(id.div(1000)) // scheme
+            uint8(id.div(1000)), // scheme
+            uint8(randomness.mod(8).add(1)) // shades
         ];
 
         // --- Render SVG Markup ---
 
         // generate the metadata
-        string memory metadata = box._generateMetadata(rngVals[0],animate,id,owner,rngVals[1]);
+        string memory metadata = box._generateMetadata(dVals,animate,id,owner);
 
         // generate shapes (shapes + animations)
         string memory shapes = "";
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
-            Shape memory shape = _generateShape(pool, i, box, rngVals[1]);
+            Shape memory shape = _generateShape(pool, i, box, dVals[1], dVals[2]);
             shapes = string(abi.encodePacked(shapes, 
-                animate ? SVG._rect(shape, Animation._generateAnimation(box,rngVals[0],shape,i)) : SVG._rect(shape)
+                animate ? SVG._rect(shape, Animation._generateAnimation(box,dVals[0],shape,i)) : SVG._rect(shape)
             ));
         }
         // wrap shapes in a symbol with the id "shapes"
