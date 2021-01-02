@@ -47,6 +47,8 @@ export class TinyBoxes extends Contract {
 
     baseURI(): TransactionObject<string>;
 
+    blockStart(): TransactionObject<string>;
+
     buy(
       _seed: string,
       shapes: number | string,
@@ -113,6 +115,12 @@ export class TinyBoxes extends Contract {
     ): TransactionObject<boolean>;
 
     ownerOf(tokenId: number | string): TransactionObject<string>;
+
+    paused(): TransactionObject<boolean>;
+
+    phaseCountdown(): TransactionObject<string>;
+
+    phaseLen(): TransactionObject<string>;
 
     priceAt(_id: number | string): TransactionObject<string>;
 

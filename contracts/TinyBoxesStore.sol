@@ -31,10 +31,10 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     uint256 constant fee = 10**17;
     uint256 constant DATA_PARAMETER_COUNT = 19;
 
-    bool paused = false;
-    uint256 blockStart;
-    uint256 phaseLen = 1000;
-    uint256 phaseCountdown = 120; // 
+    bool public paused = false;
+    uint256 public blockStart; // start of the next phase
+    uint256 public phaseLen = 1000; // token count per phase
+    uint256 public phaseCountdown = 120; // block to puase between phases
 
     struct Request {
         address recipient;
@@ -78,6 +78,15 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     }
 
     /**
+     * @notice Modifier to check if minting is paused
+     */
+    modifier notPaused {
+        require(!paused, "paused");
+        require(block.number >= blockStart, "phase paused");
+        _;
+    }
+
+    /**
      * @dev pause minting
      */
     function setPause(bool state) external onlyRole(ADMIN_ROLE) {
@@ -91,21 +100,13 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
      * @param from address
      */
     function handlePayment(bool withLink, uint256 amount, address from) internal {
-        // check we are not paused
-        require(!paused && block.number >= blockStart, "phase paused");
-        // determine the current phase of the token sale
-        if (_tokenIds.current() < ARTIST_PRINTS) {
-            require(hasRole(ARTIST_ROLE, from), "Only the admin can mint the alpha tokens. Wait your turn FFS");
-        // } else if (_tokenIds.current() < BETA_SALE) {
-            // TODO: setup beta sale auction and pricing
-        } else {
-            uint256 price = withLink ? currentLinkPrice() : currentPrice();
-            require(amount >= price, "insuficient payment");
-            // give change if they over pay
-            if (amount > price) {
-                if (withLink) LINK_TOKEN.transfer(from, amount - price);
-                else msg.sender.transfer(amount - price);
-            }
+        // check for suficient payment
+        uint256 price = withLink ? currentLinkPrice() : currentPrice();
+        require(amount >= price, "insuficient payment");
+        // give change if they over pay
+        if (amount > price) {
+            if (withLink) LINK_TOKEN.transfer(from, amount - price);
+            else msg.sender.transfer(amount - price);
         }
     }
 
@@ -144,7 +145,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         address from,
         uint256 amount,
         bytes calldata data
-    ) external onlyRole(LINK_ROLE) notSoldOut returns (bool) {
+    ) external onlyRole(LINK_ROLE) notPaused notSoldOut returns (bool) {
         // check payment and give change
         handlePayment(true, amount, from);
 
@@ -199,7 +200,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         uint8[4] calldata size,
         uint8[2] calldata spacing,
         uint8[4] calldata mirroring
-    ) external payable notSoldOut returns (bytes32) {
+    ) external payable notPaused notSoldOut returns (bytes32) {
         return buyFor(_seed, shapes, hatching, color, size, spacing, mirroring, msg.sender);
     }
 
@@ -224,7 +225,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         uint8[2] memory spacing,
         uint8[4] memory mirroring,
         address recipient
-    ) public payable notSoldOut returns (bytes32) {
+    ) public payable notPaused notSoldOut returns (bytes32) {
         // check box parameters
         validateParams(color, mirroring);
 
@@ -254,7 +255,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
      * @param recipient of the new TinyBox token
      * @return _requestId of the VRF call
      */
-    function createBox(TinyBox memory box, uint256 _seed, address recipient) internal returns (bytes32) {
+    function createBox(TinyBox memory box, uint256 _seed, address recipient) private returns (bytes32) {
         // make sure caller is never the 0 address
         require(
             recipient != address(0),
