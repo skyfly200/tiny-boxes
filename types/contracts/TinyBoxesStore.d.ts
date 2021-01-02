@@ -152,7 +152,7 @@ export class TinyBoxesStore extends Contract {
 
     setLINKPremium(amount: number | string): TransactionObject<void>;
 
-    setPrice(amount: number | string): TransactionObject<void>;
+    setPause(state: boolean): TransactionObject<void>;
 
     startPrice(): TransactionObject<string>;
 

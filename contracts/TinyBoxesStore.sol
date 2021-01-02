@@ -31,6 +31,11 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     uint256 constant fee = 10**17;
     uint256 constant DATA_PARAMETER_COUNT = 19;
 
+    bool paused = false;
+    uint256 blockStart;
+    uint256 phaseLen = 1000;
+    uint256 phaseCountdown = 120; // 
+
     struct Request {
         address recipient;
         uint256 id;
@@ -58,6 +63,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     {
         _setupRole(LINK_ROLE, _link);
         LINK_TOKEN = LinkTokenInterface(_link);
+        blockStart = block.number;
     }
 
     /**
@@ -72,12 +78,21 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     }
 
     /**
+     * @dev pause minting
+     */
+    function setPause(bool state) external onlyRole(ADMIN_ROLE) {
+        paused = state;
+    }
+
+    /**
      * @dev handle the payment for tokens in ETH and LINK
      * @param withLink boolean flag for paying with LINK instead of ETH
      * @param amount payed
      * @param from address
      */
     function handlePayment(bool withLink, uint256 amount, address from) internal {
+        // check we are not paused
+        require(!paused && block.number >= blockStart, "phase paused");
         // determine the current phase of the token sale
         if (_tokenIds.current() < ARTIST_PRINTS) {
             require(hasRole(ARTIST_ROLE, from), "Only the admin can mint the alpha tokens. Wait your turn FFS");
@@ -258,6 +273,9 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
 
         // register the new box data
         boxes[id] = box;
+
+        // check if its time tpopause for next phase countdown
+        if (_tokenIds.current() % phaseLen == 0) blockStart = block.number.add(phaseCountdown);
 
         // add block number and new token id to the seed value
         uint256 seed = _seed.add(block.number).add(id).mod(uint256(2**64));

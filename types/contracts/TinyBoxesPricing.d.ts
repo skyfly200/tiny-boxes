@@ -110,8 +110,6 @@ export class TinyBoxesPricing extends Contract {
 
     setLINKPremium(amount: number | string): TransactionObject<void>;
 
-    setPrice(amount: number | string): TransactionObject<void>;
-
     startPrice(): TransactionObject<string>;
 
     supportsInterface(
