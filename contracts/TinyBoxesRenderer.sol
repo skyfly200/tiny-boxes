@@ -108,7 +108,8 @@ library TinyBoxesRenderer {
      * @return footer string
      */
     function _generateMirroring(
-        uint8[4] memory mirroring
+        uint8[4] memory mirroring,
+        bool full
     ) internal pure returns (string memory) {
         string[3] memory scales = ['-1 1', '1 -1', '-1 -1'];
         // reference shapes symbol at core of mirroring
@@ -122,9 +123,16 @@ library TinyBoxesRenderer {
             if (mirroring[s] > 0) {
                 string memory value = string(abi.encodePacked('-', uint256(mirroring[s]).mul(10).toString()));
                 // generate mirrored copies
-                for (uint8 i = 0; i < 3; i++) {
+                if (full) {
+                    for (uint8 i = 0; i < 3; i++) {
+                        string memory transform = string(abi.encodePacked(
+                            'scale(', scales[i], ') translate(', (i != 1) ? value : '0', ' ', (i > 0) ? value : '0', ')'
+                        ));
+                        copies = string(abi.encodePacked(copies,SVG._g(transform, SVG._use(id))));
+                    }
+                } else {
                     string memory transform = string(abi.encodePacked(
-                        'scale(', scales[i], ') translate(', (i != 1) ? value : '0', ' ', (i > 0) ? value : '0', ')'
+                        'scale(', scales[2], ') translate(', value, ' ', value, ')'
                     ));
                     copies = string(abi.encodePacked(copies,SVG._g(transform, SVG._use(id))));
                 }
@@ -183,7 +191,7 @@ library TinyBoxesRenderer {
         string memory defs = string(abi.encodePacked('<defs><symbol id="shapes">', shapes, '</symbol></defs>'));
 
         // generate the footer
-        string memory mirroring = _generateMirroring(box.mirroring);
+        string memory mirroring = _generateMirroring(box.mirroring, true);
 
         string memory svg = SVG._SVG(string(abi.encodePacked(props[0] == 101 ? "" : "background-color:hsl(0,0,", props[0].toString(), ");")), string(abi.encodePacked(metadata, defs, mirroring)));
 
