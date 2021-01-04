@@ -55,8 +55,7 @@ export class TinyBoxesStore extends Contract {
       hatching: number | string,
       color: (number | string)[],
       size: (number | string)[],
-      spacing: (number | string)[],
-      mirroring: (number | string)[]
+      spacing: (number | string)[]
     ): TransactionObject<string>;
 
     buyFor(
@@ -66,7 +65,6 @@ export class TinyBoxesStore extends Contract {
       color: (number | string)[],
       size: (number | string)[],
       spacing: (number | string)[],
-      mirroring: (number | string)[],
       recipient: string
     ): TransactionObject<string>;
 

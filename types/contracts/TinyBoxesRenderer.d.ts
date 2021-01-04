@@ -27,7 +27,6 @@ export class TinyBoxesRenderer extends Contract {
       box: {
         shapes: number | string;
         hatching: number | string;
-        mirroring: (number | string)[];
         size: (number | string)[];
         spacing: (number | string)[];
         color: {

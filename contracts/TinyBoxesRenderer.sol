@@ -163,10 +163,12 @@ library TinyBoxesRenderer {
         bytes32[] memory pool = Random.init(randomness);
 
         // calculate deterministic values
-        uint8[3] memory dVals = [
+        uint8[5] memory dVals = [
             uint8(randomness.mod(ANIMATION_COUNT)), // animation
             uint8(props[1].div(1000)), // scheme
-            uint8(randomness.mod(8).add(1)) // shades
+            uint8(randomness.mod(8).add(1)), // shades
+            uint8(pool.uniform(0, 7)), // mirroring switches
+            uint8(pool.uniform(0, 7)) // mirroring types
         ];
 
         // --- Render SVG Markup ---
@@ -186,7 +188,7 @@ library TinyBoxesRenderer {
         string memory defs = string(abi.encodePacked('<defs><symbol id="shapes">', shapes, '</symbol></defs>'));
 
         // generate the footer
-        string memory mirroring = _generateMirroring(box.mirroring);
+        string memory mirroring = _generateMirroring([dVals[3],dVals[4]]);
 
         string memory svg = SVG._SVG(props[0] == 101 ? "" : string(abi.encodePacked("background-color:hsl(0,0,", props[0].toString(), ");")), string(abi.encodePacked(metadata, defs, mirroring)));
 
