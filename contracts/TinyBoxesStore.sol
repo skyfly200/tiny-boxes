@@ -34,7 +34,8 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     bool public paused = false;
     uint256 public blockStart; // start of the next phase
     uint256 public phaseLen = 1000; // token count per phase
-    uint256 public phaseCountdown = 120; // block to puase between phases
+    uint256 public phaseCountdownTime = 20 hours; // time to pause between phases
+    uint256 public phaseCountdown = phaseCountdownTime.div(15); // blocks to pause between phases
 
     struct Request {
         address recipient;
