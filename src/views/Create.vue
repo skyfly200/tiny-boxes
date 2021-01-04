@@ -146,8 +146,8 @@ export default Vue.extend({
         seed: Date.now(),
         shapes: 11,
         hatching: 0,
-        width: [200, 300],
-        height: [200, 300],
+        width: [100, 200],
+        height: [100, 200],
         spread: 200,
         rows: 2,
         cols: 2,
@@ -155,10 +155,10 @@ export default Vue.extend({
         mirrorA: true,
         mirrorB: true,
         mirrorC: true,
-        mirrorPos1: 600,
-        mirrorPos2: 1200,
-        mirrorPos3: 2400,
-        scale: 100,
+        mirrorPos1: 60,
+        mirrorPos2: 120,
+        mirrorPos3: 240,
+        scale: 10,
         hue: Date.now() % 360,
         saturation: 80,
         lightness: 70,
@@ -326,16 +326,48 @@ export default Vue.extend({
       // set values to default
       Object.assign(t.values, t.defaults);
     },
+    updateParams() {
+      const t = this as any;
+      let q = t.buildQuery();
+      console.log(q);
+      if (t.$route.query === {}) this.$router.replace({ path: "/create", query: q });
+      else this.$router.push({ path: "/create", query: q });
+    },
+    buildQuery() {
+      const t = this as any;
+      let v = t.values;
+      // condense keys and values for shorter URL encoding
+      const out: any = {
+        s: v.seed,
+        sh: v.shapes,
+        ha: v.hatching,
+        w: v.width.join(" "),
+        h: v.height.join(" "),
+        sp: v.spread,
+        g: (v.rows * 16) + v.cols,
+        hu: v.hue,
+        sa: v.saturation,
+        li: v.lightness,
+        co: v.contrast,
+        a: v.mirrorAdv,
+      };
+      if (v.mirrorAdv) {
+        out.m = [
+          v.mirrorPos1,
+          v.mirrorPos2,
+          v.mirrorPos3,
+          v.scale,
+        ].join(" ")
+      } else {
+        out.m = (v.mirrorA * 4) + (v.mirrorB * 2) + (v.mirrorC * 1);
+      }
+      return out;
+    },
     loadParams() {
       const t = this as any;
       // overwrite with any url query params
       const query = t.parseQuery(t.$route.query);
       Object.assign(t.values, query);
-    },
-    updateParams() {
-      const t = this as any;
-      if (t.$route.query === {}) this.$router.replace({ path: "/create", query: t.values });
-      else this.$router.push({ path: "/create", query: t.values });
     },
     parseQuery(query: any) {
       const out: any = {};
@@ -368,16 +400,16 @@ export default Vue.extend({
           (v.rows * 16) + v.cols,
         ],
         size: [
-          Math.round(v.width[0] / 3),
-          Math.round(v.width[1] / 3),
-          Math.round(v.height[0] / 3),
-          Math.round(v.height[1] / 3),
+          Math.round(v.width[0]),
+          Math.round(v.width[1]),
+          Math.round(v.height[0]),
+          Math.round(v.height[1]),
         ],
         mirroring: [
-          (v.mirrorAdv ? v.mirrorPos1 : (v.mirrorA ? t.defaults.mirrorPos1 : 0)) / 10,
-          (v.mirrorAdv ? v.mirrorPos2 : (v.mirrorB ? t.defaults.mirrorPos2 : 0)) / 10,
-          (v.mirrorAdv ? v.mirrorPos3 : (v.mirrorC ? t.defaults.mirrorPos3 : 0)) / 10,
-          (v.mirrorAdv ? v.scale : (!v.mirrorC ? (!v.mirrorB ? 400 : 200) : 100)) / 10
+          (v.mirrorAdv ? v.mirrorPos1 : (v.mirrorA ? t.defaults.mirrorPos1 : 0)),
+          (v.mirrorAdv ? v.mirrorPos2 : (v.mirrorB ? t.defaults.mirrorPos2 : 0)),
+          (v.mirrorAdv ? v.mirrorPos3 : (v.mirrorC ? t.defaults.mirrorPos3 : 0)),
+          (v.mirrorAdv ? v.scale : (!v.mirrorC ? (!v.mirrorB ? 40 : 20) : 10))
         ]
       };
     },

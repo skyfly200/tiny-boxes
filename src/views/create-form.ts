@@ -26,8 +26,8 @@ export const sections: Array<object> = [
         key: "width",
         type: "range-slider",
         range: {
-          min: 10,
-          max: 767,
+          min: 1,
+          max: 255,
         },
       },
       {
@@ -35,8 +35,8 @@ export const sections: Array<object> = [
         key: "height",
         type: "range-slider",
         range: {
-          min: 10,
-          max: 767,
+          min: 1,
+          max: 255,
         },
       },
     ],
@@ -64,7 +64,7 @@ export const sections: Array<object> = [
         },
         range: {
           min: 1,
-          max: 8,
+          max: 15,
         },
       },
       {
@@ -77,7 +77,7 @@ export const sections: Array<object> = [
         },
         range: {
           min: 1,
-          max: 8,
+          max: 15,
         },
       },
     ],
@@ -162,7 +162,7 @@ export const sections: Array<object> = [
         step: 10,
         range: {
           min: 0,
-          max: 2400,
+          max: 240,
         },
       },
       {
@@ -173,7 +173,7 @@ export const sections: Array<object> = [
         step: 10,
         range: {
           min: 0,
-          max: 2400,
+          max: 240,
         },
       },
       {
@@ -184,7 +184,7 @@ export const sections: Array<object> = [
         step: 10,
         range: {
           min: 0,
-          max: 2400,
+          max: 240,
         },
       },
       {
@@ -195,8 +195,8 @@ export const sections: Array<object> = [
         rand: false,
         step: 10,
         range: {
-          min: 100,
-          max: 800,
+          min: 10,
+          max: 80,
         },
       },
     ],
