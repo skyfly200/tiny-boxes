@@ -68,6 +68,7 @@ contract TinyBoxes is TinyBoxesStore {
         bool animate,
         uint8 bkg
     ) public view returns (string memory) {
+        validateParams(color, mirroring);
 
         TinyBox memory box = TinyBox({
             shapes: shapes,

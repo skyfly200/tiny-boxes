@@ -106,7 +106,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
 
     function validateParams(uint16[4] memory color, uint8[4] memory mirroring) internal pure {
         require(color[0] <= 360, "invalid hue");
-        require(color[1] <= 100, "invalid saturation");
+        require(color[1] >= 10 && color[1] <= 100, "invalid saturation");
         require(color[2] <= 100, "invalid lightness");
         require(int256(color[2]).sub(color[3]) >= 0, "invalid contrast");
         require(mirroring[3] >= 10 && mirroring[3] <= 50, "invalid scale");
