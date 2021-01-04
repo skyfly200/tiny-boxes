@@ -162,7 +162,11 @@ export class TinyBoxes extends Contract {
 
     symbol(): TransactionObject<string>;
 
-    tokenArt(_id: number | string, animate: boolean): TransactionObject<string>;
+    tokenArt(
+      _id: number | string,
+      animate: boolean,
+      bkg: number | string
+    ): TransactionObject<string>;
 
     tokenByIndex(index: number | string): TransactionObject<string>;
 
@@ -204,7 +208,8 @@ export class TinyBoxes extends Contract {
       size: (number | string)[],
       spacing: (number | string)[],
       mirroring: (number | string)[],
-      animate: boolean
+      animate: boolean,
+      bkg: number | string
     ): TransactionObject<string>;
 
     tokenURI(tokenId: number | string): TransactionObject<string>;

@@ -39,7 +39,7 @@ export class TinyBoxesRenderer extends Contract {
       },
       randomness: number | string,
       animate: boolean,
-      id: number | string,
+      props: (number | string)[],
       owner: string
     ): TransactionObject<string>;
   };

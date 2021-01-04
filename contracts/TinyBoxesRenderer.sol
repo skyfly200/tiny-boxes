@@ -145,31 +145,31 @@ library TinyBoxesRenderer {
      * @dev render a token's art
      * @param box TinyBox data structure
      * @param animate boolean flag to enable/disable animation
-     * @param id of the token rendered
+     * @param props of the token to render packed (bkg, id)
      * @param owner of the token rendered
      * @return markup of the SVG graphics of the token as a string
      */
-    function perpetualRenderer(TinyBox memory box, uint256 randomness, bool animate, uint256 id, address owner)
+    function perpetualRenderer(TinyBox memory box, uint256 randomness, bool animate, uint256[2] memory props, address owner)
         public
         view
         returns (string memory)
     {
+        require(props[0] <= 100, "BKG % Invalid");
         // --- Calculate Generative Shape Data ---
-
         // seed PRNG
         bytes32[] memory pool = Random.init(randomness);
 
         // calculate deterministic values
         uint8[3] memory dVals = [
             uint8(randomness.mod(ANIMATION_COUNT)), // animation
-            uint8(id.div(1000)), // scheme
+            uint8(props[1].div(1000)), // scheme
             uint8(randomness.mod(8).add(1)) // shades
         ];
 
         // --- Render SVG Markup ---
 
         // generate the metadata
-        string memory metadata = box._generateMetadata(dVals,animate,id,owner);
+        string memory metadata = box._generateMetadata(dVals,animate,props[1],owner);
 
         // generate shapes (shapes + animations)
         string memory shapes = "";
@@ -185,7 +185,7 @@ library TinyBoxesRenderer {
         // generate the footer
         string memory mirroring = _generateMirroring(box.mirroring);
 
-        string memory svg = SVG._SVG(string(abi.encodePacked(metadata, defs, mirroring)));
+        string memory svg = SVG._SVG(string(abi.encodePacked("hsl(0,0,", props[0].toString(), ")")), string(abi.encodePacked(metadata, defs, mirroring)));
 
         return svg;
     }

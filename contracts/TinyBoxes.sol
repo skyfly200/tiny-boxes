@@ -65,7 +65,8 @@ contract TinyBoxes is TinyBoxesStore {
         uint8[4] memory size,
         uint8[2] memory spacing,
         uint8[4] memory mirroring,
-        bool animate
+        bool animate,
+        uint8 bkg
     ) public view returns (string memory) {
 
         TinyBox memory box = TinyBox({
@@ -77,7 +78,7 @@ contract TinyBoxes is TinyBoxesStore {
             spacing: spacing,
             mirroring: mirroring
         });
-        return box.perpetualRenderer(_seed.stringToUint(), animate, _tokenIds.current(), address(0));
+        return box.perpetualRenderer(_seed.stringToUint(), animate, [bkg, _tokenIds.current()], address(0));
     }
 
     /**
@@ -86,13 +87,13 @@ contract TinyBoxes is TinyBoxesStore {
      * @param animate switch to turn on or off animation
      * @return animated SVG art of token _id at _frame.
      */
-    function tokenArt(uint256 _id, bool animate)
+    function tokenArt(uint256 _id, bool animate, uint8 bkg)
         public
         view
         returns (string memory)
     {
         TinyBox memory box = boxes[_id];
         uint256 randomness = boxRand[_id];
-        return box.perpetualRenderer(randomness, animate, _id, ownerOf(_id));
+        return box.perpetualRenderer(randomness, animate, [bkg, _id], ownerOf(_id));
     }
 }
