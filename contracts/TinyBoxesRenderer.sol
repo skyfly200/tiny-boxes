@@ -108,9 +108,10 @@ library TinyBoxesRenderer {
      * @return footer string
      */
     function _generateMirroring(
-        uint8[5] memory mirroring
+        uint8[2] memory mirroring
     ) internal pure returns (string memory) {
-        string[3] memory scales = ['-1 1', '1 -1', '-1 -1'];
+        string[3] memory scales = ['-1 -1','-1 1','1 -1'];
+        uint16[3] memory levels = [600, 1200, 2400];
         // reference shapes symbol at core of mirroring
         string memory symbols = string(abi.encodePacked('<symbol id="quad0">',SVG._g(SVG._use('shapes')),'</symbol>'));
         // loop through nested mirroring levels
@@ -119,19 +120,14 @@ library TinyBoxesRenderer {
             // generate unmirrored copy
             string memory copies = SVG._g(SVG._use(id));
             // check if this mirror level is active
-            if (mirroring[s] > 0) {
-                string memory value = string(abi.encodePacked('-', uint256(mirroring[s]).mul(10).toString()));
+            if (uint256(mirroring[0]).div(2**s).mod(2) == 1) {
+                string memory value = string(abi.encodePacked('-', uint256(levels[s]).toString()));
+                // select mirriring type for this level
+                uint8 c = (uint256(mirroring[1]).div(2**s).mod(2) == 0) ? 1 : 3;
                 // generate mirrored copies
-                if (uint256(mirroring[3]).div(2**s).mod(2) == 0) { // check mirriring mode for this level
-                    for (uint8 i = 0; i < 3; i++) {
-                        string memory transform = string(abi.encodePacked(
-                            'scale(', scales[i], ') translate(', (i != 1) ? value : '0', ' ', (i > 0) ? value : '0', ')'
-                        ));
-                        copies = string(abi.encodePacked(copies,SVG._g(transform, SVG._use(id))));
-                    }
-                } else {
+                for (uint8 i = 0; i < c; i++) {
                     string memory transform = string(abi.encodePacked(
-                        'scale(', scales[2], ') translate(', value, ' ', value, ')'
+                        'scale(', scales[i], ') translate(', (i < 2) ? value : '0', ' ', (i != 1) ? value : '0', ')'
                     ));
                     copies = string(abi.encodePacked(copies,SVG._g(transform, SVG._use(id))));
                 }
@@ -140,7 +136,7 @@ library TinyBoxesRenderer {
             symbols = string(abi.encodePacked('<symbol id="quad',(s+1).toString(),'">',symbols,copies,'</symbol>')); // wrap last level in a shape tag to refer to later
         }
         // add final scaling transform
-        Decimal memory scale = int256(mirroring[4]).toDecimal(1);
+        uint256 scale = uint256(mirroring[0]).div(2).mod(2) == 0 ? (uint256(mirroring[0]).div(4).mod(2) == 0 ? 4 : 2) : 1;
         string memory transform = string(abi.encodePacked(
             'scale(', scale.toString(), ' ', scale.toString(), ')'
         ));

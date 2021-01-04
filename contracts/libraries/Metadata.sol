@@ -111,14 +111,12 @@ library Metadata {
     function _generateMirrorMetadata(TinyBox memory box) internal pure returns (string memory) {
         return string(abi.encodePacked(
             '<mirror>',
-                '<mirror-positions>',
-                    uint256(box.mirroring[0]).toString(), ',',
-                    uint256(box.mirroring[1]).toString(), ',',
-                    uint256(box.mirroring[2]).toString(),
-                '</mirror-positions>',
-                '<scale>',
-                    uint256(box.mirroring[3]).toString(),
-                '</scale>',
+                '<mirror-mode>',
+                    uint256(box.mirroring[0]).toString(),
+                '</mirror-mode>',
+                '<mirror-types>',
+                    uint256(box.mirroring[1]).toString(),
+                '</mirror-types>',
             '</mirror>'
         ));
     }

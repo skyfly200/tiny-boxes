@@ -104,12 +104,12 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         if (amount > price) msg.sender.transfer(amount - price);
     }
 
-    function validateParams(uint16[4] memory color, uint8[5] memory mirroring) internal pure {
+    function validateParams(uint16[4] memory color, uint8[2] memory mirroring) internal pure {
         require(color[0] <= 360, "invalid hue");
         require(color[1] >= 10 && color[1] <= 100, "invalid saturation");
         require(color[2] <= 100, "invalid lightness");
         require(int256(color[2]).sub(color[3]) >= 0, "invalid contrast");
-        require(mirroring[4] >= 10 && mirroring[4] <= 50, "invalid scale");
+        require(mirroring[0] < 8 && mirroring[1] < 8, "invalid mirroring");
     }
 
     /**
@@ -146,7 +146,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         uint16[4] calldata color,
         uint8[4] calldata size,
         uint8[2] calldata spacing,
-        uint8[5] calldata mirroring
+        uint8[2] calldata mirroring
     ) external payable notPaused notSoldOut returns (bytes32) {
         return buyFor(_seed, shapes, hatching, color, size, spacing, mirroring, msg.sender);
     }
@@ -170,7 +170,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         uint16[4] memory color,
         uint8[4] memory size,
         uint8[2] memory spacing,
-        uint8[5] memory mirroring,
+        uint8[2] memory mirroring,
         address recipient
     ) public payable notPaused notSoldOut returns (bytes32) {
         // check box parameters
