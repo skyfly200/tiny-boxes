@@ -85,7 +85,7 @@ library SVG {
     function _SVG(string memory bkgColor, string memory body) internal pure returns (string memory) {
         string memory xmlVersion = '<?xml version="1.0" encoding="UTF-8"?>';
         string memory doctype = '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
-        string memory openingSVGTag = string(abi.encodePacked('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2400 2400" style="stroke-width:0;background-color:', bkgColor, ';margin: auto;height: -webkit-fill-available">'));
+        string memory openingSVGTag = string(abi.encodePacked('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2400 2400" style="stroke-width:0;', bkgColor, 'margin: auto;height: -webkit-fill-available">'));
 
         return string(abi.encodePacked(xmlVersion, doctype, openingSVGTag, body, '</svg>'));
     }

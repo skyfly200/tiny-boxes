@@ -154,7 +154,7 @@ library TinyBoxesRenderer {
         view
         returns (string memory)
     {
-        require(props[0] <= 100, "BKG % Invalid");
+        require(props[0] <= 101, "BKG % Invalid");
         // --- Calculate Generative Shape Data ---
         // seed PRNG
         bytes32[] memory pool = Random.init(randomness);
@@ -185,7 +185,7 @@ library TinyBoxesRenderer {
         // generate the footer
         string memory mirroring = _generateMirroring(box.mirroring);
 
-        string memory svg = SVG._SVG(string(abi.encodePacked("hsl(0,0,", props[0].toString(), ")")), string(abi.encodePacked(metadata, defs, mirroring)));
+        string memory svg = SVG._SVG(string(abi.encodePacked(props[0] == 101 ? "" : "background-color:hsl(0,0,", props[0].toString(), ");")), string(abi.encodePacked(metadata, defs, mirroring)));
 
         return svg;
     }
