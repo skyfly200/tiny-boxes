@@ -45,8 +45,6 @@ export class TinyBoxesPricing extends Contract {
 
     baseURI(): TransactionObject<string>;
 
-    currentLinkPrice(): TransactionObject<string>;
-
     currentPrice(): TransactionObject<string>;
 
     getApproved(tokenId: number | string): TransactionObject<string>;
@@ -74,10 +72,6 @@ export class TinyBoxesPricing extends Contract {
       owner: string,
       operator: string
     ): TransactionObject<boolean>;
-
-    linkPremium(): TransactionObject<string>;
-
-    linkPriceAt(_id: number | string): TransactionObject<string>;
 
     name(): TransactionObject<string>;
 
@@ -107,8 +101,6 @@ export class TinyBoxesPricing extends Contract {
       operator: string,
       approved: boolean
     ): TransactionObject<void>;
-
-    setLINKPremium(amount: number | string): TransactionObject<void>;
 
     startPrice(): TransactionObject<string>;
 

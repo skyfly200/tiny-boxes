@@ -54,12 +54,10 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
      * @notice Constructor inherits from TinyBoxesBase, TinyBoxesPricing & VRFConsumerBase
      */
     constructor(
-        address _link,
-        address _feed
+        address _link
     )
         public
         TinyBoxesBase()
-        TinyBoxesPricing(_link, _feed)
         VRFConsumerBase(VRF_COORDINATOR, _link)
     {
         _setupRole(LINK_ROLE, _link);
@@ -95,20 +93,15 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
     }
 
     /**
-     * @dev handle the payment for tokens in ETH and LINK
-     * @param withLink boolean flag for paying with LINK instead of ETH
-     * @param amount payed
-     * @param from address
+     * @dev handle the payment for tokens
      */
-    function handlePayment(bool withLink, uint256 amount, address from) internal {
+    function handlePayment() internal {
         // check for suficient payment
-        uint256 price = withLink ? currentLinkPrice() : currentPrice();
+        uint256 amount = msg.value;
+        uint256 price = currentPrice();
         require(amount >= price, "insuficient payment");
         // give change if they over pay
-        if (amount > price) {
-            if (withLink) LINK_TOKEN.transfer(from, amount - price);
-            else msg.sender.transfer(amount - price);
-        }
+        if (amount > price) msg.sender.transfer(amount - price);
     }
 
     function validateParams(uint16[4] memory color, uint8[4] memory mirroring) internal pure {
@@ -133,53 +126,6 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         // );
         // send amount of LINK tokens to the transaction sender
         return LINK_TOKEN.transfer(msg.sender, amount);
-    }
-
-    /**
-     * @dev Accept incoming LINK ERC20+677 tokens, unpack bytes data and run create with results
-     * @param from address of token sender
-     * @param amount of tokens transfered
-     * @param data of token to create
-     * @return success (token recieved) boolean value
-     */
-    function onTokenTransfer(
-        address from,
-        uint256 amount,
-        bytes calldata data
-    ) external onlyRole(LINK_ROLE) notPaused notSoldOut returns (bool) {
-        // check payment and give change
-        handlePayment(true, amount, from);
-
-        // --- Unpack parameters from raw data bytes ---
-        string memory _seed;
-        uint8 shapes;
-        uint8 hatching;
-        uint16[4] memory color;
-        uint8[4] memory size;
-        uint8[2] memory spacing;
-        uint8[4] memory mirroring;
-        (_seed, shapes, hatching, color, size, spacing, mirroring) = abi.decode(data, (string, uint8, uint8, uint16[4], uint8[4], uint8[2], uint8[4]));
-
-        // check box parameters
-        validateParams(color, mirroring);
-
-        // create a new box
-        createBox(
-            TinyBox({
-                shapes: shapes,
-                hatching: hatching,
-                color: HSL(color[0],uint8(color[1]),uint8(color[2])),
-                contrast: uint8(color[3]),
-                size: size,
-                spacing: spacing,
-                mirroring: mirroring
-            }),
-            _seed.stringToUint(),
-            from
-        );
-
-        // pass back to the LINK contract with a success state
-        return true;
     }
 
     /**
@@ -231,7 +177,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         validateParams(color, mirroring);
 
         // check payment and give change
-        handlePayment(false, msg.value, msg.sender);
+        handlePayment();
 
         // create a new box object
         return createBox(

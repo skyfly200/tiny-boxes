@@ -70,8 +70,6 @@ export class TinyBoxes extends Contract {
       recipient: string
     ): TransactionObject<string>;
 
-    currentLinkPrice(): TransactionObject<string>;
-
     currentPrice(): TransactionObject<string>;
 
     getApproved(tokenId: number | string): TransactionObject<string>;
@@ -100,25 +98,17 @@ export class TinyBoxes extends Contract {
       operator: string
     ): TransactionObject<boolean>;
 
-    linkPremium(): TransactionObject<string>;
-
-    linkPriceAt(_id: number | string): TransactionObject<string>;
-
     name(): TransactionObject<string>;
 
     nonces(arg0: string | number[]): TransactionObject<string>;
-
-    onTokenTransfer(
-      from: string,
-      amount: number | string,
-      data: string | number[]
-    ): TransactionObject<boolean>;
 
     ownerOf(tokenId: number | string): TransactionObject<string>;
 
     paused(): TransactionObject<boolean>;
 
     phaseCountdown(): TransactionObject<string>;
+
+    phaseCountdownTime(): TransactionObject<string>;
 
     phaseLen(): TransactionObject<string>;
 
@@ -159,8 +149,6 @@ export class TinyBoxes extends Contract {
     ): TransactionObject<void>;
 
     setBaseURI(_uri: string): TransactionObject<void>;
-
-    setLINKPremium(amount: number | string): TransactionObject<void>;
 
     setPause(state: boolean): TransactionObject<void>;
 

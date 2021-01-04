@@ -11,15 +11,13 @@ contract TinyBoxes is TinyBoxesStore {
     /**
      * @dev Contract constructor.
      * @param _link address of the LINK token
-     * @param _feed address of the LINK/ETH price feed
      * @notice Constructor inherits from TinyBoxesStore
      */
     constructor(
-        address _link,
-        address _feed
+        address _link
     )
         public
-        TinyBoxesStore(_link, _feed)
+        TinyBoxesStore(_link)
     {}
 
     /**

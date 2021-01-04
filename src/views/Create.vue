@@ -62,7 +62,6 @@
                   h2 {{ priceInETH }}
                   v-icon(large) mdi-ethereum
                 v-spacer
-                v-btn(@click="mintTokenLINK" :disabled="!form.valid || soldOut || loading" large color="primary") Mint w LINK
                 v-btn(@click="mintToken" :disabled="!form.valid || soldOut || loading" large color="primary") Mint
           v-alert(v-if="!loading && !form.valid" type="error" prominent outlined border="left").invalid-options Invalid Box Options!
           v-alert(v-if="!loading && soldOut" type="warning" prominent outlined border="left").sold-out
@@ -414,37 +413,6 @@ export default Vue.extend({
         value: t.price,
         data: this.$store.state.contracts.tinyboxes.methods
           .buy(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.mirroring)
-          .encodeABI(),
-      };
-      //t.gasEstimate = await t.$store.state.web3.eth.estimateGas(t.tx);
-      t.minted = {};
-      t.overlay = "verify";
-      t.$store.state.web3.eth.sendTransaction(t.tx,
-        async (err: any, txHash: string) => {
-          const t = this as any;
-          if (err) t.overlay = err.code === 4001 ? "" : "error";
-          else {
-            t.minted.txHash = txHash;
-            t.overlay =  "confirm";
-            t.checkConfirmations(txHash);
-          }
-        }
-      );
-    },
-    mintTokenLINK: async function() {
-      const t = this as any;
-      const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette()};
-      const data = t.$store.state.web3.eth.abi.encodeParameters(
-        ['string', 'uint8', 'uint8', 'uint16[4]', 'uint8[4]', 'uint8[2]', 'uint8[4]'],
-        [v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.mirroring]
-      );
-      t.linkPrice = await t.getLINKPrice();
-      console.log(data, v, t.linkPrice)
-      t.tx = {
-        from: this.currentAccount,
-        to: this.$store.state.linkAddress,
-        data: this.$store.state.contracts.link.methods
-          .transferAndCall(this.$store.state.tinyboxesAddress, t.linkPrice, data)
           .encodeABI(),
       };
       //t.gasEstimate = await t.$store.state.web3.eth.estimateGas(t.tx);
