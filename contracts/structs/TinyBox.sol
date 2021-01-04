@@ -6,7 +6,7 @@ import './HSL.sol';
 struct TinyBox {
     uint8 shapes;
     uint8 hatching;
-    uint8[4] mirroring;
+    uint8[5] mirroring;
     uint8[4] size;
     uint8[2] spacing;
     HSL color;

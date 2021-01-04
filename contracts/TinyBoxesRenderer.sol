@@ -108,8 +108,7 @@ library TinyBoxesRenderer {
      * @return footer string
      */
     function _generateMirroring(
-        uint8[4] memory mirroring,
-        bool full
+        uint8[5] memory mirroring
     ) internal pure returns (string memory) {
         string[3] memory scales = ['-1 1', '1 -1', '-1 -1'];
         // reference shapes symbol at core of mirroring
@@ -123,7 +122,7 @@ library TinyBoxesRenderer {
             if (mirroring[s] > 0) {
                 string memory value = string(abi.encodePacked('-', uint256(mirroring[s]).mul(10).toString()));
                 // generate mirrored copies
-                if (full) {
+                if (uint256(mirroring[3]).div(2**s).mod(2) == 0) { // check mirriring mode for this level
                     for (uint8 i = 0; i < 3; i++) {
                         string memory transform = string(abi.encodePacked(
                             'scale(', scales[i], ') translate(', (i != 1) ? value : '0', ' ', (i > 0) ? value : '0', ')'
@@ -141,7 +140,7 @@ library TinyBoxesRenderer {
             symbols = string(abi.encodePacked('<symbol id="quad',(s+1).toString(),'">',symbols,copies,'</symbol>')); // wrap last level in a shape tag to refer to later
         }
         // add final scaling transform
-        Decimal memory scale = int256(mirroring[3]).toDecimal(1);
+        Decimal memory scale = int256(mirroring[4]).toDecimal(1);
         string memory transform = string(abi.encodePacked(
             'scale(', scale.toString(), ' ', scale.toString(), ')'
         ));
@@ -191,7 +190,7 @@ library TinyBoxesRenderer {
         string memory defs = string(abi.encodePacked('<defs><symbol id="shapes">', shapes, '</symbol></defs>'));
 
         // generate the footer
-        string memory mirroring = _generateMirroring(box.mirroring, true);
+        string memory mirroring = _generateMirroring(box.mirroring);
 
         string memory svg = SVG._SVG(props[0] == 101 ? "" : string(abi.encodePacked("background-color:hsl(0,0,", props[0].toString(), ");")), string(abi.encodePacked(metadata, defs, mirroring)));
 
