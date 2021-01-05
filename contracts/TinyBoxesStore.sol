@@ -259,6 +259,8 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
             uint8(pool.uniform(0, 7)), // mirroring switches
             uint8(pool.uniform(0, 7)) // mirroring types
         ];
+        // set the last 5 per phase to grayscale
+        if (req.id.mod(phaseLen) >= (phaseLen.sub(5))) boxes[req.id].color.saturation = 0;
 
         // mint the new token to the recipient address
         _safeMint(req.recipient, req.id);
