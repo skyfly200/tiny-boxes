@@ -56,10 +56,10 @@ library TinyBoxesRenderer {
         // PRNG for box size
         if (hatched) {
             int256 horizontal = pool.uniform(0, 1);
-            int256 width = pool.uniform(25, 40).add(int256(700).mul(horizontal));
+            int256 width = pool.uniform(25, 40).add(int256(500).mul(horizontal));
             dimensions = [
                 width,
-                pool.uniform(10, 25).add(int256(740).sub(width))
+                pool.uniform(10, 25).add(int256(540).sub(width))
             ];
         } else
             dimensions = [
@@ -137,7 +137,7 @@ library TinyBoxesRenderer {
             symbols = string(abi.encodePacked('<symbol id="quad',(s+1).toString(),'">',symbols,copies,'</symbol>')); // wrap last level in a shape tag to refer to later
         }
         // add final scaling transform
-        uint256 scale = uint256(mirroring[0]).div(2).mod(2) == 0 ? (uint256(mirroring[0]).div(4).mod(2) == 0 ? 4 : 2) : 1;
+        uint256 scale = uint256(mirroring[0]).div(4) == 0 ? (uint256(mirroring[0]).div(2) == 0 ? 4 : 2) : 1;
         string memory transform = string(abi.encodePacked(
             'scale(', scale.toString(), ' ', scale.toString(), ')'
         ));
