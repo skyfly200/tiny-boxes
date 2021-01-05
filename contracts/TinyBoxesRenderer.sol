@@ -164,11 +164,11 @@ library TinyBoxesRenderer {
 
         // calculate deterministic values
         uint8[5] memory dVals = [
-            uint8(randomness.mod(ANIMATION_COUNT)), // animation
-            uint8(props[1].div(1000)), // scheme
-            uint8(randomness.mod(8).add(1)), // shades
-            uint8(pool.uniform(0, 7)), // mirroring switches
-            uint8(pool.uniform(0, 7)) // mirroring types
+            box.animation, // animation
+            box.scheme, // scheme
+            box.shades, // shades
+            box.mirroring[0], // mirroring switches
+            box.mirroring[1] // mirroring types
         ];
 
         // --- Render SVG Markup ---

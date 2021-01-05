@@ -11,11 +11,9 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "./structs/TinyBox.sol";
 import "./libraries/Utils.sol";
-import "./libraries/Random.sol";
 
 contract TinyBoxesBase is ERC721, AccessControl  {
     using Counters for Counters.Counter;
-    using Random for bytes32[];
 
     Counters.Counter internal _tokenIds;
 
@@ -88,13 +86,10 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     {
         TinyBox memory box = boxes[_id];
 
-        bytes32[] memory pool = Random.init(boxRand[_id]);
-
-        // TODO - generate animation with RNG weighted non uniformly for varying rarity types
-        animation = boxRand[_id] % ANIMATION_COUNT;
-        shades = uint8(boxRand[_id] % 8) + 1;
-        scheme = uint8(_id.div(1000));
-        mirroring = [uint8(pool.uniform(0, 7)), uint8(pool.uniform(0, 7))];
+        animation = box.animation;
+        shades = box.shades;
+        scheme = box.scheme;
+        mirroring = box.mirroring;
         shapes = box.shapes;
         hatching = box.hatching;
         color = [box.color.hue, box.color.saturation, box.color.lightness];

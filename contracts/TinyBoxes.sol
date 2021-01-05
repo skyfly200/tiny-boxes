@@ -53,6 +53,7 @@ contract TinyBoxes is TinyBoxesStore {
      * @param color settings (hue, sat, light, contrast, shades)
      * @param size for shapes
      * @param spacing grid and spread
+     * @param mirroring positions and scale
      * @param animate switch to turn on or off animation
      * @return preview SVG art
      */
@@ -63,18 +64,26 @@ contract TinyBoxes is TinyBoxesStore {
         uint16[4] memory color,
         uint8[4] memory size,
         uint8[2] memory spacing,
+        uint8[2] memory mirroring,
+        uint8 scheme,
+        uint8 shades,
+        uint8 animation,
         bool animate,
         uint8 bkg
     ) public view returns (string memory) {
         validateParams(color);
 
         TinyBox memory box = TinyBox({
-            shapes: shapes,
-            hatching: hatching,
             color: HSL(color[0],uint8(color[1]),uint8(color[2])),
             contrast: uint8(color[3]),
+            shapes: shapes,
+            hatching: hatching,
             size: size,
-            spacing: spacing
+            spacing: spacing,
+            mirroring: mirroring,
+            scheme: scheme,
+            shades: shades,
+            animation: animation
         });
         return box.perpetualRenderer(_seed.stringToUint(), animate, [bkg, _tokenIds.current()], address(0));
     }
