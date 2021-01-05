@@ -182,7 +182,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
                 hatching: hatching,
                 size: size,
                 spacing: spacing,
-                mirroring: [0,0],
+                mirroring: 0,
                 scheme: 0,
                 shades: 0,
                 animation: 0
@@ -255,10 +255,8 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
         boxes[req.id].animation = uint8(req.id.div(phaseLen)); // animation
         boxes[req.id].scheme = uint8(pool.uniform(0, 9)); // scheme
         boxes[req.id].shades = uint8(pool.uniform(1, 8)); // shades
-        boxes[req.id].mirroring = [
-            uint8(pool.uniform(0, 7)), // mirroring switches
-            uint8(pool.uniform(0, 7)) // mirroring types
-        ];
+        boxes[req.id].mirroring = uint8(pool.uniform(0, 7)); // mirroring mode
+        
         // set the last 5 per phase to grayscale
         if (req.id.mod(phaseLen) >= (phaseLen.sub(5))) boxes[req.id].color.saturation = 0;
 

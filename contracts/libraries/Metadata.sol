@@ -108,15 +108,12 @@ library Metadata {
      * @dev render the header of the SVG markup
      * @return header string
      */
-    function _generateMirrorMetadata(uint8[5] memory dVals) internal pure returns (string memory) {
+    function _generateMirrorMetadata(uint8[4] memory dVals) internal pure returns (string memory) {
         return string(abi.encodePacked(
             '<mirror>',
                 '<mirror-mode>',
                     uint256(dVals[3]).toString(),
                 '</mirror-mode>',
-                '<mirror-types>',
-                    uint256(dVals[4]).toString(),
-                '</mirror-types>',
             '</mirror>'
         ));
     }
@@ -125,7 +122,7 @@ library Metadata {
      * @dev render the header of the SVG markup
      * @return header string
      */
-    function _generateMetadata(TinyBox memory box, uint8[5] memory dVals, bool animate, uint256 id, address owner) internal view returns (string memory) {
+    function _generateMetadata(TinyBox memory box, uint8[4] memory dVals, bool animate, uint256 id, address owner) internal view returns (string memory) {
         string memory colors = _generateColorMetadata(box, dVals[1], dVals[2]);
         string memory shapes = _generateShapesMetadata(box);
         string memory placement = _generatePlacementMetadata(box);

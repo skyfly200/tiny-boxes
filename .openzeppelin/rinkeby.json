@@ -16,18 +16,18 @@
       "deployedBytecodeHash": "6b468d8cde1d4f9855cbbf0f24baff56878878e55476f98038753eeb9dc87d7b"
     },
     "TinyBoxesRenderer": {
-      "address": "0x54924EA878c65673cBF49199511ad9f7980902aC",
-      "constructorCode": "615e1262000027600b82828239805160001a60731461001a57fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "b27a3f8e488dfbd74f8b248507e440f420d31aa07f4898b20b5d9d60684b7b47",
-      "localBytecodeHash": "bdff8b0cc336f4c9be8d4264d3e05f526fcba2fee78783bb92fae054f8b25604",
-      "deployedBytecodeHash": "ab2ac144415953e2de2cac3a93acb807ff2b8d0ac4b6a1ce1cfbe614ba66adf3"
+      "address": "0x4084d48830453E6026aACD5DF2ffd0AcEb1884fC",
+      "constructorCode": "615e0062000027600b82828239805160001a60731461001a57fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "eda1df240fab92fe5f3c23264e329e43c891313e55abb74ce8d83d738fe5e392",
+      "localBytecodeHash": "c8c92f8923b87fcec9aeda21eaf59a46586a2f14ffaffe43a6dfd3913f9bf328",
+      "deployedBytecodeHash": "a3e776556ddf43891365c33f69c698d0670d6f06acd793ae0492ff5ecc740959"
     },
     "Colors": {
-      "address": "0xa9f384dA1e427A7f9FD0E17D5BCF9595D2Cdd0c8",
-      "constructorCode": "610a80610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "07c94c7e576d570a2cb7f819f31ba58c196d3bf51392b1664893863193568718",
-      "localBytecodeHash": "4f1bfd05a0817e9f07980e580fbabb5d767f172a03026124248cfd26d89f76dd",
-      "deployedBytecodeHash": "4f1bfd05a0817e9f07980e580fbabb5d767f172a03026124248cfd26d89f76dd"
+      "address": "0x4FE55939659d865745a6316f1558c30683Fa373c",
+      "constructorCode": "610a6c610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "62ec7858a23415d06ee204fd89e644617a31bfc95d6a77b4a2ff81317f494e56",
+      "localBytecodeHash": "82520813c71b53b4759021c558f60de17e70b0fa68e76cef696be4d207b26fea",
+      "deployedBytecodeHash": "82520813c71b53b4759021c558f60de17e70b0fa68e76cef696be4d207b26fea"
     }
   },
   "proxies": {
@@ -306,6 +306,16 @@
         "address": "0x984dA71412CDe1Cd9b45dab5a678Cba24251A4c5",
         "kind": "NonProxy",
         "bytecodeHash": "ee09770adaaa183be73b8d43d3da15814556c6e8e5c1d468f562e3869f8b8566"
+      },
+      {
+        "address": "0x261412A93908C3cB0D4504D70F3019b007f40eab",
+        "kind": "NonProxy",
+        "bytecodeHash": "ba9d6ed68eb040acad7f8134ae58c3111e7245a83c3799ce8a27c7696137dbc6"
+      },
+      {
+        "address": "0xD90150019d3b3a4458b74EB229Db8E5BDd738c9C",
+        "kind": "NonProxy",
+        "bytecodeHash": "ba9d6ed68eb040acad7f8134ae58c3111e7245a83c3799ce8a27c7696137dbc6"
       }
     ]
   },

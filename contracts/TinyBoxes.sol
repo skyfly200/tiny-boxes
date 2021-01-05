@@ -65,7 +65,7 @@ contract TinyBoxes is TinyBoxesStore {
         uint16[4] memory color,
         uint8[4] memory size,
         uint8[2] memory spacing,
-        uint8[6] memory traits,
+        uint8[5] memory traits,
         bool animate,
         uint256 id
     ) public view returns (string memory) {
@@ -77,12 +77,12 @@ contract TinyBoxes is TinyBoxesStore {
             hatching: hatching,
             size: size,
             spacing: spacing,
-            mirroring: [traits[0], traits[1]],
-            scheme: traits[2],
-            shades: traits[3],
-            animation: traits[4]
+            mirroring: traits[0],
+            scheme: traits[1],
+            shades: traits[2],
+            animation: traits[3]
         });
-        return box.perpetualRenderer(seed.stringToUint(), animate, [traits[5], id], address(0));
+        return box.perpetualRenderer(seed.stringToUint(), animate, [traits[4], id], address(0));
     }
 
     /**
