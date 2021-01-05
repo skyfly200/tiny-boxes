@@ -48,9 +48,9 @@ library TinyBoxesRenderer {
         // PRNG for box position
         positions = [
             pool.uniform( -(int256(spacing[0])), int256(spacing[0])) +
-            ((pool.uniform(0, int256(spacing[1] % 16).sub(1)).mul(800)).div(int256(spacing[1] % 16))),
+            (int256(600).div(int256(spacing[1] % 16)).mul(pool.uniform(1, int256(spacing[1] % 16).sub(1)))),
             pool.uniform(-(int256(spacing[0])), int256(spacing[0])) +
-            ((pool.uniform(0, int256(spacing[1] / 16).sub(1)).mul(800)).div(int256(spacing[1] / 16)))
+            (int256(600).div(int256(spacing[1] % 16)).mul(pool.uniform(1, int256(spacing[1] / 16).sub(1))))
         ];
         // PRNG for box size
         if (hatched) {
