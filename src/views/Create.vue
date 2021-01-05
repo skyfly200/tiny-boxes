@@ -328,14 +328,14 @@ export default Vue.extend({
     },
     updateParams() {
       const t = this as any;
-      let q = t.buildQuery();
+      const q = t.buildQuery();
       console.log(q);
       if (t.$route.query === {}) this.$router.replace({ path: "/create", query: q });
       else this.$router.push({ path: "/create", query: q });
     },
     buildQuery() {
       const t = this as any;
-      let v = t.values;
+      const v = t.values;
       // condense keys and values for shorter URL encoding
       const out: any = {
         s: v.seed,
