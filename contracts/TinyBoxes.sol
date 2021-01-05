@@ -47,7 +47,8 @@ contract TinyBoxes is TinyBoxesStore {
 
     /**
      * @dev Generate the token SVG art preview for given parameters
-     * @param _seed for renderer RNG
+     * @param id of the token to preview
+     * @param seed for renderer RNG
      * @param shapes count
      * @param hatching mod
      * @param color settings (hue, sat, light, contrast, shades)
@@ -58,15 +59,15 @@ contract TinyBoxes is TinyBoxesStore {
      * @return preview SVG art
      */
     function tokenPreview(
-        string memory _seed,
+        string memory seed,
         uint8 shapes,
         uint8 hatching,
         uint16[4] memory color,
         uint8[4] memory size,
         uint8[2] memory spacing,
-        uint8[5] memory traits,
+        uint8[6] memory traits,
         bool animate,
-        uint8 bkg
+        uint256 id
     ) public view returns (string memory) {
         validateParams(color);
 
@@ -82,7 +83,7 @@ contract TinyBoxes is TinyBoxesStore {
             shades: traits[3],
             animation: traits[4]
         });
-        return box.perpetualRenderer(_seed.stringToUint(), animate, [bkg, _tokenIds.current()], address(0));
+        return box.perpetualRenderer(seed.stringToUint(), animate, [traits[5], id], address(0));
     }
 
     /**

@@ -199,7 +199,7 @@ export class TinyBoxes extends Contract {
     ): TransactionObject<string>;
 
     tokenPreview(
-      _seed: string,
+      seed: string,
       shapes: number | string,
       hatching: number | string,
       color: (number | string)[],
@@ -207,7 +207,7 @@ export class TinyBoxes extends Contract {
       spacing: (number | string)[],
       traits: (number | string)[],
       animate: boolean,
-      bkg: number | string
+      id: number | string
     ): TransactionObject<string>;
 
     tokenURI(tokenId: number | string): TransactionObject<string>;
