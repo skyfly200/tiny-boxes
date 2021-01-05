@@ -23,11 +23,11 @@
       "deployedBytecodeHash": "b675f676c68bbe0577372510c127668ec624cb6859babb53adf9df87643cd08a"
     },
     "Colors": {
-      "address": "0x3e29d4A83439A25e050DCdBa55C438f426F3161a",
-      "constructorCode": "610a6f610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "65adc706dac72694eef44a65afb06abd87d50078906f772453809e07704da063",
-      "localBytecodeHash": "9bee3348f86a9d2a454d1de7f1ede4cb56fb4355c2eca52ccdc16aeaed8598f0",
-      "deployedBytecodeHash": "9bee3348f86a9d2a454d1de7f1ede4cb56fb4355c2eca52ccdc16aeaed8598f0"
+      "address": "0xa9f384dA1e427A7f9FD0E17D5BCF9595D2Cdd0c8",
+      "constructorCode": "610a80610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "07c94c7e576d570a2cb7f819f31ba58c196d3bf51392b1664893863193568718",
+      "localBytecodeHash": "4f1bfd05a0817e9f07980e580fbabb5d767f172a03026124248cfd26d89f76dd",
+      "deployedBytecodeHash": "4f1bfd05a0817e9f07980e580fbabb5d767f172a03026124248cfd26d89f76dd"
     }
   },
   "proxies": {
@@ -236,6 +236,26 @@
         "address": "0xCc5c3942f40FF695f2b2e66102fA0B70246A2757",
         "kind": "NonProxy",
         "bytecodeHash": "7045182b9e9cf5940a4df57921f39d6a5a56f68a37195138dfcccddd0f489afe"
+      },
+      {
+        "address": "0xB5D28Bf968918624eB34C6450ACC01F304753e09",
+        "kind": "NonProxy",
+        "bytecodeHash": "2ab74e1848f7958cbc53fd0196b55d6725e5dd2fe19d226165e45eb256f9747b"
+      },
+      {
+        "address": "0x74d33cfe696309d1d525603FB581EeBFEBA50C76",
+        "kind": "NonProxy",
+        "bytecodeHash": "ee09770adaaa183be73b8d43d3da15814556c6e8e5c1d468f562e3869f8b8566"
+      },
+      {
+        "address": "0x2510F170AbDd8A9f93BDdC97968d03Fc7B017357",
+        "kind": "NonProxy",
+        "bytecodeHash": "ee09770adaaa183be73b8d43d3da15814556c6e8e5c1d468f562e3869f8b8566"
+      },
+      {
+        "address": "0xB5fe38EEa6f6c831e9E94C8CBD825b9C491D463d",
+        "kind": "NonProxy",
+        "bytecodeHash": "ee09770adaaa183be73b8d43d3da15814556c6e8e5c1d468f562e3869f8b8566"
       }
     ]
   },
