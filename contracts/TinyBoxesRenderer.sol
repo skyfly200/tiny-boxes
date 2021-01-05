@@ -191,7 +191,7 @@ library TinyBoxesRenderer {
         // generate the footer
         string memory mirroring = _generateMirroring([dVals[3],dVals[4]]);
 
-        string memory svg = SVG._SVG(props[0] == 101 ? "" : string(abi.encodePacked("background-color:hsl(0,0,", props[0].toString(), ");")), string(abi.encodePacked(metadata, defs, mirroring)));
+        string memory svg = SVG._SVG(props[0] == 101 ? "" : string(abi.encodePacked("background-color:hsl(0,0%,", props[0].toString(), "%);")), string(abi.encodePacked(metadata, defs, mirroring)));
 
         return svg;
     }
