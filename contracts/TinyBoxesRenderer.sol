@@ -113,7 +113,6 @@ library TinyBoxesRenderer {
     ) internal pure returns (string memory) {
         string[4] memory scales = ['1 1','-1 1','1 -1','-1 -1'];
         uint16[3] memory levels = [600, 1200, 2400];
-        uint8[4] memory modes = [1,2,2,4];
         // reference shapes symbol at core of mirroring
         string memory symbols = string(abi.encodePacked('<symbol id="quad0">',SVG._g(SVG._use('shapes')),'</symbol>'));
         // loop through nested mirroring levels
