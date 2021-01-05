@@ -32,7 +32,7 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
 
     bool public paused = false;
     uint256 public blockStart; // start of the next phase
-    uint256 public phaseLen = 1000; // token count per phase
+    uint256 public phaseLen = 500; // token count per phase
     uint256 public phaseCountdownTime = 20 hours; // time to pause between phases
     uint256 public phaseCountdown = phaseCountdownTime.div(15); // blocks to pause between phases
 
@@ -252,9 +252,9 @@ contract TinyBoxesStore is TinyBoxesPricing, VRFConsumerBase {
 
         // TODO - generate animation with RNG weighted non uniformly for varying rarity types
         // update RNG set values
-        boxes[req.id].animation = uint8(randomness.mod(ANIMATION_COUNT)); // animation
-        boxes[req.id].scheme = uint8(req.id.div(phaseLen)); // scheme
-        boxes[req.id].shades = uint8(randomness.mod(8).add(1)); // shades
+        boxes[req.id].animation = uint8(req.id.div(phaseLen)); // animation
+        boxes[req.id].scheme = uint8(pool.uniform(0, 9)); // scheme
+        boxes[req.id].shades = uint8(pool.uniform(1, 8)); // shades
         boxes[req.id].mirroring = [
             uint8(pool.uniform(0, 7)), // mirroring switches
             uint8(pool.uniform(0, 7)) // mirroring types
