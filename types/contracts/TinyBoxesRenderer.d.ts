@@ -25,16 +25,20 @@ export class TinyBoxesRenderer extends Contract {
 
     perpetualRenderer(
       box: {
-        shapes: number | string;
-        hatching: number | string;
-        size: (number | string)[];
-        spacing: (number | string)[];
         color: {
           hue: number | string;
           saturation: number | string;
           lightness: number | string;
         };
         contrast: number | string;
+        shapes: number | string;
+        hatching: number | string;
+        size: (number | string)[];
+        spacing: (number | string)[];
+        mirroring: (number | string)[];
+        scheme: number | string;
+        shades: number | string;
+        animation: number | string;
       },
       randomness: number | string,
       animate: boolean,

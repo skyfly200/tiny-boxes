@@ -205,6 +205,7 @@ export class TinyBoxes extends Contract {
       color: (number | string)[],
       size: (number | string)[],
       spacing: (number | string)[],
+      traits: (number | string)[],
       animate: boolean,
       bkg: number | string
     ): TransactionObject<string>;
