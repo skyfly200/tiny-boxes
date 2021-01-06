@@ -113,7 +113,7 @@ export default {
       for (let i = 0; i < this.count; i++) this.loadToken(i);
     },
     loadToken: async function(tokenID: any) {
-      const artPromise = this.lookupArt(tokenID, false);
+      const artPromise = this.lookupArt(tokenID, false, 5);
       const ownerPromise = this.lookupOwner(tokenID);
       const art = await artPromise;
       const owner = await ownerPromise;

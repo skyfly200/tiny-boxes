@@ -190,8 +190,8 @@ export default Vue.extend({
       } else {
         // load all token data
         const creationPromise = t.lookupMinting();
-        const animationPromise = this.$store.state.contracts.tinyboxes.methods.tokenArt(this.id, true).call();
-        const artPromise = this.$store.state.contracts.tinyboxes.methods.tokenArt(this.id, false).call();
+        const animationPromise = this.$store.state.contracts.tinyboxes.methods.tokenArt(this.id, true, 5).call();
+        const artPromise = this.$store.state.contracts.tinyboxes.methods.tokenArt(this.id, false, 5).call();
         const tokenDataPromise = this.$store.state.contracts.tinyboxes.methods.tokenData(this.id).call();
         const pricePromise = this.$store.state.contracts.tinyboxes.methods.priceAt(this.id).call();
         this.data.creation = await creationPromise;
