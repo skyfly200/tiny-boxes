@@ -13,11 +13,6 @@ const tinyboxesABI = [
           "internalType": "address",
           "name": "_link",
           "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_feed",
-          "type": "address"
         }
       ],
       "stateMutability": "nonpayable",
@@ -412,6 +407,19 @@ const tinyboxesABI = [
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "blockStart",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "internalType": "string",
@@ -442,11 +450,6 @@ const tinyboxesABI = [
           "internalType": "uint8[2]",
           "name": "spacing",
           "type": "uint8[2]"
-        },
-        {
-          "internalType": "uint8[4]",
-          "name": "mirroring",
-          "type": "uint8[4]"
         }
       ],
       "name": "buy",
@@ -493,11 +496,6 @@ const tinyboxesABI = [
           "type": "uint8[2]"
         },
         {
-          "internalType": "uint8[4]",
-          "name": "mirroring",
-          "type": "uint8[4]"
-        },
-        {
           "internalType": "address",
           "name": "recipient",
           "type": "address"
@@ -512,19 +510,6 @@ const tinyboxesABI = [
         }
       ],
       "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "currentLinkPrice",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "price",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -689,38 +674,6 @@ const tinyboxesABI = [
     },
     {
       "inputs": [],
-      "name": "linkPremium",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_id",
-          "type": "uint256"
-        }
-      ],
-      "name": "linkPriceAt",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "price",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
       "name": "name",
       "outputs": [
         {
@@ -754,35 +707,6 @@ const tinyboxesABI = [
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "from",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        },
-        {
-          "internalType": "bytes",
-          "name": "data",
-          "type": "bytes"
-        }
-      ],
-      "name": "onTokenTransfer",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "uint256",
           "name": "tokenId",
           "type": "uint256"
@@ -794,6 +718,58 @@ const tinyboxesABI = [
           "internalType": "address",
           "name": "",
           "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "paused",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "phaseCountdown",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "phaseCountdownTime",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "phaseLen",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -999,25 +975,12 @@ const tinyboxesABI = [
     {
       "inputs": [
         {
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
+          "internalType": "bool",
+          "name": "state",
+          "type": "bool"
         }
       ],
-      "name": "setLINKPremium",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        }
-      ],
-      "name": "setPrice",
+      "name": "setPause",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -1096,6 +1059,11 @@ const tinyboxesABI = [
           "internalType": "bool",
           "name": "animate",
           "type": "bool"
+        },
+        {
+          "internalType": "uint8",
+          "name": "bkg",
+          "type": "uint8"
         }
       ],
       "name": "tokenArt",
@@ -1164,9 +1132,9 @@ const tinyboxesABI = [
           "type": "uint8[2]"
         },
         {
-          "internalType": "uint8[4]",
+          "internalType": "uint8",
           "name": "mirroring",
-          "type": "uint8[4]"
+          "type": "uint8"
         },
         {
           "internalType": "uint16[3]",
@@ -1220,7 +1188,7 @@ const tinyboxesABI = [
       "inputs": [
         {
           "internalType": "string",
-          "name": "_seed",
+          "name": "seed",
           "type": "string"
         },
         {
@@ -1249,14 +1217,19 @@ const tinyboxesABI = [
           "type": "uint8[2]"
         },
         {
-          "internalType": "uint8[4]",
-          "name": "mirroring",
-          "type": "uint8[4]"
+          "internalType": "uint8[5]",
+          "name": "traits",
+          "type": "uint8[5]"
         },
         {
           "internalType": "bool",
           "name": "animate",
           "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
         }
       ],
       "name": "tokenPreview",
@@ -1647,7 +1620,7 @@ const store = new Vuex.Store({
       "Tetradic"
     ],
     linkAddress: '0x01BE23585060835E02B77ef475b0Cc51aA1e0709',
-    tinyboxesAddress: '0x69Ae1e73F3488ED47e3550F688fa7E175e9F605c',
+    tinyboxesAddress: '0x56a0eAD07eB26e121eb0810dF304e5C28cD56f7a',
     openseaStoreURL: 'https://testnets.opensea.io/collection/tinyboxes-v41',
     openseaTokenURL: 'https://testnets.opensea.io/assets/0x69Ae1e73F3488ED47e3550F688fa7E175e9F605c/',
     currentAccount: "",
