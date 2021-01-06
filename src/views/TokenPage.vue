@@ -28,7 +28,7 @@
                 h3 {{ animationTitles[data.tokenData.animation] }}
         v-col(cols="12" md="6" lg="5")
           v-card
-            v-card-title(align="center") Color Palette
+            v-card-title(align="center") Stats
             v-card-text
               .stats
                 .palette
@@ -46,11 +46,6 @@
                 .shades.stat
                   span.stat-value {{ parseInt(data.tokenData.shades) + 1 }}
                   .stat-title Shades
-        v-col(cols="12" md="6" lg="5")
-          v-card
-            v-card-title(align="center") Shapes
-            v-card-text
-              .stats
                 .shapeCount.stat
                   span.stat-value {{ data.tokenData.shapes }}
                   .stat-title Shapes
@@ -72,11 +67,6 @@
                 .columns.stat
                   span.stat-value {{ Math.floor(data.tokenData.spacing[1] % 16) }}
                   .stat-title Columns
-        v-col(cols="12" md="6" lg="5")
-          v-card
-            v-card-title(align="center") Mirroring
-            v-card-text
-              .stats
                 .mirror-a.stat
                   span.stat-value {{ data.tokenData.mirroring }}
                   .stat-title Mirror Mode
