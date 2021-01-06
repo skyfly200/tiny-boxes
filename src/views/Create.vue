@@ -118,6 +118,7 @@ import { sections } from "./create-form";
 import Token from "@/components/Token.vue";
 import Share from "@/components/Share.vue";
 import TooltipIconBtn from "@/components/TooltipIconBtn.vue";
+import { rejects } from "assert";
 
 export default Vue.extend({
   name: "Create",
@@ -210,6 +211,27 @@ export default Vue.extend({
     }
   },
   methods: {
+    getSupply: function() {
+      return this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
+    },
+    getPrice: function() {
+      return this.$store.state.contracts.tinyboxes.methods.currentPrice().call();
+    },
+    lookupLimit: async function() {
+      (this as any).limit = await this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
+    },
+    loadStatus: async function() {
+      const t = this as any;
+      const idLookup = t.getSupply();
+      const priceLookup = t.getPrice();
+      t.id = await idLookup;
+      t.price = await priceLookup;
+    },
+    changed: async function() {
+      const t = this as any;
+      t.updateParams();
+      t.loadToken();
+    },
     randomizeSection: function(section: number | string) {
       const t = this as any;
       t.randomize(section);
@@ -275,24 +297,6 @@ export default Vue.extend({
       history.forward()
       t.loadParams();
       t.loadToken();
-    },
-    changed: async function() {
-      const t = this as any;
-      t.updateParams();
-      t.loadToken();
-    },
-    loadStatus: async function() {
-      const t = this as any;
-      t.id = await this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
-      t.price = await t.getPrice();
-    },
-    lookupLimit: async function() {
-      (this as any).limit = await this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
-    },
-    getPrice: function() {
-      return this.$store.state.contracts.tinyboxes.methods
-        .currentPrice()
-        .call();
     },
     reset() {
       const t = this as any;
@@ -379,27 +383,23 @@ export default Vue.extend({
         ],
       };
     },
-    loadToken: function() {
-      return new Promise((resolve, reject) => {
-        const t = this as any;
-        if (!t.form.valid) reject("Invalid Form Values");
-        t.loading = true;
-        t.loadStatus()
-        const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette()};
-        this.$store.state.contracts.tinyboxes.methods
-          .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.traits, v.animate, t.id)
-          .call()
-          .then((result: any) => {
-            t.data = result;
-            t.loading = false;
-            resolve(result);
-          })
-          .catch((err: any) => {
-            console.log('Error Prone Inputs: ', v);
-            console.error(err);
-            reject(err);
-          });
-      })
+    loadToken: async function() {
+      const t = this as any;
+      if (!t.form.valid) { console.log("Invalid Form Values"); return; }
+      t.loading = true;
+      await t.loadStatus()
+      const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette()};
+      this.$store.state.contracts.tinyboxes.methods
+        .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.traits, v.animate, t.id)
+        .call()
+        .then((result: any) => {
+          t.data = result;
+          t.loading = false;
+        })
+        .catch((err: any) => {
+          console.log('Error Prone Inputs: ', v);
+          console.error(err);
+        });
     },
     mintToken: async function() {
       const t = this as any;
