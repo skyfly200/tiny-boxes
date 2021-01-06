@@ -52,6 +52,7 @@ export default {
   name: "List",
   components: { Token },
   data: () => ({
+    bkg: 5,
     owned: false,
     page: 1,
     itemsPerPageSelector: 20,
@@ -90,7 +91,7 @@ export default {
       this.$router.push({ params: {page: e} })
     },
     lookupArt: function(id: any, animate: any) {
-      return this.$store.state.contracts.tinyboxes.methods.tokenArt(id, animate).call();
+      return this.$store.state.contracts.tinyboxes.methods.tokenArt(id, animate, this.bkg).call();
     },
     lookupOwner: function(id: any) {
       return this.$store.state.contracts.tinyboxes.methods.ownerOf(id).call();
@@ -113,7 +114,7 @@ export default {
       for (let i = 0; i < this.count; i++) this.loadToken(i);
     },
     loadToken: async function(tokenID: any) {
-      const artPromise = this.lookupArt(tokenID, false, 5);
+      const artPromise = this.lookupArt(tokenID, false);
       const ownerPromise = this.lookupOwner(tokenID);
       const art = await artPromise;
       const owner = await ownerPromise;
