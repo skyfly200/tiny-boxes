@@ -88,6 +88,7 @@ contract TinyBoxes is TinyBoxesStore {
     /**
      * @dev Generate the token SVG art of a specified frame
      * @param _id for which we want art
+     * @param bkg for the token
      * @param animate switch to turn on or off animation
      * @return animated SVG art of token _id at _frame.
      */
