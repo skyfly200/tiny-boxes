@@ -313,6 +313,12 @@ export default Vue.extend({
       // set values to default
       Object.assign(t.values, t.defaults);
     },
+    loadParams() {
+      const t = this as any;
+      // overwrite with any url query params
+      const query = t.parseQuery(t.unpackQuery(t.$route.query));
+      Object.assign(t.values, query);
+    },
     updateParams() {
       const t = this as any;
       const q = t.buildQuery();
@@ -327,17 +333,36 @@ export default Vue.extend({
       const out: any = {
         r: v.seed,
         s: [v.shapes, v.hatching].join("-"), // shapes - count, hatching
-        d: [v.width, v.height].join("-"), // dimensions ranges
+        d: [v.width.join("~"), v.height.join("~")].join("-"), // dimensions ranges
         p: [v.spread, (v.rows * 16) + v.cols].join("-"), // positioning - spread, grid
         c: [v.hue, v.saturation, v.lightness, v.contrast].join("-"), // color - hue, saturation, lightness, contrast
       };
       return out;
     },
-    loadParams() {
+    unpackQuery(q: any) {
       const t = this as any;
-      // overwrite with any url query params
-      const query = t.parseQuery(t.$route.query);
-      Object.assign(t.values, query);
+      // unpack keys and values from shorter URL encoding
+      console.log(q);
+      q.s = q.s.split("-");
+      q.d = q.d.split("-");
+      q.p = q.p.split("-");
+      q.c = q.c.split("-");
+      const out: any = {
+        seed: q.r,
+        shapes: q.s[0],
+        hatching: q.s[1],
+        width: q.d[0].split("~"),
+        height:q.d[1].split("~"),
+        spread: q.p[0],
+        rows: (q.p[1] / 16),
+        cols: (q.p[1] % 16),
+        hue: q.c[0],
+        saturation: q.c[1],
+        lightness:q.c[2],
+        contrast: q.c[3],
+      };
+      console.log(out);
+      return out;
     },
     parseQuery(query: any) {
       const out: any = {};
