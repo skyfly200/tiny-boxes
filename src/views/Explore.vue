@@ -84,7 +84,20 @@ export default Vue.extend({
       return randomSettings;
     },
     gotoMint(values: any) {
-      this.$router.push({ path: "/create", query: values });
+      this.$router.push({ path: "/create", query: this.buildQuery() });
+    },
+    buildQuery() {
+      const t = this as any;
+      const v = t.values;
+      // condense keys and values for shorter URL encoding
+      const out: any = {
+        r: v.seed,
+        s: [v.shapes, v.hatching].join("-"), // shapes - count, hatching
+        d: [v.width.join("~"), v.height.join("~")].join("-"), // dimensions ranges
+        p: [v.spread, (v.rows * 16) + v.cols].join("-"), // positioning - spread, grid
+        c: [v.hue, v.saturation, v.lightness, v.contrast].join("-"), // color - hue, saturation, lightness, contrast
+      };
+      return out;
     },
     loadFormDefaults: function() {
       const t = this as any;
