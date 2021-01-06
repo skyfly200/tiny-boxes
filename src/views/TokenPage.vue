@@ -78,17 +78,8 @@
             v-card-text
               .stats
                 .mirror-a.stat
-                  span.stat-value {{ data.tokenData.mirroring[0] }}
-                  .stat-title A
-                .mirror-b.stat
-                  span.stat-value {{ data.tokenData.mirroring[1] }}
-                  .stat-title B
-                .mirror-c.stat
-                  span.stat-value {{ data.tokenData.mirroring[2] }}
-                  .stat-title C
-                .scale.stat
-                  span.stat-value {{ data.tokenData.mirroring[3] + "%" }}
-                  .stat-title Scale
+                  span.stat-value {{ data.tokenData.mirroring }}
+                  .stat-title Mirror Mode
       v-row
         v-col(cols="12")
           v-card
@@ -116,12 +107,6 @@
                         a(v-on='on' :href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash") {{ formatHash(data.creation.transactionHash) }}
                       span View on Etherscan
                   .stat-title TX Hash
-                .randomness.stat
-                    .stat-value
-                      .randomness-chunks
-                        template(v-for="chunk in randomness.match(/.{1,16}/g)")
-                          span.randomness-chunk {{ chunk }}
-                    .stat-title Randomness
 </template>
 
 <script lang="ts">
