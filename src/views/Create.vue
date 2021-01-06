@@ -151,19 +151,12 @@ export default Vue.extend({
         spread: 200,
         rows: 2,
         cols: 2,
-        mirrorAdv: false,
-        mirrorA: true,
-        mirrorB: true,
-        mirrorC: true,
-        mirrorPos1: 60,
-        mirrorPos2: 120,
-        mirrorPos3: 240,
-        scale: 10,
         hue: Date.now() % 360,
         saturation: 80,
         lightness: 70,
         contrast: 40,
         animate: false,
+        traits: [0,0,1,8,10],
       },
       sections: sections,
     };
@@ -349,18 +342,7 @@ export default Vue.extend({
         sa: v.saturation,
         li: v.lightness,
         co: v.contrast,
-        a: v.mirrorAdv,
       };
-      if (v.mirrorAdv) {
-        out.m = [
-          v.mirrorPos1,
-          v.mirrorPos2,
-          v.mirrorPos3,
-          v.scale,
-        ].join(" ")
-      } else {
-        out.m = (v.mirrorA * 4) + (v.mirrorB * 2) + (v.mirrorC * 1);
-      }
       return out;
     },
     loadParams() {
@@ -405,12 +387,6 @@ export default Vue.extend({
           Math.round(v.height[0]),
           Math.round(v.height[1]),
         ],
-        mirroring: [
-          (v.mirrorAdv ? v.mirrorPos1 : (v.mirrorA ? t.defaults.mirrorPos1 : 0)),
-          (v.mirrorAdv ? v.mirrorPos2 : (v.mirrorB ? t.defaults.mirrorPos2 : 0)),
-          (v.mirrorAdv ? v.mirrorPos3 : (v.mirrorC ? t.defaults.mirrorPos3 : 0)),
-          (v.mirrorAdv ? v.scale : (!v.mirrorC ? (!v.mirrorB ? 40 : 20) : 10))
-        ]
       };
     },
     loadToken: function() {
@@ -421,7 +397,7 @@ export default Vue.extend({
         t.loadStatus()
         const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette()};
         this.$store.state.contracts.tinyboxes.methods
-          .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.mirroring, v.animate)
+          .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.traits, v.animate, t.id)
           .call()
           .then((result: any) => {
             t.data = result;
