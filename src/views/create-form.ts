@@ -99,7 +99,7 @@ export const sections: Array<object> = [
         key: "saturation",
         type: "slider",
         range: {
-          min: 0,
+          min: 10,
           max: 100,
         },
       },
