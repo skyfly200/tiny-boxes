@@ -107,8 +107,12 @@ export const sections: Array<object> = [
         label: "Lightness",
         key: "lightness",
         type: "slider",
+        rand: {
+          min: 30,
+          max: 100,
+        },
         range: {
-          min: 0,
+          min: 10,
           max: 100,
         },
       },
@@ -118,8 +122,12 @@ export const sections: Array<object> = [
         type: "slider",
         range: {
           min: 0,
-          max: 100,
+          max: 90,
         },
+        rand: {
+          min: 0,
+          max: 70,
+        }
       },
     ],
   },
