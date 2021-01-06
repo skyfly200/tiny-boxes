@@ -50,7 +50,7 @@
           v-card(max-height="90vh").token-preview
             v-card-title.token-stats(align="center")
               v-skeleton-loader(v-if="id === null" type="card-heading" width="20vw")
-              span(v-else) TinyBox {{ "#" + id }}
+              span(v-else) TinyBox {{ "#" + id }} Preview
             v-card-text.token-graphic
               v-fade-transition(mode="out-in")
                 v-skeleton-loader(v-if="loading" tile type="image")
@@ -325,17 +325,11 @@ export default Vue.extend({
       const v = t.values;
       // condense keys and values for shorter URL encoding
       const out: any = {
-        s: v.seed,
-        sh: v.shapes,
-        ha: v.hatching,
-        w: v.width.join(" "),
-        h: v.height.join(" "),
-        sp: v.spread,
-        g: (v.rows * 16) + v.cols,
-        hu: v.hue,
-        sa: v.saturation,
-        li: v.lightness,
-        co: v.contrast,
+        r: v.seed,
+        s: [v.shapes, v.hatching].join("-"), // shapes - count, hatching
+        d: [v.width, v.height].join("-"), // dimensions ranges
+        p: [v.spread, (v.rows * 16) + v.cols].join("-"), // positioning - spread, grid
+        c: [v.hue, v.saturation, v.lightness, v.contrast].join("-"), // color - hue, saturation, lightness, contrast
       };
       return out;
     },
