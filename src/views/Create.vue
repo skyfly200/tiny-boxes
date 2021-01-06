@@ -129,7 +129,6 @@ export default Vue.extend({
       overlay: "",
       data: null as object | null,
       price: "",
-      linkPrice: "",
       tx: {},
       gasEstimate: null,
       confirmations: 0,
@@ -167,9 +166,6 @@ export default Vue.extend({
     },
     priceInETH: function() {
       return this.$store.state.web3.utils.fromWei((this as any).price);
-    },
-    priceInLINK: function() {
-      return this.$store.state.web3.utils.fromWei((this as any).linkPrice);
     },
     active: function() {
       return (this as any).sections.map((s: any) => {
@@ -289,7 +285,6 @@ export default Vue.extend({
       const t = this as any;
       t.id = await this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
       t.price = await t.getPrice();
-      t.linkPrice = await t.getLINKPrice();
     },
     lookupLimit: async function() {
       (this as any).limit = await this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
@@ -297,11 +292,6 @@ export default Vue.extend({
     getPrice: function() {
       return this.$store.state.contracts.tinyboxes.methods
         .currentPrice()
-        .call();
-    },
-    getLINKPrice: function() {
-      return this.$store.state.contracts.tinyboxes.methods
-        .currentLinkPrice()
         .call();
     },
     reset() {
