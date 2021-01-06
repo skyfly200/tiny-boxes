@@ -84,11 +84,12 @@ export default Vue.extend({
       return randomSettings;
     },
     gotoMint(values: any) {
-      this.$router.push({ path: "/create", query: this.buildQuery() });
+
+      this.$router.push({ path: "/create", query: this.buildQuery(values) });
     },
-    buildQuery() {
+    buildQuery(values: any) {
       const t = this as any;
-      const v = t.values;
+      const v = values;
       // condense keys and values for shorter URL encoding
       const out: any = {
         r: v.seed,
@@ -127,7 +128,7 @@ export default Vue.extend({
     },
     loadTokens: async function() {
       this.loading = true;
-      await this.loadStatus()
+      await this.loadStatus();
       for (let t=0;t<this.count;t++) {
         this.randomize();
         this.$set(this.tokens, t, {
@@ -197,7 +198,7 @@ export default Vue.extend({
         saturation: 80,
         lightness: [30,70],
         animate: false,
-        traits: [0,0,8,8,5],
+        traits: [0,0,8,0,5],
       },
       sections: sections,
     };
