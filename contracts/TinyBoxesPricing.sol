@@ -9,7 +9,7 @@ import "./TinyBoxesBase.sol";
 contract TinyBoxesPricing is TinyBoxesBase, ChainlinkClient {
     using SafeMath for uint256;
 
-    uint256 public startPrice = 160000000000000000; // in wei
+    uint256 public startPrice = 35000000000000000; // in wei
     uint256 public priceIncrease = 1000000000000000; // in wei
 
     /**
