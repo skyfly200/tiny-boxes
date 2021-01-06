@@ -1362,16 +1362,16 @@ const store = new Vuex.Store({
       "Jello"
     ],
     schemeTitles: [
-      "Mono",
-      "Complimentary",
-      "Analogous",
-      "Series",
-      "Split Complimentary",
       "Triadic",
-      "Complimentary and Analogous",
+      "Complimentary",
+      "Tetradic",
+      "Analogous",
       "Analogous and Complimentary",
+      "Split Complimentary",
+      "Complimentary and Analogous",
+      "Series",
       "Square",
-      "Tetradic"
+      "Mono",
     ],
     tinyboxesAddress: '0x56a0eAD07eB26e121eb0810dF304e5C28cD56f7a',
     openseaStoreURL: 'https://testnets.opensea.io/collection/tinyboxes-v41',
