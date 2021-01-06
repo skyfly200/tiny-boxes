@@ -34,7 +34,7 @@ library SVG {
             shape.size[0].toString(),
             '" height="',
             shape.size[1].toString(),
-            '" transform-origin="600 600" style="fill:',
+            '" transform-origin="300 300" style="fill:',
             shape.color.toString(),
             bytes(slot).length == 0 ?
                 '"/>' :
