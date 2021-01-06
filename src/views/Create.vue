@@ -156,7 +156,7 @@ export default Vue.extend({
         lightness: 70,
         contrast: 40,
         animate: false,
-        traits: [0,0,1,8,10],
+        traits: [0,0,8,8,5],
       },
       sections: sections,
     };
@@ -410,7 +410,7 @@ export default Vue.extend({
         to: this.$store.state.tinyboxesAddress,
         value: t.price,
         data: this.$store.state.contracts.tinyboxes.methods
-          .buy(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.mirroring)
+          .buy(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing)
           .encodeABI(),
       };
       //t.gasEstimate = await t.$store.state.web3.eth.estimateGas(t.tx);
