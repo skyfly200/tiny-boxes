@@ -17,7 +17,7 @@ export default Vue.extend({
     calcShade(s: number): any {
       return (this.shades == 0) ?
         parseInt(this.color[2]) :
-        parseInt(this.color[2]) + (this.contrast / this.shades * s);
+        parseInt(this.color[2]) - (this.contrast / this.shades * (this.shades - s));
     },
     schemeH(i: number) {
       const schemes = [
