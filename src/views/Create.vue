@@ -365,16 +365,8 @@ export default Vue.extend({
       v.width = v.width.sort((a: any,b: any) => a - b);
       v.height = v.height.sort((a: any,b: any) => a - b);
       return {
-        spacing: [
-          v.spread,
-          (v.rows * 16) + v.cols,
-        ],
-        size: [
-          Math.round(v.width[0]),
-          Math.round(v.width[1]),
-          Math.round(v.height[0]),
-          Math.round(v.height[1]),
-        ],
+        spacing: [ v.spread, (v.rows * 16) + v.cols ],
+        size: [ ...v.width, ...v.height ],
       };
     },
     loadToken: async function() {
