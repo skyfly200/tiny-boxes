@@ -223,12 +223,14 @@ export default Vue.extend({
     },
     changed: async function() {
       const t = this as any;
+      if (t.values.hatching > t.values.shapes) t.values.hatching = t.values.shapes;
       t.updateParams();
       t.loadToken();
     },
     randomizeSection: function(section: number | string) {
       const t = this as any;
       t.randomize(section);
+      if (t.values.hatching > t.values.shapes) t.values.hatching = t.values.shapes;
       t.updateParams();
       t.loadToken()
         .then((art: any) => {
@@ -313,6 +315,7 @@ export default Vue.extend({
       // overwrite with any url query params
       const query = t.parseQuery(t.unpackQuery(t.$route.query));
       Object.assign(t.values, query);
+      if (t.values.hatching > t.values.shapes) t.values.hatching = t.values.shapes;
     },
     updateParams() {
       const t = this as any;
