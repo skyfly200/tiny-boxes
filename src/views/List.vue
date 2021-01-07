@@ -93,8 +93,8 @@ export default {
     setPage(e: any) {
       (this as any).$router.push({ params: {page: e} })
     },
-    lookupArt: function(id: any, animate: any) {
-      return (this as any).$store.state.contracts.tinyboxes.methods.tokenArt(id, animate, (this as any).bkg).call();
+    lookupArt: function(id: any) {
+      return (this as any).$store.state.contracts.tinyboxes.methods.tokenArt(id, (this as any).bkg, 0, 0).call();
     },
     lookupOwner: function(id: any) {
       return (this as any).$store.state.contracts.tinyboxes.methods.ownerOf(id).call();
@@ -119,7 +119,7 @@ export default {
     },
     loadToken: async function(tokenID: any) {
       const t = this as any;
-      const artPromise = t.lookupArt(tokenID, false);
+      const artPromise = t.lookupArt(tokenID);
       const ownerPromise = t.lookupOwner(tokenID);
       const art = await artPromise;
       const owner = await ownerPromise;
