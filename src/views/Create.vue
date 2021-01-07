@@ -386,9 +386,9 @@ export default Vue.extend({
       if (!t.form.valid) { console.log("Invalid Form Values"); return; }
       t.loading = true;
       await t.loadStatus()
-      const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette()};
+      const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette(): settings: [5, 0, 0]};
       this.$store.state.contracts.tinyboxes.methods
-        .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.traits, v.animate, t.id)
+        .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.traits, v.settings, t.id)
         .call()
         .then((result: any) => {
           t.data = result;
@@ -438,7 +438,7 @@ export default Vue.extend({
         .on("data", async (log: any) => {
           const t = this as any;
           t.minted.id = parseInt(log.topics[3], 16);
-          t.minted.art = await t.$store.state.contracts.tinyboxes.methods.tokenArt(t.minted.id, true, 5).call();
+          t.minted.art = await t.$store.state.contracts.tinyboxes.methods.tokenArt(t.minted.id, 5, 0, 1).call();
           t.overlay = "ready";
         });
     },
