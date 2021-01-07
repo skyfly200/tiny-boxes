@@ -358,7 +358,6 @@ export default Vue.extend({
         lightness:q.c[2],
         contrast: q.c[3],
       };
-      console.log(out);
       return out;
     },
     parseQuery(query: any) {
