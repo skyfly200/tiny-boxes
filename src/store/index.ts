@@ -1373,7 +1373,7 @@ const store = new Vuex.Store({
       "Square",
       "Mono",
     ],
-    tinyboxesAddress: '0xE317Ee411eeCD1470784a402411b8420097015c4',
+    tinyboxesAddress: '0x47Bb919cB967726CBf8917d64B57017f21fb4490',
     openseaStoreURL: 'https://testnets.opensea.io/collection/tinyboxes-v41',
     openseaTokenURL: 'https://testnets.opensea.io/assets/0x69Ae1e73F3488ED47e3550F688fa7E175e9F605c/',
     currentAccount: "",

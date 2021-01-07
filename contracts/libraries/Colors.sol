@@ -53,7 +53,7 @@ library Colors {
         uint16 h = lookupHue(pal.root.hue, pal.scheme, hueIndex);
         uint8 s = pal.root.saturation;
         uint8 l;
-        if (pal.shades > 0) {
+        if (pal.shades > 1) {
             uint256 range = uint256(pal.contrast);
             uint256 step = range.div(uint256(pal.shades));
             uint256 offset = uint256(shade.mul(step));
