@@ -165,7 +165,7 @@ library TinyBoxesRenderer {
         // --- Render SVG Markup ---
 
         // generate the metadata
-        string memory metadata = box._generateMetadata(dVals,(box.options%2 == 1),id,owner);
+        string memory metadata = box._generateMetadata(dVals,id,owner);
 
         // generate shapes (shapes + animations)
         string memory shapes = "";
