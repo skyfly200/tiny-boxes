@@ -51,7 +51,7 @@ export const sections: Array<object> = [
         type: "slider",
         range: {
           min: 0,
-          max: 255,
+          max: 100,
         },
       },
       {

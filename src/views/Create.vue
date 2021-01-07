@@ -142,7 +142,7 @@ export default Vue.extend({
         hatching: 0,
         width: [100, 200],
         height: [100, 200],
-        spread: 200,
+        spread: 50,
         rows: 2,
         cols: 2,
         hue: Date.now() % 360,
