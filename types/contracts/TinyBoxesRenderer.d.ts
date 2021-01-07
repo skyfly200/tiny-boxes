@@ -25,25 +25,26 @@ export class TinyBoxesRenderer extends Contract {
 
     perpetualRenderer(
       box: {
-        color: {
-          hue: number | string;
-          saturation: number | string;
-          lightness: number | string;
-        };
+        randomness: number | string;
+        hue: number | string;
+        saturation: number | string;
+        lightness: number | string;
         contrast: number | string;
         shapes: number | string;
         hatching: number | string;
-        size: (number | string)[];
-        spacing: (number | string)[];
-        mirroring: number | string;
-        scheme: number | string;
-        shades: number | string;
-        animation: number | string;
+        widthMin: number | string;
+        widthMax: number | string;
+        heightMin: number | string;
+        heightMax: number | string;
+        spread: number | string;
+        grid: number | string;
+        bkg: number | string;
+        duration: number | string;
+        options: number | string;
       },
-      randomness: number | string,
-      animate: boolean,
-      props: (number | string)[],
-      owner: string
+      id: number | string,
+      owner: string,
+      dVals: (number | string)[]
     ): TransactionObject<string>;
   };
   events: {

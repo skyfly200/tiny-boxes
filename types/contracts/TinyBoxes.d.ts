@@ -27,11 +27,7 @@ export class TinyBoxes extends Contract {
 
     ANIMATOR_ROLE(): TransactionObject<string>;
 
-    ARTIST_PRINTS(): TransactionObject<string>;
-
     ARTIST_ROLE(): TransactionObject<string>;
-
-    BETA_SALE(): TransactionObject<string>;
 
     DEFAULT_ADMIN_ROLE(): TransactionObject<string>;
 
@@ -191,6 +187,7 @@ export class TinyBoxes extends Contract {
       size: (number | string)[],
       spacing: (number | string)[],
       traits: (number | string)[],
+      bkg: number | string,
       animate: boolean,
       id: number | string
     ): TransactionObject<string>;

@@ -6,8 +6,6 @@ import "@openzeppelin/contracts/math/SignedSafeMath.sol";
 
 import "./TinyBoxesPricing.sol";
 
-import "./libraries/Random.sol";
-
 interface Randomizer {
     function returnValue() external returns (bytes32);
 }
@@ -16,13 +14,6 @@ contract TinyBoxesStore is TinyBoxesPricing {
     using SafeMath for uint256;
     using SignedSafeMath for int256;
     using Utils for *;
-    using Random for bytes32[];
-
-    bool public paused = false;
-    uint256 public blockStart; // start of the next phase
-    uint256 public phaseLen = TOKEN_LIMIT / 10; // token count per phase
-    uint256 public phaseCountdownTime = 20 hours; // time to pause between phases
-    uint256 public phaseCountdown = phaseCountdownTime.div(15); // blocks to pause between phases
 
     Randomizer entropySource;
 
@@ -138,16 +129,22 @@ contract TinyBoxesStore is TinyBoxesPricing {
         // create a new box object
         return createBox(
             TinyBox({
-                color: HSL(color[0],uint8(color[1]),uint8(color[2])),
+                randomness: 0,
+                hue: color[0],
+                saturation: uint8(color[1]),
+                lightness: uint8(color[2]),
                 contrast: uint8(color[3]),
                 shapes: shapes,
                 hatching: hatching,
-                size: size,
-                spacing: spacing,
-                mirroring: 0,
-                scheme: 0,
-                shades: 0,
-                animation: 0
+                widthMin: size[0],
+                widthMax: size[1],
+                heightMin: size[2],
+                heightMax: size[3],
+                spread: spacing[0],
+                grid: spacing[1],
+                bkg: 101,
+                duration: 0,
+                options: 1
             }),
             _seed.stringToUint(),
             recipient
@@ -168,21 +165,24 @@ contract TinyBoxesStore is TinyBoxesPricing {
             "0x00 Recipient Invalid"
         );
 
-        // store the current id & increment the counter for the next call
+        // get the current id & increment the counter for the next call
         uint256 id = _tokenIds.current();
         _tokenIds.increment();
 
-        // register the new box data
-        boxes[id] = box;
-
-        // check if its time tpopause for next phase countdown
+        // check if its time to pause for next phase countdown
         if (_tokenIds.current() % phaseLen == 0) blockStart = block.number.add(phaseCountdown);
 
         // add block number and new token id to the seed value
         uint256 seed = _seed.add(block.number).add(id).mod(uint256(2**64));
 
-        // randomize the box
-        randomizeBox(id, seed);
+        // get some entropy
+        box.randomness = getRandomness(id, seed);
+
+        // set the last 5 per phase to grayscale
+        if (id.mod(phaseLen) >= (phaseLen.sub(5))) box.saturation = 0;
+
+        // store the new box
+        boxes[id] = box;
 
         // mint the new token to the recipient address
         _safeMint(recipient, id);
@@ -191,29 +191,16 @@ contract TinyBoxesStore is TinyBoxesPricing {
     }
 
     /**
-     * @dev Call the Randomizer and update random values
+     * @dev Call the Randomizer and get some randomness
      */
-    function randomizeBox(uint256 id, uint256 seed)
-        internal
+    function getRandomness(uint256 id, uint256 seed)
+        internal returns (uint128 randomnesss)
     {
         uint256 randomness = uint256(keccak256(abi.encodePacked(
             entropySource.returnValue(),
             id,
             seed
         ))); // mix local and Randomizer entropy for the box randomness
-
-        boxRand[id] = uint32(randomness % (2**32));
-
-        bytes32[] memory pool = Random.init(randomness);
-
-        // TODO - generate animation with RNG weighted non uniformly for varying rarity types
-        // update RNG set values
-        boxes[id].animation = uint8(pool.uniform(0, (ANIMATION_COUNT - 1))); // animation
-        boxes[id].scheme = uint8(id.div(phaseLen)); // scheme
-        boxes[id].shades = uint8(pool.uniform(1, 8)); // shades
-        boxes[id].mirroring = uint8(pool.uniform(0, 63)); // mirroring mode
-
-        // set the last 5 per phase to grayscale
-        if (id.mod(phaseLen) >= (phaseLen.sub(5))) boxes[id].color.saturation = 0;
+        return uint128(randomness % (2**128));
     }
 }

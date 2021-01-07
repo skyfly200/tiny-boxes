@@ -95,11 +95,11 @@ library TinyBoxesRenderer {
         (
             int256[2] memory position,
             int256[2] memory size
-        ) = _generateBox(pool, box.spacing, box.size, hatching);
+        ) = _generateBox(pool, [box.spread, box.grid], [box.widthMin,box.widthMax,box.heightMin,box.heightMax], hatching);
         // lookup a random color from the color palette
         uint8 hue = uint8(pool.uniform(0, 3));
         uint8 shade = uint8(pool.uniform(0, shades));
-        HSL memory color = Colors.lookupColor(Palette(box.color, box.contrast, shades, scheme),hue,shade);
+        HSL memory color = Colors.lookupColor(Palette(HSL(box.hue,box.saturation,box.lightness), box.contrast, shades, scheme),hue,shade);
         return Shape(position, size, color);
     }
 
@@ -148,40 +148,31 @@ library TinyBoxesRenderer {
     /**
      * @dev render a token's art
      * @param box TinyBox data structure
-     * @param animate boolean flag to enable/disable animation
-     * @param props of the token to render packed (bkg, id)
+     * @param id of the token to render
      * @param owner of the token rendered
+     * @param dVals deterministic vals for rendering
      * @return markup of the SVG graphics of the token as a string
      */
-    function perpetualRenderer(TinyBox memory box, uint256 randomness, bool animate, uint256[2] memory props, address owner)
+    function perpetualRenderer(TinyBox memory box, uint256 id, address owner, uint8[4] memory dVals)
         public
         view
         returns (string memory)
     {
-        require(props[0] <= 101, "BKG % Invalid");
         // --- Calculate Generative Shape Data ---
         // seed PRNG
-        bytes32[] memory pool = Random.init(randomness);
-
-        // calculate deterministic values
-        uint8[4] memory dVals = [
-            box.animation, // animation
-            box.scheme, // scheme
-            box.shades, // shades
-            box.mirroring // mirroring modes
-        ];
+        bytes32[] memory pool = Random.init(box.randomness);
 
         // --- Render SVG Markup ---
 
         // generate the metadata
-        string memory metadata = box._generateMetadata(dVals,animate,props[1],owner);
+        string memory metadata = box._generateMetadata(dVals,(box.options%2 == 1),id,owner);
 
         // generate shapes (shapes + animations)
         string memory shapes = "";
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
             Shape memory shape = _generateShape(pool, i, box, dVals[1], dVals[2]);
             shapes = string(abi.encodePacked(shapes, 
-                animate ? SVG._rect(shape, Animation._generateAnimation(box,dVals[0],shape,i)) : SVG._rect(shape)
+                (box.options%2 == 1) ? SVG._rect(shape, Animation._generateAnimation(box,dVals[0],shape,i)) : SVG._rect(shape)
             ));
         }
         // wrap shapes in a symbol with the id "shapes"
@@ -190,7 +181,7 @@ library TinyBoxesRenderer {
         // generate the footer
         string memory mirroring = _generateMirroring(dVals[3]);
 
-        string memory svg = SVG._SVG(props[0] == 101 ? "" : string(abi.encodePacked("background-color:hsl(0,0%,", props[0].toString(), "%);")), string(abi.encodePacked(metadata, defs, mirroring)));
+        string memory svg = SVG._SVG(box.bkg == 101 ? "" : string(abi.encodePacked("background-color:hsl(0,0%,", box.bkg.toString(), "%);")), string(abi.encodePacked(metadata, defs, mirroring)));
 
         return svg;
     }

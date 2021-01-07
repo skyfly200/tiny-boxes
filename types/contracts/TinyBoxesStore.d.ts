@@ -27,11 +27,7 @@ export class TinyBoxesStore extends Contract {
 
     ANIMATOR_ROLE(): TransactionObject<string>;
 
-    ARTIST_PRINTS(): TransactionObject<string>;
-
     ARTIST_ROLE(): TransactionObject<string>;
-
-    BETA_SALE(): TransactionObject<string>;
 
     DEFAULT_ADMIN_ROLE(): TransactionObject<string>;
 

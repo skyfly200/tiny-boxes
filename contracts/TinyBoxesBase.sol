@@ -11,22 +11,26 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "./structs/TinyBox.sol";
 import "./libraries/Utils.sol";
+import "./libraries/Random.sol";
 
 contract TinyBoxesBase is ERC721, AccessControl  {
     using Counters for Counters.Counter;
+    using Random for bytes32[];
 
     Counters.Counter internal _tokenIds;
 
     // set contract config constants
     uint16 public constant TOKEN_LIMIT = 10000;
-    uint8 public constant ARTIST_PRINTS = 0; // TODO: set to 2 for launch, test in beta
-    uint8 public constant BETA_SALE = 100; // TODO: take this into account with the paymentManager
     uint8 public constant ANIMATION_COUNT = 24;
     uint8 public constant SCHEME_COUNT = 10;
+    bool public paused = false;
+    uint256 public blockStart; // start of the next phase
+    uint256 public phaseLen = TOKEN_LIMIT / SCHEME_COUNT; // token count per phase
+    uint256 public phaseCountdownTime = 20 hours; // time to pause between phases
+    uint256 public phaseCountdown = phaseCountdownTime.div(15); // blocks to pause between phases
 
     // mapping to store all the boxes info
     mapping(uint256 => TinyBox) internal boxes;
-    mapping(uint256 => uint32) internal boxRand;
 
     // Create role identifiers
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
@@ -85,16 +89,33 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         )
     {
         TinyBox memory box = boxes[_id];
+        uint8[4] memory parts = calcedParts(_id, box.randomness);
 
-        animation = box.animation;
-        shades = box.shades;
-        scheme = box.scheme;
-        mirroring = box.mirroring;
+        animation = parts[0];
+        scheme = parts[1];
+        shades = parts[2];
+        mirroring = parts[3];
         shapes = box.shapes;
         hatching = box.hatching;
-        color = [box.color.hue, box.color.saturation, box.color.lightness];
+        color = [box.hue, box.saturation, box.lightness];
         contrast = box.contrast;
-        size = box.size;
-        spacing = box.spacing;
+        size = [box.widthMin, box.widthMax, box.heightMin, box.heightMax];
+        spacing = [box.spread, box.grid];
+    }
+
+    /**
+     * @dev Calculate the randomized and phased values
+     */
+    function calcedParts(uint256 id, uint128 randomness)
+        internal view returns (uint8[4] memory parts)
+    {
+        bytes32[] memory pool = Random.init(randomness);
+
+        // TODO - generate animation with RNG weighted non uniformly for varying rarity types
+        // update RNG set values
+        parts[0] = uint8(pool.uniform(0, (ANIMATION_COUNT - 1))); // animation
+        parts[1] = uint8(id.div(phaseLen)); // scheme
+        parts[2] = uint8(pool.uniform(1, 8)); // shades
+        parts[3] = uint8(pool.uniform(0, 63)); // mirroring mode
     }
 }

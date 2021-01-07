@@ -27,11 +27,7 @@ export class TinyBoxesPricing extends Contract {
 
     ANIMATOR_ROLE(): TransactionObject<string>;
 
-    ARTIST_PRINTS(): TransactionObject<string>;
-
     ARTIST_ROLE(): TransactionObject<string>;
-
-    BETA_SALE(): TransactionObject<string>;
 
     DEFAULT_ADMIN_ROLE(): TransactionObject<string>;
 
@@ -44,6 +40,8 @@ export class TinyBoxesPricing extends Contract {
     balanceOf(owner: string): TransactionObject<string>;
 
     baseURI(): TransactionObject<string>;
+
+    blockStart(): TransactionObject<string>;
 
     currentPrice(): TransactionObject<string>;
 
@@ -76,6 +74,14 @@ export class TinyBoxesPricing extends Contract {
     name(): TransactionObject<string>;
 
     ownerOf(tokenId: number | string): TransactionObject<string>;
+
+    paused(): TransactionObject<boolean>;
+
+    phaseCountdown(): TransactionObject<string>;
+
+    phaseCountdownTime(): TransactionObject<string>;
+
+    phaseLen(): TransactionObject<string>;
 
     priceAt(_id: number | string): TransactionObject<string>;
 

@@ -62,24 +62,32 @@ contract TinyBoxes is TinyBoxesStore {
         uint16[4] memory color,
         uint8[4] memory size,
         uint8[2] memory spacing,
-        uint8[5] memory traits,
+        uint8[4] memory traits,
+        uint8 bkg,
         bool animate,
         uint256 id
     ) public view returns (string memory) {
+        require(bkg <= 101, "BKG % Invalid");
         validateParams(shapes, hatching, color, size, spacing);
         TinyBox memory box = TinyBox({
-            color: HSL(color[0],uint8((id.mod(phaseLen) < phaseLen.sub(5)) ? color[1] : 0),uint8(color[2])),
+            randomness: uint128(seed.stringToUint()),
+            hue: color[0],
+            saturation: uint8(color[1]),
+            lightness: uint8(color[2]),
             contrast: uint8(color[3]),
             shapes: shapes,
             hatching: hatching,
-            size: size,
-            spacing: spacing,
-            mirroring: traits[0],
-            scheme: traits[1],
-            shades: traits[2],
-            animation: traits[3]
+            widthMin: size[0],
+            widthMax: size[1],
+            heightMin: size[2],
+            heightMax: size[3],
+            spread: spacing[0],
+            grid: spacing[1],
+            bkg: bkg,
+            duration: 0,
+            options: animate ? 1 : 0
         });
-        return box.perpetualRenderer(seed.stringToUint(), animate, [traits[4], id], address(0));
+        return box.perpetualRenderer(id, address(0), traits);
     }
 
     /**
@@ -95,7 +103,6 @@ contract TinyBoxes is TinyBoxesStore {
         returns (string memory)
     {
         TinyBox memory box = boxes[_id];
-        uint256 randomness = boxRand[_id];
-        return box.perpetualRenderer(randomness, animate, [bkg, _id], ownerOf(_id));
+        return box.perpetualRenderer(_id, ownerOf(_id), calcedParts(_id, box.randomness)); // use user config state vars
     }
 }

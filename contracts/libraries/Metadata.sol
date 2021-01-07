@@ -59,9 +59,9 @@ library Metadata {
      */
     function _generateColorMetadata(TinyBox memory box, uint8 schemeId, uint8 shadesCount) internal pure returns (string memory) {
         string memory scheme = string(abi.encodePacked('<scheme>', uint256(schemeId).toString(), '</scheme>'));
-        string memory rootHue = string(abi.encodePacked('<hue>', uint256(box.color.hue).toString(), '</hue>'));
-        string memory saturation = string(abi.encodePacked('<saturation>', uint256(box.color.saturation).toString(), '</saturation>'));
-        string memory lightness = string(abi.encodePacked('<lightness>', uint256(box.color.lightness).toString(), '</lightness>'));
+        string memory rootHue = string(abi.encodePacked('<hue>', uint256(box.hue).toString(), '</hue>'));
+        string memory saturation = string(abi.encodePacked('<saturation>', uint256(box.saturation).toString(), '</saturation>'));
+        string memory lightness = string(abi.encodePacked('<lightness>', uint256(box.lightness).toString(), '</lightness>'));
         string memory contrast = string(abi.encodePacked('<contrast>', uint256(box.contrast).toString(), '</contrast>'));
         string memory shades = string(abi.encodePacked('<shades>', uint256(shadesCount).toString(), '</shades>'));
 
@@ -78,8 +78,8 @@ library Metadata {
      */
     function _generateShapesMetadata(TinyBox memory box) internal pure returns (string memory) {
         string memory size = string(abi.encodePacked(
-            '<width>', uint256(box.size[0]).toString(), '-', uint256(box.size[1]).toString(), '</width>',
-            '<height>', uint256(box.size[2]).toString(), '-', uint256(box.size[3]).toString(), '</height>'
+            '<width>', uint256(box.widthMin).toString(), '-', uint256(box.widthMax).toString(), '</width>',
+            '<height>', uint256(box.heightMin).toString(), '-', uint256(box.heightMax).toString(), '</height>'
         ));
         return string(abi.encodePacked(
             '<shapes>',
@@ -97,9 +97,9 @@ library Metadata {
     function _generatePlacementMetadata(TinyBox memory box) internal pure returns (string memory) {
         return string(abi.encodePacked(
             '<placement>',
-                '<rows>', uint256(box.spacing[1] % 16).toString(), '</rows>',
-                '<columns>', uint256(box.spacing[1] / 16).toString(), '</columns>',
-                '<spread>', uint256(box.spacing[0]).toString(), '</spread>',
+                '<rows>', uint256(box.grid % 16).toString(), '</rows>',
+                '<columns>', uint256(box.grid / 16).toString(), '</columns>',
+                '<spread>', uint256(box.spread).toString(), '</spread>',
             '</placement>'
         ));
     }
