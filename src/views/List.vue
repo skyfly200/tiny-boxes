@@ -81,7 +81,7 @@ export default {
   mounted: async function() {
     const t = this as any;
     await t.$store.dispatch("initialize");
-    //this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
+    //t.page = t.$route.params.page ? parseInt(this.$route.params.page) : 1;
     t.limit = await t.lookupLimit();
     t.supply = await t.lookupSupply();
     t.userCount = await t.lookupBalance();
