@@ -4,7 +4,7 @@ export const tinyboxesABI = [
       "inputs": [
         {
           "internalType": "address",
-          "name": "_link",
+          "name": "rand",
           "type": "address"
         }
       ],
@@ -59,64 +59,6 @@ export const tinyboxesABI = [
         }
       ],
       "name": "ApprovalForAll",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "bytes32",
-          "name": "id",
-          "type": "bytes32"
-        }
-      ],
-      "name": "ChainlinkCancelled",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "bytes32",
-          "name": "id",
-          "type": "bytes32"
-        }
-      ],
-      "name": "ChainlinkFulfilled",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "bytes32",
-          "name": "id",
-          "type": "bytes32"
-        }
-      ],
-      "name": "ChainlinkRequested",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "_balance",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "_remaining",
-          "type": "uint256"
-        }
-      ],
-      "name": "LowLINK",
       "type": "event"
     },
     {
@@ -260,19 +202,6 @@ export const tinyboxesABI = [
     },
     {
       "inputs": [],
-      "name": "ARTIST_PRINTS",
-      "outputs": [
-        {
-          "internalType": "uint8",
-          "name": "",
-          "type": "uint8"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
       "name": "ARTIST_ROLE",
       "outputs": [
         {
@@ -286,33 +215,7 @@ export const tinyboxesABI = [
     },
     {
       "inputs": [],
-      "name": "BETA_SALE",
-      "outputs": [
-        {
-          "internalType": "uint8",
-          "name": "",
-          "type": "uint8"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
       "name": "DEFAULT_ADMIN_ROLE",
-      "outputs": [
-        {
-          "internalType": "bytes32",
-          "name": "",
-          "type": "bytes32"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "LINK_ROLE",
       "outputs": [
         {
           "internalType": "bytes32",
@@ -443,50 +346,6 @@ export const tinyboxesABI = [
           "internalType": "uint8[2]",
           "name": "spacing",
           "type": "uint8[2]"
-        }
-      ],
-      "name": "buy",
-      "outputs": [
-        {
-          "internalType": "bytes32",
-          "name": "",
-          "type": "bytes32"
-        }
-      ],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "_seed",
-          "type": "string"
-        },
-        {
-          "internalType": "uint8",
-          "name": "shapes",
-          "type": "uint8"
-        },
-        {
-          "internalType": "uint8",
-          "name": "hatching",
-          "type": "uint8"
-        },
-        {
-          "internalType": "uint16[4]",
-          "name": "color",
-          "type": "uint16[4]"
-        },
-        {
-          "internalType": "uint8[4]",
-          "name": "size",
-          "type": "uint8[4]"
-        },
-        {
-          "internalType": "uint8[2]",
-          "name": "spacing",
-          "type": "uint8[2]"
         },
         {
           "internalType": "address",
@@ -497,9 +356,9 @@ export const tinyboxesABI = [
       "name": "buyFor",
       "outputs": [
         {
-          "internalType": "bytes32",
+          "internalType": "uint256",
           "name": "",
-          "type": "bytes32"
+          "type": "uint256"
         }
       ],
       "stateMutability": "payable",
@@ -681,25 +540,6 @@ export const tinyboxesABI = [
     {
       "inputs": [
         {
-          "internalType": "bytes32",
-          "name": "",
-          "type": "bytes32"
-        }
-      ],
-      "name": "nonces",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "uint256",
           "name": "tokenId",
           "type": "uint256"
@@ -804,24 +644,6 @@ export const tinyboxesABI = [
       "inputs": [
         {
           "internalType": "bytes32",
-          "name": "requestId",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "uint256",
-          "name": "randomness",
-          "type": "uint256"
-        }
-      ],
-      "name": "rawFulfillRandomness",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
           "name": "role",
           "type": "bytes32"
         },
@@ -833,35 +655,6 @@ export const tinyboxesABI = [
       ],
       "name": "renounceRole",
       "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "_keyHash",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_fee",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_seed",
-          "type": "uint256"
-        }
-      ],
-      "name": "requestRandomness",
-      "outputs": [
-        {
-          "internalType": "bytes32",
-          "name": "requestId",
-          "type": "bytes32"
-        }
-      ],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -1047,15 +840,39 @@ export const tinyboxesABI = [
           "internalType": "uint256",
           "name": "_id",
           "type": "uint256"
-        },
+        }
+      ],
+      "name": "tokenArt",
+      "outputs": [
         {
-          "internalType": "bool",
-          "name": "animate",
-          "type": "bool"
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
         },
         {
           "internalType": "uint8",
           "name": "bkg",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "duration",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "options",
           "type": "uint8"
         }
       ],
@@ -1210,14 +1027,14 @@ export const tinyboxesABI = [
           "type": "uint8[2]"
         },
         {
-          "internalType": "uint8[5]",
+          "internalType": "uint8[4]",
           "name": "traits",
-          "type": "uint8[5]"
+          "type": "uint8[4]"
         },
         {
-          "internalType": "bool",
-          "name": "animate",
-          "type": "bool"
+          "internalType": "uint8[3]",
+          "name": "settings",
+          "type": "uint8[3]"
         },
         {
           "internalType": "uint256",
@@ -1288,25 +1105,6 @@ export const tinyboxesABI = [
       ],
       "name": "transferFrom",
       "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        }
-      ],
-      "name": "withdrawLINK",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
       "stateMutability": "nonpayable",
       "type": "function"
     }
