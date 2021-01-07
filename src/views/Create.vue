@@ -98,14 +98,8 @@
                         v-slider(v-model="values[option.key]" @change="changed" thumb-label required 
                           persistent-hint :hint='option.key === "scheme" ? schemeTitles[values[option.key]] : (option.key === "animation" ? animationTitles[values[option.key]] : "")'
                           :label="option.label" :step="option.step" :min="option.range.min" :max="option.range.max")
-                            template(v-slot:append)
-                              v-text-field(v-model="values[option.key]" @change="changed" hide-details single-line type="number" style="width: 60px").slider-text-field
                       v-range-slider(v-else-if="option.type === 'range-slider'" v-model="values[option.key]" @change="changed" thumb-label required
                         :step="option.step" :label="option.label" :min="option.range.min" :max="option.range.max")
-                          template(v-slot:prepend)
-                            v-text-field(v-model="values[option.key][0]" @change="changed" hide-details single-line type="number" style="width: 60px").slider-text-field
-                          template(v-slot:append)
-                            v-text-field(v-model="values[option.key][1]" @change="changed" hide-details single-line type="number" style="width: 60px").slider-text-field
                       v-switch(v-else-if="option.type === 'switch'" v-model="values[option.key]" @change="changed" :label="option.label").switch
                       v-text-field(v-else v-model="values[option.key]" @change="changed" :label="option.label" required outlined type="number")
 </template>
@@ -523,9 +517,6 @@ export default Vue.extend({
   width: auto
 .section-title
   color: #fff
-.section-content .v-expansion-panel-content__wrap
-  display: flex
-  flex-wrap: wrap
 .dialog .v-card__text
   .message
     margin: 1rem
