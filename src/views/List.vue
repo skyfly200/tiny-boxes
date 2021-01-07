@@ -69,6 +69,7 @@ export default {
   }),
   computed: {
     loadedTokens() {
+      const t = this as any;
       return Object.keys(t.tokens)
         .sort( (a,b) => parseInt(a) - parseInt(b))
         .map( i => t.tokens[i] )
@@ -78,6 +79,7 @@ export default {
     ...mapState(["openseaStoreURL"]),
   },
   mounted: async function() {
+    const t = this as any;
     await t.$store.dispatch("initialize");
     //this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
     t.limit = await t.lookupLimit();
@@ -89,33 +91,34 @@ export default {
   },
   methods: {
     setPage(e: any) {
-      console.log(e)
-      t.$router.push({ params: {page: e} })
+      (this as any).$router.push({ params: {page: e} })
     },
     lookupArt: function(id: any, animate: any) {
-      return t.$store.state.contracts.tinyboxes.methods.tokenArt(id, animate, t.bkg).call();
+      return (this as any).$store.state.contracts.tinyboxes.methods.tokenArt(id, animate, (this as any).bkg).call();
     },
     lookupOwner: function(id: any) {
-      return t.$store.state.contracts.tinyboxes.methods.ownerOf(id).call();
+      return (this as any).$store.state.contracts.tinyboxes.methods.ownerOf(id).call();
     },
     lookupSupply: function() {
-      return t.$store.state.contracts.tinyboxes.methods.totalSupply().call();
+      return (this as any).$store.state.contracts.tinyboxes.methods.totalSupply().call();
     },
     lookupBalance: function() {
-      return t.$store.state.contracts.tinyboxes.methods.balanceOf(t.currentAccount).call();
+      return (this as any).$store.state.contracts.tinyboxes.methods.balanceOf((this as any).currentAccount).call();
     },
     lookupUsersToken(i: any) {
-      return t.$store.state.contracts.tinyboxes.methods.tokenOfOwnerByIndex(t.currentAccount, i).call();
+      return (this as any).$store.state.contracts.tinyboxes.methods.tokenOfOwnerByIndex((this as any).currentAccount, i).call();
     },
     lookupLimit: function() {
-      return t.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
+      return (this as any).$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
     },
     loadTokens: async function() {
+      const t = this as any;
       t.tokens = {};
       t.count = t.owned ? t.userCount : t.supply;
       for (let i = 0; i < t.count; i++) t.loadToken(i);
     },
     loadToken: async function(tokenID: any) {
+      const t = this as any;
       const artPromise = t.lookupArt(tokenID, false);
       const ownerPromise = t.lookupOwner(tokenID);
       const art = await artPromise;
@@ -128,6 +131,7 @@ export default {
       t.loading = false;
     },
     listenForTokens: function() {
+      const t = this as any;
       const tokenSubscription = t.$store.state.web3.eth
         .subscribe("logs", {
           address: t.$store.state.tinyboxesAddress,
