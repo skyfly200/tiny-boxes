@@ -81,6 +81,7 @@ export default Vue.extend({
         }
       }
       Object.assign(t.values, randomSettings);
+      if (t.values.hatching > t.values.shapes) t.values.hatching = t.values.shapes;
       return randomSettings;
     },
     gotoMint(values: any) {
