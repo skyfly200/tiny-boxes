@@ -142,7 +142,7 @@ export default Vue.extend({
         lightness: 70,
         contrast: 40,
         animate: false,
-        traits: [0,0,8,8,5],
+        traits: [0,0,9,0],
       },
       sections: sections,
     };
@@ -386,7 +386,8 @@ export default Vue.extend({
       if (!t.form.valid) { console.log("Invalid Form Values"); return; }
       t.loading = true;
       await t.loadStatus()
-      const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette(): settings: [5, 0, 0]};
+      const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette(), settings: [5, 0, 0]};
+      console.log(v);
       this.$store.state.contracts.tinyboxes.methods
         .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.traits, v.settings, t.id)
         .call()

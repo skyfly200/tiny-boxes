@@ -161,9 +161,9 @@ export default Vue.extend({
     loadToken: function() {
       return new Promise((resolve, reject) => {
         const t = this as any;
-        const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette()};
+        const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette(), settings: [5, 0, 0]};
         this.$store.state.contracts.tinyboxes.methods
-          .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.traits, v.animate, t.id)
+          .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.traits, v.settings, t.id)
           .call()
           .then((result: any) => {
             t.data = result;
@@ -199,7 +199,7 @@ export default Vue.extend({
         saturation: 80,
         lightness: [30,70],
         animate: false,
-        traits: [0,0,8,0,5],
+        traits: [0,0,9,0],
       },
       sections: sections,
     };
