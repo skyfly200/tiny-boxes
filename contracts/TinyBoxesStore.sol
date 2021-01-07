@@ -77,11 +77,15 @@ contract TinyBoxesStore is TinyBoxesPricing {
         if (amount > price) msg.sender.transfer(amount - price);
     }
 
-    function validateParams(uint16[4] memory color) internal pure {
-        require(color[0] <= 360, "invalid hue");
+    function validateParams(uint8 shapes, uint8 hatching, uint16[4] memory color, uint8[4] memory size, uint8[2] memory position) internal pure {
+        require(shapes > 0 && shapes < 31, "invalid shape count");
+        require(hatching <= shapes, "invalid hatching");
         require(color[1] >= 10 && color[1] <= 100, "invalid saturation");
         require(color[2] <= 100, "invalid lightness");
         require(int256(color[2]).sub(color[3]) >= 0, "invalid contrast");
+        require(size[0] <= size[1], "invalid width range");
+        require(size[2] <= size[3], "invalid height range");
+        require(position[0] <= 100, "invalid spread");
     }
 
     /**
@@ -126,7 +130,7 @@ contract TinyBoxesStore is TinyBoxesPricing {
         address recipient
     ) public payable notPaused notSoldOut returns (uint256) {
         // check box parameters
-        validateParams(color);
+        validateParams(shapes, hatching, color, size, spacing);
 
         // check payment and give change
         handlePayment();

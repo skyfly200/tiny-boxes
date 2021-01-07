@@ -66,7 +66,7 @@ contract TinyBoxes is TinyBoxesStore {
         bool animate,
         uint256 id
     ) public view returns (string memory) {
-        validateParams(color);
+        validateParams(shapes, hatching, color, size, spacing);
         TinyBox memory box = TinyBox({
             color: HSL(color[0],uint8((id.mod(phaseLen) < phaseLen.sub(5)) ? color[1] : 0),uint8(color[2])),
             contrast: uint8(color[3]),
