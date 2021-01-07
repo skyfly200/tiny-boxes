@@ -9,7 +9,7 @@
             h3 Mint Token {{ "#" + id }} for {{ priceInETH }} 
               v-icon mdi-ethereum
       v-card.dialog-confirm(v-else-if="overlay === 'confirm'" key="confirm")
-        v-card-title Awaiting TX Confirmation
+        v-card-title Minting
         v-card-text
           .message                      
             .d-flex
@@ -20,13 +20,7 @@
                   a(:href="'https://rinkeby.etherscan.io/tx/' + minted.txHash" v-on='on' target="new")
                     v-icon mdi-open-in-new
                 span View on Etherscan
-            h3 {{ confirmations > 0 ? " Confirmed" : "Pending" }} 
-          v-progress-linear(:value="confirmations / confirmationsRequired * 100" :indeterminate="!confirmations")
-      v-card.dialog-wait(v-else-if="overlay === 'wait'" key="wait")
-        v-card-title Waiting For VRF Fullfillment
-        v-card-text
-          .message
-            h3 Please Wait...
+            h3 Pending
           v-progress-linear(indeterminate)
       v-card.dialog-ready(v-else-if="overlay === 'ready'" key="ready")
         v-skeleton-loader(:value="!minted.art" type="image")
@@ -126,8 +120,6 @@ export default Vue.extend({
       price: "",
       tx: {},
       gasEstimate: null,
-      confirmations: 0,
-      confirmationsRequired: 1,
       limit: null as number | null,
       retryCount: 0,
       form: {
@@ -339,7 +331,6 @@ export default Vue.extend({
     unpackQuery(q: any) {
       const t = this as any;
       // unpack keys and values from shorter URL encoding
-      console.log(q);
       q.s = q.s.split("-");
       q.d = q.d.split("-");
       q.p = q.p.split("-");
@@ -430,30 +421,9 @@ export default Vue.extend({
           else {
             t.minted.txHash = txHash;
             t.overlay =  "confirm";
-            t.checkConfirmations(txHash);
           }
         }
       );
-    },
-    async checkConfirmations(txHash: string) {
-      const t = this as any;
-      t.confirmations = await t.getConfirmations(txHash);
-      if (t.confirmations >= t.confirmationsRequired) {
-        if (t.overlay === 'ready') return;
-        setTimeout(() => { t.overlay = "wait"; }, 500); // show confirmed for half a second
-      }
-      else setTimeout(await t.checkConfirmations(txHash), 5000);
-    },
-    async getConfirmations(txHash: string) {
-      try {
-        // Get transaction details
-        const trx = await this.$store.state.web3.eth.getTransaction(txHash)
-        // When transaction is unconfirmed, its block number is null
-        return trx.blockNumber === null ? 0 : (await this.$store.state.web3.eth.getBlockNumber()) - trx.blockNumber
-      }
-      catch (error) {
-        console.log(txHash, error)
-      }
     },
     listenForMyTokens: function() {
       this.$store.state.web3.eth
