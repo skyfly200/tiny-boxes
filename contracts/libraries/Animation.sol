@@ -179,8 +179,8 @@ library Animation {
             uint256 spread = uint256(300).div(uint256(box.shapes));
             string memory angle = shapeIndex.add(1).mul(spread).toString();
             string memory values = string(abi.encodePacked("0;",  angle, ";",  angle, ";360"));
-            uint256 timeShift = uint256(100).add(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
-            string memory times = string(abi.encodePacked("0;0.", timeShift.toString(), ";0.9;1"));
+            uint256 timeShift = uint256(900).sub(uint256(box.shapes).sub(shapeIndex).mul(uint256(800).div(uint256(box.shapes))));
+            string memory times = string(abi.encodePacked("0;0.",timeShift.toString(),";0.9;1"));
             return _animateTransform( "rotate", "10s", values, times, generateSplines(3,0) );
         } else if (animation == 11) {
             // jitter
