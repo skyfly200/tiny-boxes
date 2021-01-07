@@ -3,7 +3,7 @@
     v-container(fluid)
       v-row
         v-col(align="center").token-title
-          h1.title Token {{ id }}
+          h1.title TinyBox {{ id }}
       v-row(v-if="loading")
         v-col(align="center").token-loading
             v-progress-circular(indeterminate size="75" color="primary")
@@ -12,7 +12,27 @@
         v-col(align="center").token-missing
           h1 Invalid Token ID
       v-row(v-else no-gutters)
-        v-col(cols="12" md="6" lg="5" offset-lg="1")
+        v-col(cols="12" md="4")
+          .palette
+            .scheme
+              span Scheme
+              h2 {{ schemeTitles[data.tokenData.scheme] }}
+            ColorsGrid(v-bind="palette")
+          .stats
+            .root-color.stat
+              span.stat-value {{ data.tokenData.color[0] + '°,' + data.tokenData.color[1] + '%,' + data.tokenData.color[2] + '%' }} 
+              .stat-title Root Color
+            .contrast.stat
+              .d-flex.flex-column
+                span.stat-value {{ data.tokenData.contrast + '%' }}
+              .stat-title Contrast
+            .shades.stat
+              span.stat-value {{ parseInt(data.tokenData.shades) + 1 }}
+              .stat-title Shades
+            .mirror-a.stat
+              span.stat-value {{ data.tokenData.mirroring }}
+              .stat-title Mirror Mode
+        v-col(cols="12" md="4")
           v-card
             Token(v-if="animate" :id="id+'A'" :data="data.animation" key="anim").token-graphic
             Token(v-else :id="id" :data="data.art" key="static").token-graphic
@@ -26,50 +46,31 @@
               .anim-title
                 .caption Animation
                 h3 {{ animationTitles[data.tokenData.animation] }}
-        v-col(cols="12" md="6" lg="5")
-          v-card
-            v-card-title(align="center") Stats
-            v-card-text
-              .stats
-                .palette
-                  .scheme
-                    span Scheme
-                    h2 {{ schemeTitles[data.tokenData.scheme] }}
-                  ColorsGrid(v-bind="palette")
-                .root-color.stat
-                  span.stat-value {{ data.tokenData.color[0] + '°,' + data.tokenData.color[1] + '%,' + data.tokenData.color[2] + '%' }} 
-                  .stat-title Root Color
-                .contrast.stat
-                  .d-flex.flex-column
-                    span.stat-value {{ data.tokenData.contrast + '%' }}
-                  .stat-title Contrast
-                .shades.stat
-                  span.stat-value {{ parseInt(data.tokenData.shades) + 1 }}
-                  .stat-title Shades
-                .shapeCount.stat
-                  span.stat-value {{ data.tokenData.shapes }}
-                  .stat-title Shapes
-                .hatching.stat
-                  span.stat-value {{ data.tokenData.hatching }}
-                  .stat-title Hatching Mod
-                .width.stat
-                  span.stat-value {{ data.tokenData.size[0] + '-' + data.tokenData.size[1] }}
-                  .stat-title Width
-                .height.stat
-                  span.stat-value {{ data.tokenData.size[2] + '-' + data.tokenData.size[3] }}
-                  .stat-title Height
-                .spread-x.stat
-                  span.stat-value {{ data.tokenData.spacing[0] }}
-                  .stat-title Spread
-                .rows.stat
-                  span.stat-value {{ Math.floor(data.tokenData.spacing[1] / 16) }}
-                  .stat-title Rows
-                .columns.stat
-                  span.stat-value {{ Math.floor(data.tokenData.spacing[1] % 16) }}
-                  .stat-title Columns
-                .mirror-a.stat
-                  span.stat-value {{ data.tokenData.mirroring }}
-                  .stat-title Mirror Mode
+        v-col(cols="12" md="4")
+          .stats
+            .shapeCount.stat
+              span.stat-value {{ data.tokenData.shapes }}
+              .stat-title Shapes
+            .hatching.stat
+              span.stat-value {{ data.tokenData.hatching }}
+              .stat-title Hatching Mod
+          .stats
+            .width.stat
+              span.stat-value {{ data.tokenData.size[0] + '-' + data.tokenData.size[1] }}
+              .stat-title Width
+            .height.stat
+              span.stat-value {{ data.tokenData.size[2] + '-' + data.tokenData.size[3] }}
+              .stat-title Height
+          .stats
+            .spread-x.stat
+              span.stat-value {{ data.tokenData.spacing[0] }}
+              .stat-title Spread
+            .rows.stat
+              span.stat-value {{ Math.floor(data.tokenData.spacing[1] / 16) }}
+              .stat-title Rows
+            .columns.stat
+              span.stat-value {{ Math.floor(data.tokenData.spacing[1] % 16) }}
+              .stat-title Columns
       v-row
         v-col(cols="12")
           v-card
@@ -220,6 +221,8 @@ export default Vue.extend({
   padding-top: 40vh
 .on
   border-style: inset
+.token-graphic
+  max-height: 90vh
 .token-stats
   padding: 1rem
   display: flex
