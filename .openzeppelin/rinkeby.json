@@ -366,6 +366,16 @@
         "address": "0x47Bb919cB967726CBf8917d64B57017f21fb4490",
         "kind": "NonProxy",
         "bytecodeHash": "4b07eadc009b441d9b4bb8517d0de3dbe5bb39aa6ad82a5129165c312bff2398"
+      },
+      {
+        "address": "0xfB05f49B360e71FaeE961E173A004690cE5D5b64",
+        "kind": "NonProxy",
+        "bytecodeHash": "4b07eadc009b441d9b4bb8517d0de3dbe5bb39aa6ad82a5129165c312bff2398"
+      },
+      {
+        "address": "0xCac7315217B8B04a1fb904EAeFd1944c897b0A8e",
+        "kind": "NonProxy",
+        "bytecodeHash": "4b07eadc009b441d9b4bb8517d0de3dbe5bb39aa6ad82a5129165c312bff2398"
       }
     ]
   },

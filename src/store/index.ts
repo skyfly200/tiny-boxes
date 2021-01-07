@@ -1341,7 +1341,7 @@ const store = new Vuex.Store({
       "Snap Spin 270",
       "Snap Spin Tri",
       "Snap Spin Quad",
-      "Snap Spin tetra",
+      "Snap Spin Tetra",
       "Spin",
       "Slow Mo",
       "Clockwork",
