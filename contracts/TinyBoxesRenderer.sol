@@ -153,8 +153,8 @@ library TinyBoxesRenderer {
      * @param dVals deterministic vals for rendering
      * @return markup of the SVG graphics of the token as a string
      */
-    function perpetualRenderer(TinyBox memory box, uint256 id, address owner, uint8[4] memory dVals)
-        public
+    function perpetualRenderer(TinyBox calldata box, uint256 id, address owner, uint8[4] calldata dVals)
+        external
         view
         returns (string memory)
     {

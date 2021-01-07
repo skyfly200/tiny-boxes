@@ -87,39 +87,18 @@ contract TinyBoxesStore is TinyBoxesPricing {
      * @param color settings (hue, sat, light, contrast, shades)
      * @param size range for boxes
      * @param spacing grid and spread params
+     * @param recipient of the token
      * @return id of the new token
      */
-    function buy(
+    function buyFor(
         string calldata _seed,
         uint8 shapes,
         uint8 hatching,
         uint16[4] calldata color,
         uint8[4] calldata size,
-        uint8[2] calldata spacing
-    ) external payable notPaused notSoldOut returns (uint256) {
-        return buyFor(_seed, shapes, hatching, color, size, spacing, msg.sender);
-    }
-
-    /**
-     * @dev Create a new TinyBox Token
-     * @param _seed of token
-     * @param shapes count
-     * @param hatching mod value
-     * @param color settings (hue, sat, light, contrast, shades)
-     * @param size range for boxes
-     * @param spacing grid and spread params
-     * @param recipient of the token
-     * @return id of the new token
-     */
-    function buyFor(
-        string memory _seed,
-        uint8 shapes,
-        uint8 hatching,
-        uint16[4] memory color,
-        uint8[4] memory size,
-        uint8[2] memory spacing,
+        uint8[2] calldata spacing,
         address recipient
-    ) public payable notPaused notSoldOut returns (uint256) {
+    ) external payable notPaused notSoldOut returns (uint256) {
         // check box parameters
         validateParams(shapes, hatching, color, size, spacing);
         // make sure caller is never the 0 address

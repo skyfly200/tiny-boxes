@@ -43,15 +43,6 @@ export class TinyBoxes extends Contract {
 
     blockStart(): TransactionObject<string>;
 
-    buy(
-      _seed: string,
-      shapes: number | string,
-      hatching: number | string,
-      color: (number | string)[],
-      size: (number | string)[],
-      spacing: (number | string)[]
-    ): TransactionObject<string>;
-
     buyFor(
       _seed: string,
       shapes: number | string,

@@ -56,17 +56,17 @@ contract TinyBoxes is TinyBoxesStore {
      * @return preview SVG art
      */
     function tokenPreview(
-        string memory seed,
+        string calldata seed,
         uint8 shapes,
         uint8 hatching,
-        uint16[4] memory color,
-        uint8[4] memory size,
-        uint8[2] memory spacing,
-        uint8[4] memory traits,
+        uint16[4] calldata color,
+        uint8[4] calldata size,
+        uint8[2] calldata spacing,
+        uint8[4] calldata traits,
         uint8 bkg,
         bool animate,
         uint256 id
-    ) public view returns (string memory) {
+    ) external view returns (string memory) {
         require(bkg <= 101, "BKG % Invalid");
         validateParams(shapes, hatching, color, size, spacing);
         TinyBox memory box = TinyBox({
@@ -98,7 +98,7 @@ contract TinyBoxes is TinyBoxesStore {
      * @return animated SVG art of token _id at _frame.
      */
     function tokenArt(uint256 _id, uint8 options, uint8 bkg, uint8 duration)
-        public
+        external
         view
         returns (string memory)
     {
@@ -115,7 +115,7 @@ contract TinyBoxes is TinyBoxesStore {
      * @return animated SVG art of token _id at _frame.
      */
     function tokenArt(uint256 _id)
-        public
+        external
         view
         returns (string memory)
     {
