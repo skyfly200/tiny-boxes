@@ -219,22 +219,22 @@ exports.handler = async (event, context) => {
         {
           display_type: 'number',
           trait_type: 'Hue',
-          value: parseInt(data.palette[0]),
+          value: parseInt(data.color[0]),
         },
         {
           display_type: 'number',
           trait_type: 'Saturation',
-          value: parseInt(data.palette[1]),
+          value: parseInt(data.color[1]),
         },
         {
           display_type: 'number',
           trait_type: 'Lightness',
-          value: parseInt(data.palette[2]),
+          value: parseInt(data.color[2]),
         },
         {
           display_type: 'number',
           trait_type: 'Contrast',
-          value: parseInt(data.palette[3]),
+          value: parseInt(data.contrast),
         },
         {
           display_type: 'number',
