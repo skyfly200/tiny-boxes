@@ -122,10 +122,13 @@ contract TinyBoxesStore is TinyBoxesPricing {
     ) public payable notPaused notSoldOut returns (uint256) {
         // check box parameters
         validateParams(shapes, hatching, color, size, spacing);
-
+        // make sure caller is never the 0 address
+        require(
+            recipient != address(0),
+            "0x00 Recipient Invalid"
+        );
         // check payment and give change
         handlePayment();
-
         // create a new box object
         return createBox(
             TinyBox({
@@ -159,12 +162,6 @@ contract TinyBoxesStore is TinyBoxesPricing {
      * @return id of the new token
      */
     function createBox(TinyBox memory box, uint256 _seed, address recipient) private returns (uint256) {
-        // make sure caller is never the 0 address
-        require(
-            recipient != address(0),
-            "0x00 Recipient Invalid"
-        );
-
         // get the current id & increment the counter for the next call
         uint256 id = _tokenIds.current();
         _tokenIds.increment();
