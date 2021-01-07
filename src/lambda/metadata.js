@@ -104,9 +104,9 @@ exports.handler = async (event, context) => {
     console.log('...Data...')
     const dataPromise = tinyboxesContract.methods.tokenData(id).call()
     console.log('...Art...')
-    const artPromise = tinyboxesContract.methods.tokenArt(id,false).call()
+    const artPromise = tinyboxesContract.methods.tokenArt(id,false,101).call()
     console.log('...Animation...')
-    const animatonPromise = tinyboxesContract.methods.tokenArt(id,true).call()
+    const animatonPromise = tinyboxesContract.methods.tokenArt(id,true,101).call()
     console.log('...Mined Block Number...')
     const blockPromise = lookupMintedBlock(id);
     
@@ -150,42 +150,47 @@ exports.handler = async (event, context) => {
     // build the metadata object from the token data and IPFS hashes
     console.log("Building Metadata");
     const animationTitles = [
-      "Rounding Corners",
-      "Grow n Shrink",
-      "Squash n Stretch",
-      "Skew X",
-      "Skew Y",
-      "Snap Spin 1",
-      "Snap Spin 2",
-      "Snap Spin 3",
-      "Snap Spin 4",
+      "Snap Spin 90",
+      "Snap Spin 180",
+      "Snap Spin 270",
+      "Snap Spin Tri",
+      "Snap Spin Quad",
+      "Snap Spin Tetra",
+      "Spin",
+      "Slow Mo",
+      "Clockwork",
       "Spread",
-      "Spread Over Time",
-      "Glide",
-      "Uniform Speed Spin",
-      "2 Speed Spin",
-      "Indexed Spin",
+      "Staggered Spread",
       "Jitter",
       "Giggle",
       "Jolt",
-      "Drop"
+      "Grow n Shrink",
+      "Squash n Stretch",
+      "Round",
+      "Glide",
+      "Wave",
+      "Fade",
+      "Skew X",
+      "Skew Y",
+      "Stretch",
+      "Jello"
     ];
     const schemeTitles = [
-      "Mono",
-      "Complimentary",
-      "Analogous",
-      "Series",
-      "Split Complimentary",
       "Triadic",
-      "Complimentary and Analogous",
+      "Complimentary",
+      "Tetradic",
+      "Analogous",
       "Analogous and Complimentary",
+      "Split Complimentary",
+      "Complimentary and Analogous",
+      "Series",
       "Square",
-      "Tetradic"
+      "Mono",
     ];
     const metadata = {
       name: 'TinyBox #' + id,
       description:
-        'A scattering of tiny boxes, Aranged in patterns ranging from mundane to magnificent.',
+        'A scattering of tiny boxes, Arranged in patterns ranging from mundane to magnificent.',
       external_url: EXTERNAL_URL_BASE + id,
       //image: imageHash, // Using the image_data attribute
       //animation_url: animationHash,
@@ -199,12 +204,27 @@ exports.handler = async (event, context) => {
         },
         {
           display_type: 'number',
-          trait_type: 'Color Scheme',
-          value:  schemeTitles[data.palette[4]],
+          trait_type: 'Hatching',
+          value: data.hatching,
         },
         {
           display_type: 'number',
-          trait_type: 'Root Hue',
+          trait_type: 'Spread',
+          value: data.spacing[0],
+        },
+        {
+          display_type: 'number',
+          trait_type: 'Rows',
+          value: data.spacing[1] % 16,
+        },
+        {
+          display_type: 'number',
+          trait_type: 'Columns',
+          value: data.spacing[1] / 16,
+        },
+        {
+          display_type: 'number',
+          trait_type: 'Hue',
           value: parseInt(data.palette[0]),
         },
         {
@@ -215,12 +235,22 @@ exports.handler = async (event, context) => {
         {
           display_type: 'number',
           trait_type: 'Lightness',
-          value: parseInt(data.palette[2])+''+parseInt(data.palette[3]),
+          value: parseInt(data.palette[2]),
+        },
+        {
+          display_type: 'number',
+          trait_type: 'Contrast',
+          value: parseInt(data.palette[3]),
         },
         {
           display_type: 'number',
           trait_type: 'Shades',
-          value: parseInt(data.palette[5]),
+          value: parseInt(data.shades),
+        },
+        {
+          display_type: 'number',
+          trait_type: 'Scheme',
+          value:  schemeTitles[data.scheme],
         },
         {
           display_type: 'number',
@@ -228,24 +258,9 @@ exports.handler = async (event, context) => {
           value: animationTitles[data.animation],
         },
         {
-          trait_type: 'Hatching',
-          value: data.hatching,
-        },
-        {
-          trait_type: 'Mirror 1',
-          value: data.mirrorPositions[0],
-        },
-        {
-          trait_type: 'Mirror 2',
-          value: data.mirrorPositions[1],
-        },
-        {
-          trait_type: 'Mirror 3',
-          value: data.mirrorPositions[2],
-        },
-        {
-          trait_type: 'Scale',
-          value: data.scale + '%',
+          display_type: 'number',
+          trait_type: 'Mirroring',
+          value: data.mirroring,
         },
         {
           display_type: 'date',
