@@ -26,7 +26,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
 
     // mapping to store all the boxes info
     mapping(uint256 => TinyBox) internal boxes;
-    mapping(uint256 => uint256) internal boxRand;
+    mapping(uint256 => uint32) internal boxRand;
 
     // Create role identifiers
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");

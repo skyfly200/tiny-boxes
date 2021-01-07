@@ -8,6 +8,10 @@ import "./TinyBoxesPricing.sol";
 
 import "./libraries/Random.sol";
 
+interface Randomizer {
+    function returnValue() external returns (bytes32);
+}
+
 contract TinyBoxesStore is TinyBoxesPricing {
     using SafeMath for uint256;
     using SignedSafeMath for int256;
@@ -20,21 +24,18 @@ contract TinyBoxesStore is TinyBoxesPricing {
     uint256 public phaseCountdownTime = 20 hours; // time to pause between phases
     uint256 public phaseCountdown = phaseCountdownTime.div(15); // blocks to pause between phases
 
-    struct Request {
-        address recipient;
-        uint256 id;
-        uint256 seed;
-    }
+    Randomizer entropySource;
 
     /**
      * @dev Contract constructor.
      * @notice Constructor inherits from TinyBoxesPricing
      */
-    constructor()
+    constructor(address entropySourceAddress)
         public
         TinyBoxesBase()
     {
         blockStart = block.number;
+        entropySource = Randomizer(entropySourceAddress);
     }
 
     /**
@@ -186,20 +187,18 @@ contract TinyBoxesStore is TinyBoxesPricing {
     }
 
     /**
-     * @dev The VRF Coordinator will not pass randomness that could not be verified
+     * @dev Call the Randomizer and update random values
      */
     function randomizeBox(uint256 id, uint256 seed)
         internal
     {
         uint256 randomness = uint256(keccak256(abi.encodePacked(
-            blockhash(block.number-1),
-            block.coinbase,
-            now,
+            entropySource.returnValue(),
             id,
             seed
-        ))); // replace with call to new Randomizer contract
+        ))); // mix local and Randomizer entropy for the box randomness
 
-        boxRand[id] = randomness;
+        boxRand[id] = uint32(randomness % (2**32));
 
         bytes32[] memory pool = Random.init(randomness);
 
