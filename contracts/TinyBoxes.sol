@@ -44,7 +44,6 @@ contract TinyBoxes is TinyBoxesStore {
 
     /**
      * @dev Generate the token SVG art preview for given parameters
-     * @param id of the token to preview
      * @param seed for renderer RNG
      * @param shapes count
      * @param hatching mod
@@ -52,7 +51,8 @@ contract TinyBoxes is TinyBoxesStore {
      * @param size for shapes
      * @param spacing grid and spread
      * @param traits mirroring, scheme, shades, animation
-     * @param animate switch to turn on or off animation
+     * @param settings adjustable render options - bkg, duration, options
+     * @param id of the token to preview
      * @return preview SVG art
      */
     function tokenPreview(
@@ -63,11 +63,10 @@ contract TinyBoxes is TinyBoxesStore {
         uint8[4] calldata size,
         uint8[2] calldata spacing,
         uint8[4] calldata traits,
-        uint8 bkg,
-        bool animate,
+        uint8[3] calldata settings,
         uint256 id
     ) external view returns (string memory) {
-        require(bkg <= 101, "BKG % Invalid");
+        require(settings[0] <= 101, "BKG % Invalid");
         validateParams(shapes, hatching, color, size, spacing);
         TinyBox memory box = TinyBox({
             randomness: uint128(seed.stringToUint()),
@@ -83,9 +82,9 @@ contract TinyBoxes is TinyBoxesStore {
             heightMax: size[3],
             spread: spacing[0],
             grid: spacing[1],
-            bkg: bkg,
-            duration: 0,
-            options: animate ? 1 : 0
+            bkg: settings[0],
+            duration: settings[1],
+            options: settings[2]
         });
         return box.perpetualRenderer(id, address(0), traits);
     }
@@ -93,11 +92,12 @@ contract TinyBoxes is TinyBoxesStore {
     /**
      * @dev Generate the token SVG art with specific options
      * @param _id for which we want art
-     * @param options bits - 0th is the animate switch to turn on or off animation
      * @param bkg for the token
+     * @param duration animation duration modifier
+     * @param options bits - 0th is the animate switch to turn on or off animation
      * @return animated SVG art of token _id at _frame.
      */
-    function tokenArt(uint256 _id, uint8 options, uint8 bkg, uint8 duration)
+    function tokenArt(uint256 _id, uint8 bkg, uint8 duration, uint8 options)
         external
         view
         returns (string memory)
