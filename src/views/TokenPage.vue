@@ -178,7 +178,6 @@ export default Vue.extend({
         this.data.price = await pricePromise;
         // cache token data and end loading
         this.$store.commit("setToken", this.data);
-        console.log("loaded: ", t.data)
         this.loading = false;
       }
     },
