@@ -320,7 +320,6 @@ export default Vue.extend({
     updateParams() {
       const t = this as any;
       const q = t.buildQuery();
-      console.log(q);
       if (t.$route.query === {}) this.$router.replace({ path: "/create", query: q });
       else this.$router.push({ path: "/create", query: q });
     },
