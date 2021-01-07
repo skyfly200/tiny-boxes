@@ -7,7 +7,7 @@
       CopyField(:url="url")
       v-card-actions
         v-spacer
-        v-btn.twitter-share-button(v-if="false" :href="twitterPost" target="_blank" icon)
+        v-btn.twitter-share-button(:href="twitterPost" target="_blank" icon)
           v-icon mdi-twitter
         v-btn(:href="email" target="_blank" icon)
           v-icon mdi-email
@@ -25,7 +25,7 @@ export default Vue.extend({
       return window.location.origin + (this.$route as any).fullPath;
     },
     twitterPost() {
-      const text = 'Check out this TinyBox! ';
+      const text = 'Check out this TinyBox I designed! ';
       return 'https://twitter.com/intent/tweet?text=' + encodeURI(text) + encodeURIComponent((this as any).url);
     },
     email() {
