@@ -211,7 +211,7 @@ contract TinyBoxesStore is TinyBoxesPricing {
         boxes[id].animation = uint8(pool.uniform(0, (ANIMATION_COUNT - 1))); // animation
         boxes[id].scheme = uint8(id.div(phaseLen)); // scheme
         boxes[id].shades = uint8(pool.uniform(1, 8)); // shades
-        boxes[id].mirroring = uint8(pool.uniform(0, 7)); // mirroring mode
+        boxes[id].mirroring = uint8(pool.uniform(0, 63)); // mirroring mode
 
         // set the last 5 per phase to grayscale
         if (id.mod(phaseLen) >= (phaseLen.sub(5))) boxes[id].color.saturation = 0;
