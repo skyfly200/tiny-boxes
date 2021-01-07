@@ -229,6 +229,7 @@ export default Vue.extend({
     randomizeSection: function(section: number | string) {
       const t = this as any;
       t.randomize(section);
+      t.updateParams();
       t.loadToken()
         .then((art: any) => {
           if (art) {
