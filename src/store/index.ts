@@ -1429,11 +1429,11 @@ const store = new Vuex.Store({
             // Request account access if needed
             (window as any).ethereum.enable().then(() => {
               context.commit("setWeb3Status", "active");
-              resolve();
+              resolve(true);
             });
           } catch (error) {
             context.commit("setWeb3Status", "denied");
-            resolve();
+            reject("denied");
           }
         } else if ((window as any).web3) {
           // Legacy dapp browsers...
@@ -1442,11 +1442,11 @@ const store = new Vuex.Store({
             new Web3((window as any).web3.currentProvider)
           );
           context.commit("setWeb3Status", "active");
-          resolve();
+          resolve(true);
         } else {
           // Non-dapp browsers...
           context.commit("setWeb3Status", "inactive");
-          resolve();
+          resolve(true);
         }
       });
     },
@@ -1475,7 +1475,7 @@ const store = new Vuex.Store({
             id: "tinyboxes",
             contract: new web3.eth.Contract(tinyboxesABI, context.state.tinyboxesAddress),
           });
-          resolve();
+          resolve(true);
         } else reject();
       });
     },

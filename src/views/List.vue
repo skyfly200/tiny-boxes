@@ -48,6 +48,8 @@
 import { mapGetters, mapState } from "vuex";
 import Token from "@/components/Token.vue";
 
+const t = this as any;
+
 export default {
   name: "List",
   components: { Token },
@@ -67,68 +69,68 @@ export default {
   }),
   computed: {
     loadedTokens() {
-      return Object.keys(this.tokens)
+      return Object.keys(t.tokens)
         .sort( (a,b) => parseInt(a) - parseInt(b))
-        .map( t => this.tokens[t] )
-        .filter( t => (this.owned ? t.owner === this.currentAccount : true) );
+        .map( i => t.tokens[i] )
+        .filter( t => (t.owned ? t.owner === t.currentAccount : true) );
     },
     ...mapGetters(["currentAccount", "web3Status", "itemsPerPage"]),
     ...mapState(["openseaStoreURL"]),
   },
   mounted: async function() {
-    await this.$store.dispatch("initialize");
+    await t.$store.dispatch("initialize");
     //this.page = this.$route.params.page ? parseInt(this.$route.params.page) : 1;
-    this.limit = await this.lookupLimit();
-    this.supply = await this.lookupSupply();
-    this.userCount = await this.lookupBalance();
-    this.soldOut = this.supply === this.limit;
-    this.page = parseInt(this.$route.params.page, 10);
-    this.loadTokens();
+    t.limit = await t.lookupLimit();
+    t.supply = await t.lookupSupply();
+    t.userCount = await t.lookupBalance();
+    t.soldOut = t.supply === t.limit;
+    t.page = parseInt(t.$route.params.page, 10);
+    t.loadTokens();
   },
   methods: {
     setPage(e: any) {
       console.log(e)
-      this.$router.push({ params: {page: e} })
+      t.$router.push({ params: {page: e} })
     },
     lookupArt: function(id: any, animate: any) {
-      return this.$store.state.contracts.tinyboxes.methods.tokenArt(id, animate, this.bkg).call();
+      return t.$store.state.contracts.tinyboxes.methods.tokenArt(id, animate, t.bkg).call();
     },
     lookupOwner: function(id: any) {
-      return this.$store.state.contracts.tinyboxes.methods.ownerOf(id).call();
+      return t.$store.state.contracts.tinyboxes.methods.ownerOf(id).call();
     },
     lookupSupply: function() {
-      return this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
+      return t.$store.state.contracts.tinyboxes.methods.totalSupply().call();
     },
     lookupBalance: function() {
-      return this.$store.state.contracts.tinyboxes.methods.balanceOf(this.currentAccount).call();
+      return t.$store.state.contracts.tinyboxes.methods.balanceOf(t.currentAccount).call();
     },
     lookupUsersToken(i: any) {
-      return this.$store.state.contracts.tinyboxes.methods.tokenOfOwnerByIndex(this.currentAccount, i).call();
+      return t.$store.state.contracts.tinyboxes.methods.tokenOfOwnerByIndex(t.currentAccount, i).call();
     },
     lookupLimit: function() {
-      return this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
+      return t.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
     },
     loadTokens: async function() {
-      this.tokens = {};
-      this.count = this.owned ? this.userCount : this.supply;
-      for (let i = 0; i < this.count; i++) this.loadToken(i);
+      t.tokens = {};
+      t.count = t.owned ? t.userCount : t.supply;
+      for (let i = 0; i < t.count; i++) t.loadToken(i);
     },
     loadToken: async function(tokenID: any) {
-      const artPromise = this.lookupArt(tokenID, false);
-      const ownerPromise = this.lookupOwner(tokenID);
+      const artPromise = t.lookupArt(tokenID, false);
+      const ownerPromise = t.lookupOwner(tokenID);
       const art = await artPromise;
       const owner = await ownerPromise;
-      this.$set(this.tokens, tokenID, {
+      t.$set(t.tokens, tokenID, {
         id: tokenID,
         art: art,
         owner: owner,
       });
-      this.loading = false;
+      t.loading = false;
     },
     listenForTokens: function() {
-      const tokenSubscription = this.$store.state.web3.eth
+      const tokenSubscription = t.$store.state.web3.eth
         .subscribe("logs", {
-          address: this.$store.state.tinyboxesAddress,
+          address: t.$store.state.tinyboxesAddress,
           topics: [
             "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
             "0x0000000000000000000000000000000000000000000000000000000000000000"
@@ -139,14 +141,14 @@ export default {
           async function(log: any) {
             const id = parseInt(log.topics[3], 16);
             // lookup new supply and check if sold out
-            this.supply = await this.lookupSupply();
-            this.soldOut = this.supply === this.limit;
+            t.supply = await t.lookupSupply();
+            t.soldOut = t.supply === t.limit;
             // rerender token list
-            if (!this.owned) this.loadToken(id);
-          }.bind(this)
+            if (!t.owned) t.loadToken(id);
+          }.bind(t)
         )
         .on("error", function(log: any) {
-          this.listenForTokens();
+          t.listenForTokens();
         });
     }
   }
