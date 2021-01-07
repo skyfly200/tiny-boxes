@@ -111,7 +111,7 @@ exports.handler = async (event, context) => {
 
     // await token data
     console.log("Awaiting requests...");
-    let [data, art, animation, block] = ['', '', '', '']
+    let [data, art, block] = ['', '', '', '']
     data = await dataPromise
       .catch((err) => console.error(err))
     art = await artPromise

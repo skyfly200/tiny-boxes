@@ -1,4 +1,4 @@
-export const tinyboxesAddress = '0x5c533a5d1f473b6eD8f338fD7280e8216FAf3569'
+export const tinyboxesAddress = '0x0874ddb535d27b38becec10dc2ae49ad124badcf'
 export const tinyboxesABI = [
     {
       "inputs": [
