@@ -141,11 +141,7 @@ export class TinyBoxes extends Contract {
 
     symbol(): TransactionObject<string>;
 
-    tokenArt(
-      _id: number | string,
-      animate: boolean,
-      bkg: number | string
-    ): TransactionObject<string>;
+    tokenArt(_id: number | string): TransactionObject<string>;
 
     tokenByIndex(index: number | string): TransactionObject<string>;
 

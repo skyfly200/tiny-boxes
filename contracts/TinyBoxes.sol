@@ -91,13 +91,30 @@ contract TinyBoxes is TinyBoxesStore {
     }
 
     /**
-     * @dev Generate the token SVG art of a specified frame
+     * @dev Generate the token SVG art with specific options
      * @param _id for which we want art
-     * @param animate switch to turn on or off animation
+     * @param options bits - 0th is the animate switch to turn on or off animation
      * @param bkg for the token
      * @return animated SVG art of token _id at _frame.
      */
-    function tokenArt(uint256 _id, bool animate, uint8 bkg)
+    function tokenArt(uint256 _id, uint8 options, uint8 bkg, uint8 duration)
+        public
+        view
+        returns (string memory)
+    {
+        TinyBox memory box = boxes[_id];
+        box.bkg = bkg;
+        box.options = options;
+        box.duration = duration;
+        return box.perpetualRenderer(_id, ownerOf(_id), calcedParts(_id, box.randomness)); // use user config state vars
+    }
+
+    /**
+     * @dev Generate the token SVG art
+     * @param _id for which we want art
+     * @return animated SVG art of token _id at _frame.
+     */
+    function tokenArt(uint256 _id)
         public
         view
         returns (string memory)
