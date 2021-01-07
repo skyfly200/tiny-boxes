@@ -1,12 +1,9 @@
 //SPDX-License-Identifier: Unlicensed
 pragma solidity ^0.6.8;
 
-// Chainlink Contracts
-import "./chainlink/ChainlinkClient.sol";  // includes SafeMath
-
 import "./TinyBoxesBase.sol";
 
-contract TinyBoxesPricing is TinyBoxesBase, ChainlinkClient {
+contract TinyBoxesPricing is TinyBoxesBase {
     using SafeMath for uint256;
 
     uint256 public startPrice = 35000000000000000; // in wei

@@ -35,8 +35,6 @@ export class TinyBoxesStore extends Contract {
 
     DEFAULT_ADMIN_ROLE(): TransactionObject<string>;
 
-    LINK_ROLE(): TransactionObject<string>;
-
     SCHEME_COUNT(): TransactionObject<string>;
 
     TOKEN_LIMIT(): TransactionObject<string>;
@@ -98,8 +96,6 @@ export class TinyBoxesStore extends Contract {
 
     name(): TransactionObject<string>;
 
-    nonces(arg0: string | number[]): TransactionObject<string>;
-
     ownerOf(tokenId: number | string): TransactionObject<string>;
 
     paused(): TransactionObject<boolean>;
@@ -114,21 +110,10 @@ export class TinyBoxesStore extends Contract {
 
     priceIncrease(): TransactionObject<string>;
 
-    rawFulfillRandomness(
-      requestId: string | number[],
-      randomness: number | string
-    ): TransactionObject<void>;
-
     renounceRole(
       role: string | number[],
       account: string
     ): TransactionObject<void>;
-
-    requestRandomness(
-      _keyHash: string | number[],
-      _fee: number | string,
-      _seed: number | string
-    ): TransactionObject<string>;
 
     revokeRole(
       role: string | number[],
@@ -197,8 +182,6 @@ export class TinyBoxesStore extends Contract {
       to: string,
       tokenId: number | string
     ): TransactionObject<void>;
-
-    withdrawLINK(amount: number | string): TransactionObject<boolean>;
   };
   events: {
     Approval: ContractEvent<{
@@ -216,15 +199,6 @@ export class TinyBoxesStore extends Contract {
       0: string;
       1: string;
       2: boolean;
-    }>;
-    ChainlinkCancelled: ContractEvent<string>;
-    ChainlinkFulfilled: ContractEvent<string>;
-    ChainlinkRequested: ContractEvent<string>;
-    LowLINK: ContractEvent<{
-      _balance: string;
-      _remaining: string;
-      0: string;
-      1: string;
     }>;
     RoleAdminChanged: ContractEvent<{
       role: string;

@@ -10,14 +10,11 @@ contract TinyBoxes is TinyBoxesStore {
 
     /**
      * @dev Contract constructor.
-     * @param _link address of the LINK token
      * @notice Constructor inherits from TinyBoxesStore
      */
-    constructor(
-        address _link
-    )
+    constructor()
         public
-        TinyBoxesStore(_link)
+        TinyBoxesStore()
     {}
 
     /**
