@@ -104,9 +104,7 @@ exports.handler = async (event, context) => {
     console.log('...Data...')
     const dataPromise = tinyboxesContract.methods.tokenData(id).call()
     console.log('...Art...')
-    const artPromise = tinyboxesContract.methods.tokenArt(id,false,101).call()
-    console.log('...Animation...')
-    const animatonPromise = tinyboxesContract.methods.tokenArt(id,true,101).call()
+    const artPromise = tinyboxesContract.methods.tokenArt(id).call()
     console.log('...Mined Block Number...')
     const blockPromise = lookupMintedBlock(id);
     
@@ -118,12 +116,10 @@ exports.handler = async (event, context) => {
       .catch((err) => console.error(err))
     art = await artPromise
       .catch((err) => console.error(err))
-    animation = await animatonPromise
-      .catch((err) => console.error(err))
     block = await blockPromise
       .catch((err) => console.error(err))
 
-    if (data === undefined || art === undefined || animation === undefined) return generateResponse('Server Error', 500)
+    if (data === undefined || art === undefined) return generateResponse('Server Error', 500)
     
     console.log('Lookup Complete!')
 
@@ -192,9 +188,7 @@ exports.handler = async (event, context) => {
       description:
         'A scattering of tiny boxes, Arranged in patterns ranging from mundane to magnificent.',
       external_url: EXTERNAL_URL_BASE + id,
-      //image: imageHash, // Using the image_data attribute
-      //animation_url: animationHash,
-      image_data: animation,
+      image_data: art,
       background_color: '121212',
       attributes: [
         {
