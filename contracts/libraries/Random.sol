@@ -59,7 +59,9 @@ library Random {
         bytes32[] memory pool,
         uint8[4] memory thresholds
     ) internal pure returns (uint8) {
-        int256 p = uniform(pool, 1, thresholds[thresholds.length.sub(1)]);
+        int256 t = 0;
+        for (uint8 i=0; i<thresholds.length; i++) t = t + thresholds[i];
+        int256 p = uniform(pool, 1, t);
         int256 s = 0;
         for (uint8 i=0; i<thresholds.length; i++) {
             s = s + thresholds[i];
@@ -74,7 +76,9 @@ library Random {
         bytes32[] memory pool,
         uint8[9] memory thresholds
     ) internal pure returns (uint8) {
-        int256 p = uniform(pool, 1, int256(thresholds[thresholds.length.sub(1)]));
+        int256 t = 0;
+        for (uint8 i=0; i<thresholds.length; i++) t = t + thresholds[i];
+        int256 p = uniform(pool, 1, t);
         int256 s = 0;
         for (uint8 i=0; i<thresholds.length; i++) {
             s = s + thresholds[i];
@@ -89,7 +93,9 @@ library Random {
         bytes32[] memory pool,
         uint8[24] memory thresholds
     ) internal pure returns (uint8) {
-        int256 p = uniform(pool, 1, thresholds[thresholds.length.sub(1)]);
+        int256 t = 0;
+        for (uint8 i=0; i<thresholds.length; i++) t = t + thresholds[i];
+        int256 p = uniform(pool, 1, t);
         int256 s = 0;
         for (uint8 i=0; i<thresholds.length; i++) {
             s = s + thresholds[i];
