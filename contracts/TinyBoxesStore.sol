@@ -125,7 +125,7 @@ contract TinyBoxesStore is TinyBoxesPricing {
                 spread: spacing[0],
                 grid: spacing[1],
                 bkg: 101,
-                duration: 0,
+                duration: 10,
                 options: 1
             }),
             _seed.stringToUint(),

@@ -120,51 +120,52 @@ library Animation {
         Shape memory shape,
         uint256 shapeIndex
     ) internal pure returns (string memory) {
+        string memory duration = string(abi.encodePacked(uint256(box.duration > 0 ? box.duration : 10).toString(),"s"));
         // select animation based on animation id
         if (animation == 0) {
             // snap spin 90
             return _animateTransform(
-                "rotate", "10s", "0;90;90;360;360", "0;0.2;0.3;0.9;1", generateSplines(4,0)
+                "rotate", duration, "0;90;90;360;360", "0;0.2;0.3;0.9;1", generateSplines(4,0)
             );
         } else if (animation == 1) {
             // snap spin 180
             return _animateTransform(
-                "rotate", "10s", "0;180;180;360;360", "0;0.4;0.5;0.9;1", generateSplines(4,0)
+                "rotate", duration, "0;180;180;360;360", "0;0.4;0.5;0.9;1", generateSplines(4,0)
             );
         } else if (animation == 2) {
             // snap spin 270
             return _animateTransform(
-                "rotate", "10s", "0;270;270;360;360", "0;0.6;0.7;0.9;1", generateSplines(4,0)
+                "rotate", duration, "0;270;270;360;360", "0;0.6;0.7;0.9;1", generateSplines(4,0)
             );
         } else if (animation == 3) {
             // snap spin tri
             return _animateTransform(
-                "rotate", "10s", "0;120;120;240;240;360;360", "0;0.166;0.333;0.5;0.666;0.833;1",
+                "rotate", duration, "0;120;120;240;240;360;360", "0;0.166;0.333;0.5;0.666;0.833;1",
                 generateSplines(6,0)
             );
         } else if (animation == 4) {
             // snap spin quad
             return _animateTransform(
-                "rotate", "10s", "0;90;90;180;180;270;270;360;360", "0;0.125;0.25;0.375;0.5;0.625;0.8;0.925;1",
+                "rotate", duration, "0;90;90;180;180;270;270;360;360", "0;0.125;0.25;0.375;0.5;0.625;0.8;0.925;1",
                 generateSplines(8,0)
             );
         } else if (animation == 5) {
             // snap spin tetra
             return _animateTransform(
-                "rotate", "10s", "0;72;72;144;144;216;216;278;278;360;360", "0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1",
+                "rotate", duration, "0;72;72;144;144;216;216;278;278;360;360", "0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1",
                 generateSplines(10,0)
             );
         } else if (animation == 6) {
             // Uniform Speed Spin
-            return _animateTransform( "rotate", "10s", "0;360", "0;1" );
+            return _animateTransform( "rotate", duration, "0;360", "0;1" );
         } else if (animation == 7) {
             // 2 Speed Spin
-            return _animateTransform( "rotate", "10s", "0;90;270;360", "0;0.1;0.9;1" );
+            return _animateTransform( "rotate", duration, "0;90;270;360", "0;0.1;0.9;1" );
         } else if (animation == 8) {
             // indexed speed
             return _animateTransform(
                 "rotate",
-                string(abi.encodePacked(uint256((10000 / box.shapes) * (shapeIndex + 1) ).toString(),"ms")),
+                string(abi.encodePacked(uint256(((1000*box.duration) / box.shapes) * (shapeIndex + 1) ).toString(),"ms")),
                 "0;360",
                 "0;1"
             );
@@ -173,7 +174,7 @@ library Animation {
             uint256 spread = uint256(300).div(uint256(box.shapes));
             string memory angle = shapeIndex.add(1).mul(spread).toString();
             string memory values = string(abi.encodePacked("0;",  angle, ";",  angle, ";360;360"));
-            return _animateTransform( "rotate", "10s", values, "0;0.5;0.6;0.9;1", generateSplines(4,0) );
+            return _animateTransform( "rotate", duration, values, "0;0.5;0.6;0.9;1", generateSplines(4,0) );
         } else if (animation == 10) {
             // spread w time
             uint256 spread = uint256(300).div(uint256(box.shapes));
@@ -181,7 +182,7 @@ library Animation {
             string memory values = string(abi.encodePacked("0;",  angle, ";",  angle, ";360"));
             uint256 timeShift = uint256(900).sub(uint256(box.shapes).sub(shapeIndex).mul(uint256(800).div(uint256(box.shapes))));
             string memory times = string(abi.encodePacked("0;0.",timeShift.toString(),";0.9;1"));
-            return _animateTransform( "rotate", "10s", values, times, generateSplines(3,0) );
+            return _animateTransform( "rotate", duration, values, times, generateSplines(3,0) );
         } else if (animation == 11) {
             // jitter
             int256[2] memory amp = [int256(10), int256(10)]; // randomize amps for each shape?
@@ -195,8 +196,8 @@ library Animation {
                 ));
             }
             return string(abi.encodePacked(
-                _animate("x","1s",vals[0],"discrete"),
-                _animate("y","2s",vals[1],"discrete")
+                _animate("x",string(abi.encodePacked(uint256(box.duration).div(10).toString(),"s")),vals[0],"discrete"),
+                _animate("y",string(abi.encodePacked(uint256(box.duration).div(5).toString(),"s")),vals[1],"discrete")
             ));
         } else if (animation == 12) {
             // giggle
@@ -211,8 +212,8 @@ library Animation {
                 ));
             }
             return string(abi.encodePacked(
-                _animate("x","200ms",vals[0]),
-                _animate("y","200ms",vals[1])
+                _animate("x", string(abi.encodePacked(uint256(box.duration).mul(20).toString(),"ms")),vals[0]),
+                _animate("y", string(abi.encodePacked(uint256(box.duration).mul(20).toString(),"ms")),vals[1])
             ));
         } else if (animation == 13) {
             // jolt
@@ -227,12 +228,12 @@ library Animation {
                 ));
             }
             return string(abi.encodePacked(
-                _animate("x","250ms",vals[0]),
-                _animate("y","250ms",vals[1])
+                _animate("x", string(abi.encodePacked(uint256(box.duration).mul(25).toString(),"ms")),vals[0]),
+                _animate("y", string(abi.encodePacked(uint256(box.duration).mul(25).toString(),"ms")),vals[1])
             ));
         } else if (animation == 14) {
             // grow n shrink
-            return _animateTransform( "scale", "10s", "1 1;1.5 1.5;1 1;0.5 0.5;1 1", "0;0.25;0.5;0.75;1" );
+            return _animateTransform( "scale", duration, "1 1;1.5 1.5;1 1;0.5 0.5;1 1", "0;0.25;0.5;0.75;1" );
         } else if (animation == 15) {
             // squash n stretch
             uint256 div = 7;
@@ -247,19 +248,19 @@ library Animation {
                 ));
             }
             return string(abi.encodePacked(
-                _animate("width","10s",vals[0]),
-                _animate("height","10s",vals[1])
+                _animate("width",duration,vals[0]),
+                _animate("height",duration,vals[1])
             ));
         } else if (animation == 16) {
             // Rounding corners
-            return _animate("rx","10s","0;100;0");
+            return _animate("rx",duration,"0;100;0");
         } else if (animation == 17) {
             // glide
             int256 amp = 20;
             string memory max = int256(0).add(amp).toString();
             string memory min = int256(0).sub(amp).toString();
             string memory values = string(abi.encodePacked( "0 0;", min, " ", min, ";0 0;", max, " ", max, ";0 0" ));
-            return _animateTransform("translate","10s",values);
+            return _animateTransform("translate",duration,values);
         } else if (animation == 18) {
             // Wave
             string memory values = string(abi.encodePacked("1 1;1 1;1.5 1.5;1 1;1 1"));
@@ -269,28 +270,28 @@ library Animation {
             string memory start = peak.sub(div).toDecimal(4).toString();
             string memory end = peak.add(div).toDecimal(4).toString();
             string memory times = string(abi.encodePacked("0;", start, ";", mid, ";", end, ";1")); 
-            return _animateTransform( "scale", "10s", values, times, generateSplines(4,0) );
+            return _animateTransform( "scale", duration, values, times, generateSplines(4,0) );
         } else if (animation == 19) {
             // Phased Fade
             uint256 fadeOut = uint256(100).add(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
             uint256 fadeIn = uint256(900).sub(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
             string memory times = string(abi.encodePacked("0;0.", fadeOut.toString(), ";0.", fadeIn.toString(), ";1"));
-            return _animate("opacity", "10s", "1;0;0;1", times, generateSplines(3,0) );
+            return _animate("opacity", duration, "1;0;0;1", times, generateSplines(3,0) );
         } else if (animation == 20) {
             // Skew X
-            return _animateTransform( "skewX", "10s", "0;50;-50;0" );
+            return _animateTransform( "skewX", duration, "0;50;-50;0" );
         } else if (animation == 21) {
             // Skew Y
-            return _animateTransform( "skewY", "10s", "0;50;-50;0" );
+            return _animateTransform( "skewY", duration, "0;50;-50;0" );
         } else if (animation == 22) {
             // Stretch - (bounce skewX w/ ease-in-out)
             return _animateTransform(
-                "skewX", "5s", "0;-64;32;-16;8;-4;2;-1;.5;0;0", "0;.1;.2;.3;.4;.5;.6;.7;.8;.9;1", generateSplines(10,0)
+                "skewX", string(abi.encodePacked(uint256(box.duration).div(2).toString(),"s")), "0;-64;32;-16;8;-4;2;-1;.5;0;0", "0;.1;.2;.3;.4;.5;.6;.7;.8;.9;1", generateSplines(10,0)
             );
         } else if (animation == 23) {
             // Jello - (bounce skewX w/ ease-in)
             return _animateTransform(
-                "skewX", "10s", "0;16;-12;8;-4;2;-1;.5;-.25;0;0", "0;.1;.2;.3;.4;.5;.6;.7;.8;.9;1", generateSplines(10,1)
+                "skewX", duration, "0;16;-12;8;-4;2;-1;.5;-.25;0;0", "0;.1;.2;.3;.4;.5;.6;.7;.8;.9;1", generateSplines(10,1)
             );
         }
     }
