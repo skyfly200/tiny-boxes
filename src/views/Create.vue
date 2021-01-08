@@ -414,7 +414,7 @@ export default Vue.extend({
         to: this.$store.state.tinyboxesAddress,
         value: t.price,
         data: this.$store.state.contracts.tinyboxes.methods
-          .buyFor(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, this.currentAccount)
+          .buyFor(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.mirroring, this.currentAccount)
           .encodeABI(),
       };
       //t.gasEstimate = await t.$store.state.web3.eth.estimateGas(t.tx);
