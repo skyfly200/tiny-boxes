@@ -104,6 +104,31 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     }
 
     /**
+     * @dev read the dynamic rendering settings of a token
+     * @param id of the token to fetch settings for
+     */
+    function readSettings(uint256 id) external view returns (uint8 bkg, uint8 duration, uint8 options) {
+        TinyBox memory box = boxes[id];
+        bkg = box.bkg;
+        duration = box.duration;
+        options = box.options;
+    }
+
+    /**
+     * @dev set the dynamic rendering options of a token
+     * @param id of the token to update
+     * @param settings new settings values
+     */
+    function changeSettings(uint256 id, uint8[3] calldata settings) external {
+        require(msg.sender == ownerOf(id) || msg.sender == getApproved(id), "Insuf. Permissions");
+        require(settings[0] <= 101, "Invalid Bkg");
+        require(settings[1] > 0, "Invalid Duration");
+        boxes[id].bkg = settings[0];
+        boxes[id].duration = settings[1];
+        boxes[id].options = settings[2];
+    }
+
+    /**
      * @dev Calculate the randomized and phased values
      */
     function calcedParts(uint256 id, uint128 randomness)
