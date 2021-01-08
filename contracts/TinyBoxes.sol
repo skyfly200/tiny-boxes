@@ -59,11 +59,12 @@ contract TinyBoxes is TinyBoxesStore {
         string calldata seed,
         uint8 shapes,
         uint8 hatching,
-        uint16[4] calldata color,
+        uint16[3] calldata color,
         uint8[4] calldata size,
         uint8[2] calldata spacing,
         uint8[4] calldata traits,
         uint8[3] calldata settings,
+        uint8 mirroring,
         uint256 id
     ) external view returns (string memory) {
         require(settings[0] <= 101, "BKG % Invalid");
@@ -73,7 +74,6 @@ contract TinyBoxes is TinyBoxesStore {
             hue: color[0],
             saturation: uint8(color[1]),
             lightness: uint8(color[2]),
-            contrast: uint8(color[3]),
             shapes: shapes,
             hatching: hatching,
             widthMin: size[0],
@@ -81,6 +81,7 @@ contract TinyBoxes is TinyBoxesStore {
             heightMin: size[2],
             heightMax: size[3],
             spread: spacing[0],
+            mirroring: mirroring,
             grid: spacing[1],
             bkg: settings[0],
             duration: settings[1],
@@ -106,7 +107,7 @@ contract TinyBoxes is TinyBoxesStore {
         box.bkg = bkg;
         box.options = options;
         box.duration = duration;
-        return box.perpetualRenderer(_id, ownerOf(_id), calcedParts(_id, box.randomness)); // use user config state vars
+        return box.perpetualRenderer(_id, ownerOf(_id), calcedParts(box, _id, box.randomness)); // use user config state vars
     }
 
     /**
@@ -120,6 +121,6 @@ contract TinyBoxes is TinyBoxesStore {
         returns (string memory)
     {
         TinyBox memory box = boxes[_id];
-        return box.perpetualRenderer(_id, ownerOf(_id), calcedParts(_id, box.randomness)); // use user config state vars
+        return box.perpetualRenderer(_id, ownerOf(_id), calcedParts(box, _id, box.randomness)); // use user config state vars
     }
 }

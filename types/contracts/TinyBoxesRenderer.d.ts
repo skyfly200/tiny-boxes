@@ -29,7 +29,6 @@ export class TinyBoxesRenderer extends Contract {
         hue: number | string;
         saturation: number | string;
         lightness: number | string;
-        contrast: number | string;
         shapes: number | string;
         hatching: number | string;
         widthMin: number | string;
@@ -38,6 +37,7 @@ export class TinyBoxesRenderer extends Contract {
         heightMax: number | string;
         spread: number | string;
         grid: number | string;
+        mirroring: number | string;
         bkg: number | string;
         duration: number | string;
         options: number | string;

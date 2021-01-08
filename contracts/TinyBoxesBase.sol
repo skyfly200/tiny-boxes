@@ -20,7 +20,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     Counters.Counter internal _tokenIds;
 
     // set contract config constants
-    uint16 public constant TOKEN_LIMIT = 10000;
+    uint16 public constant TOKEN_LIMIT = 500;
     uint8 public constant ANIMATION_COUNT = 24;
     uint8 public constant SCHEME_COUNT = 10;
     bool public paused = false;
@@ -89,16 +89,16 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         )
     {
         TinyBox memory box = boxes[_id];
-        uint8[4] memory parts = calcedParts(_id, box.randomness);
+        uint8[4] memory parts = calcedParts(box, _id, box.randomness);
 
         animation = parts[0];
         scheme = parts[1];
         shades = parts[2];
-        mirroring = parts[3];
+        contrast = parts[3];
+        mirroring = box.mirroring;
         shapes = box.shapes;
         hatching = box.hatching;
         color = [box.hue, box.saturation, box.lightness];
-        contrast = box.contrast;
         size = [box.widthMin, box.widthMax, box.heightMin, box.heightMax];
         spacing = [box.spread, box.grid];
     }
@@ -131,7 +131,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     /**
      * @dev Calculate the randomized and phased values
      */
-    function calcedParts(uint256 id, uint128 randomness)
+    function calcedParts(TinyBox memory box, uint256 id, uint128 randomness)
         internal view returns (uint8[4] memory parts)
     {
         bytes32[] memory pool = Random.init(randomness);
@@ -143,6 +143,6 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         parts[0] = uint8(pool.weighted(animationBins)); // animation
         parts[1] = uint8(id.div(phaseLen)); // scheme
         parts[2] = uint8(pool.weighted(shadesBins)); //, shades
-        parts[3] = uint8(pool.uniform(0, 63)); // mirroring mode
+        parts[3] = uint8(pool.uniform(0, box.lightness)); // contrast
     }
 }

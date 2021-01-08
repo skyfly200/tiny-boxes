@@ -79,8 +79,7 @@ library TinyBoxesRenderer {
         bytes32[] memory pool,
         uint256 index,
         TinyBox memory box,
-        uint8 scheme,
-        uint8 shades
+        uint8[4] memory dVals
     )
         internal
         pure
@@ -98,8 +97,8 @@ library TinyBoxesRenderer {
         ) = _generateBox(pool, [box.spread, box.grid], [box.widthMin,box.widthMax,box.heightMin,box.heightMax], hatching);
         // lookup a random color from the color palette
         uint8 hue = uint8(pool.uniform(0, 3));
-        uint8 shade = uint8(pool.uniform(0, shades));
-        HSL memory color = Colors.lookupColor(Palette(HSL(box.hue,box.saturation,box.lightness), box.contrast, shades, scheme),hue,shade);
+        uint8 shade = uint8(pool.uniform(0, dVals[2]));
+        HSL memory color = Colors.lookupColor(Palette(HSL(box.hue,box.saturation,box.lightness), dVals[3], dVals[2], dVals[1]),hue,shade);
         return Shape(position, size, color);
     }
 
@@ -170,7 +169,7 @@ library TinyBoxesRenderer {
         // generate shapes (shapes + animations)
         string memory shapes = "";
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
-            Shape memory shape = _generateShape(pool, i, box, dVals[1], dVals[2]);
+            Shape memory shape = _generateShape(pool, i, box, dVals);
             shapes = string(abi.encodePacked(shapes, 
                 (box.options%2 == 1) ? SVG._rect(shape, Animation._generateAnimation(box,dVals[0],shape,i)) : SVG._rect(shape)
             ));
@@ -179,7 +178,7 @@ library TinyBoxesRenderer {
         string memory defs = string(abi.encodePacked('<defs><symbol id="shapes">', shapes, '</symbol></defs>'));
 
         // generate the footer
-        string memory mirroring = _generateMirroring(dVals[3]);
+        string memory mirroring = _generateMirroring(box.mirroring);
 
         string memory svg = SVG._SVG(box.bkg == 101 ? "" : string(abi.encodePacked("background-color:hsl(0,0%,", box.bkg.toString(), "%);")), string(abi.encodePacked(metadata, defs, mirroring)));
 

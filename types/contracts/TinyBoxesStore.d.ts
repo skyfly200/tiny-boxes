@@ -50,6 +50,7 @@ export class TinyBoxesStore extends Contract {
       color: (number | string)[],
       size: (number | string)[],
       spacing: (number | string)[],
+      mirroring: number | string,
       recipient: string
     ): TransactionObject<string>;
 

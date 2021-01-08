@@ -68,12 +68,11 @@ contract TinyBoxesStore is TinyBoxesPricing {
         if (amount > price) msg.sender.transfer(amount - price);
     }
 
-    function validateParams(uint8 shapes, uint8 hatching, uint16[4] memory color, uint8[4] memory size, uint8[2] memory position) internal pure {
+    function validateParams(uint8 shapes, uint8 hatching, uint16[3] memory color, uint8[4] memory size, uint8[2] memory position) internal pure {
         require(shapes > 0 && shapes < 31, "invalid shape count");
         require(hatching <= shapes, "invalid hatching");
         require(color[1] >= 10 && color[1] <= 100, "invalid saturation");
         require(color[2] <= 100, "invalid lightness");
-        require(int256(color[2]).sub(color[3]) >= 0, "invalid contrast");
         require(size[0] <= size[1], "invalid width range");
         require(size[2] <= size[3], "invalid height range");
         require(position[0] <= 100, "invalid spread");
@@ -94,9 +93,10 @@ contract TinyBoxesStore is TinyBoxesPricing {
         string calldata _seed,
         uint8 shapes,
         uint8 hatching,
-        uint16[4] calldata color,
+        uint16[3] calldata color,
         uint8[4] calldata size,
         uint8[2] calldata spacing,
+        uint8 mirroring,
         address recipient
     ) external payable notPaused notSoldOut returns (uint256) {
         // check box parameters
@@ -115,7 +115,6 @@ contract TinyBoxesStore is TinyBoxesPricing {
                 hue: color[0],
                 saturation: uint8(color[1]),
                 lightness: uint8(color[2]),
-                contrast: uint8(color[3]),
                 shapes: shapes,
                 hatching: hatching,
                 widthMin: size[0],
@@ -124,6 +123,7 @@ contract TinyBoxesStore is TinyBoxesPricing {
                 heightMax: size[3],
                 spread: spacing[0],
                 grid: spacing[1],
+                mirroring: mirroring,
                 bkg: 101,
                 duration: 10,
                 options: 1
