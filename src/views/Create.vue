@@ -334,25 +334,26 @@ export default Vue.extend({
     unpackQuery(q: any) {
       const t = this as any;
       // unpack keys and values from shorter URL encoding
-      q.s = q.s.split("-");
-      q.d = q.d.split("-");
-      q.p = q.p.split("-");
-      q.c = q.c.split("-");
+      const s = q.s.split("-");
+      const d = q.d.split("-");
+      const p = q.p.split("-");
+      const c = q.c.split("-");
+      const m = q.m.split("-");
       const out: any = {
         seed: q.r,
-        shapes: q.s[0],
-        hatching: q.s[1],
-        width: q.d[0].split("~"),
-        height:q.d[1].split("~"),
-        spread: q.p[0],
-        rows: (q.p[1] / 16),
-        cols: (q.p[1] % 16),
-        hue: q.c[0],
-        saturation: q.c[1],
-        lightness:q.c[2],
-        m1: q.m[0],
-        m2: q.m[1],
-        m3: q.m[2],
+        shapes: s[0],
+        hatching: s[1],
+        width: d[0].split("~"),
+        height:d[1].split("~"),
+        spread: p[0],
+        rows: (p[1] / 16),
+        cols: (p[1] % 16),
+        hue: c[0],
+        saturation: c[1],
+        lightness:c[2],
+        m1: m[0],
+        m2: m[1],
+        m3: m[2],
       };
       return out;
     },
