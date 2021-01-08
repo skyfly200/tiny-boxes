@@ -81,7 +81,8 @@ export const sections: Array<object> = [
         },
       },
     ],
-  },{
+  },
+  {
     title: "Color",
     rand: true,
     options: [
@@ -116,18 +117,38 @@ export const sections: Array<object> = [
           max: 100,
         },
       },
+    ],
+  },
+  {
+    title: "Mirroring",
+    rand: true,
+    options: [
       {
-        label: "Contrast",
-        key: "contrast",
+        label: "Level 1",
+        key: "m1",
         type: "slider",
         range: {
           min: 0,
-          max: 90,
+          max: 3,
         },
-        rand: {
+      },
+      {
+        label: "Level 2",
+        key: "m2",
+        type: "slider",
+        range: {
           min: 0,
-          max: 70,
-        }
+          max: 3,
+        },
+      },
+      {
+        label: "Level 3",
+        key: "m3",
+        type: "slider",
+        range: {
+          min: 0,
+          max: 3,
+        },
       },
     ],
   },

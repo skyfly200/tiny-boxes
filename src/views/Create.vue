@@ -140,8 +140,10 @@ export default Vue.extend({
         hue: Date.now() % 360,
         saturation: 80,
         lightness: 70,
-        contrast: 40,
         animate: false,
+        m1: 3,
+        m2: 3,
+        m3: 3,
         traits: [0,0,9,0],
       },
       sections: sections,
@@ -324,7 +326,8 @@ export default Vue.extend({
         s: [v.shapes, v.hatching].join("-"), // shapes - count, hatching
         d: [v.width.join("~"), v.height.join("~")].join("-"), // dimensions ranges
         p: [v.spread, (v.rows * 16) + v.cols].join("-"), // positioning - spread, grid
-        c: [v.hue, v.saturation, v.lightness, v.contrast].join("-"), // color - hue, saturation, lightness, contrast
+        c: [v.hue, v.saturation, v.lightness].join("-"), // color - hue, saturation, lightness, contrast
+        m: [v.m1, v.m2, v.m3].join("-") // mirroring levels
       };
       return out;
     },
@@ -347,7 +350,9 @@ export default Vue.extend({
         hue: q.c[0],
         saturation: q.c[1],
         lightness:q.c[2],
-        contrast: q.c[3],
+        m1: q.m[0],
+        m2: q.m[1],
+        m3: q.m[2],
       };
       return out;
     },
@@ -367,8 +372,7 @@ export default Vue.extend({
       return [
         v.hue,
         v.saturation,
-        v.lightness,
-        v.contrast <= v.lightness ? v.contrast : v.lightness
+        v.lightness
       ];
     },
     assembleDials: function() {
@@ -379,6 +383,7 @@ export default Vue.extend({
       return {
         spacing: [ v.spread, (v.rows * 16) + v.cols ],
         size: [ ...v.width, ...v.height ],
+        mirroring: v.m1 + (v.m2 * 4) + (v.m3 * 16)
       };
     },
     loadToken: async function() {
@@ -387,8 +392,9 @@ export default Vue.extend({
       t.loading = true;
       await t.loadStatus()
       const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette(), settings: [5, 0, 0]};
+      console.log(v);
       this.$store.state.contracts.tinyboxes.methods
-        .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.traits, v.settings, t.id)
+        .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.traits, v.settings, v.mirroring, t.id)
         .call()
         .then((result: any) => {
           t.data = result;

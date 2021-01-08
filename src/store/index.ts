@@ -340,9 +340,9 @@ const tinyboxesABI = [
           "type": "uint8"
         },
         {
-          "internalType": "uint16[4]",
+          "internalType": "uint16[3]",
           "name": "color",
-          "type": "uint16[4]"
+          "type": "uint16[3]"
         },
         {
           "internalType": "uint8[4]",
@@ -353,6 +353,11 @@ const tinyboxesABI = [
           "internalType": "uint8[2]",
           "name": "spacing",
           "type": "uint8[2]"
+        },
+        {
+          "internalType": "uint8",
+          "name": "mirroring",
+          "type": "uint8"
         },
         {
           "internalType": "address",
@@ -369,6 +374,24 @@ const tinyboxesABI = [
         }
       ],
       "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint8[3]",
+          "name": "settings",
+          "type": "uint8[3]"
+        }
+      ],
+      "name": "changeSettings",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -642,6 +665,35 @@ const tinyboxesABI = [
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "readSettings",
+      "outputs": [
+        {
+          "internalType": "uint8",
+          "name": "bkg",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "duration",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "options",
+          "type": "uint8"
         }
       ],
       "stateMutability": "view",
@@ -1019,9 +1071,9 @@ const tinyboxesABI = [
           "type": "uint8"
         },
         {
-          "internalType": "uint16[4]",
+          "internalType": "uint16[3]",
           "name": "color",
-          "type": "uint16[4]"
+          "type": "uint16[3]"
         },
         {
           "internalType": "uint8[4]",
@@ -1042,6 +1094,11 @@ const tinyboxesABI = [
           "internalType": "uint8[3]",
           "name": "settings",
           "type": "uint8[3]"
+        },
+        {
+          "internalType": "uint8",
+          "name": "mirroring",
+          "type": "uint8"
         },
         {
           "internalType": "uint256",
@@ -1171,9 +1228,9 @@ const store = new Vuex.Store({
       "Square",
       "Mono",
     ],
-    tinyboxesAddress: '0x8aB45e758f9e7485A547622F54456e1254506a29',
+    tinyboxesAddress: '0x6f7849D7D00daB46025c7Ba9A925071E59f9B506',
     openseaStoreURL: 'https://testnets.opensea.io/collection/tinyboxes-v49',
-    openseaTokenURL: 'https://testnets.opensea.io/assets/0x8aB45e758f9e7485A547622F54456e1254506a29/',
+    openseaTokenURL: 'https://testnets.opensea.io/assets/0x6f7849D7D00daB46025c7Ba9A925071E59f9B506/',
     currentAccount: "",
     web3Status: "loading",
     web3: null,
