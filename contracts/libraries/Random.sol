@@ -57,10 +57,43 @@ library Random {
      */
     function weighted(
         bytes32[] memory pool,
-        int256[] memory thresholds
-    ) internal pure returns (int256) {
-        int256 w = 0;
+        uint8[4] memory thresholds
+    ) internal pure returns (uint8) {
         int256 p = uniform(pool, 1, thresholds[thresholds.length.sub(1)]);
-        for (uint8 i=0; i<thresholds.length; i++) if (p <= thresholds[i]) return w;
+        int256 s = 0;
+        for (uint8 i=0; i<thresholds.length; i++) {
+            s = s + thresholds[i];
+            if (p >= s) return i;
+        }
+    }
+
+    /**
+     * Produces random integer values, with weighted distributions for values in a set
+     */
+    function weighted(
+        bytes32[] memory pool,
+        uint8[9] memory thresholds
+    ) internal pure returns (uint8) {
+        int256 p = uniform(pool, 1, int256(thresholds[thresholds.length.sub(1)]));
+        int256 s = 0;
+        for (uint8 i=0; i<thresholds.length; i++) {
+            s = s + thresholds[i];
+            if (p >= s) return i;
+        }
+    }
+
+    /**
+     * Produces random integer values, with weighted distributions for values in a set
+     */
+    function weighted(
+        bytes32[] memory pool,
+        uint8[24] memory thresholds
+    ) internal pure returns (uint8) {
+        int256 p = uniform(pool, 1, thresholds[thresholds.length.sub(1)]);
+        int256 s = 0;
+        for (uint8 i=0; i<thresholds.length; i++) {
+            s = s + thresholds[i];
+            if (p >= s) return i;
+        }
     }
 }

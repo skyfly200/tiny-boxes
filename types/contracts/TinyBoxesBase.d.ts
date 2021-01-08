@@ -43,6 +43,11 @@ export class TinyBoxesBase extends Contract {
 
     blockStart(): TransactionObject<string>;
 
+    changeSettings(
+      id: number | string,
+      settings: (number | string)[]
+    ): TransactionObject<void>;
+
     getApproved(tokenId: number | string): TransactionObject<string>;
 
     getRoleAdmin(role: string | number[]): TransactionObject<string>;
@@ -80,6 +85,17 @@ export class TinyBoxesBase extends Contract {
     phaseCountdownTime(): TransactionObject<string>;
 
     phaseLen(): TransactionObject<string>;
+
+    readSettings(
+      id: number | string
+    ): TransactionObject<{
+      bkg: string;
+      duration: string;
+      options: string;
+      0: string;
+      1: string;
+      2: string;
+    }>;
 
     renounceRole(
       role: string | number[],

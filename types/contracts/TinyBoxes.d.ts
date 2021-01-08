@@ -53,6 +53,11 @@ export class TinyBoxes extends Contract {
       recipient: string
     ): TransactionObject<string>;
 
+    changeSettings(
+      id: number | string,
+      settings: (number | string)[]
+    ): TransactionObject<void>;
+
     currentPrice(): TransactionObject<string>;
 
     getApproved(tokenId: number | string): TransactionObject<string>;
@@ -96,6 +101,17 @@ export class TinyBoxes extends Contract {
     priceAt(_id: number | string): TransactionObject<string>;
 
     priceIncrease(): TransactionObject<string>;
+
+    readSettings(
+      id: number | string
+    ): TransactionObject<{
+      bkg: string;
+      duration: string;
+      options: string;
+      0: string;
+      1: string;
+      2: string;
+    }>;
 
     renounceRole(
       role: string | number[],
