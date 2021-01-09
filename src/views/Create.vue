@@ -56,7 +56,10 @@
                   h2 {{ priceInETH }}
                   v-icon(large) mdi-ethereum
                 v-spacer
-                v-btn(@click="mintToken" :disabled="!form.valid || soldOut || loading" large color="primary") Mint
+                vac(v-if="paused" :end-time="pauseEndTime")
+                  template(v-slot:process="{ timeObj }")
+                    span {{ `${timeObj.m}:${timeObj.s} to Next Phase` }}
+                v-btn(v-else @click="mintToken" :disabled="!form.valid || soldOut || loading" large color="primary") Mint
           v-alert(v-if="!loading && !form.valid" type="error" prominent outlined border="left").invalid-options Invalid Box Options!
           v-alert(v-if="!loading && soldOut" type="warning" prominent outlined border="left").sold-out
             p All boxes have sold, minting is disabled.
@@ -115,6 +118,10 @@ export default Vue.extend({
     return {
       id: null as number | null,
       loading: true,
+      paused: false,
+      pauseEndTime: null,
+      blockStart: new Date(),
+      blockSubscription: null,
       overlay: "",
       data: null as object | null,
       price: "",
@@ -208,13 +215,24 @@ export default Vue.extend({
     lookupLimit: async function() {
       (this as any).limit = await this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
     },
+    lookupBlockStart: async function() {
+      (this as any).blockStart = await this.$store.state.contracts.tinyboxes.methods.blockStart().call();
+    },
     loadStatus: async function() {
       const t = this as any;
       const idLookup = t.getSupply();
       const priceLookup = t.getPrice();
+      t.lookupBlockStart();
       t.id = await idLookup;
       t.price = await priceLookup;
       t.values.traits[1] = t.id == 0 ? 0 : Math.floor(t.id / (t.limit / 10)); // auto update scheme preview
+      const currentBlock =  await this.$store.state.web3.eth.getBlockNumber();
+      if (currentBlock < t.blockStart) {
+        t.paused = true;
+        const timeLeft = (t.blockStart - currentBlock) * 15000;
+        t.pauseEndTime = new Date().getTime() + timeLeft;
+        t.listenForBlocks();
+      }
     },
     changed: async function() {
       const t = this as any;
@@ -461,6 +479,31 @@ export default Vue.extend({
         })
         .on("data", (log: any) => {
           (this as any).loadToken();
+        });
+    },
+    listenForBlocks: function() {
+      (this as any).blockSubscription = this.$store.state.web3.eth
+        .subscribe("newBlockHeaders", function(error: any, result: any){
+            if (!error) {
+                console.log(result);
+                return;
+            }
+            console.error(error);
+        })
+        .on("connected", function(subscriptionId: any){
+            console.log(subscriptionId);
+        })
+        .on("data", function(blockHeader: any){
+            console.log(blockHeader);
+        })
+        .on("error", console.error);
+    },
+    unsubscribeBlocks: function() {
+        // unsubscribes the subscription
+        (this as any).blockSubscription.unsubscribe(function(error: any, success: any){
+            if (success) {
+                console.log('Successfully unsubscribed!');
+            }
         });
     },
   },
