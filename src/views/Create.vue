@@ -151,7 +151,7 @@ export default Vue.extend({
         m1: 3,
         m2: 3,
         m3: 3,
-        traits: [0,0,0,10],
+        traits: [0,0,1,0],
       },
       sections: sections,
     };
