@@ -165,7 +165,7 @@ library Animation {
             // indexed speed
             return _animateTransform(
                 "rotate",
-                string(abi.encodePacked(uint256(((1000*box.duration) / box.shapes) * (shapeIndex + 1) ).toString(),"ms")),
+                string(abi.encodePacked(uint256(((1000*(box.duration > 0 ? box.duration : 10)) / box.shapes) * (shapeIndex + 1) ).toString(),"ms")),
                 "0;360",
                 "0;1"
             );
@@ -196,8 +196,8 @@ library Animation {
                 ));
             }
             return string(abi.encodePacked(
-                _animate("x",string(abi.encodePacked(uint256(box.duration).div(10).toString(),"s")),vals[0],"discrete"),
-                _animate("y",string(abi.encodePacked(uint256(box.duration).div(5).toString(),"s")),vals[1],"discrete")
+                _animate("x",string(abi.encodePacked(uint256(box.duration > 0 ? box.duration : 10).div(10).toString(),"s")),vals[0],"discrete"),
+                _animate("y",string(abi.encodePacked(uint256(box.duration > 0 ? box.duration : 10).div(5).toString(),"s")),vals[1],"discrete")
             ));
         } else if (animation == 12) {
             // giggle
@@ -212,8 +212,8 @@ library Animation {
                 ));
             }
             return string(abi.encodePacked(
-                _animate("x", string(abi.encodePacked(uint256(box.duration).mul(20).toString(),"ms")),vals[0]),
-                _animate("y", string(abi.encodePacked(uint256(box.duration).mul(20).toString(),"ms")),vals[1])
+                _animate("x", string(abi.encodePacked(uint256(box.duration > 0 ? box.duration : 10).mul(20).toString(),"ms")),vals[0]),
+                _animate("y", string(abi.encodePacked(uint256(box.duration > 0 ? box.duration : 10).mul(20).toString(),"ms")),vals[1])
             ));
         } else if (animation == 13) {
             // jolt
@@ -228,8 +228,8 @@ library Animation {
                 ));
             }
             return string(abi.encodePacked(
-                _animate("x", string(abi.encodePacked(uint256(box.duration).mul(25).toString(),"ms")),vals[0]),
-                _animate("y", string(abi.encodePacked(uint256(box.duration).mul(25).toString(),"ms")),vals[1])
+                _animate("x", string(abi.encodePacked(uint256(box.duration > 0 ? box.duration : 10).mul(25).toString(),"ms")),vals[0]),
+                _animate("y", string(abi.encodePacked(uint256(box.duration > 0 ? box.duration : 10).mul(25).toString(),"ms")),vals[1])
             ));
         } else if (animation == 14) {
             // grow n shrink
@@ -286,7 +286,7 @@ library Animation {
         } else if (animation == 22) {
             // Stretch - (bounce skewX w/ ease-in-out)
             return _animateTransform(
-                "skewX", string(abi.encodePacked(uint256(box.duration).div(2).toString(),"s")), "0;-64;32;-16;8;-4;2;-1;.5;0;0", "0;.1;.2;.3;.4;.5;.6;.7;.8;.9;1", generateSplines(10,0)
+                "skewX", string(abi.encodePacked(uint256(box.duration > 0 ? box.duration : 10).div(2).toString(),"s")), "0;-64;32;-16;8;-4;2;-1;.5;0;0", "0;.1;.2;.3;.4;.5;.6;.7;.8;.9;1", generateSplines(10,0)
             );
         } else if (animation == 23) {
             // Jello - (bounce skewX w/ ease-in)
