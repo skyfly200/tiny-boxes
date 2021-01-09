@@ -97,7 +97,7 @@ library TinyBoxesRenderer {
         ) = _generateBox(pool, [box.spread, box.grid], [box.widthMin,box.widthMax,box.heightMin,box.heightMax], hatching);
         // lookup a random color from the color palette
         uint8 hue = uint8(pool.uniform(0, 3));
-        uint8 shade = uint8(pool.uniform(0, dVals[2]));
+        uint8 shade = uint8(pool.uniform(0, int256(dVals[2]).sub(1)));
         HSL memory color = Colors.lookupColor(Palette(HSL(box.hue,box.saturation,box.lightness), dVals[3], dVals[2], dVals[1]),hue,shade);
         return Shape(position, size, color);
     }
