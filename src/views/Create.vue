@@ -91,7 +91,8 @@
                 v-expansion-panel-content.section-content
                   template(v-for="option of section.options")
                     template(v-if="!option.show || values[option.show] && !option.hide || (values[option.hide]) == false")
-                      template(v-if="option.type === 'slider'")
+                      ColorPicker(v-if="option.key === 'hue'" :hue="values[option.key]" @input="setHue").picker
+                      template(v-else-if="option.type === 'slider'")
                         v-slider(v-model="values[option.key]" @change="changed" thumb-label required 
                           persistent-hint :hint='option.key === "scheme" ? schemeTitles[values[option.key]] : (option.key === "animation" ? animationTitles[values[option.key]] : "")'
                           :label="option.label" :step="option.step" :min="option.range.min" :max="option.range.max")
@@ -109,11 +110,12 @@ import { sections } from "./create-form";
 import Token from "@/components/Token.vue";
 import Share from "@/components/Share.vue";
 import TooltipIconBtn from "@/components/TooltipIconBtn.vue";
+import ColorPicker from '@radial-color-picker/vue-color-picker';
 import { rejects } from "assert";
 
 export default Vue.extend({
   name: "Create",
-  components: { Token, Share, TooltipIconBtn },
+  components: { Token, Share, TooltipIconBtn, ColorPicker },
   data: function() {
     return {
       id: null as number | null,
@@ -233,6 +235,10 @@ export default Vue.extend({
         t.pauseEndTime = new Date().getTime() + timeLeft;
         t.listenForBlocks();
       }
+    },
+    setHue: function(hue: any) {
+      (this as any).hue = hue;
+      (this as any).changed();
     },
     changed: async function() {
       const t = this as any;
@@ -513,6 +519,7 @@ export default Vue.extend({
 </script>
 
 <style lang="sass">
+@import '~@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.css'
 .v-chip__content
   span
     color: #FFF !important
