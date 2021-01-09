@@ -833,6 +833,19 @@ const tinyboxesABI = [
     {
       "inputs": [
         {
+          "internalType": "address",
+          "name": "rand",
+          "type": "address"
+        }
+      ],
+      "name": "setRandom",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "uint256",
           "name": "_id",
           "type": "uint256"
@@ -1228,9 +1241,9 @@ const store = new Vuex.Store({
       "Square",
       "Mono",
     ],
-    tinyboxesAddress: '0xb78F04EaaE343D2A7c506D42cd1FbC0B407Fe78C',
+    tinyboxesAddress: '0xFF016Ced6c55D087839efec48d2eDB550CeC5fb3',
     openseaStoreURL: 'https://testnets.opensea.io/collection/tinyboxes-v49',
-    openseaTokenURL: 'https://testnets.opensea.io/assets/0xb78F04EaaE343D2A7c506D42cd1FbC0B407Fe78C/',
+    openseaTokenURL: 'https://testnets.opensea.io/assets/0xFF016Ced6c55D087839efec48d2eDB550CeC5fb3/',
     currentAccount: "",
     web3Status: "loading",
     web3: null,
