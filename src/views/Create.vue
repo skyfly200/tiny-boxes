@@ -58,7 +58,7 @@
                 v-spacer
                 vac(v-if="paused" :end-time="pauseEndTime")
                   template(v-slot:process="{ timeObj }")
-                    span {{ `${timeObj.m}:${timeObj.s}` }} to phase {{ Math.floor(id / limit) }}
+                    span {{ `${timeObj.m}:${timeObj.s}` }} to phase {{ Math.floor(id / (limit / 10)) }}
                 v-btn(v-else @click="mintToken" :disabled="!form.valid || soldOut || loading" large color="primary") Mint
           v-alert(v-if="!loading && !form.valid" type="error" prominent outlined border="left").invalid-options Invalid Box Options!
           v-alert(v-if="!loading && soldOut" type="warning" prominent outlined border="left").sold-out
