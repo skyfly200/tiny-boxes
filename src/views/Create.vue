@@ -208,7 +208,8 @@ export default Vue.extend({
       t.lookupLimit();
       t.loadFormDefaults();
       if (t.paramsSet) t.loadParams();
-      t.chnaged();
+      else t.updateParams();
+      t.loadToken();
       t.listenForTokens();
       t.listenForMyTokens();
     }
@@ -250,14 +251,8 @@ export default Vue.extend({
       const t = this as any;
       if (t.values.hatching > t.values.shapes) t.values.hatching = t.values.shapes;
       if (!t.deepEqual(t.$route.query, t.buildQuery())) { // check the values have changed
-        t.loadToken()
-          .then((art: any) => {
-            if (art) t.updateParams();
-            else console.error("Invalid Box Options - No Art ")
-          })
-          .catch((err: any) => {
-            console.error("Invalid Box Options - Call Reverted: ", err)
-          });
+        t.updateParams();
+        t.loadToken();
       }
     },
     randomizeSection: function(section: number | string) {
