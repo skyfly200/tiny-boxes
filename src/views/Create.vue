@@ -58,7 +58,7 @@
                 v-spacer
                 vac(v-if="paused" :end-time="pauseEndTime")
                   template(v-slot:process="{ timeObj }")
-                    span {{ `${timeObj.m}:${timeObj.s} to Next Phase` }}
+                    span {{ `${timeObj.m}:${timeObj.s}` }} to phase {{ Math.floor(id / limit) }}
                 v-btn(v-else @click="mintToken" :disabled="!form.valid || soldOut || loading" large color="primary") Mint
           v-alert(v-if="!loading && !form.valid" type="error" prominent outlined border="left").invalid-options Invalid Box Options!
           v-alert(v-if="!loading && soldOut" type="warning" prominent outlined border="left").sold-out
@@ -413,7 +413,7 @@ export default Vue.extend({
       t.loading = true;
       await t.loadStatus()
       const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette(), settings: [5, 0, 0]};
-      console.log(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.traits, v.settings, v.mirroring, t.id);
+      //console.log(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.traits, v.settings, v.mirroring, t.id);
       this.$store.state.contracts.tinyboxes.methods
         .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.traits, v.settings, v.mirroring, t.id)
         .call()
@@ -483,7 +483,8 @@ export default Vue.extend({
         });
     },
     listenForBlocks: function() {
-      (this as any).blockSubscription = this.$store.state.web3.eth
+      const t = this as any;
+      t.blockSubscription = t.$store.state.web3.eth
         .subscribe("newBlockHeaders", function(error: any, result: any){
             if (!error) {
                 console.log(result);
@@ -491,11 +492,11 @@ export default Vue.extend({
             }
             console.error(error);
         })
-        .on("connected", function(subscriptionId: any){
-            console.log(subscriptionId);
-        })
-        .on("data", function(blockHeader: any){
-            console.log(blockHeader);
+        .on("data", async function(blockHeader: any){
+          const currentBlock = blockHeader.number;
+          const timeLeft = (t.blockStart - currentBlock) * 15000;
+          t.pauseEndTime = new Date().getTime() + timeLeft;
+          t.paused = (currentBlock < t.blockStart);
         })
         .on("error", console.error);
     },
