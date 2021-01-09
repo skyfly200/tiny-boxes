@@ -57,7 +57,7 @@ library Random {
      */
     function weighted(
         bytes32[] memory pool,
-        uint8[9] memory thresholds,
+        uint8[7] memory thresholds,
         uint8 total
     ) internal pure returns (uint8) {
         int256 p = uniform(pool, 1, total);
