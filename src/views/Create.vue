@@ -135,9 +135,7 @@ export default Vue.extend({
       data: null as object | null,
       price: "",
       tx: {},
-      gasEstimate: null,
       limit: null as number | null,
-      retryCount: 0,
       form: {
         section: 0,
         valid: true,
@@ -210,8 +208,7 @@ export default Vue.extend({
       t.lookupLimit();
       t.loadFormDefaults();
       if (t.paramsSet) t.loadParams();
-      else t.updateParams();
-      t.loadToken();
+      t.chnaged();
       t.listenForTokens();
       t.listenForMyTokens();
     }
@@ -252,29 +249,21 @@ export default Vue.extend({
     changed: async function() {
       const t = this as any;
       if (t.values.hatching > t.values.shapes) t.values.hatching = t.values.shapes;
-      t.updateParams();
-      t.loadToken();
+      if (!t.deepEqual(t.$route.query, t.buildQuery())) { // check the values have changed
+        t.loadToken()
+          .then((art: any) => {
+            if (art) t.updateParams();
+            else console.error("Invalid Box Options - No Art ")
+          })
+          .catch((err: any) => {
+            console.error("Invalid Box Options - Call Reverted: ", err)
+          });
+      }
     },
     randomizeSection: function(section: number | string) {
       const t = this as any;
       t.randomize(section);
-      if (t.values.hatching > t.values.shapes) t.values.hatching = t.values.shapes;
-      t.updateParams();
-      t.loadToken()
-        .then((art: any) => {
-          if (art) {
-            t.updateParams();
-            t.retryCount = 0
-          }
-        })
-        .catch((err: any) => {
-          console.error("Invalid Box Options - Call Reverted: ", err)
-          if (t.retryCount < 3) {
-            console.log("Retrying Randomize...")
-            t.retryCount++
-            t.randomizeSection(section)
-          }
-        });
+      t.changed();
     },
     randomize: function(section: number | string) {
       const t = this as any;
@@ -526,6 +515,32 @@ export default Vue.extend({
                 console.log('Successfully unsubscribed blocks listener');
             }
         });
+    },
+    deepEqual(object1: any, object2: any) {
+      const t = this as any;
+      const keys1 = Object.keys(object1);
+      const keys2 = Object.keys(object2);
+
+      if (keys1.length !== keys2.length) {
+        return false;
+      }
+
+      for (const key of keys1) {
+        const val1 = object1[key];
+        const val2 = object2[key];
+        const areObjects = t.isObject(val1) && t.isObject(val2);
+        if (
+          areObjects && !t.deepEqual(val1, val2) ||
+          !areObjects && val1 !== val2
+        ) {
+          return false;
+        }
+      }
+
+      return true;
+    },
+    isObject(object: any) {
+      return object != null && typeof object === 'object';
     },
   },
 });
