@@ -502,7 +502,10 @@ export default Vue.extend({
           const currentBlock = blockHeader.number;
           const timeLeft = (t.blockStart - currentBlock) * 15000;
           t.pauseEndTime = new Date().getTime() + timeLeft;
-          t.paused = (currentBlock < t.blockStart);
+          if (currentBlock >= t.blockStart) {
+            t.paused = false;
+            t.unsubscribeBlocks();
+          }
         })
         .on("error", console.error);
     },
@@ -510,7 +513,7 @@ export default Vue.extend({
         // unsubscribes the subscription
         (this as any).blockSubscription.unsubscribe(function(error: any, success: any){
             if (success) {
-                console.log('Successfully unsubscribed!');
+                console.log('Successfully unsubscribed blocks listener');
             }
         });
     },
