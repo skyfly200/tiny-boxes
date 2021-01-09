@@ -27,7 +27,7 @@
                 span.stat-value {{ data.tokenData.contrast + '%' }}
               .stat-title Contrast
             .shades.stat
-              span.stat-value {{ parseInt(data.tokenData.shades) + 1 }}
+              span.stat-value {{ parseInt(data.tokenData.shades) }}
               .stat-title Shades
             .mirror-a.stat
               span.stat-value {{ data.tokenData.mirroring }}
