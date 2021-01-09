@@ -30,8 +30,8 @@
               span.stat-value {{ parseInt(data.tokenData.shades) }}
               .stat-title Shades
             .mirror-a.stat
-              span.stat-value {{ data.tokenData.mirroring }}
-              .stat-title Mirror Mode
+              span.stat-value {{ Math.floor(data.tokenData.mirroring / 16) % 4 }},{{ Math.floor(data.tokenData.mirroring / 4) % 4 }},{{ data.tokenData.mirroring % 4 }}
+              .stat-title Mirroring
         v-col(cols="12" md="4")
           v-card
             Token(v-if="animate" :id="id+'A'" :data="data.animation" key="anim").token-graphic
