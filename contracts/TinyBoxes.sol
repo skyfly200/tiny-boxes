@@ -72,7 +72,7 @@ contract TinyBoxes is TinyBoxesStore {
         TinyBox memory box = TinyBox({
             randomness: uint128(seed.stringToUint()),
             hue: color[0],
-            saturation: uint8(color[1]),
+            saturation: (id.mod(phaseLen) >= (phaseLen.sub(5))) ? 0 : uint8(color[1]),
             lightness: uint8(color[2]),
             shapes: shapes,
             hatching: hatching,

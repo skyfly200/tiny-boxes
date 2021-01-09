@@ -370,6 +370,7 @@ export default Vue.extend({
       return out;
     },
     assemblePalette: function() {
+      const t = this as any;
       const v = (this as any).values;
       return [
         v.hue,
