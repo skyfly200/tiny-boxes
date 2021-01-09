@@ -31,7 +31,7 @@ export const sections: Array<object> = [
           max: 100,
         },
         range: {
-          min: 10,
+          min: 20,
           max: 100,
         },
       },
