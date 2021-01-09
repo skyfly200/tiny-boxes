@@ -62,7 +62,7 @@ library Random {
     ) internal pure returns (uint8) {
         int256 p = uniform(pool, 1, total);
         int256 s = 0;
-        for (uint8 i=0; i<9; i++) {
+        for (uint8 i=0; i<7; i++) {
             s = s.add(thresholds[i]);
             if (p <= s) return i;
         }

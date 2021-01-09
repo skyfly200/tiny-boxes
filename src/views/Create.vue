@@ -151,7 +151,7 @@ export default Vue.extend({
         m1: 3,
         m2: 3,
         m3: 3,
-        traits: [0,0,0,0],
+        traits: [0,0,0,10],
       },
       sections: sections,
     };
@@ -413,6 +413,7 @@ export default Vue.extend({
       t.loading = true;
       await t.loadStatus()
       const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette(), settings: [5, 0, 0]};
+      console.log(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.traits, v.settings, v.mirroring, t.id);
       this.$store.state.contracts.tinyboxes.methods
         .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.traits, v.settings, v.mirroring, t.id)
         .call()
