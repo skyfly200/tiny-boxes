@@ -214,7 +214,7 @@ export default Vue.extend({
       const priceLookup = t.getPrice();
       t.id = await idLookup;
       t.price = await priceLookup;
-      t.values.traits[1] =t.id == 0 ? 0 : Math.round(t.id / (t.limit / 10)); // auto update scheme preview
+      t.values.traits[1] = t.id == 0 ? 0 : Math.floor(t.id / (t.limit / 10)); // auto update scheme preview
     },
     changed: async function() {
       const t = this as any;
