@@ -1,9 +1,9 @@
 <template lang="pug">
     .colors-grid
-      svg(:width="(2.2*(parseInt(shades)+1)) + 'em'" :height="(2.2*(schemeH(scheme).length)) + 'em'")
+      svg(:width="(2.2*(parseInt(shades))) + 'em'" :height="(2.2*(schemeH(scheme).length)) + 'em'")
         g(v-for="h,i of schemeH(scheme)")
           rect(v-for="s in parseInt(shades)" :x="2.2*(s-1)+'em'" :y="2.2*i+'em'" width="2.2em" height="2.2em"
-            :style="'fill: hsl('+(parseInt(color[0])+h)+','+color[1]+'%,'+calcShade(s-1)+'%)'")
+            :style="'fill: hsl('+(parseInt(color[0])+h)+','+color[1]+'%,'+calcShade(s)+'%)'")
 </template>
 
 <script lang="ts">
