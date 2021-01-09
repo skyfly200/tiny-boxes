@@ -50,6 +50,13 @@ contract TinyBoxesStore is TinyBoxesPricing {
     }
 
     /**
+     * @dev set Randomizer
+     */
+    function setRandom(address rand) external onlyRole(ADMIN_ROLE) {
+        entropySource = Randomizer(rand);
+    }
+
+    /**
      * @dev pause minting
      */
     function setPause(bool state) external onlyRole(ADMIN_ROLE) {

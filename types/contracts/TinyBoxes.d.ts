@@ -139,6 +139,8 @@ export class TinyBoxes extends Contract {
 
     setPause(state: boolean): TransactionObject<void>;
 
+    setRandom(rand: string): TransactionObject<void>;
+
     setTokenURI(_id: number | string, _uri: string): TransactionObject<void>;
 
     startPrice(): TransactionObject<string>;
