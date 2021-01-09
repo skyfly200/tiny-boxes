@@ -144,7 +144,7 @@ export default Vue.extend({
         m1: 3,
         m2: 3,
         m3: 3,
-        traits: [0,0,9,0],
+        traits: [0,0,0,0],
       },
       sections: sections,
     };
@@ -214,6 +214,7 @@ export default Vue.extend({
       const priceLookup = t.getPrice();
       t.id = await idLookup;
       t.price = await priceLookup;
+      t.values.traits[1] = t.id / (t.limit / 10); // auto update scheme preview
     },
     changed: async function() {
       const t = this as any;
