@@ -246,7 +246,7 @@ export default Vue.extend({
       }
     },
     setHue: function(hue: any) {
-      (this as any).hue = hue;
+      (this as any).color.hue = hue;
       (this as any).changed();
     },
     changed: async function() {
