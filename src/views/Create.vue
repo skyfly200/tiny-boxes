@@ -96,12 +96,12 @@
                   template(v-else-if="section.title === 'Shapes'")
                     v-slider(v-model="values.shapes" @change="changed" thumb-label required label="Count" min="1" max="30")
                     v-slider(v-model="values.hatching" @change="changed" thumb-label required label="Hatching" min="1" :max="values.shapes")
-                    v-range-slider(v-model="values.width" @change="changed" thumb-label required label="Width" step="" min="1" max="255")
-                    v-range-slider(v-model="values.height" @change="changed" thumb-label required label="Height" step="" min="1" max="255")
+                    v-range-slider(v-model="values.width" @change="changed" thumb-label required label="Width" step="1" min="1" max="255")
+                    v-range-slider(v-model="values.height" @change="changed" thumb-label required label="Height" step="1" min="1" max="255")
                   template(v-else-if="section.title === 'Placement'")
                     v-slider(v-model="values.spread" @change="changed" thumb-label required label="Spread" min="0" max="100")
-                    v-slider(v-model="values.rows" @change="changed" thumb-label required label="Rows" min="1" max="")
-                    v-slider(v-model="values.cols" @change="changed" thumb-label required label="Columns" min="1" max="")
+                    v-slider(v-model="values.rows" @change="changed" thumb-label required label="Rows" min="1" max="16")
+                    v-slider(v-model="values.cols" @change="changed" thumb-label required label="Columns" min="1" max="16")
                   template(v-else-if="section.title === 'Mirroring'")
                     v-slider(v-model="values.m1" @change="changed" thumb-label required label="Level 1" min="0" max="3")
                     v-slider(v-model="values.m2" @change="changed" thumb-label required label="Level 2" min="0" max="3")
@@ -418,7 +418,7 @@ export default Vue.extend({
       v.width = v.width.sort((a: any,b: any) => a - b);
       v.height = v.height.sort((a: any,b: any) => a - b);
       return {
-        spacing: [ v.spread, (v.rows * 16) + v.cols ],
+        spacing: [ v.spread, ((v.rows-1) * 16) + v.cols-1 ],
         size: [ ...v.width, ...v.height ],
         mirroring: v.m1 + (v.m2 * 4) + (v.m3 * 16)
       };
