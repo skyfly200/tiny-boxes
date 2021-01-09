@@ -140,9 +140,9 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         uint8[24] memory animationBins = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
 
         // update RNG set values
-        parts[0] = uint8(pool.weighted(animationBins)); // animation
+        parts[0] = uint8(pool.weighted(animationBins, 24)); // animation
         parts[1] = uint8(id.div(phaseLen)); // scheme
-        parts[2] = uint8(pool.weighted(shadesBins)); //, shades
+        parts[2] = uint8(pool.weighted(shadesBins, 15)); //, shades
         parts[3] = uint8(pool.uniform(0, box.lightness)); // contrast
     }
 }

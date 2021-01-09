@@ -58,9 +58,9 @@ library Random {
     function weighted(
         bytes32[] memory pool,
         uint8[9] memory thresholds,
-        uint8 max
+        uint8 total
     ) internal pure returns (uint8) {
-        int256 p = uniform(pool, 1, max);
+        int256 p = uniform(pool, 1, total);
         int256 s = 0;
         for (uint8 i=0; i<thresholds.length; i++) {
             s = s.add(thresholds[i]);
@@ -74,9 +74,9 @@ library Random {
     function weighted(
         bytes32[] memory pool,
         uint8[24] memory thresholds,
-        uint8 max
+        uint8 total
     ) internal pure returns (uint8) {
-        int256 p = uniform(pool, 1, max);
+        int256 p = uniform(pool, 1, total);
         int256 s = 0;
         for (uint8 i=0; i<thresholds.length; i++) {
             s = s.add(thresholds[i]);
