@@ -1,4 +1,42 @@
 export const sections: Array<object> = [
+  
+  {
+    title: "Color",
+    rand: true,
+    options: [
+      {
+        label: "Hue",
+        key: "color.hue",
+        type: "slider",
+        range: {
+          min: 0,
+          max: 360,
+        },
+      },
+      {
+        label: "Saturation",
+        key: "color.saturation",
+        type: "slider",
+        range: {
+          min: 10,
+          max: 100,
+        },
+      },
+      {
+        label: "Lightness",
+        key: "color.luminosity",
+        type: "slider",
+        rand: {
+          min: 30,
+          max: 100,
+        },
+        range: {
+          min: 10,
+          max: 100,
+        },
+      },
+    ],
+  },
   {
     title: "Shapes",
     rand: true,
@@ -78,43 +116,6 @@ export const sections: Array<object> = [
         range: {
           min: 1,
           max: 15,
-        },
-      },
-    ],
-  },
-  {
-    title: "Color",
-    rand: true,
-    options: [
-      {
-        label: "Hue",
-        key: "hue",
-        type: "slider",
-        range: {
-          min: 0,
-          max: 360,
-        },
-      },
-      {
-        label: "Saturation",
-        key: "saturation",
-        type: "slider",
-        range: {
-          min: 10,
-          max: 100,
-        },
-      },
-      {
-        label: "Lightness",
-        key: "lightness",
-        type: "slider",
-        rand: {
-          min: 30,
-          max: 100,
-        },
-        range: {
-          min: 10,
-          max: 100,
         },
       },
     ],

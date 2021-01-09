@@ -89,17 +89,24 @@
                         v-icon mdi-dice-multiple
                     span Randomize
                 v-expansion-panel-content.section-content
-                  template(v-for="option of section.options")
-                    template(v-if="!option.show || values[option.show] && !option.hide || (values[option.hide]) == false")
-                      ColorPicker(v-if="option.key === 'hue'" :hue="values[option.key]" @input="setHue").picker
-                      template(v-else-if="option.type === 'slider'")
-                        v-slider(v-model="values[option.key]" @change="changed" thumb-label required 
-                          persistent-hint :hint='option.key === "scheme" ? schemeTitles[values[option.key]] : (option.key === "animation" ? animationTitles[values[option.key]] : "")'
-                          :label="option.label" :step="option.step" :min="option.range.min" :max="option.range.max")
-                      v-range-slider(v-else-if="option.type === 'range-slider'" v-model="values[option.key]" @change="changed" thumb-label required
-                        :step="option.step" :label="option.label" :min="option.range.min" :max="option.range.max")
-                      v-switch(v-else-if="option.type === 'switch'" v-model="values[option.key]" @change="changed" :label="option.label").switch
-                      v-text-field(v-else v-model="values[option.key]" @change="changed" :label="option.label" required outlined type="number")
+                  template(v-if="section.title === 'Color'")
+                    ColorPicker(v-bind="values.color" @change="setHue").picker
+                    v-slider(v-model="values.color.saturation" @change="changed" thumb-label required label="Saturation" min="10" max="100")
+                    v-slider(v-model="values.color.luminosity" @change="changed" thumb-label required label="Lightness" min="0" max="100")
+                  template(v-else-if="section.title === 'Shapes'")
+                    v-slider(v-model="values.shapes" @change="changed" thumb-label required label="Count" min="1" max="30")
+                    v-slider(v-model="values.hatching" @change="changed" thumb-label required label="Hatching" min="1" :max="values.shapes")
+                    v-range-slider(v-model="values.width" @change="changed" thumb-label required label="Width" step="" min="1" max="255")
+                    v-range-slider(v-model="values.height" @change="changed" thumb-label required label="Height" step="" min="1" max="255")
+                  template(v-else-if="section.title === 'Placement'")
+                    v-slider(v-model="values.spread" @change="changed" thumb-label required label="Spread" min="0" max="100")
+                    v-slider(v-model="values.rows" @change="changed" thumb-label required label="Rows" min="1" max="")
+                    v-slider(v-model="values.cols" @change="changed" thumb-label required label="Columns" min="1" max="")
+                  template(v-else-if="section.title === 'Mirroring'")
+                    v-slider(v-model="values.m1" @change="changed" thumb-label required label="Level 1" min="0" max="3")
+                    v-slider(v-model="values.m2" @change="changed" thumb-label required label="Level 2" min="0" max="3")
+                    v-slider(v-model="values.m3" @change="changed" thumb-label required label="Level 3" min="0" max="3")
+                      
 </template>
 
 <script lang="ts">
@@ -146,9 +153,11 @@ export default Vue.extend({
         spread: 50,
         rows: 2,
         cols: 2,
-        hue: Date.now() % 360,
-        saturation: 80,
-        lightness: 70,
+        color: {
+          hue: Date.now() % 360,
+          saturation: 80,
+          luminosity: 70
+        },
         animate: false,
         m1: 3,
         m2: 3,
@@ -351,7 +360,7 @@ export default Vue.extend({
         s: [v.shapes, v.hatching].join("-"), // shapes - count, hatching
         d: [v.width.join("~"), v.height.join("~")].join("-"), // dimensions ranges
         p: [v.spread, (v.rows * 16) + v.cols].join("-"), // positioning - spread, grid
-        c: [v.hue, v.saturation, v.lightness].join("-"), // color - hue, saturation, lightness, contrast
+        c: [v.color.hue, v.color.saturation, v.color.luminosity].join("-"), // color - hue, saturation, luminosity
         m: [v.m1, v.m2, v.m3].join("-") // mirroring levels
       };
       return out;
@@ -373,9 +382,11 @@ export default Vue.extend({
         spread: p[0],
         rows: (p[1] / 16),
         cols: (p[1] % 16),
-        hue: c[0],
-        saturation: c[1],
-        lightness:c[2],
+        color: {
+          hue: c[0],
+          saturation: c[1],
+          luminosity: c[2],
+        },
         m1: m[0],
         m2: m[1],
         m3: m[2],
@@ -386,10 +397,9 @@ export default Vue.extend({
       const out: any = {};
       // check true, false, array, string, number
       for (const [i,q] of Object.entries(query)) {
-        out[i] = q === "true" ? true : 
-          ( q === "false" ? false : 
-            ( Array.isArray(q) ? (q as any).map((v: any) => parseInt(v)) :
-              ( ( i === "seed" || isNaN(parseInt(q as any)) ) ? q : parseInt(q as any) ) ) );
+        out[i] =
+          ( Array.isArray(q) ? (q as any).map((v: any) => parseInt(v)) :
+            ( ( i === "seed" || isNaN(parseInt(q as any)) ) ? q : parseInt(q as any) ) );
       }
       return out;
     },
@@ -397,9 +407,9 @@ export default Vue.extend({
       const t = this as any;
       const v = (this as any).values;
       return [
-        v.hue,
-        v.saturation,
-        v.lightness
+        v.color.hue,
+        v.color.saturation,
+        v.color.luminosity
       ];
     },
     assembleDials: function() {
@@ -418,10 +428,10 @@ export default Vue.extend({
       if (!t.form.valid) { console.log("Invalid Form Values"); return; }
       t.loading = true;
       await t.loadStatus()
-      const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette(), settings: [5, 0, 0]};
+      const v = {...t.values, ...t.assembleDials(), palette: t.assemblePalette(), settings: [5, 0, 0]};
       //console.log(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.traits, v.settings, v.mirroring, t.id);
       this.$store.state.contracts.tinyboxes.methods
-        .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.traits, v.settings, v.mirroring, t.id)
+        .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.palette, v.size, v.spacing, v.traits, v.settings, v.mirroring, t.id)
         .call()
         .then((result: any) => {
           t.data = result;
@@ -434,14 +444,14 @@ export default Vue.extend({
     },
     mintToken: async function() {
       const t = this as any;
-      const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette()};
+      const v = {...t.values, ...t.assembleDials(), palette: t.assemblePalette()};
       t.price = await t.getPrice();
       t.tx = {
         from: this.currentAccount,
         to: this.$store.state.tinyboxesAddress,
         value: t.price,
         data: this.$store.state.contracts.tinyboxes.methods
-          .buyFor(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.mirroring, this.currentAccount)
+          .buyFor(v.seed.toString(), v.shapes, v.hatching, v.palette, v.size, v.spacing, v.mirroring, this.currentAccount)
           .encodeABI(),
       };
       //t.gasEstimate = await t.$store.state.web3.eth.estimateGas(t.tx);
