@@ -4,6 +4,9 @@ import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
+import vueAwesomeCountdown from "vue-awesome-countdown";
+
+Vue.use(vueAwesomeCountdown, 'vac') // Component name, `countdown` and `vac` by default
 
 Vue.config.productionTip = false;
 
