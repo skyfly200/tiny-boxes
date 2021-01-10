@@ -4,22 +4,23 @@ pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/math/SignedSafeMath.sol";
 
-import "./TinyBoxesPricing.sol";
+import "./TinyBoxesBase.sol";
 
 interface Randomizer {
     function returnValue() external returns (bytes32);
 }
 
-contract TinyBoxesStore is TinyBoxesPricing {
+contract TinyBoxesStore is TinyBoxesBase {
     using SafeMath for uint256;
     using SignedSafeMath for int256;
     using Utils for *;
 
     Randomizer entropySource;
 
+    uint256 public price = 35000000000000000; // in wei
+
     /**
      * @dev Contract constructor.
-     * @notice Constructor inherits from TinyBoxesPricing
      */
     constructor(address entropySourceAddress, uint256 startBlock)
         public
@@ -69,7 +70,6 @@ contract TinyBoxesStore is TinyBoxesPricing {
     function handlePayment() internal {
         // check for suficient payment
         uint256 amount = msg.value;
-        uint256 price = currentPrice();
         require(amount >= price, "insuficient payment");
         // give change if they over pay
         if (amount > price) msg.sender.transfer(amount - price);

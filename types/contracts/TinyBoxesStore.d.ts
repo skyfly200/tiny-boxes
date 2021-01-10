@@ -59,8 +59,6 @@ export class TinyBoxesStore extends Contract {
       settings: (number | string)[]
     ): TransactionObject<void>;
 
-    currentPrice(): TransactionObject<string>;
-
     getApproved(tokenId: number | string): TransactionObject<string>;
 
     getRoleAdmin(role: string | number[]): TransactionObject<string>;
@@ -99,9 +97,7 @@ export class TinyBoxesStore extends Contract {
 
     phaseLen(): TransactionObject<string>;
 
-    priceAt(_id: number | string): TransactionObject<string>;
-
-    priceIncrease(): TransactionObject<string>;
+    price(): TransactionObject<string>;
 
     readSettings(
       id: number | string
@@ -138,8 +134,6 @@ export class TinyBoxesStore extends Contract {
     setPause(state: boolean): TransactionObject<void>;
 
     setRandom(rand: string): TransactionObject<void>;
-
-    startPrice(): TransactionObject<string>;
 
     supportsInterface(
       interfaceId: string | number[]
