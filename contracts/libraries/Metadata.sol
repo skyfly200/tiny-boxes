@@ -154,8 +154,22 @@ library Metadata {
             '</contract>'
         ));
 
+        string memory settings = string(abi.encodePacked(
+            '<settings>',
+                '<bkg>',
+                    uint256(box.bkg).toString(),
+                '</bkg>',
+                '<duration>',
+                    uint256(box.duration).toString(),
+                '</duration>',
+                '<options>',
+                    uint256(box.options).toString(),
+                '</options>',
+            '</settings>'
+        ));
+
         string memory renderedAt = string(abi.encodePacked('<rendered-at>',now.toString(),'</rendered-at>')); // TODO: add timestamp here
 
-        return string(abi.encodePacked('<metadata>', contractAddress, renderedAt, token, animation, colors, shapes, placement, mirror, '</metadata>'));
+        return string(abi.encodePacked('<metadata>', contractAddress, renderedAt, token, settings, animation, colors, shapes, placement, mirror, '</metadata>'));
     }
 }
