@@ -135,6 +135,8 @@ export class TinyBoxesStore extends Contract {
 
     setRandom(rand: string): TransactionObject<void>;
 
+    startCoundown(startBlock: number | string): TransactionObject<void>;
+
     supportsInterface(
       interfaceId: string | number[]
     ): TransactionObject<boolean>;

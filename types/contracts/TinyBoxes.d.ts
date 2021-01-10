@@ -139,6 +139,8 @@ export class TinyBoxes extends Contract {
 
     setTokenURI(_id: number | string, _uri: string): TransactionObject<void>;
 
+    startCoundown(startBlock: number | string): TransactionObject<void>;
+
     supportsInterface(
       interfaceId: string | number[]
     ): TransactionObject<boolean>;

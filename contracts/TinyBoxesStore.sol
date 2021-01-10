@@ -22,11 +22,10 @@ contract TinyBoxesStore is TinyBoxesBase {
     /**
      * @dev Contract constructor.
      */
-    constructor(address entropySourceAddress, uint256 startBlock)
+    constructor(address entropySourceAddress)
         public
         TinyBoxesBase()
     {
-        blockStart = startBlock;
         entropySource = Randomizer(entropySourceAddress);
     }
 
