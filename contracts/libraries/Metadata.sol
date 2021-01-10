@@ -129,13 +129,11 @@ library Metadata {
         string memory mirror = _generateMirrorMetadata(box);
 
         string memory animation = string(abi.encodePacked(
+            '<animated>',
+                (box.options % 2 == 1) ? 'true' : 'false',
+            '</animated>',
             '<animation>',
-                '<animated>',
-                    (box.options % 2 == 1) ? 'true' : 'false',
-                '</animated>',
-                '<id>',
-                    uint256(dVals[0]).toString(),
-                '</id>',
+                uint256(dVals[0]).toString(),
             '</animation>'
         ));
 
