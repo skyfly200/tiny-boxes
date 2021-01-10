@@ -45,32 +45,32 @@ This specifies a position for an axis in the X and Y dimension
 A final scale value for zooming in on basic mirroring schemes, default is 10 (100%)
 
 ## Animation
-Titles
+The animation is randomly selected.
+Animation rendering may be disabled to show the static token art.
+The duration modifier in the renderer allows you to adjust the length/speed of the animation.
 
-### Samples
-[Animation 0](./img/Anim-0.svg)
-[Animation 1](./img/Anim-1.svg)
-[Animation 2](./img/Anim-2.svg)
-[Animation 3](./img/Anim-3.svg)
-[Animation 4](./img/Anim-4.svg)
-[Animation 5](./img/Anim-5.svg)
-[Animation 6](./img/Anim-6.svg)
-[Animation 7](./img/Anim-7.svg)
-[Animation 8](./img/Anim-8.svg)
-[Animation 9](./img/Anim-9.svg)
-[Animation 10](./img/Anim-10.svg)
-[Animation 11](./img/Anim-11.svg)
-[Animation 12](./img/Anim-12.svg)
-[Animation 13](./img/Anim-13.svg)
-[Animation 14](./img/Anim-14.svg)
-[Animation 15](./img/Anim-15.svg)
-[Animation 16](./img/Anim-16.svg)
-[Animation 17](./img/Anim-17.svg)
-[Animation 18](./img/Anim-18.svg)
-[Animation 19](./img/Anim-19.svg)
-[Animation 20](./img/Anim-20.svg)
-[Animation 21](./img/Anim-21.svg)
-[Animation 22](./img/Anim-22.svg)
-[Animation 23](./img/Anim-23.svg)
-
-Animated vs Static
+### Animation Samples
+[Snap Spin 90](./img/Anim-0.svg)
+[Snap Spin 180](./img/Anim-1.svg)
+[Snap Spin 270](./img/Anim-2.svg)
+[Snap Spin Tri](./img/Anim-3.svg)
+[Snap Spin Quad](./img/Anim-4.svg)
+[Snap Spin Tetra](./img/Anim-5.svg)
+[Spin](./img/Anim-6.svg)
+[Slow Mo](./img/Anim-7.svg)
+[Clockwork](./img/Anim-8.svg)
+[Spread](./img/Anim-9.svg)
+[Staggered Spread](./img/Anim-10.svg)
+[Jitter](./img/Anim-11.svg)
+[Giggle](./img/Anim-12.svg)
+[Jolt](./img/Anim-13.svg)
+[Grow n Shrink](./img/Anim-14.svg)
+[Squash n Stretch](./img/Anim-15.svg)
+[Round](./img/Anim-16.svg)
+[Glide](./img/Anim-17.svg)
+[Wave](./img/Anim-18.svg)
+[Fade](./img/Anim-19.svg)
+[Skew X](./img/Anim-20.svg)
+[Skew Y](./img/Anim-21.svg)
+[Stretch](./img/Anim-22.svg)
+[Jello](./img/Anim-23.svg)
