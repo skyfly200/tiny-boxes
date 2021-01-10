@@ -262,16 +262,19 @@ export default Vue.extend({
     },
     randomize: function(section: number | string) {
       const t = this as any;
-      const randomSettings: any = {};
+      const randomSettings: any = {
+        color: {
+          hue: t.between({ min: 0, max: 359 }),
+          saturation: t.between({ min: 20, max: 100 }),
+          luminosity: t.between({ min: 30, max: 100 })
+        }
+      };
       for (const s of (section === "all") ? t.sections : [t.sections[section]]) {
         if (s.rand) {
           for (const o of s.options) {
             if (o.rand !== false && !t.values[o.hide] && t.values[o.show] !== false) {
               const range = o.rand ? o.rand : o.range;
               switch (o.type) {
-                case "switch":
-                  randomSettings[o.key] = Math.random() > (o.randWeight ? o.randWeight : 0.5);
-                  break;
                 case "range-slider":
                   randomSettings[o.key] = [range, range]
                     .map((r) => t.between(r))
@@ -288,9 +291,7 @@ export default Vue.extend({
       Object.assign(t.values, randomSettings);
     },
     between: function(range: any) {
-      return Math.floor(
-        Math.random() * (range.max - range.min + 1) + range.min
-      );
+      return Math.floor( Math.random() * (range.max - range.min + 1) + range.min );
     },
     formatHash(account: string) {
       return "0x" + account.slice(2, 6) + "...." + account.slice(-4);

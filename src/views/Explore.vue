@@ -61,12 +61,11 @@ export default Vue.extend({
     randomize: function() {
       const t = this as any;
       const randomSettings: any = {
-        traits: [
-          0,
-          Math.floor(t.id / (t.limit / 10)),
-          1,//t.between(1, 7),
-          70
-        ]
+        color: {
+          hue: t.between({ min: 0, max: 359 }),
+          saturation: t.between({ min: 20, max: 100 }),
+          luminosity: t.between({ min: 30, max: 100 })
+        }
       };
       for (const s of t.sections) {
         if (s.rand) {
@@ -85,6 +84,13 @@ export default Vue.extend({
           }
         }
       }
+      randomSettings.traits = [
+        0,
+        Math.floor(t.id / (t.limit / 10)),
+        t.between({ min: 1, max: 7 }),
+        t.between({ min: 0, max: randomSettings.color.luminosity })
+      ];
+      console.log(randomSettings);
       Object.assign(t.values, randomSettings);
       if (t.values.hatching > t.values.shapes) t.values.hatching = t.values.shapes;
       return randomSettings;
