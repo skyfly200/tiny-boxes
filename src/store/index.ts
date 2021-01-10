@@ -13,6 +13,11 @@ const tinyboxesABI = [
           "internalType": "address",
           "name": "rand",
           "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "startBlock",
+          "type": "uint256"
         }
       ],
       "stateMutability": "nonpayable",
@@ -395,19 +400,6 @@ const tinyboxesABI = [
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "currentPrice",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "price",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
           "internalType": "uint256",
@@ -639,27 +631,8 @@ const tinyboxesABI = [
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_id",
-          "type": "uint256"
-        }
-      ],
-      "name": "priceAt",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "price",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [],
-      "name": "priceIncrease",
+      "name": "price",
       "outputs": [
         {
           "internalType": "uint256",
@@ -859,19 +832,6 @@ const tinyboxesABI = [
       "name": "setTokenURI",
       "outputs": [],
       "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "startPrice",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -1241,9 +1201,9 @@ const store = new Vuex.Store({
       "Square",
       "Mono",
     ],
-    tinyboxesAddress: '0x7d7903099EF121E2c0165aCFed1ea50E1f693435',
+    tinyboxesAddress: '0xD649A3abd07B9b60772d45B949C8DF607a101256',
     openseaStoreURL: 'https://testnets.opensea.io/collection/tinyboxes-v49',
-    openseaTokenURL: 'https://testnets.opensea.io/assets/0x7d7903099EF121E2c0165aCFed1ea50E1f693435/',
+    openseaTokenURL: 'https://testnets.opensea.io/assets/0xD649A3abd07B9b60772d45B949C8DF607a101256/',
     currentAccount: "",
     web3Status: "loading",
     web3: null,

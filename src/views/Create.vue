@@ -219,7 +219,7 @@ export default Vue.extend({
       return this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
     },
     getPrice: function() {
-      return this.$store.state.contracts.tinyboxes.methods.currentPrice().call();
+      return this.$store.state.contracts.tinyboxes.methods.price().call();
     },
     lookupLimit: async function() {
       (this as any).limit = await this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
@@ -414,7 +414,7 @@ export default Vue.extend({
       t.loading = true;
       await t.loadStatus()
       const v = {...t.values, ...t.assembleDials(), palette: t.assemblePalette(), settings: [5, 0, 0]};
-      //console.log(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.traits, v.settings, v.mirroring, t.id);
+      console.log(v, t.id);
       this.$store.state.contracts.tinyboxes.methods
         .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.palette, v.size, v.spacing, v.traits, v.settings, v.mirroring, t.id)
         .call()
