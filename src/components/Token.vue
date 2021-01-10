@@ -1,6 +1,6 @@
 <template lang="pug">
   .token
-    v-img(:src="src" :key="id").token-svg
+    v-img(:src="src" :key="id" aspect-ratio="1").token-svg
 </template>
 
 <script>
