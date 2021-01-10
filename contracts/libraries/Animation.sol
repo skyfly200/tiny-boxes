@@ -273,8 +273,8 @@ library Animation {
             return _animateTransform( "scale", duration, values, times, generateSplines(4,0) );
         } else if (animation == 19) {
             // Phased Fade
-            uint256 fadeOut = uint256(100).add(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
-            uint256 fadeIn = uint256(900).sub(uint256(box.shapes).sub(shapeIndex).mul(uint256(700).div(uint256(box.shapes))));
+            uint256 fadeOut = uint256(100).add(uint256(box.shapes).sub(shapeIndex).mul(uint256(800).div(uint256(box.shapes))));
+            uint256 fadeIn = uint256(900).sub(uint256(box.shapes).sub(shapeIndex).mul(uint256(800).div(uint256(box.shapes))));
             string memory times = string(abi.encodePacked("0;0.", fadeOut.toString(), ";0.", fadeIn.toString(), ";1"));
             return _animate("opacity", duration, "1;0;0;1", times, generateSplines(3,0) );
         } else if (animation == 20) {

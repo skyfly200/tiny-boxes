@@ -57,17 +57,17 @@ library Metadata {
      * @dev render the header of the SVG markup
      * @return header string
      */
-    function _generateColorMetadata(TinyBox memory box, uint8 schemeId, uint8 shadesCount, uint8 contrastAmt) internal pure returns (string memory) {
-        string memory scheme = string(abi.encodePacked('<scheme>', uint256(schemeId).toString(), '</scheme>'));
+    function _generateColorMetadata(TinyBox memory box, uint8[4] memory dVals) internal pure returns (string memory) {
         string memory rootHue = string(abi.encodePacked('<hue>', uint256(box.hue).toString(), '</hue>'));
         string memory saturation = string(abi.encodePacked('<saturation>', uint256(box.saturation).toString(), '</saturation>'));
         string memory lightness = string(abi.encodePacked('<lightness>', uint256(box.lightness).toString(), '</lightness>'));
-        string memory contrast = string(abi.encodePacked('<contrast>', uint256(contrastAmt).toString(), '</contrast>'));
-        string memory shades = string(abi.encodePacked('<shades>', uint256(shadesCount).toString(), '</shades>'));
+        string memory scheme = string(abi.encodePacked('<scheme>', uint256(dVals[1]).toString(), '</scheme>'));
+        string memory shades = string(abi.encodePacked('<shades>', uint256(dVals[2]).toString(), '</shades>'));
+        string memory contrast = string(abi.encodePacked('<contrast>', uint256(dVals[3]).toString(), '</contrast>'));
 
         return string(abi.encodePacked(
             '<color>',
-            scheme, rootHue, saturation, lightness, contrast, shades, 
+            rootHue, saturation, lightness, scheme, shades, contrast,
             '</color>'
         ));
     }
@@ -108,11 +108,11 @@ library Metadata {
      * @dev render the header of the SVG markup
      * @return header string
      */
-    function _generateMirrorMetadata(uint8[4] memory dVals) internal pure returns (string memory) {
+    function _generateMirrorMetadata(TinyBox memory box) internal pure returns (string memory) {
         return string(abi.encodePacked(
             '<mirror>',
                 '<mirror-mode>',
-                    uint256(dVals[3]).toString(),
+                    uint256(box.mirroring).toString(),
                 '</mirror-mode>',
             '</mirror>'
         ));
@@ -123,10 +123,10 @@ library Metadata {
      * @return header string
      */
     function _generateMetadata(TinyBox memory box, uint8[4] memory dVals, uint256 id, address owner) internal view returns (string memory) {
-        string memory colors = _generateColorMetadata(box, dVals[1], dVals[2], dVals[3]);
+        string memory colors = _generateColorMetadata(box, dVals);
         string memory shapes = _generateShapesMetadata(box);
         string memory placement = _generatePlacementMetadata(box);
-        string memory mirror = _generateMirrorMetadata(dVals);
+        string memory mirror = _generateMirrorMetadata(box);
 
         string memory animation = string(abi.encodePacked(
             '<animation>',
