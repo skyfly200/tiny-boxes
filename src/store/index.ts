@@ -13,11 +13,6 @@ const tinyboxesABI = [
           "internalType": "address",
           "name": "rand",
           "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "startBlock",
-          "type": "uint256"
         }
       ],
       "stateMutability": "nonpayable",
@@ -837,6 +832,19 @@ const tinyboxesABI = [
     {
       "inputs": [
         {
+          "internalType": "uint256",
+          "name": "startBlock",
+          "type": "uint256"
+        }
+      ],
+      "name": "startCoundown",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "bytes4",
           "name": "interfaceId",
           "type": "bytes4"
@@ -1201,9 +1209,9 @@ const store = new Vuex.Store({
       "Square",
       "Mono",
     ],
-    tinyboxesAddress: '0xD649A3abd07B9b60772d45B949C8DF607a101256',
+    tinyboxesAddress: '0x3b829CFD48e2C7df548Cab8AF0E42eC788869134',
     openseaStoreURL: 'https://testnets.opensea.io/collection/tinyboxes-v49',
-    openseaTokenURL: 'https://testnets.opensea.io/assets/0xD649A3abd07B9b60772d45B949C8DF607a101256/',
+    openseaTokenURL: 'https://testnets.opensea.io/assets/0x3b829CFD48e2C7df548Cab8AF0E42eC788869134/',
     currentAccount: "",
     web3Status: "loading",
     web3: null,
