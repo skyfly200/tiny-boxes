@@ -12,9 +12,9 @@ contract TinyBoxes is TinyBoxesStore {
      * @dev Contract constructor.
      * @notice Constructor inherits from TinyBoxesStore
      */
-    constructor(address rand)
+    constructor(address rand, uint256 startBlock)
         public
-        TinyBoxesStore(rand)
+        TinyBoxesStore(rand, startBlock)
     {}
 
     /**

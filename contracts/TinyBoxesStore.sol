@@ -21,11 +21,11 @@ contract TinyBoxesStore is TinyBoxesPricing {
      * @dev Contract constructor.
      * @notice Constructor inherits from TinyBoxesPricing
      */
-    constructor(address entropySourceAddress)
+    constructor(address entropySourceAddress, uint256 startBlock)
         public
         TinyBoxesBase()
     {
-        blockStart = block.number;
+        blockStart = startBlock;
         entropySource = Randomizer(entropySourceAddress);
     }
 
