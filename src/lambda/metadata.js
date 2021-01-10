@@ -248,6 +248,7 @@ exports.handler = async (event, context) => {
           value: block.timestamp,
         },
         {
+          display_type: "date",
           trait_type: 'Rendered',
           value: Date.now(),
         },
