@@ -141,11 +141,14 @@ export default Vue.extend({
   mounted: async function() {
     await this.$store.dispatch("initialize");
     const t = this as any;
-    const owner = await t.$store.state.contracts.tinyboxes.methods.ownerOf(t.id).call();
-    // check token exists
-    t.exists = owner > 0;
-    if (t.exists) await t.loadToken();
-    else t.loading = false;
+    t.$store.state.contracts.tinyboxes.methods.ownerOf(t.id).call()
+    .then( (owner: any) => {
+      t.exists = owner > 0;
+      t.loadToken();
+    })
+    .catch( () => {
+      t.loading = false;
+    });
   },
   methods: {
     formatHash(account: string) {
