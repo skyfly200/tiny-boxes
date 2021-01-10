@@ -111,12 +111,6 @@ export default Vue.extend({
   name: "TokenPage",
   components: { Token, ColorsGrid },
   computed: {
-    priceInETH: function() {
-      return this.$store.state.web3.utils.fromWei((this as any).data.price.toString());
-    },
-    priceInLINK: function() {
-      return ((this as any).data.linkPrice / (10**18)).toString();
-    },
     id(): number {
       return parseInt(this.$route.params.id);
     },
