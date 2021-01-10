@@ -1,7 +1,7 @@
 #!/bin/bash
 
 trap "exit" INT TERM    # Convert INT and TERM to EXIT
-trap "kill 0" EXIT      # Kill all children if we receive EXIT
+trap "kill 0" EXIT      # Kill all child processes if we receive EXIT
 
 RAND="0xa30E0997782fe8B4E888b22d711611fBCd0a388B"
 
@@ -12,7 +12,6 @@ while getopts "d:i:c:a:s:" arg; do
         i) ALL="set";;
         c) ADDRESS=$OPTARG;;
         a) ANIMATION=$OPTARG;;
-        s) START=$OPTARG;;
     esac
 done
 
@@ -24,12 +23,7 @@ if [ -z "$DEPLOY" ]
     then
         echo "Skipping Deploy"
     else
-        if [ -z "$START" ]
-            then
-                echo "Error: no startBlock provided!";
-            else
-                ADDRESS=$(npx oz deploy --no-interactive -k regular -n rinkeby TinyBoxes "$RAND" "$START" | tail -n 1)
-        fi
+        ADDRESS=$(npx oz deploy --no-interactive -k regular -n rinkeby TinyBoxes "$RAND" | tail -n 1)
 fi
 
 if [ -z "$ADDRESS" ]
