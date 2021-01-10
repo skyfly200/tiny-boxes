@@ -45,18 +45,13 @@ export default Vue.extend({
     getSupply: function() {
       return this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
     },
-    getPrice: function() {
-      return this.$store.state.contracts.tinyboxes.methods.currentPrice().call();
-    },
     lookupLimit: async function() {
       (this as any).limit = await this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
     },
     loadStatus: async function() {
       const t = this as any;
       const idLookup = t.getSupply();
-      const priceLookup = t.getPrice();
       t.id = await idLookup;
-      t.price = await priceLookup;
     },
     randomize: function() {
       const t = this as any;
