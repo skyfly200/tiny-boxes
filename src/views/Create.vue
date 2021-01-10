@@ -262,12 +262,11 @@ export default Vue.extend({
     },
     randomize: function(section: number | string) {
       const t = this as any;
-      const randomSettings: any = {
-        color: {
-          hue: t.between({ min: 0, max: 359 }),
-          saturation: t.between({ min: 20, max: 100 }),
-          luminosity: t.between({ min: 30, max: 100 })
-        }
+      const randomSettings: any = {};
+      if (section === "all" || section === "color") randomSettings.color = {
+        hue: t.between({ min: 0, max: 359 }),
+        saturation: t.between({ min: 20, max: 100 }),
+        luminosity: t.between({ min: 30, max: 100 })
       };
       for (const s of (section === "all") ? t.sections : [t.sections[section]]) {
         if (s.rand) {
