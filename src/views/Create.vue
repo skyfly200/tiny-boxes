@@ -141,7 +141,9 @@ export default Vue.extend({
         valid: true,
       },
       minted: {} as any,
-      values: {} as any,
+      values: {
+        color: {} as any
+      } as any,
       defaults: {
         seed: Date.now(),
         shapes: 11,
@@ -201,12 +203,15 @@ export default Vue.extend({
     }),
     ...mapGetters(["currentAccount", "wrongNetwork"]),
   },
+  created: async function() {
+    const t = this as any;
+    t.loadFormDefaults();
+  },
   mounted: async function() {
     const t = this as any;
     await this.$store.dispatch("initialize");
     if (!this.wrongNetwork) {
       t.lookupLimit();
-      t.loadFormDefaults();
       if (t.paramsSet) t.loadParams();
       else t.updateParams();
       t.loadToken();
@@ -319,8 +324,7 @@ export default Vue.extend({
     },
     loadFormDefaults: function() {
       const t = this as any;
-      // set values to default
-      Object.assign(t.values, t.defaults);
+      Object.assign(t.values, t.defaults); // set values to default
     },
     loadParams() {
       const t = this as any;
