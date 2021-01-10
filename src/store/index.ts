@@ -1210,7 +1210,7 @@ const store = new Vuex.Store({
       "Mono",
     ],
     tinyboxesAddress: '0x3b829CFD48e2C7df548Cab8AF0E42eC788869134',
-    openseaStoreURL: 'https://testnets.opensea.io/collection/tinyboxes-v49',
+    openseaStoreURL: 'https://testnets.opensea.io/assets/tinyboxes-lvupeos4gn',
     openseaTokenURL: 'https://testnets.opensea.io/assets/0x3b829CFD48e2C7df548Cab8AF0E42eC788869134/',
     currentAccount: "",
     web3Status: "loading",
