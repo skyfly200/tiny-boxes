@@ -38,6 +38,7 @@ export default Vue.extend({
   mounted: async function() {
     const t = this as any;
     await this.$store.dispatch("initialize");
+    t.lookupLimit();
     t.loadFormDefaults();
   },
   methods: {
@@ -59,16 +60,20 @@ export default Vue.extend({
     },
     randomize: function() {
       const t = this as any;
-      const randomSettings: any = {};
+      const randomSettings: any = {
+        traits: [
+          0,
+          Math.floor(t.id / (t.limit / 10)),
+          1,//t.between(1, 7),
+          70
+        ]
+      };
       for (const s of t.sections) {
         if (s.rand) {
           for (const o of s.options) {
             if (o.rand !== false && !t.values[o.hide] && t.values[o.show] !== false) {
               const range = o.rand ? o.rand : o.range;
               switch (o.type) {
-                case "switch":
-                  randomSettings[o.key] = Math.random() > (o.randWeight ? o.randWeight : 0.5);
-                  break;
                 case "range-slider":
                   randomSettings[o.key] = [range, range].map((r) => t.between(r)).sort();
                   break;
@@ -144,8 +149,7 @@ export default Vue.extend({
       return [
         v.hue,
         v.saturation,
-        v.lightness,
-        v.contrast <= v.lightness ? v.contrast : v.lightness
+        v.lightness
       ];
     },
     assembleDials: function() {
@@ -156,14 +160,15 @@ export default Vue.extend({
       return {
         spacing: [ v.spread, (v.rows * 16) + v.cols ],
         size: [ ...v.width, ...v.height ],
+        mirroring: v.m1 + (v.m2 * 4) + (v.m3 * 16)
       };
     },
     loadToken: function() {
       return new Promise((resolve, reject) => {
         const t = this as any;
-        const v = {...t.values, ...t.assembleDials(), color: t.assemblePalette(), settings: [5, 0, 0]};
+        const v = {...t.values, ...t.assembleDials(), palette: t.assemblePalette(), settings: [5, 0, 0]};
         this.$store.state.contracts.tinyboxes.methods
-          .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.color, v.size, v.spacing, v.traits, v.settings, t.id)
+          .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.palette, v.size, v.spacing, v.traits, v.settings, v.mirroring, t.id)
           .call()
           .then((result: any) => {
             t.data = result;
@@ -197,9 +202,9 @@ export default Vue.extend({
         hatching: 0,
         hue: Date.now() % 360,
         saturation: 80,
-        lightness: [30,70],
+        lightness: 70,
         animate: false,
-        traits: [0,0,9,0],
+        traits: [0,0,5,0],
       },
       sections: sections,
     };
