@@ -65,6 +65,15 @@ contract TinyBoxesStore is TinyBoxesBase {
     }
 
     /**
+     * @dev set start block for next phase
+     */
+    function startCoundown(uint256 startBlock) external onlyRole(ADMIN_ROLE) {
+        require(startBlock > block.number,"Must be future block");
+        blockStart = startBlock;
+        paused = false;
+    }
+
+    /**
      * @dev handle the payment for tokens
      */
     function handlePayment() internal {
