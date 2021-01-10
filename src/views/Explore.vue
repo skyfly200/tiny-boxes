@@ -108,7 +108,8 @@ export default Vue.extend({
         s: [v.shapes, v.hatching].join("-"), // shapes - count, hatching
         d: [v.width.join("~"), v.height.join("~")].join("-"), // dimensions ranges
         p: [v.spread, (v.rows * 16) + v.cols].join("-"), // positioning - spread, grid
-        c: [v.hue, v.saturation, v.lightness, v.contrast].join("-"), // color - hue, saturation, lightness, contrast
+        c: [v.hue, v.saturation, v.lightness].join("-"), // color - hue, saturation, lightness, contrast
+        m: [v.m1, v.m2, v.m3].join("-") // mirroring levels
       };
       return out;
     },
