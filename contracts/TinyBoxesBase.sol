@@ -20,7 +20,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     Counters.Counter internal _tokenIds;
 
     // set contract config constants
-    uint16 public constant TOKEN_LIMIT = 100;
+    uint16 public constant TOKEN_LIMIT = 500;
     uint8 public constant ANIMATION_COUNT = 24;
     uint8 public constant SCHEME_COUNT = 10;
     bool public paused = false;
