@@ -90,7 +90,6 @@ export default Vue.extend({
         t.between({ min: 1, max: 7 }),
         t.between({ min: 0, max: randomSettings.color.luminosity })
       ];
-      console.log(randomSettings);
       Object.assign(t.values, randomSettings);
       if (t.values.hatching > t.values.shapes) t.values.hatching = t.values.shapes;
       return randomSettings;
