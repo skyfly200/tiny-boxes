@@ -192,77 +192,62 @@ exports.handler = async (event, context) => {
       background_color: '121212',
       attributes: [
         {
-          display_type: 'number',
           trait_type: 'Shapes',
           value: parseInt(data.shapes),
         },
         {
-          display_type: 'number',
           trait_type: 'Hatching',
           value: data.hatching,
         },
         {
-          display_type: 'number',
           trait_type: 'Spread',
           value: data.spacing[0],
         },
         {
-          display_type: 'number',
           trait_type: 'Rows',
           value: data.spacing[1] % 16,
         },
         {
-          display_type: 'number',
           trait_type: 'Columns',
           value: data.spacing[1] / 16,
         },
         {
-          display_type: 'number',
           trait_type: 'Hue',
           value: parseInt(data.color[0]),
         },
         {
-          display_type: 'number',
           trait_type: 'Saturation',
           value: parseInt(data.color[1]),
         },
         {
-          display_type: 'number',
           trait_type: 'Lightness',
           value: parseInt(data.color[2]),
         },
         {
-          display_type: 'number',
           trait_type: 'Contrast',
           value: parseInt(data.contrast),
         },
         {
-          display_type: 'number',
           trait_type: 'Shades',
           value: parseInt(data.shades),
         },
         {
-          display_type: 'number',
           trait_type: 'Scheme',
           value:  schemeTitles[data.scheme],
         },
         {
-          display_type: 'number',
           trait_type: 'Animation',
           value: animationTitles[data.animation],
         },
         {
-          display_type: 'number',
           trait_type: 'Mirroring',
           value: data.mirroring,
         },
         {
-          display_type: 'date',
           trait_type: 'Created',
           value: block.timestamp,
         },
         {
-          display_type: 'date',
           trait_type: 'Rendered',
           value: Date.now(),
         },
