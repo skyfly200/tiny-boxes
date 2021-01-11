@@ -82,8 +82,8 @@
                     img(style="width:160px; border-radius:0px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);" src="https://storage.googleapis.com/opensea-static/opensea-brand/listed-button-blue.png" alt="Listed on OpenSea badge")
                 .timestamp.stat(v-if="data.block !== undefined")
                   .stat-value
-                    span.timestamp-time {{ (new Date(data.block.timestamp)).toLocaleTimeString() }}
-                    span.timestamp-date {{ (new Date(data.block.timestamp)).toLocaleDateString() }}
+                    span.timestamp-time {{ (new Date(data.block.timestamp * 1000)).toLocaleTimeString() }}
+                    span.timestamp-date {{ (new Date(data.block.timestamp * 1000)).toLocaleDateString() }}
                   .stat-title Minted Timestamp
                 .minter.stat(v-if="data.creation !== undefined && data.creation.topics.length > 0")
                   .stat-value
@@ -154,7 +154,6 @@ export default Vue.extend({
       return this.currentAccount === (this as any).owner;
     },
     changedSettings() {
-      console.log(this.data.settings, this.settings);
       return this.data.settings !== undefined &&
         (parseInt(this.data.settings.bkg) !== (this.settings.transparent ? 101 : this.settings.bkg) ||
         parseInt(this.data.settings.duration) !== this.settings.duration ||
