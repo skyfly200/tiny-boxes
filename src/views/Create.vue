@@ -263,12 +263,13 @@ export default Vue.extend({
     randomizeSection: function(section: number | string) {
       const t = this as any;
       t.randomize(section);
+      console.log(section);
       t.changed();
     },
     randomize: function(section: number | string) {
       const t = this as any;
       const randomSettings: any = {};
-      if (section === "all" || section === "color") randomSettings.color = {
+      if (section === "all" || section === 0) randomSettings.color = {
         hue: t.between({ min: 0, max: 359 }),
         saturation: t.between({ min: 20, max: 100 }),
         luminosity: t.between({ min: 30, max: 100 })
