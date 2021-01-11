@@ -40,8 +40,8 @@
           v-btn(@click="overlay = ''; loadToken()" color="error") Cancel
     v-container(fluid)
       v-row(flex)
-        v-col(align="center" cols="12" md="5" offset-md="1")
-          v-card(max-height="90vh").token-preview
+        v-col(align="center" cols="12" sm="10" md="5" offset-sm="1")
+          v-card.token-preview
             v-card-title.token-stats(align="center")
               v-skeleton-loader(v-if="id === null" type="card-heading" width="20vw")
               span(v-else) TinyBox {{ "#" + id }} Preview
@@ -65,7 +65,7 @@
             p All boxes have sold, minting is disabled.
             p Try the secondary market
             v-btn(href="//opensea.io" target="new" color="warning" outlined) Browse OpenSea
-          .explore-link
+          .explore-link.mt-4
             p Need some inspiration?
             v-btn(to="/explore" color="secondary") Explore The Possibilities
         v-col(align="center" cols="12" md="5")
