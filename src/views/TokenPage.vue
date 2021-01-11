@@ -23,8 +23,7 @@
               span.stat-value {{ data.tokenData.color[0] + '°,' + data.tokenData.color[1] + '%,' + data.tokenData.color[2] + '%' }} 
               .stat-title Root Color
             .contrast.stat
-              .d-flex.flex-column
-                span.stat-value {{ data.tokenData.contrast + '%' }}
+              span.stat-value {{ data.tokenData.contrast + '%' }}
               .stat-title Contrast
             .shades.stat
               span.stat-value {{ parseInt(data.tokenData.shades) }}
@@ -53,7 +52,7 @@
               .stat-title Shapes
             .hatching.stat
               span.stat-value {{ data.tokenData.hatching }}
-              .stat-title Hatching Mod
+              .stat-title Hatching
           .stats
             .width.stat
               span.stat-value {{ data.tokenData.size[0] + '-' + data.tokenData.size[1] }}
@@ -77,8 +76,10 @@
             v-card-title(align="center") Minting Info
             v-card-text
               .stats.minting-stats
-                a(:href="openseaTokenURL + id" title="View on OpenSea" target="_blank")
-                  img(style="width:160px; border-radius:0px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);" src="https://storage.googleapis.com/opensea-static/opensea-brand/listed-button-blue.png" alt="Listed on OpenSea badge")
+                .buttons.d-flex
+                  v-btn.my-4(height="3rem" color="secondary" @click="gotoMint") Copy Options
+                  a(:href="openseaTokenURL + id" title="View on OpenSea" target="_blank")
+                    img(style="width:160px; border-radius:0px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);" src="https://storage.googleapis.com/opensea-static/opensea-brand/listed-button-blue.png" alt="Listed on OpenSea badge")
                 .timestamp.stat(v-if="data.block !== undefined")
                   .stat-value
                     span.timestamp-time {{ (new Date(data.block.timestamp)).toLocaleTimeString() }}
@@ -154,6 +155,24 @@ export default Vue.extend({
     formatTopicLong(account: string) {
       return "0x" + account.slice(-40);
     },
+    gotoMint() {
+      const d = this.data.tokenData;
+      const values = { ...this.data.tokenData, seed: Date.now(), m1: d.mirroring % 4, m2: (d.mirroring / 4 % 4), m3: (d.mirroring / 16 % 4) };
+      this.$router.push({ path: "/create", query: (this as any).buildQuery(values) });
+    },
+    buildQuery(v: any) {
+      const t = this as any;
+      // condense keys and values for shorter URL encoding
+      const out: any = {
+        r: v.seed,
+        s: [v.shapes, v.hatching].join("-"), // shapes - count, hatching
+        d: [[v.size[0], v.size[1]].join("~"), [v.size[2], v.size[3]].join("~")].join("-"), // dimensions ranges
+        p: v.spacing.join("-"), // positioning - spread, grid
+        c: v.color.join("-"), // color - hue, saturation, luminosity
+        m: [v.m1, v.m2, v.m3].join("-") // mirroring levels
+      };
+      return out;
+    },
     loadToken: async function() {
       const t = this as any;
       const cached = this.$store.state.cachedTokens[t.id];
@@ -209,6 +228,8 @@ export default Vue.extend({
     color: #FFF !important
 .content
   margin-top: 35vh
+.buttons
+  flex-direction: column
 .id
   font-size: 2rem
 .token-loading

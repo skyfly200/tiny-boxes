@@ -90,7 +90,6 @@ export default Vue.extend({
       return randomSettings;
     },
     gotoMint(values: any) {
-
       this.$router.push({ path: "/create", query: this.buildQuery(values) });
     },
     buildQuery(values: any) {
