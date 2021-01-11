@@ -139,7 +139,7 @@ contract TinyBoxesStore is TinyBoxesBase {
                 spread: spacing[0],
                 grid: spacing[1],
                 mirroring: mirroring,
-                bkg: 101,
+                bkg: 0,
                 duration: 10,
                 options: 1
             }),
