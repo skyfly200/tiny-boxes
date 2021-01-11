@@ -24,7 +24,7 @@
       router-link(to="/")
         v-img.logo.mt-2(src="/img/logo.png" width="55" height="55")
       v-spacer
-      .link(v-for="l in links")
+      .link(v-for="l in barLinks")
         v-btn(v-if="l.type === 'page'" :to="l.path" text)
           span.mr-2 {{ l.text }}
         v-btn(v-else-if="l.type === 'link'" :href="l.path" target="_blank" icon)
@@ -68,42 +68,49 @@ export default {
     links: [
       {
         type: "page",
+        bar: true,
         icon: "mdi-plus-box",
         text: "Create",
         path: "/create"
       },
       {
         type: "page",
+        bar: true,
         icon: "mdi-view-grid",
         text: "Boxes",
         path: "/list"
       },
       {
         type: "page",
+        bar: false,
         icon: "mdi-dice-multiple",
         text: "Explore",
         path: "/explore"
       },
       {
         type: "link",
+        bar: true,
         icon: "mdi-book-open-page-variant",
         text: "Docs",
         path: "/docs"
       },
       {
         type: "link",
+        bar: true,
         icon: "mdi-discord",
         text: "Discord",
         path: "https://discord.gg/2wWANVfCuE"
       },
       {
         type: "link",
+        bar: false,
         icon: "mdi-twitter",
         text: "Twitter",
         path: "https://twitter.com/tinyboxeseth"
       },
       {
         type: "link",
+        bar: false,
         icon: "mdi-typewriter",
         text: "Blog",
         path: "https://medium.com/@nonfungibleteam"
@@ -111,6 +118,9 @@ export default {
     ]
   }),
   computed: {
+    barLinks() {
+      return this.links.filter( (l) => l.bar );
+    },
     ...mapGetters(["currentAccount", "web3Status", "wrongNetwork"]),
     ...mapState(["network", "targetNetwork"]),
   }
