@@ -120,8 +120,8 @@
                       v-row
                         v-col(cols="12")
                           .d-flex
-                            v-btn.mr-5 Preview
-                            v-btn Download
+                            v-btn.mr-5(v-if="false") Preview
+                            v-btn(v-if="false") Download
                             v-spacer
                             template(v-if="changedSettings")
                               v-btn.mr-5(color="success") Save
