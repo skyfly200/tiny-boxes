@@ -95,7 +95,7 @@
                   .stat-value
                     v-tooltip(top)
                       template(v-slot:activator='{ on }')
-                        a(v-on='on' :href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash") {{ formatHash(data.creation.transactionHash) }}
+                        a(v-on='on' :href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash" target="_blank") {{ formatHash(data.creation.transactionHash) }}
                       span View on Etherscan
                   .stat-title TX Hash
 </template>

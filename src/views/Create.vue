@@ -263,7 +263,6 @@ export default Vue.extend({
     randomizeSection: function(section: number | string) {
       const t = this as any;
       t.randomize(section);
-      console.log(section);
       t.changed();
     },
     randomize: function(section: number | string) {
