@@ -124,8 +124,8 @@
                             v-btn(v-if="false") Download
                             v-spacer
                             template(v-if="changedSettings")
-                              v-btn.mr-5(color="success") Save
-                              v-btn Reset
+                              v-btn.mr-5(color="success" @click="saveSettings") Save
+                              v-btn(@click="resetSettings") Reset
 </template>
 
 <script lang="ts">
@@ -196,9 +196,40 @@ export default Vue.extend({
         animate: settings.options % 2 === 1,
       };
     },
-    async saveSettings(settings: any) {
+    async saveSettings() {
       const t = this as any;
-      console.log(await t.$store.state.contracts.tinyboxes.methods.changeSettings(t.id, settings).call());
+      const settings = [
+        t.settings.transparent ? 101 : t.settings.bkg,
+        t.settings.duration,
+        t.settings.animate ? 1 : 0
+      ];
+      t.tx = {
+        from: this.currentAccount,
+        to: this.$store.state.tinyboxesAddress,
+        data: this.$store.state.contracts.tinyboxes.methods
+          .changeSettings(t.id, settings)
+          .encodeABI(),
+      };
+      t.$store.state.web3.eth.sendTransaction(t.tx,
+        async (err: any, txHash: string) => {
+          const t = this as any;
+          if (err) t.overlay = err.code === 4001 ? "" : "error";
+          else {
+            t.txHash = txHash;
+            t.loadSettings();
+          }
+        }
+      );
+    },
+    resetSettings() {
+      const t = this as any;
+      const settings = t.data.settings;
+      t.settings = {
+        bkg: settings.bkg === "101" ? 0 : settings.bkg,
+        duration: settings.duration,
+        transparent: settings.bkg === "101",
+        animate: settings.options % 2 === 1,
+      };
     },
     formatHash(account: string) {
       return "0x" + account.slice(2, 6) + "...." + account.slice(-4);
@@ -280,6 +311,8 @@ export default Vue.extend({
     },
     owner: "",
     data: {} as any,
+    tx: null,
+    txHash: null,
   }),
 });
 </script>
