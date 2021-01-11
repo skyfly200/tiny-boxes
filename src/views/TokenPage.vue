@@ -172,12 +172,12 @@ export default Vue.extend({
   mounted: async function() {
     await this.$store.dispatch("initialize");
     const t = this as any;
+    await t.loadSettings();
     t.$store.state.contracts.tinyboxes.methods.ownerOf(t.id).call()
     .then( (owner: any) => {
       t.owner = owner;
-      t.exists = owner > 0;    
+      t.exists = owner > 0;
       t.loadToken();
-      t.loadSettings();
     })
     .catch( () => {
       t.loading = false;
@@ -266,8 +266,8 @@ export default Vue.extend({
       } else {
         // load all token data
         const creationPromise = t.lookupMinting();
-        const animationPromise = this.$store.state.contracts.tinyboxes.methods.tokenArt(this.id, 5, 0, 1).call();
-        const artPromise = this.$store.state.contracts.tinyboxes.methods.tokenArt(this.id, 5, 0, 0).call();
+        const animationPromise = this.$store.state.contracts.tinyboxes.methods.tokenArt(this.id, this.settings.bkg, this.settings.duration, 1).call();
+        const artPromise = this.$store.state.contracts.tinyboxes.methods.tokenArt(this.id, this.settings.bkg, this.settings.duration, 0).call();
         const tokenDataPromise = this.$store.state.contracts.tinyboxes.methods.tokenData(this.id).call();
         this.data.creation = await creationPromise;
         this.data.block = await this.$store.state.web3.eth.getBlock(this.data.creation.blockNumber);
