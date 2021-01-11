@@ -102,30 +102,29 @@
       v-row(v-if="ownerOf")
         v-col(cols="12")
           v-sheet
-            v-expansion-panels(v-model="settings" tile)
+            v-expansion-panels(v-model="settingsPane" tile)
               v-expansion-panel(expand ripple)
-                  v-expansion-panel-header
-                    .hi(align="center") Render Settings
+                  v-expansion-panel-header Render Settings
                   v-expansion-panel-content
-                    v-container(no-gutters)
+                    v-container(no-gutters max-width="100%").render-settings
                       v-row
                         v-col(cols="12" align="center")
-                          p Set default render settings for your token
+                          p Set default render settings for your token on the contract
                       v-row
-                        v-col(cols="12" md="8")
-                          .settings
-                            v-slider(label="Background" thumb-label min="0" max="100")
-                            v-slider(label="Duration" thumb-label min="1" max="255")
-                        v-col(cols="12" md="4")
-                          v-switch( label="Transparent Bkg")
-                          v-switch( label="Animate")
+                        v-col(cols="12" md="8").settings
+                          v-slider(v-model="settings.bkg" :disabled="settings.transparent" label="Background" thumb-label min="0" max="100")
+                          v-slider(v-model="settings.duration" label="Duration" thumb-label min="1" max="255")
+                        v-col(cols="12" md="3" offset-md="1")
+                          v-switch(v-model="settings.transparent"  label="Transparent Bkg")
+                          v-switch(v-model="settings.animate"  label="Animate")
                       v-row
                         v-col(cols="12")
                           .d-flex
-                            v-btn Download SVG
+                            v-btn.mr-5 Preview
+                            v-btn Download
                             v-spacer
-                            v-btn(color="success") Save
-                            v-btn(color="warning") Reset
+                            v-btn.mr-5(color="success") Save
+                            v-btn Reset
 </template>
 
 <script lang="ts">
@@ -253,7 +252,13 @@ export default Vue.extend({
     loading: true,
     exists: false,
     animate: true,
-    settings: false,
+    settingsPane: false,
+    settings: {
+      bkg: 0,
+      duration: 10,
+      transparent: true,
+      animate: true,
+    },
     owner: "",
     data: {} as any,
   }),
@@ -270,6 +275,8 @@ export default Vue.extend({
   flex-direction: column
 .id
   font-size: 2rem
+.render-settings
+  max-width: 100%
 .token-loading
   padding-top: 40vh
 .on
