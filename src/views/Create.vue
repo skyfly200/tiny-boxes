@@ -6,7 +6,7 @@
         v-card-title Submit The Transaction
         v-card-text
           .message
-            h3 Mint Token {{ "#" + id }} for {{ priceInETH }} 
+            h3 Mint Token for {{ priceInETH }} 
               v-icon mdi-ethereum
       v-card.dialog-confirm(v-else-if="overlay === 'confirm'" key="confirm")
         v-card-title Minting
@@ -44,7 +44,7 @@
           v-card.token-preview
             v-card-title.token-stats(align="center")
               v-skeleton-loader(v-if="id === null" type="card-heading" width="20vw")
-              span(v-else) TinyBox {{ "#" + id }} Preview
+              span(v-else) TinyBox Preview
             v-card-text.token-graphic
               v-fade-transition(mode="out-in")
                 v-skeleton-loader(v-if="loading" tile type="image")
