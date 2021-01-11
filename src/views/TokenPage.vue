@@ -123,8 +123,9 @@
                             v-btn.mr-5 Preview
                             v-btn Download
                             v-spacer
-                            v-btn.mr-5(color="success") Save
-                            v-btn Reset
+                            template(v-if="changedSettings")
+                              v-btn.mr-5(color="success") Save
+                              v-btn Reset
 </template>
 
 <script lang="ts">
@@ -151,6 +152,13 @@ export default Vue.extend({
     },
     ownerOf(): boolean {
       return this.currentAccount === (this as any).owner;
+    },
+    changedSettings() {
+      console.log(this.data.settings, this.settings);
+      return this.data.settings !== undefined &&
+        (parseInt(this.data.settings.bkg) !== (this.settings.transparent ? 101 : this.settings.bkg) ||
+        parseInt(this.data.settings.duration) !== this.settings.duration ||
+        parseInt(this.data.settings.options) !== (this.settings.animate ? 1 : 0));
     },
     randomness(): string {
       return this.data.tokenData == undefined ? "" : BigInt(this.data.tokenData.randomness).toString(16);
@@ -179,7 +187,18 @@ export default Vue.extend({
   methods: {
     async loadSettings() {
       const t = this as any;
-      if (t.ownerOf) console.log(await t.$store.state.contracts.tinyboxes.methods.readSettings(t.id).call());
+      const settings =  await t.$store.state.contracts.tinyboxes.methods.readSettings(t.id).call();
+      t.data.settings = settings;
+      t.settings = {
+        bkg: settings.bkg === "101" ? 0 : settings.bkg,
+        duration: settings.duration,
+        transparent: settings.bkg === "101",
+        animate: settings.options % 2 === 1,
+      };
+    },
+    async saveSettings(settings: any) {
+      const t = this as any;
+      console.log(await t.$store.state.contracts.tinyboxes.methods.changeSettings(t.id, settings).call());
     },
     formatHash(account: string) {
       return "0x" + account.slice(2, 6) + "...." + account.slice(-4);
