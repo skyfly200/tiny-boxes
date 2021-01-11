@@ -99,6 +99,19 @@
                         a(v-on='on' :href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash" target="_blank") {{ formatHash(data.creation.transactionHash) }}
                       span View on Etherscan
                   .stat-title TX Hash
+      v-row(v-if="ownerOf")
+        v-col(cols="12")
+          v-card
+            v-card-title(align="center") Settings
+            v-card-text
+              p Set default render settings for your token
+              .settings
+                v-slider(label="Background" thumb-label min="0" max="101" hint="101 = transparent")
+                v-slider(label="Duration" thumb-label min="1" max="255")
+              v-switch( label="Animate")
+            v-card-actions
+              v-btn Download Art
+
 </template>
 
 <script lang="ts">
@@ -123,6 +136,9 @@ export default Vue.extend({
         scheme: this.data.tokenData.scheme,
       };
     },
+    ownerOf(): boolean {
+      return this.currentAccount === (this as any).owner;
+    },
     randomness(): string {
       return this.data.tokenData == undefined ? "" : BigInt(this.data.tokenData.randomness).toString(16);
     },
@@ -138,14 +154,20 @@ export default Vue.extend({
     const t = this as any;
     t.$store.state.contracts.tinyboxes.methods.ownerOf(t.id).call()
     .then( (owner: any) => {
-      t.exists = owner > 0;
+      t.owner = owner;
+      t.exists = owner > 0;    
       t.loadToken();
+      t.loadSettings();
     })
     .catch( () => {
       t.loading = false;
     });
   },
   methods: {
+    async loadSettings() {
+      const t = this as any;
+      if (t.ownerOf) console.log(await t.$store.state.contracts.tinyboxes.methods.readSettings(t.id).call());
+    },
     formatHash(account: string) {
       return "0x" + account.slice(2, 6) + "...." + account.slice(-4);
     },
@@ -217,6 +239,7 @@ export default Vue.extend({
     loading: true,
     exists: false,
     animate: true,
+    owner: "",
     data: {} as any,
   }),
 });
