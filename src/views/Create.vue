@@ -44,7 +44,10 @@
           v-card.token-preview
             v-card-title.token-stats(align="center")
               v-skeleton-loader(v-if="id === null" type="card-heading" width="20vw")
-              span(v-else) TinyBox Preview
+              span(v-else) Preview Your TinyBox
+            v-card-subtitle
+              v-skeleton-loader(v-if="id === null" type="card-heading" width="20vw")
+              span(v-else) Color Scheme: {{ schemeTitles[Math.floor(id / phaseLen)] }}
             v-card-text.token-graphic
               v-fade-transition(mode="out-in")
                 v-skeleton-loader(v-if="loading" tile type="image")
@@ -58,8 +61,8 @@
                 v-spacer
                 vac(v-if="paused" :end-time="pauseEndTime")
                   template(v-slot:process="{ timeObj }")
-                    span {{ `${timeObj.m}:${timeObj.s}` }} to phase {{ Math.floor(id / (limit / 10)) }}
-                v-btn(v-else @click="mintToken" :disabled="!form.valid || soldOut || loading" large color="primary") Mint {{ id % (limit / 10) + "/" + limit / 10 }}
+                    span {{ `${timeObj.m}:${timeObj.s}` }} to phase {{ Math.floor(id / phaseLen) }}
+                v-btn(v-else @click="mintToken" :disabled="!form.valid || soldOut || loading" large color="primary") Mint {{ id % phaseLen + "/" + phaseLen }}
           v-alert(v-if="!loading && !form.valid" type="error" prominent outlined border="left").invalid-options Invalid Box Options!
           v-alert(v-if="!loading && soldOut" type="warning" prominent outlined border="left").sold-out
             p All boxes have sold, minting is disabled.
@@ -171,6 +174,9 @@ export default Vue.extend({
     };
   },
   computed: {
+    phaseLen() {
+      return (this as any).limit / 10;
+    },
     paramsSet: function() {
       return Object.keys(this.$route.query).length > 0
     },
