@@ -101,17 +101,31 @@
                   .stat-title TX Hash
       v-row(v-if="ownerOf")
         v-col(cols="12")
-          v-card
-            v-card-title(align="center") Settings
-            v-card-text
-              p Set default render settings for your token
-              .settings
-                v-slider(label="Background" thumb-label min="0" max="101" hint="101 = transparent")
-                v-slider(label="Duration" thumb-label min="1" max="255")
-              v-switch( label="Animate")
-            v-card-actions
-              v-btn Download Art
-
+          v-sheet
+            v-expansion-panels(v-model="settings" tile)
+              v-expansion-panel(expand ripple)
+                  v-expansion-panel-header
+                    .hi(align="center") Render Settings
+                  v-expansion-panel-content
+                    v-container(no-gutters)
+                      v-row
+                        v-col(cols="12" align="center")
+                          p Set default render settings for your token
+                      v-row
+                        v-col(cols="12" md="8")
+                          .settings
+                            v-slider(label="Background" thumb-label min="0" max="100")
+                            v-slider(label="Duration" thumb-label min="1" max="255")
+                        v-col(cols="12" md="4")
+                          v-switch( label="Transparent Bkg")
+                          v-switch( label="Animate")
+                      v-row
+                        v-col(cols="12")
+                          .d-flex
+                            v-btn Download SVG
+                            v-spacer
+                            v-btn(color="success") Save
+                            v-btn(color="warning") Reset
 </template>
 
 <script lang="ts">
@@ -239,6 +253,7 @@ export default Vue.extend({
     loading: true,
     exists: false,
     animate: true,
+    settings: false,
     owner: "",
     data: {} as any,
   }),
