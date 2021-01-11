@@ -67,7 +67,7 @@
             v-btn(href="//opensea.io" target="new" color="warning" outlined) Browse OpenSea
           .explore-link
             p Need some inspiration?
-            v-btn(to="/explore") Explore The Possibilities
+            v-btn(to="/explore" color="secondary") Explore The Possibilities
         v-col(align="center" cols="12" md="5")
           h1 Create a TinyBox
           v-form(v-model="form.valid").create-form
