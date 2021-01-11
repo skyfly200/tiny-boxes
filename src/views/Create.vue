@@ -62,7 +62,7 @@
                 vac(v-if="paused" :end-time="pauseEndTime")
                   template(v-slot:process="{ timeObj }")
                     span {{ `${timeObj.m}:${timeObj.s}` }} to phase {{ Math.floor(id / phaseLen) }}
-                v-btn(v-else @click="mintToken" :disabled="!form.valid || soldOut || loading" large color="primary") Mint {{ id % phaseLen + "/" + phaseLen }}
+                v-btn(v-else @click="mintToken" :disabled="!form.valid || soldOut || loading" large color="primary") Mint {{ id % phaseLen + "/" + (phaseLen - this.grayPerPhase) }}
           v-alert(v-if="!loading && !form.valid" type="error" prominent outlined border="left").invalid-options Invalid Box Options!
           v-alert(v-if="!loading && soldOut" type="warning" prominent outlined border="left").sold-out
             p All boxes have sold, minting is disabled.
@@ -138,6 +138,7 @@ export default Vue.extend({
       blockStart: new Date(),
       blockSubscription: null,
       overlay: "",
+      grayPerPhase: 5,
       data: null as object | null,
       price: "",
       tx: {},
