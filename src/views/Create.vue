@@ -102,7 +102,7 @@
                     v-slider(v-model="values.color.luminosity" @change="changed" thumb-label required label="Lightness" min="0" max="100")
                   template(v-else-if="section.title === 'Shapes'")
                     v-slider(v-model="values.shapes" @change="changed" thumb-label required label="Count" min="1" max="30")
-                    v-slider(v-model="values.hatching" @change="changed" thumb-label required label="Hatching" min="1" :max="values.shapes")
+                    v-slider(v-model="values.hatching" @change="changed" thumb-label required label="Hatching" min="0" :max="values.shapes")
                     v-range-slider(v-model="values.width" @change="changed" thumb-label required label="Width" step="1" min="1" max="255")
                     v-range-slider(v-model="values.height" @change="changed" thumb-label required label="Height" step="1" min="1" max="255")
                   template(v-else-if="section.title === 'Placement'")
