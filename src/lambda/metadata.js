@@ -13,6 +13,7 @@ const {
   PINATA_API_KEY,
   PINATA_API_SECRET,
   WALLET_PRIVATE_KEY,
+  WEBSITE
   EXTERNAL_URL_BASE,
   WEB3_PROVIDER_ENDPOINT,
   CONTRACT_ADDRESS,
@@ -184,56 +185,82 @@ exports.handler = async (event, context) => {
       "Mono",
     ];
     const metadata = {
+      platform:"TintBoxes",
       name: 'TinyBox #' + id,
+      tokenID: id,
       description:
         'A scattering of tiny boxes, Arranged in patterns ranging from mundane to magnificent.',
+      website: WEBSITE,
       external_url: EXTERNAL_URL_BASE + id,
       image_data: art,
       background_color: '121212',
+      artist: "NonFungibleTeam",
+      license: "NFT License",
+      royaltyInfo:{
+        artistAddress: CONTRACT_ADDRESS,
+        //additionalPayee: "0xffffffffff",
+        //additionalPayeePercentage: 100,
+        royaltyFeeByID: 5
+      },
       attributes: [
         {
           trait_type: 'Shapes',
           value: parseInt(data.shapes),
+          max_value: 30
         },
         {
           trait_type: 'Hatching',
           value: data.hatching,
+          max_value: 30
         },
         {
           trait_type: 'Spread',
-          value: data.spacing[0],
+          value: data.spacing[0] + "%",
+          max_value: 100
         },
         {
           trait_type: 'Rows',
-          value: data.spacing[1] % 16,
+          value: (data.spacing[1] % 16) + 1,
+          max_value: 16
         },
         {
           trait_type: 'Columns',
-          value: data.spacing[1] / 16,
+          value: Math.floor(data.spacing[1] / 16) + 1,
+          max_value: 16
         },
         {
           trait_type: 'Hue',
           value: parseInt(data.color[0]),
+          max_value: 360
         },
         {
           trait_type: 'Saturation',
           value: parseInt(data.color[1]),
+          max_value: 100
         },
         {
           trait_type: 'Lightness',
           value: parseInt(data.color[2]),
+          max_value: 100
         },
         {
           trait_type: 'Contrast',
           value: parseInt(data.contrast),
+          max_value: 100
         },
         {
           trait_type: 'Shades',
           value: parseInt(data.shades),
+          max_value: 7
         },
         {
           trait_type: 'Scheme',
-          value:  schemeTitles[data.scheme],
+          value:  parseInt(data.color[1]) === 0 ? "Grayscale" : schemeTitles[data.scheme],
+        },
+        {
+          display_type: "number",
+          trait_type: 'Phase',
+          value:  data.scheme,
         },
         {
           trait_type: 'Animation',
@@ -241,9 +268,10 @@ exports.handler = async (event, context) => {
         },
         {
           trait_type: 'Mirroring',
-          value: data.mirroring,
+          value: data.mirroring % 4 + "," + Math.floor(data.mirroring / 4) % 4 + "," + Math.floor(data.mirroring / 16) % 4 
         },
         {
+          display_type: "date",
           trait_type: 'Created',
           value: block.timestamp,
         },

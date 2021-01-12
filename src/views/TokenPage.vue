@@ -16,7 +16,7 @@
           .palette
             .scheme
               span Scheme
-              h2 {{ schemeTitles[data.tokenData.scheme] }}
+              h2 {{ data.tokenData.color.saturation === 0 ? "Grayscale" : schemeTitles[data.tokenData.scheme] }}
             ColorsGrid(v-bind="palette")
           .stats
             .root-color.stat
@@ -29,7 +29,7 @@
               span.stat-value {{ parseInt(data.tokenData.shades) }}
               .stat-title Shades
             .mirror-a.stat
-              span.stat-value {{ Math.floor(data.tokenData.mirroring / 16) % 4 }},{{ Math.floor(data.tokenData.mirroring / 4) % 4 }},{{ data.tokenData.mirroring % 4 }}
+              span.stat-value {{ data.tokenData.mirroring % 4 }},{{ Math.floor(data.tokenData.mirroring / 4) % 4 }},{{ Math.floor(data.tokenData.mirroring / 16) % 4 }}
               .stat-title Mirroring
         v-col(cols="12" md="4")
           v-card
@@ -62,13 +62,13 @@
               .stat-title Height
           .stats
             .spread-x.stat
-              span.stat-value {{ data.tokenData.spacing[0] }}
+              span.stat-value {{ data.tokenData.spacing[0] + "%" }}
               .stat-title Spread
             .rows.stat
-              span.stat-value {{ Math.floor(data.tokenData.spacing[1] / 16) }}
+              span.stat-value {{ Math.floor(data.tokenData.spacing[1] / 16) + 1 }}
               .stat-title Rows
             .columns.stat
-              span.stat-value {{ Math.floor(data.tokenData.spacing[1] % 16) }}
+              span.stat-value {{ Math.floor(data.tokenData.spacing[1] % 16) + 1 }}
               .stat-title Columns
       v-row
         v-col(cols="12")
