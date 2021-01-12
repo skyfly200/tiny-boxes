@@ -185,7 +185,7 @@ exports.handler = async (event, context) => {
       "Mono",
     ];
     const metadata = {
-      platform:"TintBoxes",
+      platform:"TinyBoxes",
       name: 'TinyBox #' + id,
       tokenID: id,
       description:
