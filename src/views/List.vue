@@ -3,7 +3,7 @@
     v-btn(to="/create" color="secondary" fab bottom left fixed large)
         v-icon(large) mdi-plus-box
     v-container(fluid)
-      v-data-iterator(:items="loadedTokens" :page.sync="page" @update:page="setPage"
+      v-data-iterator(:items="loadedTokens" :page.sync="page" @update:page="setPage" :sort-desc="sortDesc"
         :loading="loading" :items-per-page.sync="itemsPerPageSelector")
         template(v-slot:header)
           v-toolbar
@@ -17,6 +17,11 @@
               prepend-inner-icon="mdi-magnify"
               label="Search")
             v-spacer
+            v-tooltip(v-if="web3Status === 'active'" bottom)
+                template(v-slot:activator="{ on }")
+                  v-btn(large icon v-on="on" @click="sortDesc = !sortDesc" :depressed="sortDesc" color="purple")
+                    v-icon {{ sortDesc ? "mdi-sort-numeric-descending" : "mdi-sort-numeric-ascending"}}
+                span {{ sortDesc ? "Ascending" : "Descending" }}
             v-tooltip(v-if="web3Status === 'active'" bottom)
                 template(v-slot:activator="{ on }")
                   v-btn(large icon v-on="on" @click="owned = !owned" :depressed="owned" color="purple")
@@ -54,9 +59,13 @@ export default {
   name: "List",
   components: { Token },
   data: () => ({
+    itemsPerPageArray: [4, 8, 12],
+    search: '',
+    filter: {},
+    sortDesc: false,
     bkg: 5,
     owned: false,
-    page: 1,
+    page: 0,
     itemsPerPageSelector: 20,
     count: null,
     userCount: null,
@@ -64,7 +73,9 @@ export default {
     limit: null,
     loading: true,
     soldOut: false,
-    tokens: {} as any,
+    tokens: {
+      0: {},
+    } as any,
     values: {} as any,
   }),
   computed: {
