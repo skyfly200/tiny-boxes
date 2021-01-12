@@ -158,7 +158,7 @@ exports.handler = async (event, context) => {
       "Spread",
       "Staggered Spread",
       "Jitter",
-      "Giggle",
+      "Jiggle",
       "Jolt",
       "Grow n Shrink",
       "Squash n Stretch",
