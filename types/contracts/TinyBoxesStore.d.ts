@@ -59,6 +59,16 @@ export class TinyBoxesStore extends Contract {
       settings: (number | string)[]
     ): TransactionObject<void>;
 
+    createExclusive(
+      seed: number | string,
+      shapes: number | string,
+      hatching: number | string,
+      color: (number | string)[],
+      size: (number | string)[],
+      spacing: (number | string)[],
+      mirroring: number | string
+    ): TransactionObject<string>;
+
     getApproved(tokenId: number | string): TransactionObject<string>;
 
     getRoleAdmin(role: string | number[]): TransactionObject<string>;

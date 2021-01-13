@@ -68,11 +68,11 @@ contract TinyBoxes is TinyBoxesStore {
         uint256 id
     ) external view returns (string memory) {
         require(settings[0] <= 101, "BKG % Invalid");
-        validateParams(shapes, hatching, color, size, spacing);
+        validateParams(shapes, hatching, color, size, spacing, true);
         TinyBox memory box = TinyBox({
             randomness: uint128(seed.stringToUint()),
             hue: color[0],
-            saturation: (id.mod(phaseLen) >= (phaseLen.sub(5))) ? 0 : uint8(color[1]),
+            saturation: uint8(color[1]),
             lightness: uint8(color[2]),
             shapes: shapes,
             hatching: hatching,
