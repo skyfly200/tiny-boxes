@@ -19,6 +19,8 @@ contract TinyBoxesStore is TinyBoxesBase {
 
     uint256 public price = 35000000000000000; // in wei
 
+    mapping(address => uint8) exclusives;
+
     /**
      * @dev Contract constructor.
      */
@@ -87,7 +89,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         require(shapes > 0 && shapes < 31, "invalid shape count");
         require(hatching <= shapes, "invalid hatching");
         require(color[2] <= 360, "invalid color");
-        require(color[1] >= 20 && color[1] <= 100, "invalid saturation");
+        require(color[1] <= 100, "invalid saturation");
         require(color[2] <= 100, "invalid lightness");
         require(size[0] <= size[1], "invalid width range");
         require(size[2] <= size[3], "invalid height range");
@@ -117,6 +119,7 @@ contract TinyBoxesStore is TinyBoxesBase {
     ) external payable notPaused notSoldOut returns (uint256) {
         // check box parameters
         validateParams(shapes, hatching, color, size, spacing);
+        require(color[1] >= 20, "invalid saturation");
         // make sure caller is never the 0 address
         require(
             recipient != address(0),
@@ -153,6 +156,64 @@ contract TinyBoxesStore is TinyBoxesBase {
             }),
             id,
             recipient
+        );
+        return id;
+    }
+
+    /**
+     * @dev Create a Limited Edition Beta Tester TinyBox Token
+     * @param seed for the token
+     * @param shapes count
+     * @param hatching mod value
+     * @param color settings (hue, sat, light, contrast, shades)
+     * @param size range for boxes
+     * @param spacing grid and spread params
+     * @return id of the new token
+     */
+    function createExclusive(
+        uint256 seed,
+        uint8 shapes,
+        uint8 hatching,
+        uint16[3] calldata color,
+        uint8[4] calldata size,
+        uint8[2] calldata spacing,
+        uint8 mirroring
+    ) external payable notPaused notSoldOut returns (uint256) {
+        // check sender has an exclusive to redeem
+        require(exclusives[msg.sender] == 1);
+        // check box parameters are valid
+        validateParams(shapes, hatching, color, size, spacing);
+        // make sure caller is never the 0 address
+        require(
+            msg.sender != address(0),
+            "0x00 Recipient Invalid"
+        );
+        // get the exclusive id from the mapping
+        uint256 id = exclusives[msg.sender];
+        // mark promo as used
+        exclusives[msg.sender] = exclusives[msg.sender] - 1;
+        // create a new box object
+        createBox(
+            TinyBox({
+                randomness: uint128(seed),
+                hue: color[0],
+                saturation: uint8(color[1]),
+                lightness: uint8(color[2]),
+                shapes: shapes,
+                hatching: hatching,
+                widthMin: size[0],
+                widthMax: size[1],
+                heightMin: size[2],
+                heightMax: size[3],
+                spread: spacing[0],
+                grid: spacing[1],
+                mirroring: mirroring,
+                bkg: 0,
+                duration: 10,
+                options: 1
+            }),
+            id,
+            msg.sender
         );
         return id;
     }
