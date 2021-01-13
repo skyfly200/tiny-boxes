@@ -39,6 +39,13 @@ contract TinyBoxesStore is TinyBoxesBase {
     }
 
     /**
+     * @dev Fallback function
+     */
+    function() external payable {
+        // if msg.value > 0 split payment 
+    }
+
+    /**
      * @notice Modifier to check if tokens are sold out
      */
     modifier notSoldOut {
