@@ -19,6 +19,9 @@ contract TinyBoxesStore is TinyBoxesBase {
 
     uint256 public price = 35000000000000000; // in wei
 
+    address payable skyfly = 0x7A832c86002323a5de3a317b3281Eb88EC3b2C00;
+    address payable natealex = 0x63a9dbCe75413036B2B778E670aaBd4493aAF9F3;
+
     mapping(address => uint8) exclusives;
     address[2] betaMinters = [
         0x7A832c86002323a5de3a317b3281Eb88EC3b2C00,
@@ -95,8 +98,21 @@ contract TinyBoxesStore is TinyBoxesBase {
         // check for suficient payment
         uint256 amount = msg.value;
         require(amount >= price, "insuficient payment");
-        // give change if they over pay
+        // give change
         if (amount > price) msg.sender.transfer(amount - price);
+        // split payment
+        _splitFunds(price);
+    }
+
+    /**
+     * @dev Split payments
+     */
+    function _splitFunds(uint256 amount) internal {
+        if (amount > 0) {
+            uint256 percent = amount.div(100);
+            skyfly.transfer(percent.mul(60));
+            natealex.transfer(percent.mul(40));
+        }
     }
 
     function validateParams(uint8 shapes, uint8 hatching, uint16[3] memory color, uint8[4] memory size, uint8[2] memory position, bool exclusive) internal pure {
