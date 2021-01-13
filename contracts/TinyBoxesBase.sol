@@ -104,6 +104,15 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     }
 
     /**
+     * @dev get the randomness bits for the token
+     * @param id of the token to fetch randomness for
+     */
+    function tokenRandomness(uint256 id) external view returns (uint128) {
+        TinyBox memory box = boxes[id];
+        return box.randomness;
+    }
+
+    /**
      * @dev read the dynamic rendering settings of a token
      * @param id of the token to fetch settings for
      */
