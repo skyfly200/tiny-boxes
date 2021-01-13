@@ -42,10 +42,11 @@ contract TinyBoxesStore is TinyBoxesBase {
     }
 
     /**
-     * @dev Fallback function
+     * @dev receive direct ETH transfers
+     * @notice for splitting royalties
      */
-    function() external payable {
-        // if msg.value > 0 split payment 
+    receive() external payable {
+        _splitFunds(msg.value); 
     }
 
     /**
@@ -111,7 +112,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         if (amount > 0) {
             uint256 percent = amount.div(100);
             skyfly.transfer(percent.mul(60));
-            natealex.transfer(percent.mul(40));
+            natealex.transfer(amount.sub(percent.mul(60)));
         }
     }
 
@@ -219,7 +220,7 @@ contract TinyBoxesStore is TinyBoxesBase {
             "0x00 Recipient Invalid"
         );
         // get the exclusive id from the mapping
-        uint256 id = uint256(-exclusives[msg.sender]); // calculate negative id
+        uint256 id = uint256(-exclusives[msg.sender]); // calculate negative id w INTENDED UNDERFLOW
         // mark promo as used
         exclusives[msg.sender] = 0;
         // create a new box object
