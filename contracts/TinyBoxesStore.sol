@@ -110,9 +110,9 @@ contract TinyBoxesStore is TinyBoxesBase {
      */
     function _splitFunds(uint256 amount) internal {
         if (amount > 0) {
-            uint256 percent = amount.div(100);
-            skyfly.transfer(percent.mul(60));
-            natealex.transfer(amount.sub(percent.mul(60)));
+            uint256 partA = amount.mul(60).div(100);
+            skyfly.transfer(partA);
+            natealex.transfer(amount.sub(partA));
         }
     }
 
