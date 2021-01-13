@@ -124,12 +124,19 @@ contract TinyBoxesStore is TinyBoxesBase {
         );
         // check payment and give change
         handlePayment();
+        // get the current id & increment the counter for the next call
+        uint256 id = _tokenIds.current();
+        _tokenIds.increment();
+        // check if its time to pause for next phase countdown
+        if (_tokenIds.current() % phaseLen == 0) blockStart = block.number.add(phaseCountdown);
+        // add block number and new token id to the seed value
+        uint256 seed = _seed.stringToUint().add(block.number).add(id).mod(uint256(2**64));
         // create a new box object
-        return createBox(
+        createBox(
             TinyBox({
-                randomness: 0,
+                randomness: getRandomness(id, seed),
                 hue: color[0],
-                saturation: uint8(color[1]),
+                saturation: (id.mod(phaseLen) >= phaseLen.sub(5)) ? uint8(0) : uint8(color[1]), // set the last 5 per phase to grayscale
                 lightness: uint8(color[2]),
                 shapes: shapes,
                 hatching: hatching,
@@ -144,42 +151,21 @@ contract TinyBoxesStore is TinyBoxesBase {
                 duration: 10,
                 options: 1
             }),
-            _seed.stringToUint(),
+            id,
             recipient
         );
+        return id;
     }
 
     /**
      * @dev Create a new TinyBox Token
      * @param box object of token options
-     * @param _seed for the RNG
+     * @param id of the new TinyBox token
      * @param recipient of the new TinyBox token
-     * @return id of the new token
      */
-    function createBox(TinyBox memory box, uint256 _seed, address recipient) private returns (uint256) {
-        // get the current id & increment the counter for the next call
-        uint256 id = _tokenIds.current();
-        _tokenIds.increment();
-
-        // check if its time to pause for next phase countdown
-        if (_tokenIds.current() % phaseLen == 0) blockStart = block.number.add(phaseCountdown);
-
-        // add block number and new token id to the seed value
-        uint256 seed = _seed.add(block.number).add(id).mod(uint256(2**64));
-
-        // get some entropy
-        box.randomness = getRandomness(id, seed);
-
-        // set the last 5 per phase to grayscale
-        if (id.mod(phaseLen) >= (phaseLen.sub(5))) box.saturation = 0;
-
-        // store the new box
-        boxes[id] = box;
-
-        // mint the new token to the recipient address
-        _safeMint(recipient, id);
-
-        return id;
+    function createBox(TinyBox memory box, uint256 id, address recipient) private {
+        boxes[id] = box; // store the new box
+        _safeMint(recipient, id); // mint the new token to the recipient address
     }
 
     /**
