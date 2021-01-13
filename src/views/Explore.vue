@@ -3,7 +3,7 @@
     v-container(fluid)
       v-row
         v-col.heading(align="center")
-          h1.title Hundreds of googols of possibilities!
+          h1.title Explore the creative possibilities!
           p Scroll to explore. Click to customize.
       v-data-iterator(:items="tokens" :items-per-page="parseInt(itemsPerPage)" hide-default-footer)
           template(v-slot:default="{ items, isExpanded, expand }")
