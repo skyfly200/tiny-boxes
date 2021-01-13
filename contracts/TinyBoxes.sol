@@ -107,7 +107,7 @@ contract TinyBoxes is TinyBoxesStore {
         box.bkg = bkg;
         box.options = options;
         box.duration = duration;
-        return box.perpetualRenderer(_id, ownerOf(_id), calcedParts(box, _id, box.randomness)); // use user config state vars
+        return box.perpetualRenderer(_id, ownerOf(_id), calcedParts(box, _id, box.randomness));
     }
 
     /**
@@ -121,6 +121,6 @@ contract TinyBoxes is TinyBoxesStore {
         returns (string memory)
     {
         TinyBox memory box = boxes[_id];
-        return box.perpetualRenderer(_id, ownerOf(_id), calcedParts(box, _id, box.randomness)); // use user config state vars
+        return box.perpetualRenderer(_id, ownerOf(_id), calcedParts(box, _id, box.randomness));
     }
 }
