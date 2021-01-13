@@ -165,12 +165,14 @@ contract TinyBoxesStore is TinyBoxesBase {
         if (_tokenIds.current() % phaseLen == 0) blockStart = block.number.add(phaseCountdown);
         // add block number and new token id to the seed value
         uint256 seed = _seed.stringToUint();
+        // request randomness
+        uint128 rand = getRandomness(id, seed);
         // create a new box object
         createBox(
             TinyBox({
-                randomness: getRandomness(id, seed),
+                randomness: rand,
                 hue: color[0],
-                saturation: (id.mod(phaseLen) >= phaseLen.sub(5)) ? uint8(0) : uint8(color[1]), // set the last 5 per phase to grayscale
+                saturation: (rand % 200 == 0) ? uint8(0) : uint8(color[1]), // 0.5% chance of grayscale
                 lightness: uint8(color[2]),
                 shapes: shapes,
                 hatching: hatching,
