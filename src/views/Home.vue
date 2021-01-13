@@ -87,19 +87,7 @@ export default {
           "Tweak the sliders, explore the posibilities",
           "You never know what you will get, thanks to a dash of RNG on minting"
         ]
-      },{
-        title: "Chainlink VRF",
-        lines: [
-          "Using Chainlinks latest secure RNG solution VRF",
-          "Assuring tokens are minted fairly with verifiable random values"
-        ]
-      },{
-        title: "Accepting LINK",
-        lines: [
-          "Purchase TinyBoxes with Chainlinks token LINK",
-          "A first for NFT projects"
-        ]
-      },
+      }
     ]
   })
 };
