@@ -6,8 +6,9 @@
         v-card-title Submit The Transaction
         v-card-text
           .message
-            h3 Mint Token for {{ priceInETH }} 
+            h3 Mint for {{ priceInETH }}
               v-icon mdi-ethereum
+            h3 To {{ recipient }}
       v-card.dialog-confirm(v-else-if="overlay === 'confirm'" key="confirm")
         v-card-title Minting
         v-card-text
@@ -144,6 +145,7 @@ export default Vue.extend({
       grayPerPhase: 5,
       data: null as object | null,
       price: "",
+      recipient: null,
       tx: {},
       limit: null as number | null,
       form: {
@@ -227,6 +229,7 @@ export default Vue.extend({
     const t = this as any;
     await this.$store.dispatch("initialize");
     if (!this.wrongNetwork) {
+      t.recipient = t.currentAccount;
       t.lookupLimit();
       if (t.paramsSet) t.loadParams();
       else t.updateParams();
@@ -455,14 +458,16 @@ export default Vue.extend({
       const t = this as any;
       const v = {...t.values, ...t.assembleDials(), palette: t.assemblePalette()};
       t.price = await t.getPrice();
+      console.log(t.recipient);
       t.tx = {
         from: this.currentAccount,
         to: this.$store.state.tinyboxesAddress,
         value: t.price,
         data: this.$store.state.contracts.tinyboxes.methods
-          .buyFor(v.seed.toString(), v.shapes, v.hatching, v.palette, v.size, v.spacing, v.mirroring, this.currentAccount)
+          .buyFor(v.seed.toString(), v.shapes, v.hatching, v.palette, v.size, v.spacing, v.mirroring, t.recipient)
           .encodeABI(),
       };
+      // TODO - warn of likely TX failure and require secondary verify step
       //t.gasEstimate = await t.$store.state.web3.eth.estimateGas(t.tx);
       t.minted = {};
       t.overlay = "verify";
