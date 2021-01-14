@@ -98,7 +98,7 @@
                 v-expansion-panel-content.section-content
                   template(v-if="section.title === 'Color'")
                     HuesGrid(:color="values.color" scheme="2")
-                    ColorPicker(v-bind="values.color" @change="setHue").picker.ma-2
+                    ColorPicker(v-bind="values.color" variant="persistent" @change="setHue").picker.ma-2
                     v-slider(v-model="values.color.saturation" @change="changed" thumb-label required label="Saturation" min="20" max="100")
                     v-slider(v-model="values.color.luminosity" @change="changed" thumb-label required label="Lightness" min="0" max="100")
                   template(v-else-if="section.title === 'Shapes'")
