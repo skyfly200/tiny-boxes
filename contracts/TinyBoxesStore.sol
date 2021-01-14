@@ -223,7 +223,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         require(!_exists(id), "Already Minted");
         // create a new box object
         createBox(
-            TinyBox({ // TODO - Store Scheme(4), Anim(5), Shades(3), Contrast(7) & Vanity Rand String(17xASCII(7)) bit packed into the randomness slot
+            TinyBox({
                 randomness: uint128(seed),
                 hue: color[0],
                 saturation: uint8(color[1]),

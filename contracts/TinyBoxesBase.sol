@@ -89,7 +89,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         )
     {
         TinyBox memory box = boxes[_id];
-        uint8[4] memory parts = calcedParts(box, _id, box.randomness);
+        uint8[4] memory parts = calcedParts(box, _id);
 
         animation = parts[0];
         scheme = parts[1];
@@ -140,18 +140,25 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     /**
      * @dev Calculate the randomized and phased values
      */
-    function calcedParts(TinyBox memory box, uint256 id, uint128 randomness)
+    function calcedParts(TinyBox memory box, uint256 id)
         internal view returns (uint8[4] memory parts)
     {
-        bytes32[] memory pool = Random.init(randomness);
-
-        uint8[7] memory shadesBins = [1,2,5,9,5,2,1];
-        uint8[24] memory animationBins = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
-
-        // update RNG set values
-        parts[0] = uint8(pool.weighted(animationBins, 24)); // animation
-        parts[1] = uint8(id.div(phaseLen)); // scheme
-        parts[2] = uint8(uint256(pool.weighted(shadesBins, 25)).add(1)); //, shades
-        parts[3] = uint8(pool.uniform(0, box.lightness)); // contrast
+        if (id < TOKEN_LIMIT) { // Normal Tokens
+            bytes32[] memory pool = Random.init(box.randomness);
+            uint8[7] memory shadesBins = [1,2,5,9,5,2,1];
+            uint8[24] memory animationBins = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+            // Generate Random parts from the tokens randomness
+            parts[0] = uint8(pool.weighted(animationBins, 24)); // animation
+            parts[1] = uint8(id.div(phaseLen)); // scheme
+            parts[2] = uint8(uint256(pool.weighted(shadesBins, 25)).add(1)); //, shades
+            parts[3] = uint8(pool.uniform(0, box.lightness)); // contrast
+        } else { // Limited Editions
+            // Set the parts directly from packed values in the randomness
+            // Anim(5), Scheme(4), Shades(3), Contrast(7) & Vanity Rand String(17xASCII(7))
+            parts[0] = uint8(box.randomness / 2**123); // animation
+            parts[1] = uint8((box.randomness / 2**119) % 2**4); // scheme
+            parts[2] = uint8((box.randomness / 2**116) % 2**3); //, shades
+            parts[3] = uint8((box.randomness / 2**109) % 2**7); // contrast
+        }
     }
 }

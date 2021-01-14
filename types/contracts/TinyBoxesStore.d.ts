@@ -43,8 +43,13 @@ export class TinyBoxesStore extends Contract {
 
     blockStart(): TransactionObject<string>;
 
-    buyFor(
-      _seed: string,
+    changeSettings(
+      id: number | string,
+      settings: (number | string)[]
+    ): TransactionObject<void>;
+
+    createPromo(
+      seed: number | string,
       shapes: number | string,
       hatching: number | string,
       color: (number | string)[],
@@ -54,19 +59,15 @@ export class TinyBoxesStore extends Contract {
       recipient: string
     ): TransactionObject<string>;
 
-    changeSettings(
-      id: number | string,
-      settings: (number | string)[]
-    ): TransactionObject<void>;
-
-    createExclusive(
-      seed: number | string,
+    createTo(
+      _seed: string,
       shapes: number | string,
       hatching: number | string,
       color: (number | string)[],
       size: (number | string)[],
       spacing: (number | string)[],
-      mirroring: number | string
+      mirroring: number | string,
+      recipient: string
     ): TransactionObject<string>;
 
     getApproved(tokenId: number | string): TransactionObject<string>;
