@@ -97,6 +97,7 @@
                     span Randomize
                 v-expansion-panel-content.section-content
                   template(v-if="section.title === 'Color'")
+                    HuesGrid(:color="values.color" scheme="2")
                     ColorPicker(v-bind="values.color" @change="setHue").picker.ma-2
                     v-slider(v-model="values.color.saturation" @change="changed" thumb-label required label="Saturation" min="20" max="100")
                     v-slider(v-model="values.color.luminosity" @change="changed" thumb-label required label="Lightness" min="0" max="100")
@@ -125,11 +126,12 @@ import Token from "@/components/Token.vue";
 import Share from "@/components/Share.vue";
 import TooltipIconBtn from "@/components/TooltipIconBtn.vue";
 import ColorPicker from '@radial-color-picker/vue-color-picker';
+import HuesGrid from '@/components/HuesGrid.vue';
 import { rejects } from "assert";
 
 export default Vue.extend({
   name: "Create",
-  components: { Token, Share, TooltipIconBtn, ColorPicker },
+  components: { Token, Share, TooltipIconBtn, ColorPicker, HuesGrid },
   data: function() {
     return {
       id: null as number | null,
