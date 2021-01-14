@@ -9,6 +9,15 @@
             h3 Mint for {{ priceInETH }}
               v-icon mdi-ethereum
             h3 To {{ recipient }}
+      v-card.dialog-recipient(v-else-if="overlay === 'recipient'" key="recipient")
+        v-card-title Set Token Recipient
+        v-card-text
+          .message                      
+            v-text-field(v-model="recipient")
+        v-card-actions
+          v-btn(@click="recipient = currentAccount; overlay = ''") Cancel
+          v-spacer
+          v-btn(@click="mintToken") Mint
       v-card.dialog-confirm(v-else-if="overlay === 'confirm'" key="confirm")
         v-card-title Minting
         v-card-text
@@ -60,6 +69,7 @@
                   h2 {{ priceInETH }}
                   v-icon(large) mdi-ethereum
                 v-spacer
+                TooltipIconBtn(icon="mdi-forward" tip="Forward Mint" @click="overlay='recipient'" bottom).forward-btn
                 vac(v-if="paused" :end-time="pauseEndTime")
                   template(v-slot:process="{ timeObj }")
                     span {{ `${timeObj.m}:${timeObj.s}` }} to phase {{ Math.floor(id / phaseLen) }}
@@ -458,7 +468,6 @@ export default Vue.extend({
       const t = this as any;
       const v = {...t.values, ...t.assembleDials(), palette: t.assemblePalette()};
       t.price = await t.getPrice();
-      console.log(t.recipient);
       t.tx = {
         from: this.currentAccount,
         to: this.$store.state.tinyboxesAddress,
@@ -479,6 +488,7 @@ export default Vue.extend({
             t.minted.txHash = txHash;
             t.overlay =  "confirm";
           }
+          t.recipient = t.currentAccount;
         }
       );
     },
