@@ -65,6 +65,13 @@ contract TinyBoxesStore is TinyBoxesBase {
      */
     modifier notPaused {
         require(!paused, "Paused");
+        _;
+    }
+
+    /**
+     * @notice Modifier to check if minting is waiting for a countdown
+     */
+    modifier notCountdown {
         require(block.number >= blockStart, "Countingdown");
         _;
     }
@@ -148,7 +155,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         uint8[2] calldata spacing,
         uint8 mirroring,
         address recipient
-    ) external payable notPaused notSoldOut returns (uint256) {
+    ) external payable notPaused notCountdown notSoldOut returns (uint256) {
         // check box parameters
         validateParams(shapes, hatching, color, size, spacing, false);
         // make sure caller is never the 0 address
@@ -210,7 +217,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         uint8[2] calldata spacing,
         uint8 mirroring,
         address recipient
-    ) external returns (uint256) {
+    ) external notCountdown returns (uint256) {
         // check sender has an exclusive to redeem
         require(exclusives[msg.sender] == 1);
         // check box parameters are valid
