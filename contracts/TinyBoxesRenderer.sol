@@ -171,7 +171,9 @@ library TinyBoxesRenderer {
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
             Shape memory shape = _generateShape(pool, i, box, dVals);
             shapes = string(abi.encodePacked(shapes, 
-                (box.options%2 == 1) ? SVG._rect(shape, Animation._generateAnimation(box,dVals[0],shape,i)) : SVG._rect(shape)
+                (box.options%4 != 0) ?
+                    SVG._rect(shape, Animation._generateAnimation(box,dVals[0],shape,i)) :
+                    SVG._rect(shape)
             ));
         }
         // wrap shapes in a symbol with the id "shapes"
@@ -180,7 +182,10 @@ library TinyBoxesRenderer {
         // generate the footer
         string memory mirroring = _generateMirroring(box.mirroring);
 
-        string memory svg = SVG._SVG(box.bkg == 101 ? "" : string(abi.encodePacked("background-color:hsl(0,0%,", box.bkg.toString(), "%);")), string(abi.encodePacked(metadata, defs, mirroring)));
+        string memory svg = SVG._SVG(
+            ((box.options/4)%2 == 1) ? "" :
+            string(abi.encodePacked("background-color:hsl(0,0%,", box.bkg.toString(), "%);")), string(abi.encodePacked(metadata, defs, mirroring))
+        );
 
         return svg;
     }
