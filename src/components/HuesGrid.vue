@@ -1,5 +1,5 @@
 <template lang="pug">
-    .hues-grid
+    .hues-grid(v-if="color !== undefined && scheme !== undefined")
       svg(:width="(2.2*(schemeH(scheme).length)) + 'em'" height="2.2em")
         g(v-for="h,i of schemeH(scheme)")
           rect(:x="2.2*i+'em'" y="0" width="2.2em" height="2.2em"
