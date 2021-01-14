@@ -47,7 +47,7 @@
               span(v-else) Preview Your TinyBox
             v-card-subtitle
               v-skeleton-loader(v-if="id === null" type="card-heading" width="20vw")
-              span(v-else) Color Scheme: {{ schemeTitles[Math.floor(id / phaseLen)] }}
+              span(v-else) Color Scheme: {{ schemeTitles[phase] }}
             v-card-text.token-graphic
               v-fade-transition(mode="out-in")
                 v-skeleton-loader(v-if="loading" tile type="image")
@@ -97,7 +97,7 @@
                     span Randomize
                 v-expansion-panel-content.section-content
                   template(v-if="section.title === 'Color'")
-                    HuesGrid(:color="values.color" scheme="2")
+                    HuesGrid(:color="values.color" :scheme="phase")
                     ColorPicker(v-bind="values.color" variant="persistent" @change="setHue").picker.ma-2
                     v-slider(v-model="values.color.saturation" @change="changed" thumb-label required label="Saturation" min="20" max="100")
                     v-slider(v-model="values.color.luminosity" @change="changed" thumb-label required label="Lightness" min="0" max="100")
@@ -180,6 +180,9 @@ export default Vue.extend({
   computed: {
     phaseLen() {
       return (this as any).limit / 10;
+    },
+    phase() {
+      return Math.floor((this as any).id / (this as any).phaseLen);
     },
     paramsSet: function() {
       return Object.keys(this.$route.query).length > 0
