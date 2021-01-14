@@ -129,7 +129,7 @@ contract TinyBoxesStore is TinyBoxesBase {
     }
 
     /**
-     * @dev Create a new TinyBox Token
+     * @dev Create a new TinyBox Token to a given address
      * @param _seed of token
      * @param shapes count
      * @param hatching mod value
@@ -139,7 +139,7 @@ contract TinyBoxesStore is TinyBoxesBase {
      * @param recipient of the token
      * @return id of the new token
      */
-    function buyFor(
+    function createTo(
         string calldata _seed,
         uint8 shapes,
         uint8 hatching,
@@ -200,7 +200,7 @@ contract TinyBoxesStore is TinyBoxesBase {
      * @param spacing grid and spread params
      * @return id of the new token
      */
-    function createExclusive(
+    function createPromo(
         uint128 seed,
         uint8 shapes,
         uint8 hatching,
