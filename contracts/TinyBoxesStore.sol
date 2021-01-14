@@ -204,7 +204,7 @@ contract TinyBoxesStore is TinyBoxesBase {
      * @return id of the new token
      */
     function createExclusive(
-        uint256 seed,
+        uint128 seed,
         uint8 shapes,
         uint8 hatching,
         uint16[3] calldata color,
@@ -227,7 +227,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         exclusives[msg.sender] = 0;
         // create a new box object
         createBox(
-            TinyBox({
+            TinyBox({ // TODO - Store Scheme(4), Anim(5), Shades(3), Contrast(7) & Vanity Rand String(17xASCII(7)) bit packed into the randomness slot
                 randomness: uint128(seed),
                 hue: color[0],
                 saturation: uint8(color[1]),
