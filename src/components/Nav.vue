@@ -77,7 +77,7 @@ export default {
         type: "page",
         bar: true,
         icon: "mdi-view-grid",
-        text: "Boxes",
+        text: "Gallery",
         path: "/list"
       },
       {
