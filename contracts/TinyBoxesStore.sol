@@ -198,6 +198,7 @@ contract TinyBoxesStore is TinyBoxesBase {
      * @param color settings (hue, sat, light, contrast, shades)
      * @param size range for boxes
      * @param spacing grid and spread params
+     * @param recipient of the token
      * @return id of the new token
      */
     function createPromo(
@@ -207,7 +208,8 @@ contract TinyBoxesStore is TinyBoxesBase {
         uint16[3] calldata color,
         uint8[4] calldata size,
         uint8[2] calldata spacing,
-        uint8 mirroring
+        uint8 mirroring,
+        address recipient
     ) external returns (uint256) {
         // check sender has an exclusive to redeem
         require(exclusives[msg.sender] == 1);
@@ -240,7 +242,7 @@ contract TinyBoxesStore is TinyBoxesBase {
                 options: 1
             }),
             id,
-            msg.sender
+            recipient
         );
         return id;
     }
