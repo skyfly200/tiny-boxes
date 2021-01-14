@@ -55,7 +55,7 @@ contract TinyBoxesStore is TinyBoxesBase {
     modifier notSoldOut {
         require(
             _tokenIds.current() < TOKEN_LIMIT,
-            "ART SALE IS OVER. Tinyboxes are now only available on the secondary market."
+            "ART SALE IS OVER"
         );
         _;
     }
@@ -64,8 +64,8 @@ contract TinyBoxesStore is TinyBoxesBase {
      * @notice Modifier to check if minting is paused
      */
     modifier notPaused {
-        require(!paused, "paused");
-        require(block.number >= blockStart, "phase paused");
+        require(!paused, "Paused");
+        require(block.number >= blockStart, "Countingdown");
         _;
     }
 
@@ -208,7 +208,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         uint8[4] calldata size,
         uint8[2] calldata spacing,
         uint8 mirroring
-    ) external payable notPaused notSoldOut returns (uint256) {
+    ) external returns (uint256) {
         // check sender has an exclusive to redeem
         require(exclusives[msg.sender] == 1);
         // check box parameters are valid
