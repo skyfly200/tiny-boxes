@@ -152,10 +152,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         // check box parameters
         validateParams(shapes, hatching, color, size, spacing, false);
         // make sure caller is never the 0 address
-        require(
-            recipient != address(0),
-            "0x00 Recipient Invalid"
-        );
+        require(recipient != address(0), "0x00 Recipient Invalid");
         // check payment and give change
         handlePayment();
         uint256 id = _tokenIds.current();
@@ -217,10 +214,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         // check box parameters are valid
         validateParams(shapes, hatching, color, size, spacing, true);
         // make sure caller is never the 0 address
-        require(
-            msg.sender != address(0),
-            "0x00 Recipient Invalid"
-        );
+        require(msg.sender != address(0),"0x00 Recipient Invalid");
         // get the exclusive id from the mapping
         uint256 id = uint256(-exclusives[msg.sender]); // calculate negative id w INTENDED UNDERFLOW
         // make sure id hasent been minted already
