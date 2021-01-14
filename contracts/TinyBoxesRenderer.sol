@@ -145,6 +145,15 @@ library TinyBoxesRenderer {
     }
 
     /**
+     * @dev parse the bkg value into an HSL color
+     * @param box TinyBox data structure
+     * @return HSL color style CSS string
+     */
+    function _parseBkg(TinyBox memory box) internal pure returns (string memory) {
+        return string(abi.encodePacked("background-color:hsl(0,0%,", box.bkg.toString(), "%);"));
+    }
+
+    /**
      * @dev render a token's art
      * @param box TinyBox data structure
      * @param id of the token to render
@@ -183,8 +192,8 @@ library TinyBoxesRenderer {
         string memory mirroring = _generateMirroring(box.mirroring);
 
         string memory svg = SVG._SVG(
-            ((box.options/4)%2 == 1) ? "" :
-            string(abi.encodePacked("background-color:hsl(0,0%,", box.bkg.toString(), "%);")), string(abi.encodePacked(metadata, defs, mirroring))
+            ((box.options/4)%2 == 1) ? "" : selectBkg(box),
+            string(abi.encodePacked(metadata, defs, mirroring))
         );
 
         return svg;
