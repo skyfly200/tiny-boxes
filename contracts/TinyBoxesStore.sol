@@ -223,8 +223,8 @@ contract TinyBoxesStore is TinyBoxesBase {
         );
         // get the exclusive id from the mapping
         uint256 id = uint256(-exclusives[msg.sender]); // calculate negative id w INTENDED UNDERFLOW
-        // mark promo as used
-        exclusives[msg.sender] = 0;
+        // make sure id hasent been minted already
+        require(!_exists(id), "Already Minted");
         // create a new box object
         createBox(
             TinyBox({ // TODO - Store Scheme(4), Anim(5), Shades(3), Contrast(7) & Vanity Rand String(17xASCII(7)) bit packed into the randomness slot

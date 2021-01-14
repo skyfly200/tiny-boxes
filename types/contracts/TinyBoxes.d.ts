@@ -204,6 +204,8 @@ export class TinyBoxes extends Contract {
       id: number | string
     ): TransactionObject<string>;
 
+    tokenRandomness(id: number | string): TransactionObject<string>;
+
     tokenURI(tokenId: number | string): TransactionObject<string>;
 
     totalSupply(): TransactionObject<string>;
