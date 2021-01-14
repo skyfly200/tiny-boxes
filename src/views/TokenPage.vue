@@ -11,121 +11,122 @@
       v-row(v-else-if="!exists")
         v-col(align="center").token-missing
           h1 Invalid Token ID
-      v-row(v-else no-gutters)
-        v-col(cols="12" md="4")
-          .palette
-            .scheme
-              span Scheme
-              h2 {{ data.tokenData.color.saturation === 0 ? "Grayscale" : schemeTitles[data.tokenData.scheme] }}
-            ColorsGrid(v-bind="palette")
-          .stats
-            .root-color.stat
-              span.stat-value {{ data.tokenData.color[0] + '°,' + data.tokenData.color[1] + '%,' + data.tokenData.color[2] + '%' }} 
-              .stat-title Root Color
-            .contrast.stat
-              span.stat-value {{ data.tokenData.contrast + '%' }}
-              .stat-title Contrast
-            .shades.stat
-              span.stat-value {{ parseInt(data.tokenData.shades) }}
-              .stat-title Shades
-            .mirror-a.stat
-              span.stat-value {{ data.tokenData.mirroring % 4 }},{{ Math.floor(data.tokenData.mirroring / 4) % 4 }},{{ Math.floor(data.tokenData.mirroring / 16) % 4 }}
-              .stat-title Mirroring
-        v-col(cols="12" md="4")
-          v-card
-            Token(v-if="animate" :id="id+'A'" :data="data.animation" key="anim").token-graphic
-            Token(v-else :id="id" :data="data.art" key="static").token-graphic
-            v-card-actions
-              v-tooltip(right)
-                template(v-slot:activator='{ on }')
-                  v-btn(icon large v-on='on' @click="animate = !animate" v-bind:class="[animate ? 'on' : 'off']").animate-toggle
-                    v-icon mdi-animation
-                span Toggle Animation
-              v-spacer
-              .anim-title
-                .caption Animation
-                h3 {{ animationTitles[data.tokenData.animation] }}
-        v-col(cols="12" md="4")
-          .stats
-            .shapeCount.stat
-              span.stat-value {{ data.tokenData.shapes }}
-              .stat-title Shapes
-            .hatching.stat
-              span.stat-value {{ data.tokenData.hatching }}
-              .stat-title Hatching
-          .stats
-            .width.stat
-              span.stat-value {{ data.tokenData.size[0] + '-' + data.tokenData.size[1] }}
-              .stat-title Width
-            .height.stat
-              span.stat-value {{ data.tokenData.size[2] + '-' + data.tokenData.size[3] }}
-              .stat-title Height
-          .stats
-            .spread-x.stat
-              span.stat-value {{ data.tokenData.spacing[0] + "%" }}
-              .stat-title Spread
-            .rows.stat
-              span.stat-value {{ Math.floor(data.tokenData.spacing[1] / 16) + 1 }}
-              .stat-title Rows
-            .columns.stat
-              span.stat-value {{ Math.floor(data.tokenData.spacing[1] % 16) + 1 }}
-              .stat-title Columns
-      v-row
-        v-col(cols="12")
-          v-card
-            v-card-title(align="center") Minting Info
-            v-card-text
-              .stats.minting-stats
-                .buttons.d-flex
-                  v-btn.my-4(height="3rem" color="secondary" @click="gotoMint") Copy Options
-                  a(:href="openseaTokenURL + id" title="View on OpenSea" target="_blank")
-                    img(style="width:160px; border-radius:0px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);" src="https://storage.googleapis.com/opensea-static/opensea-brand/listed-button-blue.png" alt="Listed on OpenSea badge")
-                .timestamp.stat(v-if="data.block !== undefined")
-                  .stat-value
-                    span.timestamp-time {{ (new Date(data.block.timestamp * 1000)).toLocaleTimeString() }}
-                    span.timestamp-date {{ (new Date(data.block.timestamp * 1000)).toLocaleDateString() }}
-                  .stat-title Minted Timestamp
-                .minter.stat(v-if="data.creation !== undefined && data.creation.topics.length > 0")
-                  .stat-value
-                    v-tooltip(top)
+      template(v-else)
+        v-row(no-gutters)
+          v-col(cols="12" md="4")
+            .palette
+              .scheme
+                span Scheme
+                h2 {{ data.tokenData.color.saturation === 0 ? "Grayscale" : schemeTitles[data.tokenData.scheme] }}
+              ColorsGrid(v-bind="palette")
+            .stats
+              .root-color.stat
+                span.stat-value {{ data.tokenData.color[0] + '°,' + data.tokenData.color[1] + '%,' + data.tokenData.color[2] + '%' }} 
+                .stat-title Root Color
+              .contrast.stat
+                span.stat-value {{ data.tokenData.contrast + '%' }}
+                .stat-title Contrast
+              .shades.stat
+                span.stat-value {{ parseInt(data.tokenData.shades) }}
+                .stat-title Shades
+              .mirror-a.stat
+                span.stat-value {{ data.tokenData.mirroring % 4 }},{{ Math.floor(data.tokenData.mirroring / 4) % 4 }},{{ Math.floor(data.tokenData.mirroring / 16) % 4 }}
+                .stat-title Mirroring
+          v-col(cols="12" md="4")
+            v-card
+              Token(v-if="animate" :id="id+'A'" :data="data.animation" key="anim").token-graphic
+              Token(v-else :id="id" :data="data.art" key="static").token-graphic
+              v-card-actions
+                v-tooltip(right)
+                  template(v-slot:activator='{ on }')
+                    v-btn(icon large v-on='on' @click="animate = !animate" v-bind:class="[animate ? 'on' : 'off']").animate-toggle
+                      v-icon mdi-animation
+                  span Toggle Animation
+                v-spacer
+                .anim-title
+                  .caption Animation
+                  h3 {{ animationTitles[data.tokenData.animation] }}
+          v-col(cols="12" md="4")
+            .stats
+              .shapeCount.stat
+                span.stat-value {{ data.tokenData.shapes }}
+                .stat-title Shapes
+              .hatching.stat
+                span.stat-value {{ data.tokenData.hatching }}
+                .stat-title Hatching
+            .stats
+              .width.stat
+                span.stat-value {{ data.tokenData.size[0] + '-' + data.tokenData.size[1] }}
+                .stat-title Width
+              .height.stat
+                span.stat-value {{ data.tokenData.size[2] + '-' + data.tokenData.size[3] }}
+                .stat-title Height
+            .stats
+              .spread-x.stat
+                span.stat-value {{ data.tokenData.spacing[0] + "%" }}
+                .stat-title Spread
+              .rows.stat
+                span.stat-value {{ Math.floor(data.tokenData.spacing[1] / 16) + 1 }}
+                .stat-title Rows
+              .columns.stat
+                span.stat-value {{ Math.floor(data.tokenData.spacing[1] % 16) + 1 }}
+                .stat-title Columns
+        v-row
+          v-col(cols="12")
+            v-card
+              v-card-title(align="center") Minting Info
+              v-card-text
+                .stats.minting-stats
+                  .buttons.d-flex
+                    v-btn.my-4(height="3rem" color="secondary" @click="gotoMint") Copy Options
+                    a(:href="openseaTokenURL + id" title="View on OpenSea" target="_blank")
+                      img(style="width:160px; border-radius:0px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);" src="https://storage.googleapis.com/opensea-static/opensea-brand/listed-button-blue.png" alt="Listed on OpenSea badge")
+                  .timestamp.stat(v-if="data.block !== undefined")
+                    .stat-value
+                      span.timestamp-time {{ (new Date(data.block.timestamp * 1000)).toLocaleTimeString() }}
+                      span.timestamp-date {{ (new Date(data.block.timestamp * 1000)).toLocaleDateString() }}
+                    .stat-title Minted Timestamp
+                  .minter.stat(v-if="data.creation !== undefined && data.creation.topics.length > 0")
+                    .stat-value
+                      v-tooltip(top)
+                          template(v-slot:activator='{ on }')
+                            span(v-on='on') {{ formatTopic(data.creation.topics[2]) }}
+                          span {{ formatTopicLong(data.creation.topics[2]) }}
+                    .stat-title Creator
+                  .tx-hash.stat(v-if="data.creation !== undefined")
+                    .stat-value
+                      v-tooltip(top)
                         template(v-slot:activator='{ on }')
-                          span(v-on='on') {{ formatTopic(data.creation.topics[2]) }}
-                        span {{ formatTopicLong(data.creation.topics[2]) }}
-                  .stat-title Creator
-                .tx-hash.stat(v-if="data.creation !== undefined")
-                  .stat-value
-                    v-tooltip(top)
-                      template(v-slot:activator='{ on }')
-                        a(v-on='on' :href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash" target="_blank") {{ formatHash(data.creation.transactionHash) }}
-                      span View on Etherscan
-                  .stat-title TX Hash
-      v-row(v-if="ownerOf")
-        v-col(cols="12")
-          v-sheet
-            v-expansion-panels(v-model="settingsPane" tile)
-              v-expansion-panel(expand ripple)
-                  v-expansion-panel-header Render Settings
-                  v-expansion-panel-content
-                    v-container(no-gutters max-width="100%").render-settings
-                      v-row
-                        v-col(cols="12" align="center")
-                          p Set default render settings for your token on the contract
-                      v-row
-                        v-col(cols="12" md="8").settings
-                          v-slider(v-model="settings.bkg" :disabled="settings.transparent" label="Background" thumb-label min="0" max="100")
-                          v-slider(v-model="settings.duration" label="Duration" thumb-label min="1" max="255")
-                        v-col(cols="12" md="3" offset-md="1")
-                          v-switch(v-model="settings.transparent"  label="Transparent Bkg")
-                          v-switch(v-model="settings.animate"  label="Animate")
-                      v-row
-                        v-col(cols="12")
-                          .d-flex
-                            v-btn.mr-5(v-if="false") Preview
-                            v-btn(v-if="false") Download
-                            v-spacer
-                            template(v-if="changedSettings")
-                              v-btn.mr-5(color="success" @click="saveSettings") Save
-                              v-btn(@click="resetSettings") Reset
+                          a(v-on='on' :href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash" target="_blank") {{ formatHash(data.creation.transactionHash) }}
+                        span View on Etherscan
+                    .stat-title TX Hash
+        v-row(v-if="ownerOf")
+          v-col(cols="12")
+            v-sheet
+              v-expansion-panels(v-model="settingsPane" tile)
+                v-expansion-panel(expand ripple)
+                    v-expansion-panel-header Render Settings
+                    v-expansion-panel-content
+                      v-container(no-gutters max-width="100%").render-settings
+                        v-row
+                          v-col(cols="12" align="center")
+                            p Set default render settings for your token on the contract
+                        v-row
+                          v-col(cols="12" md="8").settings
+                            v-slider(v-model="settings.bkg" :disabled="settings.transparent" label="Background" thumb-label min="0" max="100")
+                            v-slider(v-model="settings.duration" label="Duration" thumb-label min="1" max="255")
+                          v-col(cols="12" md="3" offset-md="1")
+                            v-switch(v-model="settings.transparent"  label="Transparent Bkg")
+                            v-switch(v-model="settings.animate"  label="Animate")
+                        v-row
+                          v-col(cols="12")
+                            .d-flex
+                              v-btn.mr-5(v-if="false") Preview
+                              v-btn(v-if="false") Download
+                              v-spacer
+                              template(v-if="changedSettings")
+                                v-btn.mr-5(color="success" @click="saveSettings") Save
+                                v-btn(@click="resetSettings") Reset
 </template>
 
 <script lang="ts">
