@@ -71,28 +71,35 @@
               .columns.stat
                 span.stat-value {{ Math.floor(data.tokenData.spacing[1] % 16) + 1 }}
                 .stat-title Columns
+              .buttons.d-flex
+                v-btn.my-4(height="3rem" width="160px" color="secondary" @click="gotoMint") Copy Options
+                a(:href="openseaTokenURL + id" title="View on OpenSea" target="_blank")
+                  img(style="width:160px; border-radius:0px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);" src="https://storage.googleapis.com/opensea-static/opensea-brand/listed-button-blue.png" alt="Listed on OpenSea badge")
         v-row
           v-col(cols="12")
             v-card
               v-card-title(align="center") Minting Info
               v-card-text
                 .stats.minting-stats
-                  .buttons.d-flex
-                    v-btn.my-4(height="3rem" color="secondary" @click="gotoMint") Copy Options
-                    a(:href="openseaTokenURL + id" title="View on OpenSea" target="_blank")
-                      img(style="width:160px; border-radius:0px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);" src="https://storage.googleapis.com/opensea-static/opensea-brand/listed-button-blue.png" alt="Listed on OpenSea badge")
                   .timestamp.stat(v-if="data.block !== undefined")
                     .stat-value
                       span.timestamp-time {{ (new Date(data.block.timestamp * 1000)).toLocaleTimeString() }}
                       span.timestamp-date {{ (new Date(data.block.timestamp * 1000)).toLocaleDateString() }}
                     .stat-title Minted Timestamp
-                  .minter.stat(v-if="data.creation !== undefined && data.creation.topics.length > 0")
+                  .minter.stat(v-if="data.tx !== undefined && data.tx.from")
                     .stat-value
                       v-tooltip(top)
                           template(v-slot:activator='{ on }')
-                            span(v-on='on') {{ formatTopic(data.creation.topics[2]) }}
-                          span {{ formatTopicLong(data.creation.topics[2]) }}
+                            span(v-on='on') {{ formatHash(data.tx.from) }}
+                          span {{ data.tx.from }}
                     .stat-title Creator
+                  .owner.stat
+                    .stat-value
+                      v-tooltip(top)
+                          template(v-slot:activator='{ on }')
+                            span(v-on='on') {{ formatHash(owner) }}
+                          span {{ owner }}
+                    .stat-title Owner
                   .tx-hash.stat(v-if="data.creation !== undefined")
                     .stat-value
                       v-tooltip(top)
@@ -203,14 +210,14 @@ export default Vue.extend({
         t.settings.duration,
         t.settings.animate ? 1 : 0
       ];
-      t.tx = {
+      t.settingsTX = {
         from: this.currentAccount,
         to: this.$store.state.tinyboxesAddress,
         data: this.$store.state.contracts.tinyboxes.methods
           .changeSettings(t.id, settings)
           .encodeABI(),
       };
-      t.$store.state.web3.eth.sendTransaction(t.tx,
+      t.$store.state.web3.eth.sendTransaction(t.settingsTX,
         async (err: any, txHash: string) => {
           const t = this as any;
           if (err) t.overlay = err.code === 4001 ? "" : "error";
@@ -271,6 +278,8 @@ export default Vue.extend({
         const artPromise = this.$store.state.contracts.tinyboxes.methods.tokenArt(this.id, this.settings.bkg, this.settings.duration, 0).call();
         const tokenDataPromise = this.$store.state.contracts.tinyboxes.methods.tokenData(this.id).call();
         this.data.creation = await creationPromise;
+        console.log(this.data.creation.transactionHash);
+        this.data.tx = await this.$store.state.web3.eth.getTransaction(this.data.creation.transactionHash);
         this.data.block = await this.$store.state.web3.eth.getBlock(this.data.creation.blockNumber);
         this.data.animation = await animationPromise;
         this.data.art = await artPromise;
@@ -311,7 +320,7 @@ export default Vue.extend({
     },
     owner: "",
     data: {} as any,
-    tx: null,
+    settingsTX: null,
     txHash: null,
   }),
 });
