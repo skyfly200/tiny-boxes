@@ -278,7 +278,6 @@ export default Vue.extend({
         const artPromise = this.$store.state.contracts.tinyboxes.methods.tokenArt(this.id, this.settings.bkg, this.settings.duration, 0).call();
         const tokenDataPromise = this.$store.state.contracts.tinyboxes.methods.tokenData(this.id).call();
         this.data.creation = await creationPromise;
-        console.log(this.data.creation.transactionHash);
         this.data.tx = await this.$store.state.web3.eth.getTransaction(this.data.creation.transactionHash);
         this.data.block = await this.$store.state.web3.eth.getBlock(this.data.creation.blockNumber);
         this.data.animation = await animationPromise;
