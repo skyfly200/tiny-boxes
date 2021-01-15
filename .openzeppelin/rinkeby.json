@@ -31,7 +31,7 @@
     }
   },
   "proxies": {
-    "tiny-boxes/TinyBoxes": [
+    "tinyboxes/TinyBoxes": [
       {
         "address": "0x3b829CFD48e2C7df548Cab8AF0E42eC788869134",
         "kind": "NonProxy",

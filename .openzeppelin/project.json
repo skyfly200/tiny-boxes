@@ -1,13 +1,13 @@
 {
   "manifestVersion": "2.2",
   "contracts": {},
-  "name": "tiny-boxes",
+  "name": "tinyboxes",
   "version": "0.1.0",
   "compiler": {
     "compilerSettings": {
       "optimizer": {
         "enabled": true,
-        "runs": "200"
+        "runs": "10000"
       }
     },
     "typechain": {
