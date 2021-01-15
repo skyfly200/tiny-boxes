@@ -80,33 +80,14 @@
             v-card
               v-card-title(align="center") Minting Info
               v-card-text
-                .stats.minting-stats
-                  .timestamp.stat(v-if="data.block !== undefined")
-                    .stat-value
-                      span.timestamp-time {{ (new Date(data.block.timestamp * 1000)).toLocaleTimeString() }}
-                      span.timestamp-date {{ (new Date(data.block.timestamp * 1000)).toLocaleDateString() }}
-                    .stat-title Minted Timestamp
-                  .minter.stat(v-if="data.tx !== undefined && data.tx.from")
-                    .stat-value
-                      v-tooltip(top)
-                          template(v-slot:activator='{ on }')
-                            span(v-on='on') {{ formatHash(data.tx.from) }}
-                          span {{ data.tx.from }}
-                    .stat-title Creator
-                  .owner.stat
-                    .stat-value
-                      v-tooltip(top)
-                          template(v-slot:activator='{ on }')
-                            span(v-on='on') {{ formatHash(owner) }}
-                          span {{ owner }}
-                    .stat-title Owner
-                  .tx-hash.stat(v-if="data.creation !== undefined")
-                    .stat-value
-                      v-tooltip(top)
-                        template(v-slot:activator='{ on }')
-                          a(v-on='on' :href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash" target="_blank") {{ formatHash(data.creation.transactionHash) }}
-                        span View on Etherscan
-                    .stat-title TX Hash
+                .box-story
+                  p TinyBox number {{ + id }} was created at {{ (new Date(data.block.timestamp * 1000)).toLocaleTimeString() }} on {{ (new Date(data.block.timestamp * 1000)).toLocaleDateString() }} by&nbsp;
+                    a(v-on='on' :href="'https://rinkeby.etherscan.io/address/' + data.tx.from" target="_blank") {{ data.tx.from }}
+                    span &nbsp;in TX&nbsp;
+                      a(v-on='on' :href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash" target="_blank") {{ data.creation.transactionHash }}
+                    span &nbsp;of block {{ data.block.number }}
+                  p Its current owner is
+                    a(v-on='on' :href="'https://rinkeby.etherscan.io/address/' + owner" target="_blank") {{ owner }}
         v-row(v-if="ownerOf")
           v-col(cols="12")
             v-sheet
@@ -369,6 +350,8 @@ export default Vue.extend({
   display: flex
   flex-direction: column
   align-items: center
+.box-story
+  font-size: 1.2rem
 .v-card
   margin: 1rem
 .timestamp-date
