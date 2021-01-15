@@ -128,8 +128,8 @@ library Animation {
         // 0 - 000    '',
         // 1 - 001    'repeatCount="indefinite" ',
         // 2 - 010    'repeatCount="indefinite" begin="shapes.mouseenter" ',
-        // 4 - 100    'repeatCount="indefinite" begin="shapes.dblclick" end="shapes.click" ',
-        // 3 - 011    'repeatCount="indefinite" begin="shapes.click" ',
+        // 3 - 011    'repeatCount="indefinite" begin="shapes.dblclick" end="shapes.click" ',
+        // 4 - 100    'repeatCount="indefinite" begin="shapes.click" ',
         // 5 - 101    'repeatCount="1" begin="shapes.click" ',
         // 6 - 110    'repeatCount="2" begin="shapes.click" ',
         // 7 - 111    'repeatCount="25" begin="shapes.click" '
