@@ -249,13 +249,14 @@ export default Vue.extend({
     },
     gotoMint() {
       const d = this.data.tokenData;
-      const values = { ...this.data.tokenData, seed: Date.now(), m1: d.mirroring % 4, m2: (d.mirroring / 4 % 4), m3: (d.mirroring / 16 % 4) };
+      const values = { ...this.data.tokenData, id: this.id, seed: Date.now(), m1: d.mirroring % 4, m2: (d.mirroring / 4 % 4), m3: (d.mirroring / 16 % 4) };
       this.$router.push({ path: "/create", query: (this as any).buildQuery(values) });
     },
     buildQuery(v: any) {
       const t = this as any;
       // condense keys and values for shorter URL encoding
       const out: any = {
+        i: v.id,
         r: v.seed,
         s: [v.shapes, v.hatching].join("-"), // shapes - count, hatching
         d: [[v.size[0], v.size[1]].join("~"), [v.size[2], v.size[3]].join("~")].join("-"), // dimensions ranges

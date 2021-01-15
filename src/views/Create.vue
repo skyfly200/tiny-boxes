@@ -145,6 +145,7 @@ export default Vue.extend({
   components: { Token, Share, TooltipIconBtn, ColorPicker, HuesGrid },
   data: function() {
     return {
+      usersReferal: null as number | null,
       id: null as number | null,
       loading: true,
       paused: false,
@@ -240,6 +241,7 @@ export default Vue.extend({
     await this.$store.dispatch("initialize");
     if (!this.wrongNetwork) {
       t.recipient = t.currentAccount;
+      t.usersReferal = await t.lookupUsersToken(0);
       t.lookupLimit();
       if (t.paramsSet) t.loadParams();
       else t.updateParams();
@@ -257,6 +259,12 @@ export default Vue.extend({
     },
     lookupLimit: async function() {
       (this as any).limit = await this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
+    },
+    lookupBalance: function() {
+      return (this as any).$store.state.contracts.tinyboxes.methods.balanceOf((this as any).currentAccount).call();
+    },
+    lookupUsersToken(i: any) {
+      return (this as any).$store.state.contracts.tinyboxes.methods.tokenOfOwnerByIndex((this as any).currentAccount, i).call();
     },
     lookupBlockStart: async function() {
       (this as any).blockStart = await this.$store.state.contracts.tinyboxes.methods.blockStart().call();
@@ -362,7 +370,7 @@ export default Vue.extend({
       Object.assign(t.values, query);
       if (t.values.hatching > t.values.shapes) t.values.hatching = t.values.shapes;
     },
-    updateParams() {
+    async updateParams() {
       const t = this as any;
       const q = t.buildQuery();
       if (t.$route.query === {}) this.$router.replace({ path: "/create", query: q });
@@ -373,6 +381,7 @@ export default Vue.extend({
       const v = t.values;
       // condense keys and values for shorter URL encoding
       const out: any = {
+        i: v.referal ? v.referal : t.usersReferal,
         r: v.seed,
         s: [v.shapes, v.hatching].join("-"), // shapes - count, hatching
         d: [v.width.join("~"), v.height.join("~")].join("-"), // dimensions ranges
@@ -391,6 +400,7 @@ export default Vue.extend({
       const c = q.c.split("-");
       const m = q.m.split("-");
       const out: any = {
+        referal: q.i,
         seed: q.r,
         shapes: s[0],
         hatching: s[1],
