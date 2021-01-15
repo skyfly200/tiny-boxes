@@ -115,21 +115,21 @@ library Animation {
         uint8[3] memory counts = [1,2,25];
         string memory repeat = string(abi.encodePacked(
             'repeatCount="',
-            mode < 5 ? 'indefinite' : uint256(counts[mode-5]).toString(),
+            mode <= 4 ? 'indefinite' : uint256(counts[mode-5]).toString(),
             '" '
         ));
         string memory begin = mode <= 1 ? '' : string(abi.encodePacked(
             'begin="shapes.',
-            mode == 2 ? 'mouseenter ' : 'click',
+            mode == 2 ? 'mouseenter ' : mode == 3 ? 'dblclick' : 'click',
             '" '
         ));
-        string memory end = mode == 4 ? 'end="shapes.dblclick" ' : '';
+        string memory end = mode == 3 ? 'end="shapes.click" ' : '';
         return string(abi.encodePacked(repeat, begin, end));
         // 0 - 000    '',
         // 1 - 001    'repeatCount="indefinite" ',
         // 2 - 010    'repeatCount="indefinite" begin="shapes.mouseenter" ',
+        // 4 - 100    'repeatCount="indefinite" begin="shapes.dblclick" end="shapes.click" ',
         // 3 - 011    'repeatCount="indefinite" begin="shapes.click" ',
-        // 4 - 100    'repeatCount="indefinite" begin="shapes.click" end="shapes.dblclick" ',
         // 5 - 101    'repeatCount="1" begin="shapes.click" ',
         // 6 - 110    'repeatCount="2" begin="shapes.click" ',
         // 7 - 111    'repeatCount="25" begin="shapes.click" '
