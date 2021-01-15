@@ -78,16 +78,16 @@
         v-row
           v-col(cols="12")
             v-card
-              v-card-title(align="center") Minting Info
+              v-card-title(align="center") TinyBox {{ id + "'s" }} Story
               v-card-text
                 .box-story
                   p TinyBox number {{ + id }} was created at {{ (new Date(data.block.timestamp * 1000)).toLocaleTimeString() }} on {{ (new Date(data.block.timestamp * 1000)).toLocaleDateString() }} by&nbsp;
-                    a(v-on='on' :href="'https://rinkeby.etherscan.io/address/' + data.tx.from" target="_blank") {{ data.tx.from }}
+                    a(:href="'https://rinkeby.etherscan.io/address/' + data.tx.from" target="_blank") {{ data.tx.from }}
                     span &nbsp;in TX&nbsp;
-                      a(v-on='on' :href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash" target="_blank") {{ data.creation.transactionHash }}
+                      a(:href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash" target="_blank") {{ data.creation.transactionHash }}
                     span &nbsp;of block {{ data.block.number }}
                   p Its current owner is
-                    a(v-on='on' :href="'https://rinkeby.etherscan.io/address/' + owner" target="_blank") {{ owner }}
+                    a(:href="'https://rinkeby.etherscan.io/address/' + owner" target="_blank") {{ owner }}
         v-row(v-if="ownerOf")
           v-col(cols="12")
             v-sheet
