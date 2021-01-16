@@ -20,13 +20,13 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     Counters.Counter internal _tokenIds;
 
     // set contract config constants
-    uint16 public constant TOKEN_LIMIT = 500;
+    uint16 public constant TOKEN_LIMIT = 5000;
     uint8 public constant ANIMATION_COUNT = 24;
     uint8 public constant SCHEME_COUNT = 10;
     bool public paused = true;
     uint256 public blockStart; // start of the next phase
     uint256 public phaseLen = TOKEN_LIMIT / SCHEME_COUNT; // token count per phase
-    uint256 public phaseCountdownTime = 5 minutes; // time to pause between phases
+    uint256 public phaseCountdownTime = 8 hours; // time to pause between phases
     uint256 public phaseCountdown = phaseCountdownTime.div(15); // blocks to pause between phases
 
     // mapping to store all the boxes info
