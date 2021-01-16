@@ -18,6 +18,8 @@ contract TinyBoxesStore is TinyBoxesBase {
     Randomizer entropySource;
 
     uint256 public price = 35000000000000000; // in wei
+    uint256 referalPercent = 10;
+    uint256 referalNewPercent = 15;
 
     address payable skyfly = 0x7A832c86002323a5de3a317b3281Eb88EC3b2C00;
     address payable natealex = 0x63a9dbCe75413036B2B778E670aaBd4493aAF9F3;
@@ -102,14 +104,20 @@ contract TinyBoxesStore is TinyBoxesBase {
     /**
      * @dev handle the payment for tokens
      */
-    function handlePayment() internal {
+    function handlePayment(uint256 referalID, address recipient) internal {
         // check for suficient payment
         uint256 amount = msg.value;
         require(amount >= price, "insuficient payment");
         // give change
         if (amount > price) msg.sender.transfer(amount - price);
+        // pay referal percentage
+        address payable referer = payable(ownerOf(referalID));
+        bool newUser = balanceOf(recipient) > 0;
+        uint256 referal = (referer == recipient && referer == msg.sender) ?
+            0 : price.mul(newUser ? referalNewPercent : referalPercent).div(100);
+        if (referal > 0) referer.transfer(referal);
         // split payment
-        _splitFunds(price);
+        _splitFunds(price.sub(referal));
     }
 
     /**
@@ -154,16 +162,17 @@ contract TinyBoxesStore is TinyBoxesBase {
         uint8[4] calldata size,
         uint8[2] calldata spacing,
         uint8 mirroring,
-        address recipient
+        address recipient,
+        uint256 referalID
     ) external payable notPaused notCountdown notSoldOut returns (uint256) {
         // check box parameters
         validateParams(shapes, hatching, color, size, spacing, false);
         // make sure caller is never the 0 address
         require(recipient != address(0), "0x00 Recipient Invalid");
         // check payment and give change
-        handlePayment();
+        handlePayment(referalID, recipient);
+        // get next id & increment the counter for the next call
         uint256 id = _tokenIds.current();
-        // increment the counter for the next call
         _tokenIds.increment();
         // check if its time to pause for next phase countdown
         if (_tokenIds.current() % phaseLen == 0) blockStart = block.number.add(phaseCountdown);

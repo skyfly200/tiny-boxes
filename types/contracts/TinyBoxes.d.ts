@@ -67,7 +67,8 @@ export class TinyBoxes extends Contract {
       size: (number | string)[],
       spacing: (number | string)[],
       mirroring: number | string,
-      recipient: string
+      recipient: string,
+      referalID: number | string
     ): TransactionObject<string>;
 
     getApproved(tokenId: number | string): TransactionObject<string>;
