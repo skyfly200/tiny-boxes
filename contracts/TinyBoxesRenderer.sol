@@ -150,7 +150,10 @@ library TinyBoxesRenderer {
      * @return HSL color style CSS string
      */
     function _parseBkg(TinyBox memory box) internal pure returns (string memory) {
-        return string(abi.encodePacked("background-color:hsl(0,0%,", box.bkg.toString(), "%);"));
+        uint hue = (box.bkg / 16) * 24;
+        uint sat = hue == 0 ? 0 : ((box.bkg / 4) % 4) * 25;
+        uint lit = hue == 0 ? (625 * (box.bkg % 16)) / 100 : ((box.bkg % 4) + 1) * 20;
+        return string(abi.encodePacked("background-color:hsl(", hue.toString(), ",", sat.toString(), "%,", lit.toString(), "%);"));
     }
 
     /**

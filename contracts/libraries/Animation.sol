@@ -45,6 +45,8 @@ library Animation {
         '" calcMode="spline" ',attr,'/>'));
     }
 
+    // TODO - additive sum never used
+
     /**
      * @dev render an animateTransform SVG tag with keyTimes and keySplines
      */

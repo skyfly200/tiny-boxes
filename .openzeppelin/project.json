@@ -1,6 +1,8 @@
 {
   "manifestVersion": "2.2",
-  "contracts": {},
+  "contracts": {
+    "TinyBoxes": "TinyBoxes"
+  },
   "name": "tinyboxes",
   "version": "0.1.0",
   "compiler": {
