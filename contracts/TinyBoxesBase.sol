@@ -42,7 +42,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
      * @notice Constructor inherits ERC721
      */
     constructor() public ERC721("TinyBoxes", "[#][#]") {
-        // TODO: setup better roles befor launch
+        // TODO: setup better roles before launch
         // Grant all roles to the account deploying this contract for testing
         _setupRole(ADMIN_ROLE, msg.sender);
         _setupRole(ARTIST_ROLE, msg.sender);

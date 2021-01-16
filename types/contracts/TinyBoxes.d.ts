@@ -48,6 +48,8 @@ export class TinyBoxes extends Contract {
       settings: (number | string)[]
     ): TransactionObject<void>;
 
+    contractURI(): TransactionObject<string>;
+
     createPromo(
       seed: number | string,
       shapes: number | string,
@@ -144,6 +146,8 @@ export class TinyBoxes extends Contract {
     ): TransactionObject<void>;
 
     setBaseURI(_uri: string): TransactionObject<void>;
+
+    setContractURI(_uri: string): TransactionObject<void>;
 
     setPause(state: boolean): TransactionObject<void>;
 
