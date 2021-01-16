@@ -241,7 +241,8 @@ export default Vue.extend({
     await this.$store.dispatch("initialize");
     if (!this.wrongNetwork) {
       t.recipient = t.currentAccount;
-      t.usersReferal = await t.lookupUsersToken(0);
+      const balance = await t.lookupBalance();
+      if (balance > 0) t.usersReferal = await t.lookupUsersToken(0);
       t.lookupLimit();
       if (t.paramsSet) t.loadParams();
       else t.updateParams();
