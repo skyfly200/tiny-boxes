@@ -31,18 +31,27 @@ library Animation {
      * @dev render an animate SVG tag
      */
     function _animate(string memory attribute, string memory duration, string memory values, string memory calcMode, string memory attr) internal pure returns (string memory) {
-        return string(abi.encodePacked('<animate attributeName="', attribute, '" values="', values, '" dur="', duration,
-        bytes(calcMode).length == 0 ? '' : string(abi.encodePacked('" calcMode="',calcMode)),
-        '" ',attr,'/>'));
+        return string(abi.encodePacked(
+            '<animate attributeName="', attribute,
+            '" values="', values,
+            '" dur="', duration,
+            bytes(calcMode).length == 0 ? '' : string(abi.encodePacked('" calcMode="',calcMode)),
+            '" ',attr,'/>'));
     }
 
     /**
      * @dev render an animate SVG tag with keyTimes and keySplines
      */
     function _animate(string memory attribute, string memory duration, string memory values, string memory keyTimes, string memory keySplines, string memory attr) internal pure returns (string memory) {
-        return string(abi.encodePacked('<animate attributeName="', attribute, '" values="', values, '" dur="', duration,
-        '" keyTimes="',keyTimes,'" keySplines="',keySplines,
-        '" calcMode="spline" ',attr,'/>'));
+        return string(abi.encodePacked(
+            '<animate attributeName="', attribute,
+            '" values="', values,
+            '" dur="', duration,
+            '" keyTimes="', keyTimes,
+            '" keySplines="', keySplines,
+            '" calcMode="spline" ',
+            attr, '/>'
+        ));
     }
 
     // TODO - additive sum never used
@@ -51,11 +60,14 @@ library Animation {
      * @dev render an animateTransform SVG tag with keyTimes and keySplines
      */
     function _animateTransform(string memory typeVal, string memory duration, string memory values, string memory keyTimes, string memory keySplines, string memory attr, bool add) internal pure returns (string memory) {
-        return string(abi.encodePacked('<animateTransform attributeName="transform" attributeType="XML" type="', typeVal,'" dur="', duration, '" values="', values,
+        return string(abi.encodePacked(
+            '<animateTransform attributeName="transform" attributeType="XML" type="', typeVal,
+            '" dur="', duration,
+            '" values="', values,
             bytes(keyTimes).length == 0 ? '' : string(abi.encodePacked('" keyTimes="', keyTimes)),
             bytes(keySplines).length == 0 ? '' : string(abi.encodePacked('" calcMode="spline" keySplines="', keySplines)),
             add ? '" additive="sum' : '',
-        '" ',attr,'/>'));
+            '" ',attr,'/>'));
     }
 
     /**
