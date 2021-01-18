@@ -146,14 +146,16 @@ library TinyBoxesRenderer {
 
     /**
      * @dev parse the bkg value into an HSL color
-     * @param box TinyBox data structure
+     * @param bkg settings packed int 8 bits
      * @return HSL color style CSS string
      */
-    function _parseBkg(TinyBox memory box) internal pure returns (string memory) {
-        uint hue = (box.bkg / 16) * 24;
-        uint sat = hue == 0 ? 0 : ((box.bkg / 4) % 4) * 25;
-        uint lit = hue == 0 ? (625 * (box.bkg % 16)) / 100 : ((box.bkg % 4) + 1) * 20;
-        return string(abi.encodePacked("background-color:hsl(", hue.toString(), ",", sat.toString(), "%,", lit.toString(), "%);"));
+    function _parseBkg(uint8 bkg) internal pure returns (string memory) {
+        // TODO - fix bkg colors
+        uint256 hue = (bkg / 16) * 24;
+        uint256 sat = hue == 0 ? 0 : ((bkg / 4) % 4) * 25;
+        uint256 lit = hue == 0 ? (625 * (bkg % 16)) / 100 : ((bkg % 4) + 1) * 20;
+        return string(abi.encodePacked("background-color:hsl(0,0%,", uint256(bkg), "%);"));
+        //return string(abi.encodePacked("background-color:hsl(", hue.toString(), ",", sat.toString(), "%,", lit.toString(), "%);"));
     }
 
     /**
@@ -195,7 +197,7 @@ library TinyBoxesRenderer {
         string memory mirroring = _generateMirroring(box.mirroring);
 
         string memory svg = SVG._SVG(
-            ((box.options/4)%2 == 1) ? "" : "",//_parseBkg(box),
+            ((box.options/4)%2 == 1) ? "" : _parseBkg(box.bkg),
             string(abi.encodePacked(metadata, defs, mirroring))
         );
 
