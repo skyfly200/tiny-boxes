@@ -1,6 +1,6 @@
 //SPDX-License-Identifier: Unlicensed
 
-pragma solidity ^0.6.8;
+pragma solidity ^0.6.4;
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/math/SignedSafeMath.sol";
@@ -31,43 +31,29 @@ library Animation {
      * @dev render an animate SVG tag
      */
     function _animate(string memory attribute, string memory duration, string memory values, string memory calcMode, string memory attr) internal pure returns (string memory) {
-        return string(abi.encodePacked(
-            '<animate attributeName="', attribute,
-            '" values="', values,
-            '" dur="', duration,
-            bytes(calcMode).length == 0 ? '' : string(abi.encodePacked('" calcMode="',calcMode)),
-            '" ',attr,'/>'));
+        return string(abi.encodePacked('<animate attributeName="', attribute, '" values="', values, '" dur="', duration,
+        bytes(calcMode).length == 0 ? '' : string(abi.encodePacked('" calcMode="',calcMode)),
+        '" ',attr,'/>'));
     }
 
     /**
      * @dev render an animate SVG tag with keyTimes and keySplines
      */
     function _animate(string memory attribute, string memory duration, string memory values, string memory keyTimes, string memory keySplines, string memory attr) internal pure returns (string memory) {
-        return string(abi.encodePacked(
-            '<animate attributeName="', attribute,
-            '" values="', values,
-            '" dur="', duration,
-            '" keyTimes="', keyTimes,
-            '" keySplines="', keySplines,
-            '" calcMode="spline" ',
-            attr, '/>'
-        ));
+        return string(abi.encodePacked('<animate attributeName="', attribute, '" values="', values, '" dur="', duration,
+        '" keyTimes="',keyTimes,'" keySplines="',keySplines,
+        '" calcMode="spline" ',attr,'/>'));
     }
-
-    // TODO - additive sum never used
 
     /**
      * @dev render an animateTransform SVG tag with keyTimes and keySplines
      */
     function _animateTransform(string memory typeVal, string memory duration, string memory values, string memory keyTimes, string memory keySplines, string memory attr, bool add) internal pure returns (string memory) {
-        return string(abi.encodePacked(
-            '<animateTransform attributeName="transform" attributeType="XML" type="', typeVal,
-            '" dur="', duration,
-            '" values="', values,
+        return string(abi.encodePacked('<animateTransform attributeName="transform" attributeType="XML" type="', typeVal,'" dur="', duration, '" values="', values,
             bytes(keyTimes).length == 0 ? '' : string(abi.encodePacked('" keyTimes="', keyTimes)),
             bytes(keySplines).length == 0 ? '' : string(abi.encodePacked('" calcMode="spline" keySplines="', keySplines)),
             add ? '" additive="sum' : '',
-            '" ',attr,'/>'));
+        '" ',attr,'/>'));
     }
 
     /**
@@ -125,25 +111,26 @@ library Animation {
     /**
      * @dev calculate attributes for an animation tag based of the animation mode
      */
-    function _calcAttributes(uint8 mode) internal pure returns (string memory) {
+    function _calcAttributes(uint256 mode) internal pure returns (string memory) {
+        // TODO - fix the calculations commented out below
         uint8[3] memory counts = [1,2,25];
         string memory repeat = string(abi.encodePacked(
             'repeatCount="',
-            mode <= 4 ? 'indefinite' : uint256(counts[mode-5]).toString(),
+            'indefinite',//mode <= 4 ? 'indefinite' : uint256(counts[mode-5]).toString(),
             '" '
         ));
-        string memory begin = mode <= 1 ? '' : string(abi.encodePacked(
-            'begin="shapes.',
-            mode == 2 ? 'mouseenter ' : mode == 3 ? 'dblclick' : 'click',
-            '" '
-        ));
+        string memory begin = "";//mode <= 1 ? '' : string(abi.encodePacked(
+        //     'begin="shapes.',
+        //     '',//mode == 2 ? 'mouseenter ' : mode == 3 ? 'dblclick' : 'click',
+        //     '" '
+        // ));
         string memory end = mode == 3 ? 'end="shapes.click" ' : '';
         return string(abi.encodePacked(repeat, begin, end));
         // 0 - 000    '',
         // 1 - 001    'repeatCount="indefinite" ',
         // 2 - 010    'repeatCount="indefinite" begin="shapes.mouseenter" ',
-        // 3 - 011    'repeatCount="indefinite" begin="shapes.dblclick" end="shapes.click" ',
-        // 4 - 100    'repeatCount="indefinite" begin="shapes.click" ',
+        // 4 - 100    'repeatCount="indefinite" begin="shapes.dblclick" end="shapes.click" ',
+        // 3 - 011    'repeatCount="indefinite" begin="shapes.click" ',
         // 5 - 101    'repeatCount="1" begin="shapes.click" ',
         // 6 - 110    'repeatCount="2" begin="shapes.click" ',
         // 7 - 111    'repeatCount="25" begin="shapes.click" '

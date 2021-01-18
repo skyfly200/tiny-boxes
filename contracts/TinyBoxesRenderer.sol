@@ -195,7 +195,7 @@ library TinyBoxesRenderer {
         string memory mirroring = _generateMirroring(box.mirroring);
 
         string memory svg = SVG._SVG(
-            ((box.options/4)%2 == 1) ? "" : _parseBkg(box),
+            ((box.options/4)%2 == 1) ? "" : "",//_parseBkg(box),
             string(abi.encodePacked(metadata, defs, mirroring))
         );
 
