@@ -151,9 +151,9 @@ library TinyBoxesRenderer {
      */
     function _parseBkg(uint8 bkg) internal pure returns (string memory) {
         // TODO - fix bkg colors
-        uint256 hue = (bkg / 16) * 24;
-        uint256 sat = hue == 0 ? 0 : ((bkg / 4) % 4) * 25;
-        uint256 lit = hue == 0 ? (625 * (bkg % 16)) / 100 : ((bkg % 4) + 1) * 20;
+        // uint256 hue = (bkg / 16) * 24;
+        // uint256 sat = hue == 0 ? 0 : ((bkg / 4) % 4) * 25;
+        // uint256 lit = hue == 0 ? (625 * (bkg % 16)) / 100 : ((bkg % 4) + 1) * 20;
         return string(abi.encodePacked("background-color:hsl(0,0%,", uint256(bkg), "%);"));
         //return string(abi.encodePacked("background-color:hsl(", hue.toString(), ",", sat.toString(), "%,", lit.toString(), "%);"));
     }

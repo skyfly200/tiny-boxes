@@ -124,6 +124,10 @@ export class TinyBoxes extends Contract {
       2: string;
     }>;
 
+    referalNewPercent(): TransactionObject<string>;
+
+    referalPercent(): TransactionObject<string>;
+
     renounceRole(
       role: string | number[],
       account: string

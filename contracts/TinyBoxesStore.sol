@@ -18,17 +18,15 @@ contract TinyBoxesStore is TinyBoxesBase {
     Randomizer entropySource;
 
     uint256 public price = 35000000000000000; // in wei
-    uint256 referalPercent = 10;
-    uint256 referalNewPercent = 15;
+    uint256 public referalPercent = 10;
+    uint256 public referalNewPercent = 15;
+
+    uint256 UINT_MAX = uint256(-1);
 
     address payable skyfly = 0x7A832c86002323a5de3a317b3281Eb88EC3b2C00;
     address payable natealex = 0x63a9dbCe75413036B2B778E670aaBd4493aAF9F3;
 
-    mapping(address => uint8) exclusives;
-    address[2] betaMinters = [
-        0x7A832c86002323a5de3a317b3281Eb88EC3b2C00,
-        0x63a9dbCe75413036B2B778E670aaBd4493aAF9F3
-    ];
+    mapping(address => uint256) exclusives;
 
     /**
      * @dev Contract constructor.
@@ -38,9 +36,9 @@ contract TinyBoxesStore is TinyBoxesBase {
         TinyBoxesBase()
     {
         entropySource = Randomizer(entropySourceAddress);
-        // asign exclusives to beta minters
-        for (uint8 i = 0; i < betaMinters.length; i++)
-            exclusives[msg.sender] = i;
+        exclusives[skyfly] = UINT_MAX - 0;
+        exclusives[natealex] = UINT_MAX - 1;
+        //exclusives[] = UINT_MAX - 2;
     }
 
     /**
@@ -74,10 +72,18 @@ contract TinyBoxesStore is TinyBoxesBase {
      * @notice Modifier to check if minting is waiting for a countdown
      */
     modifier notCountdown {
-        require(block.number >= blockStart, "Countingdown");
+        require(block.number >= blockStart, "WAIT");
         _;
     }
 
+    // /**
+    //  * @dev assign promo
+    //  */
+    // function assignExclusives(address user, uint256 id) public onlyRole(ADMIN_ROLE) {
+    //     // asign exclusives to beta minters
+    //     exclusives[user] = id;
+    // }
+    
     /**
      * @dev set Randomizer
      */
@@ -111,10 +117,11 @@ contract TinyBoxesStore is TinyBoxesBase {
         // give change
         if (amount > price) msg.sender.transfer(amount - price);
         // pay referal percentage
+        _exists(referalID);
         address payable referer = payable(ownerOf(referalID));
         bool newUser = balanceOf(recipient) > 0;
-        uint256 referal = (referer == recipient && referer == msg.sender) ?
-            0 : price.mul(newUser ? referalNewPercent : referalPercent).div(100);
+        uint256 percent = newUser ? referalNewPercent : referalPercent;
+        uint256 referal = (referer == recipient && referer == msg.sender) ? 0 : price.mul(percent).div(100);
         if (referal > 0) referer.transfer(referal);
         // split payment
         _splitFunds(price.sub(referal));
@@ -170,8 +177,8 @@ contract TinyBoxesStore is TinyBoxesBase {
         // make sure caller is never the 0 address
         require(recipient != address(0), "0x00 Recipient Invalid");
         // check payment and give change
-        handlePayment(referalID, recipient);
-        // get next id & increment the counter for the next call
+        (referalID, recipient);
+        // get next id & increment the counter for the next callhandlePayment
         uint256 id = _tokenIds.current();
         _tokenIds.increment();
         // check if its time to pause for next phase countdown
@@ -234,7 +241,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         // make sure caller is never the 0 address
         require(msg.sender != address(0),"0x00 Recipient Invalid");
         // get the exclusive id from the mapping
-        uint256 id = uint256(-exclusives[msg.sender]); // calculate negative id w INTENDED UNDERFLOW
+        uint256 id = uint256(exclusives[msg.sender]); // calculate negative id w INTENDED UNDERFLOW
         // make sure id hasent been minted already
         require(!_exists(id), "Already Minted");
         // create a new box object
