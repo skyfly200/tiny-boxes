@@ -28,7 +28,7 @@ contract TinyBoxesStore is TinyBoxesBase {
 
     mapping(address => uint256) exclusives;
 
-    event RantTest(bytes32 rand);
+    event RandTest(bytes32 rand);
 
     /**
      * @dev Contract constructor.
@@ -97,7 +97,7 @@ contract TinyBoxesStore is TinyBoxesBase {
      * @dev test Randomizer
      */
     function testRandom() external {
-        emit RantTest(entropySource.returnValue());
+        emit RandTest(entropySource.returnValue());
     }
 
     /**
