@@ -4,16 +4,17 @@ trap "exit" INT TERM    # Convert INT and TERM to EXIT
 trap "kill 0" EXIT      # Kill all child processes if we receive EXIT
 
 RAND="0x39268785c0051569f4C133D46f3C8594514e7302"
+ROLE="0x843c3a00fa95510a35f425371231fd3fe4642e719cb4595160763d6d02594b50"
 
 ## if deploy or render
 ## delete oz lock file ./.openzeppelin/.lock
 rm -f ./.openzeppelin/.lock
 
-ADDRESS=$(npx oz deploy --no-interactive -k regular -n rinkeby TinyBoxes "$RAND" | tail -n 1)
+ADDRESS=$(npx oz deploy -n rinkeby -v --no-interactive -k regular  TinyBoxes "$RAND" | tail -n 1)
 
 ## add caller role for the contract
 echo "Adding $ADDRESS as caller on $RAND"
-npx oz send-tx -n rinkeby -v --method grantRole --to $RAND --args "843c3a00fa95510a35f425371231fd3fe4642e719cb4595160763d6d02594b50 $ADDRESS"
+npx oz send-tx -n rinkeby -v --method grantRole --to $RAND --args $ROLE $ADDRESS
 
 ## unpause the new contract
 echo "Unpausing @ $ADDRESS"
