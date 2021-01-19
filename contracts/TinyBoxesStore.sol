@@ -20,7 +20,6 @@ contract TinyBoxesStore is TinyBoxesBase {
     uint256 public price = 100000000000000000; // in wei - 0.1 ETH
     uint256 public referalPercent = 10;
     uint256 public referalNewPercent = 15;
-    bytes32 public randTest;
 
     uint256 UINT_MAX = uint256(-1);
 
@@ -28,6 +27,8 @@ contract TinyBoxesStore is TinyBoxesBase {
     address payable natealex = 0x63a9dbCe75413036B2B778E670aaBd4493aAF9F3;
 
     mapping(address => uint256) exclusives;
+
+    event RantTest(bytes32 rand);
 
     /**
      * @dev Contract constructor.
@@ -96,7 +97,7 @@ contract TinyBoxesStore is TinyBoxesBase {
      * @dev test Randomizer
      */
     function testRandom() external {
-        randTest = entropySource.returnValue();
+        emit RantTest(entropySource.returnValue());
     }
 
     /**

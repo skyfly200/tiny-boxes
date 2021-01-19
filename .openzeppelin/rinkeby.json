@@ -356,6 +356,61 @@
         "address": "0x4D7313CffB40481d57370CA6f1eF478B766630ca",
         "kind": "NonProxy",
         "bytecodeHash": "8c01e80ca9bec3691b1790d4eb8d02b0df73c79ddbd71a1e20570262bdf1e52f"
+      },
+      {
+        "address": "0xd36448a3e541E9197D55EC67Bc66D6F1d030E334",
+        "kind": "NonProxy",
+        "bytecodeHash": "8c01e80ca9bec3691b1790d4eb8d02b0df73c79ddbd71a1e20570262bdf1e52f"
+      },
+      {
+        "address": "0x1Ab1727b1A101D8bE6972b7d7340F952C15d0A2a",
+        "kind": "NonProxy",
+        "bytecodeHash": "8c01e80ca9bec3691b1790d4eb8d02b0df73c79ddbd71a1e20570262bdf1e52f"
+      },
+      {
+        "address": "0x1B7F2D20375B69c34a6671c8C63a9a0A29BEA67E",
+        "kind": "NonProxy",
+        "bytecodeHash": "8c01e80ca9bec3691b1790d4eb8d02b0df73c79ddbd71a1e20570262bdf1e52f"
+      },
+      {
+        "address": "0x9DeA05891dC9D7BAa1E84b6Fd1A7FE13871394B2",
+        "kind": "NonProxy",
+        "bytecodeHash": "8c01e80ca9bec3691b1790d4eb8d02b0df73c79ddbd71a1e20570262bdf1e52f"
+      },
+      {
+        "address": "0xF659892F9cF5F09c4190EB32aB42dA0d5A5c1f96",
+        "kind": "NonProxy",
+        "bytecodeHash": "8c01e80ca9bec3691b1790d4eb8d02b0df73c79ddbd71a1e20570262bdf1e52f"
+      },
+      {
+        "address": "0x294A8a16A7E66dBE40DA918a6fbfFE1c10E22a51",
+        "kind": "NonProxy",
+        "bytecodeHash": "8c01e80ca9bec3691b1790d4eb8d02b0df73c79ddbd71a1e20570262bdf1e52f"
+      },
+      {
+        "address": "0xd2fFBcf931ecaD42AC53c5f330FE032091DEb946",
+        "kind": "NonProxy",
+        "bytecodeHash": "8c01e80ca9bec3691b1790d4eb8d02b0df73c79ddbd71a1e20570262bdf1e52f"
+      },
+      {
+        "address": "0x44b4fAd03064266489fe9695f063967d76CDaa42",
+        "kind": "NonProxy",
+        "bytecodeHash": "8c01e80ca9bec3691b1790d4eb8d02b0df73c79ddbd71a1e20570262bdf1e52f"
+      },
+      {
+        "address": "0xC5e208495f54e823aeF6bBbbdB8Ae7756883782e",
+        "kind": "NonProxy",
+        "bytecodeHash": "8c01e80ca9bec3691b1790d4eb8d02b0df73c79ddbd71a1e20570262bdf1e52f"
+      },
+      {
+        "address": "0xe1AD46A30e3264Ba21E701b825Ed2bcB3f6177F7",
+        "kind": "NonProxy",
+        "bytecodeHash": "8c01e80ca9bec3691b1790d4eb8d02b0df73c79ddbd71a1e20570262bdf1e52f"
+      },
+      {
+        "address": "0xfba52Ab2f53C1F53b1Cf414ce57A2ca8F0f50EB8",
+        "kind": "NonProxy",
+        "bytecodeHash": "8c01e80ca9bec3691b1790d4eb8d02b0df73c79ddbd71a1e20570262bdf1e52f"
       }
     ],
     "tinyboxes/Randomizer": [
