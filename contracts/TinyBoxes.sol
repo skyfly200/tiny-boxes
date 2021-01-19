@@ -8,7 +8,7 @@ import "./TinyBoxesRenderer.sol";
 contract TinyBoxes is TinyBoxesStore {
     using TinyBoxesRenderer for TinyBox;
 
-    string contractMetadataURI = "https://rinkeby.tinybox.shop/TinyBoxes.json";
+    string public contractURI = "https://rinkeby.tinybox.shop/TinyBoxes.json";
 
     /**
      * @dev Contract constructor.
@@ -45,13 +45,6 @@ contract TinyBoxes is TinyBoxesStore {
     }
 
     /**
-     * @dev Fetch the contract metadata URI
-     */
-    function contractURI() public view returns (string memory) {
-        return contractMetadataURI;
-    }
-
-    /**
      * @dev Update the contract URI field
      * @dev Only the admin role can call this
      */
@@ -59,7 +52,7 @@ contract TinyBoxes is TinyBoxesStore {
         external
         onlyRole(ADMIN_ROLE)
     {
-        contractMetadataURI = _uri;
+        contractURI = _uri;
     }
 
     /**
