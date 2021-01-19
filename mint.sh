@@ -13,4 +13,4 @@ done
 ## delete oz lock file ./.openzeppelin/.lock
 rm -f ./.openzeppelin/.lock
 
-npx oz send-tx -n rinkeby -v --method createPromo --to $ADDRESS --args "0, 25, 5, [15,50,70], [100,100,100,100], [50,50], 63, 0x7A832c86002323a5de3a317b3281Eb88EC3b2C00" | tail -n 1
+npx oz send-tx -n rinkeby -v --method createPromo --to $ADDRESS --args "0, 25, 5, [15,50,70], [100,100,100,100], [50,50], 63, 0x7A832c86002323a5de3a317b3281Eb88EC3b2C00"
