@@ -17,7 +17,7 @@ contract TinyBoxesStore is TinyBoxesBase {
 
     Randomizer entropySource;
 
-    uint256 public price = 35000000000000000; // in wei
+    uint256 public price = 100000000000000000; // in wei - 0.1 ETH
     uint256 public referalPercent = 10;
     uint256 public referalNewPercent = 15;
 
