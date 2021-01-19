@@ -15,4 +15,4 @@ done
 ## delete oz lock file ./.openzeppelin/.lock
 rm -f ./.openzeppelin/.lock
 
-ADDRESS=$(npx oz deploy -v --no-interactive -k regular -n rinkeby TinyBoxes "$RAND" | tail -n 1)
+npx oz deploy -v --no-interactive -k regular -n rinkeby TinyBoxes "$RAND"
