@@ -185,7 +185,7 @@ library TinyBoxesRenderer {
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
             Shape memory shape = _generateShape(pool, i, box, dVals);
             shapes = string(abi.encodePacked(shapes, 
-                (box.options%4 != 0) ?
+                (box.options%8 != 0) ?
                     SVG._rect(shape, Animation._generateAnimation(box,dVals[0],shape,i)) :
                     SVG._rect(shape)
             ));
@@ -197,7 +197,7 @@ library TinyBoxesRenderer {
         string memory mirroring = _generateMirroring(box.mirroring);
 
         string memory svg = SVG._SVG(
-            ((box.options/4)%2 == 1) ? "" : _parseBkg(box.bkg),
+            ((box.options/8)%2 == 1) ? "" : _parseBkg(box.bkg),
             string(abi.encodePacked(metadata, defs, mirroring))
         );
 
