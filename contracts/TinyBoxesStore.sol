@@ -20,6 +20,7 @@ contract TinyBoxesStore is TinyBoxesBase {
     uint256 public price = 100000000000000000; // in wei - 0.1 ETH
     uint256 public referalPercent = 10;
     uint256 public referalNewPercent = 15;
+    bytes32 public randTest;
 
     uint256 UINT_MAX = uint256(-1);
 
@@ -89,6 +90,13 @@ contract TinyBoxesStore is TinyBoxesBase {
      */
     function setRandom(address rand) external onlyRole(ADMIN_ROLE) {
         entropySource = Randomizer(rand);
+    }
+
+    /**
+     * @dev test Randomizer
+     */
+    function testRandom() external {
+        randTest = entropySource.returnValue();
     }
 
     /**
