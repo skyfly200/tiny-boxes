@@ -115,7 +115,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         uint256 amount = msg.value;
         require(amount >= price, "insuficient payment");
         // give change
-        if (amount > price) msg.sender.transfer(amount - price);
+        if (amount > price) msg.sender.transfer(amount.sub(price));
         // pay referal percentage
         _exists(referalID);
         address payable referer = payable(ownerOf(referalID));
@@ -172,6 +172,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         address recipient,
         uint256 referalID
     ) external payable notPaused notCountdown notSoldOut returns (uint256) {
+        handlePayment(referalID, recipient);
         // check box parameters
         validateParams(shapes, hatching, color, size, spacing, false);
         // make sure caller is never the 0 address
