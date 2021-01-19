@@ -113,8 +113,6 @@ export class TinyBoxes extends Contract {
 
     price(): TransactionObject<string>;
 
-    randTest(): TransactionObject<string>;
-
     readSettings(
       id: number | string
     ): TransactionObject<{
@@ -247,6 +245,7 @@ export class TinyBoxes extends Contract {
       1: string;
       2: boolean;
     }>;
+    RandTest: ContractEvent<string>;
     RoleAdminChanged: ContractEvent<{
       role: string;
       previousAdminRole: string;
