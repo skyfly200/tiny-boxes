@@ -113,6 +113,8 @@ export class TinyBoxes extends Contract {
 
     price(): TransactionObject<string>;
 
+    randTest(): TransactionObject<string>;
+
     readSettings(
       id: number | string
     ): TransactionObject<{
@@ -166,6 +168,8 @@ export class TinyBoxes extends Contract {
     ): TransactionObject<boolean>;
 
     symbol(): TransactionObject<string>;
+
+    testRandom(): TransactionObject<void>;
 
     tokenArt(_id: number | string): TransactionObject<string>;
 
