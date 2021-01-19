@@ -112,18 +112,19 @@ contract TinyBoxesStore is TinyBoxesBase {
      */
     function handlePayment(uint256 referalID, address recipient) internal {
         // check for suficient payment
-        uint256 amount = msg.value;
-        require(amount >= price, "insuficient payment");
-        // give change
-        if (amount > price) msg.sender.transfer(amount.sub(price));
+        require(msg.value >= price, "insuficient payment");
+        // give the buyer change
+        if (msg.value > price) msg.sender.transfer(msg.value.sub(price));
+        // lookup the referer by the referal token id owner
+        address payable referer = _exists(referalID) ? payable(ownerOf(referalID)) : tx.origin;
+        // give a higher percent for refering a new user
+        uint256 percent = (balanceOf(tx.origin) == 0) ? referalNewPercent : referalPercent;
+        // referer can't be sender or reciever - no self referals
+        uint256 referal = (referer != msg.sender && referer != tx.origin && referer != recipient) ? 
+            price.mul(percent).div(100) : 0; 
         // pay referal percentage
-        _exists(referalID);
-        address payable referer = payable(ownerOf(referalID));
-        bool newUser = balanceOf(recipient) > 0;
-        uint256 percent = newUser ? referalNewPercent : referalPercent;
-        uint256 referal = (referer == recipient && referer == msg.sender) ? 0 : price.mul(percent).div(100);
         if (referal > 0) referer.transfer(referal);
-        // split payment
+        // split remaining payment
         _splitFunds(price.sub(referal));
     }
 
