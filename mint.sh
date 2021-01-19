@@ -3,7 +3,7 @@
 trap "exit" INT TERM    # Convert INT and TERM to EXIT
 trap "kill 0" EXIT      # Kill all child processes if we receive EXIT
 
-while getopts "d:i:c:a:s:" arg; do
+while getopts "c:" arg; do
     case $arg in
         c) ADDRESS=$OPTARG;;
     esac
