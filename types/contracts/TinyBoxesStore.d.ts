@@ -97,6 +97,8 @@ export class TinyBoxesStore extends Contract {
       operator: string
     ): TransactionObject<boolean>;
 
+    lookupPromo(): TransactionObject<string>;
+
     name(): TransactionObject<string>;
 
     ownerOf(tokenId: number | string): TransactionObject<string>;

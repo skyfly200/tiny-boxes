@@ -87,6 +87,13 @@ contract TinyBoxesStore is TinyBoxesBase {
     // }
     
     /**
+     * @dev lookup exclusive for address
+     */
+    function lookupPromo() external view returns (uint256) {
+        return exclusives[msg.sender];
+    }
+    
+    /**
      * @dev set Randomizer
      */
     function setRandom(address rand) external onlyRole(ADMIN_ROLE) {
