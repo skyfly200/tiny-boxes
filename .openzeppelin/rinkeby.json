@@ -16,11 +16,11 @@
       "deployedBytecodeHash": "6b468d8cde1d4f9855cbbf0f24baff56878878e55476f98038753eeb9dc87d7b"
     },
     "TinyBoxesRenderer": {
-      "address": "0xb97B58B0823bDE5767A51a1C0Ac1D1b28CF09936",
-      "constructorCode": "615ffa62000027600b82828239805160001a60731461001a57fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "ffa3147d6492fc1ece2a97f6d78245b3907f8f4ffbd83485d6b4ad8bbb93ad24",
-      "localBytecodeHash": "e936f71a072823479a9cd81bef60380565cd20a0b41aa4a4ed76175bb5cb5639",
-      "deployedBytecodeHash": "f1be1e9e1ecaeb4ad8c8da40c33c9d44bee159dbdd59eeb1d045735db6670df7"
+      "address": "0xB79b735C23CE2CDb7E9788Fb4c3cB9F1cb68051B",
+      "constructorCode": "615ff462000027600b82828239805160001a60731461001a57fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "e430ccb12aff211c1a3deeef9e4c7a3f33c0d3e43a8b320d4eecc5cb14b979f6",
+      "localBytecodeHash": "052c38def5b0c37d991635020a81a6166998196458592d13f7ff77e953a41cbc",
+      "deployedBytecodeHash": "bc3af86ccca5106501d4e30a6dd9abb90526454cc05b146fca95a4feb0fabb93"
     },
     "Colors": {
       "address": "0x90F9F2C922646BCaBc9335d9A2D6618B12CB0C28",

@@ -85,7 +85,7 @@ contract TinyBoxesStore is TinyBoxesBase {
      * @dev assign a promo id to an address
      */
     function assignPromo(uint256 id, address user) public onlyRole(ADMIN_ROLE) {
-        require(promos.get(id) == address(0x00), "OWNED"); // not assigned
+        require(!promos.contains(id), "NONE"); // promo id is not already assigned
         require(user != address(0x00), "INV ADDR"); // valid address
         require(promos.length() < MAX_PROMOS, "GONE"); // promos left
         require(id > UINT_MAX - MAX_PROMOS, "LOW ID"); // in promo range
@@ -96,7 +96,8 @@ contract TinyBoxesStore is TinyBoxesBase {
      * @dev transfer a promo minting "voucher" to a differnt address
      */
     function transferPromo(uint256 id, address to) public {        
-        require(to != address(0x00), "INV ADDR"); // valid to address
+        require(promos.contains(id), "NONE"); // promo id is assigned
+        require(to != address(0x00), "INV_TO"); // valid to address
         require(_exists(id),"USED"); // not already minted
         require(msg.sender == promos.get(id) || tx.origin == promos.get(id)); // owner sent the tx
         emit TransferPromo(id, promos.get(id), to);
