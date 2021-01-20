@@ -163,6 +163,7 @@ library TinyBoxesRenderer {
      * @param id of the token to render
      * @param owner of the token rendered
      * @param dVals deterministic vals for rendering
+     * @param slot string for embeding custom additions
      * @return markup of the SVG graphics of the token as a string
      */
     function perpetualRenderer(TinyBox calldata box, uint256 id, address owner, uint8[4] calldata dVals, string calldata slot)

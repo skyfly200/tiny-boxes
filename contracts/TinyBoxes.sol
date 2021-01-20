@@ -109,9 +109,10 @@ contract TinyBoxes is TinyBoxesStore {
      * @param bkg for the token
      * @param duration animation duration modifier
      * @param options bits - 0th is the animate switch to turn on or off animation
+     * @param slot string for embeding custom additions
      * @return animated SVG art of token _id at _frame.
      */
-    function tokenArt(uint256 _id, uint8 bkg, uint8 duration, uint8 options)
+    function tokenArt(uint256 _id, uint8 bkg, uint8 duration, uint8 options, string calldata slot)
         external
         view
         returns (string memory)
@@ -120,7 +121,7 @@ contract TinyBoxes is TinyBoxesStore {
         box.bkg = bkg;
         box.options = options;
         box.duration = duration;
-        return box.perpetualRenderer(_id, ownerOf(_id), calcedParts(box, _id), "");
+        return box.perpetualRenderer(_id, ownerOf(_id), calcedParts(box, _id), slot);
     }
 
     /**
