@@ -171,7 +171,7 @@ export class TinyBoxes extends Contract {
 
     symbol(): TransactionObject<string>;
 
-    testRandom(): TransactionObject<void>;
+    testRandom(): TransactionObject<string>;
 
     tokenArt(_id: number | string): TransactionObject<string>;
 

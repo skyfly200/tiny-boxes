@@ -1,5 +1,4 @@
 #!/bin/bash
-
 trap "exit" INT TERM    # Convert INT and TERM to EXIT
 trap "kill 0" EXIT      # Kill all child processes if we receive EXIT
 

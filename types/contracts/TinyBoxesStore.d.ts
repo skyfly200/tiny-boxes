@@ -163,7 +163,7 @@ export class TinyBoxesStore extends Contract {
 
     symbol(): TransactionObject<string>;
 
-    testRandom(): TransactionObject<void>;
+    testRandom(): TransactionObject<string>;
 
     tokenByIndex(index: number | string): TransactionObject<string>;
 

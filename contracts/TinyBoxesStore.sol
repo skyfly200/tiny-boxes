@@ -104,8 +104,8 @@ contract TinyBoxesStore is TinyBoxesBase {
     /**
      * @dev test Randomizer
      */
-    function testRandom() external {
-        emit RandTest(entropySource.returnValue());
+    function testRandom() external view returns (bytes32) {
+        return entropySource.returnValue();
     }
 
     /**
