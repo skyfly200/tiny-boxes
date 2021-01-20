@@ -124,6 +124,13 @@ contract TinyBoxesStore is TinyBoxesBase {
     }
 
     /**
+     * @dev check current phase
+     */
+    function currentPhase() public view returns (uint8) {
+        return uint8(_tokenIds.current().div(phaseLen));
+    }
+
+    /**
      * @dev handle the payment for tokens
      */
     function handlePayment(uint256 referalID, address recipient) internal {
@@ -200,7 +207,8 @@ contract TinyBoxesStore is TinyBoxesBase {
         uint256 id = _tokenIds.current();
         _tokenIds.increment();
         // check if its time to pause for next phase countdown
-        if (_tokenIds.current() % phaseLen == 0) blockStart = block.number.add(phaseCountdown);
+        if (_tokenIds.current().mod(phaseLen) == 0)
+            blockStart = block.number.add(phaseCountdown.mul(currentPhase() + 1));
         // add block number and new token id to the seed value
         uint256 seed = _seed.stringToUint();
         // request randomness
@@ -251,7 +259,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         uint8[2] calldata spacing,
         uint8 mirroring,
         address recipient
-    ) external notCountdown returns (uint256) {
+    ) external notPaused returns (uint256) {
         // get the exclusive id from the mapping
         // TODO - calculate negative id w INTENDED UNDERFLOW
         uint256 id = uint256(exclusives[msg.sender]);

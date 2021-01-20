@@ -73,6 +73,8 @@ export class TinyBoxes extends Contract {
       referalID: number | string
     ): TransactionObject<string>;
 
+    currentPhase(): TransactionObject<string>;
+
     getApproved(tokenId: number | string): TransactionObject<string>;
 
     getRoleAdmin(role: string | number[]): TransactionObject<string>;
