@@ -163,10 +163,10 @@ library TinyBoxesRenderer {
      * @param id of the token to render
      * @param owner of the token rendered
      * @param dVals deterministic vals for rendering
-     * @param slot string for embeding custom additions
+     * @param _slot string for embeding custom additions
      * @return markup of the SVG graphics of the token as a string
      */
-    function perpetualRenderer(TinyBox calldata box, uint256 id, address owner, uint8[4] calldata dVals, string calldata slot)
+    function perpetualRenderer(TinyBox calldata box, uint256 id, address owner, uint8[4] calldata dVals, string calldata _slot)
         external
         view
         returns (string memory)
@@ -191,14 +191,14 @@ library TinyBoxesRenderer {
             ));
         }
         // wrap shapes in a symbol with the id "shapes"
-        string memory defs = string(abi.encodePacked('<defs><symbol id="shapes">', shapes, '</symbol></defs>'));
+        string memory defs = string(abi.encodePacked(_slot,'<defs><symbol id="shapes">', shapes, '</symbol></defs>'));
 
         // generate the footer
         string memory mirroring = _generateMirroring(box.mirroring);
 
         string memory svg = SVG._SVG(
             ((box.options/8)%2 == 1) ? "" : _parseBkg(box.bkg),
-            string(abi.encodePacked(metadata, defs, mirroring, slot))
+            string(abi.encodePacked(metadata, defs, mirroring))
         );
 
         return svg;

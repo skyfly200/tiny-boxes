@@ -16,11 +16,11 @@
       "deployedBytecodeHash": "6b468d8cde1d4f9855cbbf0f24baff56878878e55476f98038753eeb9dc87d7b"
     },
     "TinyBoxesRenderer": {
-      "address": "0xeF1ef1f926A92283745dFF10Aa0e6d1D7887D345",
-      "constructorCode": "615f9562000027600b82828239805160001a60731461001a57fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "f91d6bcbc9086315547607b6b9a8859d9d4867b0cba2f3d87eb1453ce4c6e6fd",
-      "localBytecodeHash": "96558d6da5b9966e1a1ef6e07cf7dc0ca9978b981383e084f6d25ba195bba1a0",
-      "deployedBytecodeHash": "f1c26f09827f99ff48f36988828a4b320e30d0825490e7549fd484cde3444b53"
+      "address": "0x5b703fae592cb7DcB228183A068aA175180dAcAE",
+      "constructorCode": "615fe562000027600b82828239805160001a60731461001a57fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "11156d283ce9a1c60919033140e16ffc1c8ae4fbaf0c9b5caa1f409e5a1a2d73",
+      "localBytecodeHash": "7e698171c5b4ecb37c510d4bd9294c876fca77886e67ddfd45d0259fe2026ae1",
+      "deployedBytecodeHash": "b2dc04e207752831d25ccc4e11cfa2c4c9889c870e266d16d5a522ffeecdf8fc"
     },
     "Colors": {
       "address": "0xA9fe800628193C159399fE33497a21213766c891",
@@ -56,6 +56,26 @@
         "address": "0xd283AdE98FFC9a07BCDf4691809Ba255966C40BD",
         "kind": "NonProxy",
         "bytecodeHash": "d0b2e3d6d99a04026f00e543d072a9e6ab93f587791d2a861a17199b3f513db1"
+      },
+      {
+        "address": "0x166f0e0e14F4aD4657b7ff5E514AEAcd601339b4",
+        "kind": "NonProxy",
+        "bytecodeHash": "98647b6775b7ae51561d9b1cdf53f24c112a413f1394c33a146c2f30eff3ac36"
+      },
+      {
+        "address": "0xE28af39d2D45610302Fc0ceA9a47Fcfa1F9c5ae7",
+        "kind": "NonProxy",
+        "bytecodeHash": "98647b6775b7ae51561d9b1cdf53f24c112a413f1394c33a146c2f30eff3ac36"
+      },
+      {
+        "address": "0x56014C81f9AcEDfDe896bFA479E87351A7eed87E",
+        "kind": "NonProxy",
+        "bytecodeHash": "98647b6775b7ae51561d9b1cdf53f24c112a413f1394c33a146c2f30eff3ac36"
+      },
+      {
+        "address": "0x5378a604601249e5f9dC477dBD2c81DD6A5A48A6",
+        "kind": "NonProxy",
+        "bytecodeHash": "98647b6775b7ae51561d9b1cdf53f24c112a413f1394c33a146c2f30eff3ac36"
       }
     ],
     "tinyboxes/Randomizer": [
