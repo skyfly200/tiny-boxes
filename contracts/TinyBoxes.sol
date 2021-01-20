@@ -100,7 +100,7 @@ contract TinyBoxes is TinyBoxesStore {
             duration: settings[1],
             options: settings[2]
         });
-        return box.perpetualRenderer(id, address(0), traits);
+        return box.perpetualRenderer(id, address(0), traits, "");
     }
 
     /**
@@ -120,7 +120,7 @@ contract TinyBoxes is TinyBoxesStore {
         box.bkg = bkg;
         box.options = options;
         box.duration = duration;
-        return box.perpetualRenderer(_id, ownerOf(_id), calcedParts(box, _id));
+        return box.perpetualRenderer(_id, ownerOf(_id), calcedParts(box, _id), "");
     }
 
     /**
@@ -134,6 +134,6 @@ contract TinyBoxes is TinyBoxesStore {
         returns (string memory)
     {
         TinyBox memory box = boxes[_id];
-        return box.perpetualRenderer(_id, ownerOf(_id), calcedParts(box, _id));
+        return box.perpetualRenderer(_id, ownerOf(_id), calcedParts(box, _id), "");
     }
 }

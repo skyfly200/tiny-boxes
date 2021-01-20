@@ -165,7 +165,7 @@ library TinyBoxesRenderer {
      * @param dVals deterministic vals for rendering
      * @return markup of the SVG graphics of the token as a string
      */
-    function perpetualRenderer(TinyBox calldata box, uint256 id, address owner, uint8[4] calldata dVals)
+    function perpetualRenderer(TinyBox calldata box, uint256 id, address owner, uint8[4] calldata dVals, string calldata slot)
         external
         view
         returns (string memory)
@@ -197,7 +197,7 @@ library TinyBoxesRenderer {
 
         string memory svg = SVG._SVG(
             ((box.options/8)%2 == 1) ? "" : _parseBkg(box.bkg),
-            string(abi.encodePacked(metadata, defs, mirroring))
+            string(abi.encodePacked(metadata, defs, mirroring, slot))
         );
 
         return svg;

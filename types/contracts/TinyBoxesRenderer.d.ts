@@ -42,7 +42,8 @@ export class TinyBoxesRenderer extends Contract {
       },
       id: number | string,
       owner: string,
-      dVals: (number | string)[]
+      dVals: (number | string)[],
+      slot: string
     ): TransactionObject<string>;
   };
   events: {
