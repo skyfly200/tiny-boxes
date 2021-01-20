@@ -32,6 +32,8 @@ contract TinyBoxesStore is TinyBoxesBase {
     EnumerableMap.UintToAddressMap private promos;
     uint8 MAX_PROMOS = 100;
 
+    event TransferPromo(uint256 id, address from, address to);
+
     /**
      * @dev Contract constructor.
      */
@@ -97,6 +99,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         require(to != address(0x00), "INV ADDR"); // valid to address
         require(_exists(id),"USED"); // not already minted
         require(msg.sender == promos.get(id) || tx.origin == promos.get(id)); // owner sent the tx
+        emit TransferPromo(id, promos.get(id), to);
         promos.set(id, to);
     }
     
@@ -112,6 +115,13 @@ contract TinyBoxesStore is TinyBoxesBase {
      */
     function getPromo(uint256 i) external view returns (uint256, address) {
         return promos.at(i);
+    }
+    
+    /**
+     * @dev get promo count
+     */
+    function promoCount() external view returns (uint256) {
+        return promos.length();
     }
     
     /**

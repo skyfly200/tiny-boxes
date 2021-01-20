@@ -125,6 +125,8 @@ export class TinyBoxesStore extends Contract {
 
     price(): TransactionObject<string>;
 
+    promoCount(): TransactionObject<string>;
+
     readSettings(
       id: number | string
     ): TransactionObject<{
@@ -240,7 +242,6 @@ export class TinyBoxesStore extends Contract {
       1: string;
       2: boolean;
     }>;
-    RandTest: ContractEvent<string>;
     RoleAdminChanged: ContractEvent<{
       role: string;
       previousAdminRole: string;
@@ -269,6 +270,14 @@ export class TinyBoxesStore extends Contract {
       from: string;
       to: string;
       tokenId: string;
+      0: string;
+      1: string;
+      2: string;
+    }>;
+    TransferPromo: ContractEvent<{
+      id: string;
+      from: string;
+      to: string;
       0: string;
       1: string;
       2: string;
