@@ -24,7 +24,6 @@ contract TinyBoxesLE is ERC721, Ownable {
      * @notice Constructor inherits ERC721
      */
     constructor(address _target) public ERC721("TinyBoxes LE", "[TB][LE]") {
-        // Grant all roles to the account deploying this contract for testing
         target = _target;
     }
 
