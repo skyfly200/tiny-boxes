@@ -251,7 +251,7 @@ contract TinyBoxesStore is TinyBoxesBase {
     }
 
     /**
-     * @dev Create a Limited Edition Beta Tester TinyBox Token
+     * @dev Create a Limited Edition TinyBox Token from a Promo token
      * @param seed for the token
      * @param shapes count
      * @param hatching mod value
@@ -261,7 +261,7 @@ contract TinyBoxesStore is TinyBoxesBase {
      * @param recipient of the token
      * @return id of the new token
      */
-    function createPromo(
+    function createWithPromo(
         uint128 seed,
         uint8 shapes,
         uint8 hatching,
