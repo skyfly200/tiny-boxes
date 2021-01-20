@@ -12,7 +12,6 @@ interface Entropy {
 
 contract Randomizer is AccessControl {
     using EnumerableSet for *;
-    using Counters for Counters.Counter;
 
     Counters.Counter private _calls;
     
@@ -65,15 +64,14 @@ contract Randomizer is AccessControl {
     }
     
     // RNG service functions
-    function returnValue() external returns (bytes32){
-        return chainedEntropy(_calls.current(), defaultLevels);
+    function returnValue() external view returns (bytes32){
+        return chainedEntropy(0, defaultLevels);
     }
     
-    function chainedEntropy(uint256 salt, uint256 e) public returns (bytes32 entropy) {
+    function chainedEntropy(uint256 salt, uint256 e) public view returns (bytes32 entropy) {
         checkForRole(CALLER_ROLE);
         require(moduleAddresses.length() > 0, "EMPTY");
         require(e > 0, "E!>0");
-        _calls.increment();
         entropy =  keccak256(abi.encodePacked(  // this hashed data decides the first module to call in the chain
             block.number,
             block.coinbase,
@@ -82,8 +80,7 @@ contract Randomizer is AccessControl {
             tx.origin,
             tx.gasprice,
             now,
-            salt,
-            _calls.current()
+            salt
         ));
         for (uint256 i=0; i<e; i++) { // compound e layers of chained entropy modules
             Entropy module = Entropy(moduleAddresses.at( uint256(entropy) % moduleAddresses.length() )); 
