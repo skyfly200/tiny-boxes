@@ -245,16 +245,15 @@ contract TinyBoxesStore is TinyBoxesBase {
         uint8 mirroring,
         address recipient
     ) external notCountdown returns (uint256) {
-        // check sender has an exclusive to redeem
-        require(exclusives[msg.sender] == 1);
+        // get the exclusive id from the mapping
+        // TODO - calculate negative id w INTENDED UNDERFLOW
+        uint256 id = uint256(exclusives[msg.sender]);
+        // ensure the sender has a valid exclusive
+        require(id != 0, "NONE");
+        // make sure id hasent been minted already
+        require(!_exists(id), "USED");
         // check box parameters are valid
         validateParams(shapes, hatching, color, size, spacing, true);
-        // make sure caller is never the 0 address
-        require(msg.sender != address(0),"0x00 Recipient Invalid");
-        // get the exclusive id from the mapping
-        uint256 id = uint256(exclusives[msg.sender]); // calculate negative id w INTENDED UNDERFLOW
-        // make sure id hasent been minted already
-        require(!_exists(id), "Already Minted");
         // create a new box object
         createBox(
             TinyBox({
