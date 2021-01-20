@@ -25,8 +25,6 @@ library TinyBoxesRenderer {
     using DecimalUtils for *;
     using Strings for *;
 
-    uint8 public constant ANIMATION_COUNT = 24;
-
     /**
      * @dev generate a shape
      * @param pool randomn numbers pool
@@ -83,7 +81,7 @@ library TinyBoxesRenderer {
         uint8[4] memory dVals
     )
         internal
-        pure
+        view
         returns (Shape memory)
     {
         // calculate hatching switch
