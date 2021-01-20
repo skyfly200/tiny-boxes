@@ -37,6 +37,8 @@ export class TinyBoxes extends Contract {
 
     approve(to: string, tokenId: number | string): TransactionObject<void>;
 
+    assignPromo(id: number | string, user: string): TransactionObject<void>;
+
     balanceOf(owner: string): TransactionObject<string>;
 
     baseURI(): TransactionObject<string>;
@@ -58,7 +60,8 @@ export class TinyBoxes extends Contract {
       size: (number | string)[],
       spacing: (number | string)[],
       mirroring: number | string,
-      recipient: string
+      recipient: string,
+      id: number | string
     ): TransactionObject<string>;
 
     createTo(
@@ -76,6 +79,13 @@ export class TinyBoxes extends Contract {
     currentPhase(): TransactionObject<string>;
 
     getApproved(tokenId: number | string): TransactionObject<string>;
+
+    getPromo(
+      i: number | string
+    ): TransactionObject<{
+      0: string;
+      1: string;
+    }>;
 
     getRoleAdmin(role: string | number[]): TransactionObject<string>;
 
@@ -101,7 +111,7 @@ export class TinyBoxes extends Contract {
       operator: string
     ): TransactionObject<boolean>;
 
-    lookupPromo(): TransactionObject<string>;
+    lookupPromo(id: number | string): TransactionObject<string>;
 
     name(): TransactionObject<string>;
 
@@ -237,6 +247,8 @@ export class TinyBoxes extends Contract {
       to: string,
       tokenId: number | string
     ): TransactionObject<void>;
+
+    transferPromo(id: number | string, to: string): TransactionObject<void>;
 
     trueID(id: number | string): TransactionObject<string>;
   };

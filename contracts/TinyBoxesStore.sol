@@ -3,6 +3,7 @@ pragma solidity ^0.6.8;
 pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/math/SignedSafeMath.sol";
+import "@openzeppelin/contracts/utils/EnumerableMap.sol";
 
 import "./TinyBoxesBase.sol";
 
@@ -11,6 +12,7 @@ interface Randomizer {
 }
 
 contract TinyBoxesStore is TinyBoxesBase {
+    using EnumerableMap for EnumerableMap.UintToAddressMap;
     using SafeMath for uint256;
     using SignedSafeMath for int256;
     using Utils for *;
@@ -27,7 +29,8 @@ contract TinyBoxesStore is TinyBoxesBase {
     address payable skyfly = 0x7A832c86002323a5de3a317b3281Eb88EC3b2C00;
     address payable natealex = 0x63a9dbCe75413036B2B778E670aaBd4493aAF9F3;
 
-    mapping(address => uint256) exclusives;
+    EnumerableMap.UintToAddressMap private promos;
+    uint8 MAX_PROMOS = 100;
 
     event RandTest(bytes32 rand);
 
@@ -39,9 +42,8 @@ contract TinyBoxesStore is TinyBoxesBase {
         TinyBoxesBase()
     {
         entropySource = Randomizer(entropySourceAddress);
-        exclusives[skyfly] = UINT_MAX - 0;
-        exclusives[natealex] = UINT_MAX - 1;
-        //exclusives[] = UINT_MAX - 2;
+        promos.set(UINT_MAX - 0, skyfly);
+        promos.set(UINT_MAX - 1, natealex);
     }
 
     /**
@@ -79,19 +81,39 @@ contract TinyBoxesStore is TinyBoxesBase {
         _;
     }
 
-    // /**
-    //  * @dev assign promo
-    //  */
-    // function assignExclusives(address user, uint256 id) public onlyRole(ADMIN_ROLE) {
-    //     // asign exclusives to beta minters
-    //     exclusives[user] = id;
-    // }
+    /**
+     * @dev assign a promo id to an address
+     */
+    function assignPromo(uint256 id, address user) public onlyRole(ADMIN_ROLE) {
+        require(promos.get(id) == address(0x00), "OWNED"); // not assigned
+        require(user != address(0x00), "INV ADDR"); // valid address
+        require(promos.length() < MAX_PROMOS, "GONE"); // promos left
+        require(id > UINT_MAX - MAX_PROMOS, "LOW ID"); // in promo range
+        promos.set(id, user);
+    }
+
+    /**
+     * @dev transfer a promo minting "voucher" to a differnt address
+     */
+    function transferPromo(uint256 id, address to) public {        
+        require(to != address(0x00), "INV ADDR"); // valid to address
+        require(_exists(id),"USED"); // not already minted
+        require(msg.sender == promos.get(id) || tx.origin == promos.get(id)); // owner sent the tx
+        promos.set(id, to);
+    }
     
     /**
-     * @dev lookup exclusive for address
+     * @dev lookup account assigned the exclusive id
      */
-    function lookupPromo() external view returns (uint256) {
-        return exclusives[msg.sender];
+    function lookupPromo(uint256 id) external view returns (address) {
+        return promos.get(id);
+    }
+    
+    /**
+     * @dev get promo at index in mapping
+     */
+    function getPromo(uint256 i) external view returns (uint256, address) {
+        return promos.at(i);
     }
     
     /**
@@ -266,13 +288,11 @@ contract TinyBoxesStore is TinyBoxesBase {
         uint8[4] calldata size,
         uint8[2] calldata spacing,
         uint8 mirroring,
-        address recipient
+        address recipient,
+        uint256 id
     ) external notPaused returns (uint256) {
-        // get the exclusive id from the mapping
-        // TODO - calculate negative id w INTENDED UNDERFLOW
-        uint256 id = uint256(exclusives[msg.sender]);
-        // ensure the sender has a valid exclusive
-        require(id != 0, "NONE");
+        // ensure the promo id is assigned to the msg.sender or recipient
+        require((promos.get(id) == tx.origin || promos.get(id) == msg.sender || promos.get(id) == recipient), "NONE");
         // make sure id hasent been minted already
         require(!_exists(id), "USED");
         // check box parameters are valid
