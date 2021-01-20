@@ -1,41 +1,107 @@
-//SPDX-License-Identifier: Unlicensed
+//SPDX-License-Identifier: MIT
 pragma solidity ^0.6.8;
 pragma experimental ABIEncoderV2;
 
-// needed for upgradability
-//import "@openzeppelin/upgrades/contracts/Initializable.sol";
-
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract TinyBoxesLE is ERC721, AccessControl  {
+contract TinyBoxesLE is ERC721  {
     using Counters for Counters.Counter;
 
-    Counters.Counter internal _tokenIds;
+    Counters.Counter internal _tokensCounter;
 
     // set contract config constants
     uint16 public constant TOKEN_LIMIT = 100;
+    uint256 UINT_MAX = uint256(-1); // -1 as an unsigned integer
+    string public contractURI = "https://rinkeby.tinybox.shop/TinyBoxesLE.json";
 
-    // Create role identifiers
-    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+    address public admin;
+    address public target;
 
     /**
      * @dev Contract constructor.
+     * @param _target contract that the promo is for
      * @notice Constructor inherits ERC721
      */
-    constructor() public ERC721("TinyBoxes LE", "[TB][LE]") {
+    constructor(address _target) public ERC721("TinyBoxes LE", "[TB][LE]") {
         // Grant all roles to the account deploying this contract for testing
-        _setupRole(ADMIN_ROLE, msg.sender);
+        admin = msg.sender;
+        target = _target;
     }
 
     /**
-     * @notice Modifier to only allow acounts of a specified role to call a function
+     * @dev Caller must match the provided addresss param
+     * @param _auth address to check against caller
+     * @dev any other address will throw with "NOPE"
      */
-    modifier onlyRole(bytes32 _role) {
-        // Check that the calling account has the required role
-        require(hasRole(_role, msg.sender), "Caller dosn't have permission to use this function");
-        _;
+    function onlyAddress(address _auth) internal view {
+        require(msg.sender == _auth, "NOPE");
     }
 
+    
+    /**
+     * @dev Update the base URI field
+     * @param _uri base for all tokens 
+     * @dev Only the admin can call this
+     */
+    function setBaseURI(string calldata _uri)
+        external
+    {
+        onlyAddress(admin); // must be called by the admin
+        _setBaseURI(_uri);
+    }
+
+    /**
+     * @dev Update the contract URI field
+     * @param _uri for the contract metadata
+     * @dev Only the admin can call this
+     */
+    function setContractURI(string calldata _uri)
+        external
+    {
+        onlyAddress(admin); // must be called by the admin
+        contractURI = _uri;
+    }
+
+    /**
+     * @dev Mint a new token as the promo admin
+     * @param to recipient address of the new token
+     * @dev Only the admin can call this
+     */
+    function adminMint(address to) external {
+        onlyAddress(admin); // must be called by the admin
+        uint256 id = UINT_MAX.sub(_tokensCounter.current());
+        mint(id, to);
+    }
+
+    /**
+     * @dev Mint a new token from the target
+     * @param to recipient address of the new token
+     * @dev Only the target can call this
+     */
+    function mainMint(uint id, address to) external {
+        onlyAddress(target); // must be called by the target promo contract
+        mint(id, to);
+    }
+
+    /**
+     * @dev mint a new promo token
+     * @param id of the token to mint
+     * @param to address of the token recipient
+     */
+    function mint(uint256 id, address to) private {
+        require(_tokensCounter.current() < TOKEN_LIMIT);
+        _mint(to, id);
+        _tokensCounter.increment();
+    }
+
+    /**
+     * @dev redeem the token of the given id
+     * @param id of the token to redeem 
+     * @dev Only the target can call this
+     */
+    function redeem(uint256 id) external {
+        onlyAddress(target); // must be called by the target promo contract
+        _burn(id);
+    }
 }

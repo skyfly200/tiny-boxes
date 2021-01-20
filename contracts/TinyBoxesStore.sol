@@ -23,8 +23,6 @@ contract TinyBoxesStore is TinyBoxesBase {
     uint256 public referalPercent = 10;
     uint256 public referalNewPercent = 15;
 
-    uint256 UINT_MAX = uint256(-1); // -1 as an unsigned integer
-
     address payable skyfly = 0x7A832c86002323a5de3a317b3281Eb88EC3b2C00;
     address payable natealex = 0x63a9dbCe75413036B2B778E670aaBd4493aAF9F3;
 
@@ -250,7 +248,8 @@ contract TinyBoxesStore is TinyBoxesBase {
         address recipient,
         uint256 id
     ) external notPaused returns (uint256) {
-        // TODO - lookup promo token of matching id and burn
+        // TODO - lookup promo token of matching id, check owner is recipient or caller and redeem (burn)
+        // require(promoToken.redeem())
         // check box parameters are valid
         validateParams(shapes, hatching, color, size, spacing, true);
         // create a new box object
