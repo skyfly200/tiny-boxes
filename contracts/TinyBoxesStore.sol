@@ -127,7 +127,14 @@ contract TinyBoxesStore is TinyBoxesBase {
      * @dev check current phase
      */
     function currentPhase() public view returns (uint8) {
-        return uint8(_tokenIds.current().div(phaseLen));
+        return uint8(_tokenIds.current().div(phaseLen).add(1));
+    }
+
+    /**
+     * @dev calculate the true id for the limited editions
+     */
+    function trueID(uint256 id) public pure returns (int8) {
+        return int8(int256(id));
     }
 
     /**
@@ -208,7 +215,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         _tokenIds.increment();
         // check if its time to pause for next phase countdown
         if (_tokenIds.current().mod(phaseLen) == 0)
-            blockStart = block.number.add(phaseCountdown.mul(currentPhase() + 1));
+            blockStart = block.number.add(phaseCountdown.mul(currentPhase()));
         // add block number and new token id to the seed value
         uint256 seed = _seed.stringToUint();
         // request randomness

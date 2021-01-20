@@ -231,6 +231,8 @@ export class TinyBoxes extends Contract {
       to: string,
       tokenId: number | string
     ): TransactionObject<void>;
+
+    trueID(id: number | string): TransactionObject<string>;
   };
   events: {
     Approval: ContractEvent<{
