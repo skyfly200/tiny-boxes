@@ -27,7 +27,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     bool public paused = true;
     uint256 public blockStart; // start of the next phase
     uint256 public phaseLen = TOKEN_LIMIT / SCHEME_COUNT; // token count per phase
-    uint256 public phaseCountdownTime = 8 hours; // time to pause between phases
+    uint256 public phaseCountdownTime = 8 minutes; // time to pause between phases
     uint256 public phaseCountdown = phaseCountdownTime.div(15); // blocks to pause between phases
 
     // mapping to store all the boxes info
