@@ -338,7 +338,7 @@ contract TinyBoxesStore is TinyBoxesBase {
      * @dev Call the Randomizer and get some randomness
      */
     function getRandomness(uint256 id, uint256 seed)
-        internal returns (uint128 randomnesss)
+        internal view returns (uint128 randomnesss)
     {
         uint256 randomness = uint256(keccak256(abi.encodePacked(
             entropySource.returnValue(),
