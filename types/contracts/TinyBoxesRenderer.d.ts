@@ -21,8 +21,6 @@ export class TinyBoxesRenderer extends Contract {
   );
   clone(): TinyBoxesRenderer;
   methods: {
-    ANIMATION_COUNT(): TransactionObject<string>;
-
     perpetualRenderer(
       box: {
         randomness: number | string;

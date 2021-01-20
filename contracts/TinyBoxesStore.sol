@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/math/SignedSafeMath.sol";
 import "./TinyBoxesBase.sol";
 
 interface Randomizer {
-    function returnValue() external returns (bytes32);
+    function returnValue() external view returns (bytes32);
 }
 
 contract TinyBoxesStore is TinyBoxesBase {
