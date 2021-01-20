@@ -73,6 +73,7 @@ library TinyBoxesRenderer {
      * @param pool randomn numbers
      * @param index of the shape
      * @param box data to make a shape from
+     * @param dVals deterministicaly calculated values
      * @return positions of shape
      */
     function _generateShape(
@@ -98,7 +99,7 @@ library TinyBoxesRenderer {
         // lookup a random color from the color palette
         uint8 hue = uint8(pool.uniform(0, 3));
         uint8 shade = uint8(pool.uniform(0, int256(dVals[2]).sub(1)));
-        HSL memory color = Colors.lookupColor(Palette(HSL(box.hue,box.saturation,box.lightness), dVals[3], dVals[2], dVals[1]),hue,shade);
+        HSL memory color = Colors.lookupColor(Palette(HSL(box.hue,box.saturation,box.lightness),dVals[3],dVals[2],dVals[1]),hue,shade); // TODO - for scheme 11 randomize hues from extra 7 bits of space in the hue
         return Shape(position, size, color);
     }
 
