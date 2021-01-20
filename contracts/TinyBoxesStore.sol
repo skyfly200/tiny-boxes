@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/utils/EnumerableMap.sol";
 
 import "./TinyBoxesBase.sol";
 
-interface Randomizer {
+interface RandomizerInt {
     function returnValue() external view returns (bytes32);
 }
 
@@ -17,7 +17,7 @@ contract TinyBoxesStore is TinyBoxesBase {
     using SignedSafeMath for int256;
     using Utils for *;
 
-    Randomizer entropySource;
+    RandomizerInt entropySource;
 
     //uint256 public price = 100000000000000000; // in wei - 0.1 ETH
     uint256 public price = 1; // minimum for test run
@@ -41,7 +41,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         public
         TinyBoxesBase()
     {
-        entropySource = Randomizer(entropySourceAddress);
+        entropySource = RandomizerInt(entropySourceAddress);
         promos.set(UINT_MAX - 0, skyfly);
         promos.set(UINT_MAX - 1, natealex);
     }
@@ -120,7 +120,7 @@ contract TinyBoxesStore is TinyBoxesBase {
      * @dev set Randomizer
      */
     function setRandom(address rand) external onlyRole(ADMIN_ROLE) {
-        entropySource = Randomizer(rand);
+        entropySource = RandomizerInt(rand);
     }
 
     /**
