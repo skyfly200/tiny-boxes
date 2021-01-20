@@ -250,12 +250,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         address recipient,
         uint256 id
     ) external notPaused returns (uint256) {
-        // check promo id is assigned
-        require(promos.contains(id), "NONE");
-        // ensure the promo id is assigned to the msg.sender or recipient
-        require((promos.get(id) == tx.origin || promos.get(id) == msg.sender || promos.get(id) == recipient), "NOPE");
-        // make sure id hasent been minted already
-        require(!_exists(id), "USED");
+        // TODO - lookup promo token of matching id and burn
         // check box parameters are valid
         validateParams(shapes, hatching, color, size, spacing, true);
         // create a new box object

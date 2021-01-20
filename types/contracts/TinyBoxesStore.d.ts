@@ -37,8 +37,6 @@ export class TinyBoxesStore extends Contract {
 
     approve(to: string, tokenId: number | string): TransactionObject<void>;
 
-    assignPromo(id: number | string, user: string): TransactionObject<void>;
-
     balanceOf(owner: string): TransactionObject<string>;
 
     baseURI(): TransactionObject<string>;
@@ -78,13 +76,6 @@ export class TinyBoxesStore extends Contract {
 
     getApproved(tokenId: number | string): TransactionObject<string>;
 
-    getPromo(
-      i: number | string
-    ): TransactionObject<{
-      0: string;
-      1: string;
-    }>;
-
     getRoleAdmin(role: string | number[]): TransactionObject<string>;
 
     getRoleMember(
@@ -109,8 +100,6 @@ export class TinyBoxesStore extends Contract {
       operator: string
     ): TransactionObject<boolean>;
 
-    lookupPromo(id: number | string): TransactionObject<string>;
-
     name(): TransactionObject<string>;
 
     ownerOf(tokenId: number | string): TransactionObject<string>;
@@ -124,8 +113,6 @@ export class TinyBoxesStore extends Contract {
     phaseLen(): TransactionObject<string>;
 
     price(): TransactionObject<string>;
-
-    promoCount(): TransactionObject<string>;
 
     readSettings(
       id: number | string
@@ -221,8 +208,6 @@ export class TinyBoxesStore extends Contract {
       tokenId: number | string
     ): TransactionObject<void>;
 
-    transferPromo(id: number | string, to: string): TransactionObject<void>;
-
     trueID(id: number | string): TransactionObject<string>;
   };
   events: {
@@ -270,14 +255,6 @@ export class TinyBoxesStore extends Contract {
       from: string;
       to: string;
       tokenId: string;
-      0: string;
-      1: string;
-      2: string;
-    }>;
-    TransferPromo: ContractEvent<{
-      id: string;
-      from: string;
-      to: string;
       0: string;
       1: string;
       2: string;
