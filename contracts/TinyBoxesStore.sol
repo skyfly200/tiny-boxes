@@ -128,7 +128,7 @@ contract TinyBoxesStore is TinyBoxesBase {
      * @dev check current phase
      */
     function currentPhase() public view returns (uint8) {
-        return uint8(_tokenIds.current().div(phaseLen).add(1));
+        return uint8(_tokenIds.current().div(phaseLen));
     }
 
     /**
