@@ -140,6 +140,8 @@ library TinyBoxesRenderer {
             'scale(', scale.toString(), ' ', scale.toString(), ')'
         ));
         string memory finalScale = SVG._g(transform, SVG._use('quad3'));
+        // add transparent click event target
+        //string memory target = '<rect id="target" width="2400" height="2400" style="fill:hsla(0,100%,50%,0%)" />';
         return string(abi.encodePacked(symbols,finalScale));
     }
 

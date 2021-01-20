@@ -120,20 +120,20 @@ library Animation {
             '" '
         ));
         string memory begin = "";//mode <= 1 ? '' : string(abi.encodePacked(
-        //     'begin="shapes.',
+        //     'begin="target.',
         //     '',//mode == 2 ? 'mouseenter ' : mode == 3 ? 'dblclick' : 'click',
         //     '" '
         // ));
-        string memory end = mode == 3 ? 'end="shapes.click" ' : '';
+        string memory end = mode == 3 ? 'end="target.click" ' : '';
         return string(abi.encodePacked(repeat, begin, end));
         // 0 - 000    '',
         // 1 - 001    'repeatCount="indefinite" ',
-        // 2 - 010    'repeatCount="indefinite" begin="shapes.mouseenter" ',
-        // 4 - 100    'repeatCount="indefinite" begin="shapes.dblclick" end="shapes.click" ',
-        // 3 - 011    'repeatCount="indefinite" begin="shapes.click" ',
-        // 5 - 101    'repeatCount="1" begin="shapes.click" ',
-        // 6 - 110    'repeatCount="2" begin="shapes.click" ',
-        // 7 - 111    'repeatCount="25" begin="shapes.click" '
+        // 2 - 010    'repeatCount="indefinite" begin="target.mouseenter" ',
+        // 4 - 100    'repeatCount="indefinite" begin="target.dblclick" end="target.click" ',
+        // 3 - 011    'repeatCount="indefinite" begin="target.click" ',
+        // 5 - 101    'repeatCount="1" begin="target.click" ',
+        // 6 - 110    'repeatCount="2" begin="target.click" ',
+        // 7 - 111    'repeatCount="25" begin="target.click" '
     }
 
     /**
