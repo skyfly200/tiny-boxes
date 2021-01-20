@@ -12,7 +12,6 @@ interface RandomizerInt {
 }
 
 contract TinyBoxesStore is TinyBoxesBase {
-    using EnumerableMap for EnumerableMap.UintToAddressMap;
     using SafeMath for uint256;
     using SignedSafeMath for int256;
     using Utils for *;
@@ -29,11 +28,6 @@ contract TinyBoxesStore is TinyBoxesBase {
     address payable skyfly = 0x7A832c86002323a5de3a317b3281Eb88EC3b2C00;
     address payable natealex = 0x63a9dbCe75413036B2B778E670aaBd4493aAF9F3;
 
-    EnumerableMap.UintToAddressMap private promos;
-    uint8 MAX_PROMOS = 100;
-
-    event TransferPromo(uint256 id, address from, address to);
-
     /**
      * @dev Contract constructor.
      */
@@ -42,8 +36,8 @@ contract TinyBoxesStore is TinyBoxesBase {
         TinyBoxesBase()
     {
         entropySource = RandomizerInt(entropySourceAddress);
-        promos.set(UINT_MAX - 0, skyfly);
-        promos.set(UINT_MAX - 1, natealex);
+        // promos.set(UINT_MAX - 0, skyfly);
+        // promos.set(UINT_MAX - 1, natealex);
     }
 
     /**
@@ -81,50 +75,6 @@ contract TinyBoxesStore is TinyBoxesBase {
         _;
     }
 
-    /**
-     * @dev assign a promo id to an address
-     */
-    function assignPromo(uint256 id, address user) public onlyRole(ADMIN_ROLE) {
-        require(!promos.contains(id), "NONE"); // promo id is not already assigned
-        require(user != address(0x00), "INV ADDR"); // valid address
-        require(promos.length() < MAX_PROMOS, "GONE"); // promos left
-        require(id > UINT_MAX - MAX_PROMOS, "LOW ID"); // in promo range
-        promos.set(id, user);
-    }
-
-    /**
-     * @dev transfer a promo minting "voucher" to a differnt address
-     */
-    function transferPromo(uint256 id, address to) public {        
-        require(promos.contains(id), "NONE"); // promo id is assigned
-        require(to != address(0x00), "INV_TO"); // valid to address
-        require(_exists(id),"USED"); // not already minted
-        require(msg.sender == promos.get(id) || tx.origin == promos.get(id)); // owner sent the tx
-        emit TransferPromo(id, promos.get(id), to);
-        promos.set(id, to);
-    }
-    
-    /**
-     * @dev lookup account assigned the exclusive id
-     */
-    function lookupPromo(uint256 id) external view returns (address) {
-        return promos.get(id);
-    }
-    
-    /**
-     * @dev get promo at index in mapping
-     */
-    function getPromo(uint256 i) external view returns (uint256, address) {
-        return promos.at(i);
-    }
-    
-    /**
-     * @dev get promo count
-     */
-    function promoCount() external view returns (uint256) {
-        return promos.length();
-    }
-    
     /**
      * @dev set Randomizer
      */
