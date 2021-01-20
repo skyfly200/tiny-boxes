@@ -8,6 +8,8 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 
 import "./Utils.sol";
 
+import "./Random.sol";
+
 import "../structs/HSL.sol";
 import "../structs/Palette.sol";
 
@@ -15,6 +17,7 @@ library Colors {
     using Strings for *;
     using SafeCast for *;
     using SafeMath for *;
+    using Random for bytes32[];
 
     function toString(HSL calldata color) external pure returns (string memory) {
         return string(abi.encodePacked("hsl(", uint256(color.hue).toString(), ",", uint256(color.saturation).toString(), "%,", uint256(color.lightness).toString(), "%)"));
@@ -24,8 +27,12 @@ library Colors {
         uint16 rootHue,
         uint8 scheme,
         uint8 index
-    ) public pure returns (uint16 hue) {
-        uint16[3][10] memory schemes = [
+    ) public view returns (uint16 hue) {
+        // seed the random scheme from the extra bit space of the rootHue
+        uint256 colorSeed = rootHue.div(360);
+        bytes32[] memory huePool = Random.init(colorSeed);
+        
+        uint16[3][11] memory schemes = [
             [uint16(120), uint16(240), uint16(0)], // triadic
             [uint16(180), uint16(180), uint16(0)], // complimentary
             [uint16(60), uint16(180), uint16(240)], // tetradic
@@ -35,21 +42,22 @@ library Colors {
             [uint16(150), uint16(180), uint16(210)], // complimentary and analogous
             [uint16(30), uint16(60), uint16(90)], // series
             [uint16(90), uint16(180), uint16(270)], // square
-            [uint16(0), uint16(0), uint16(0)] // mono
+            [uint16(0), uint16(0), uint16(0)], // mono
+            [uint16(huePool.uniform(0,359)), uint16(huePool.uniform(0,359)), uint16(huePool.uniform(0,359))] // random
         ];
 
         require(scheme < schemes.length, "Invalid scheme id");
         require(index < 4, "Invalid color index");
 
         if (index == 0) hue = rootHue;
-        else hue = uint16(uint256(rootHue).add(schemes[scheme][index-1]));
+        else hue = uint16(rootHue.add(schemes[scheme][index-1]));
     }
 
     function lookupColor(
         Palette memory pal,
         uint8 hueIndex,
         uint8 shade
-    ) public pure returns (HSL memory) {
+    ) public view returns (HSL memory) {
         uint16 h = lookupHue(pal.root.hue, pal.scheme, hueIndex);
         uint8 s = pal.root.saturation;
         uint8 l;

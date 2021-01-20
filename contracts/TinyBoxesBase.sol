@@ -22,7 +22,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     // set contract config constants
     uint16 public constant TOKEN_LIMIT = 5000;
     uint8 public constant ANIMATION_COUNT = 24;
-    uint8 public constant SCHEME_COUNT = 10;
+    uint8 public constant SCHEME_COUNT = 11;
     
     bool public paused = true;
     uint256 public blockStart; // start of the next phase
