@@ -21,8 +21,8 @@ if [ -z "$TO" ]
     else        
         if [ -z "$FROM" ]
             then
-                npx oz send-tx -n rinkeby -v --method createPromo --to $ADDRESS --value 100000000000000000 --args "685525412542, 25, 5, [15,50,70], [100,100,100,100], [50,50], 63, $TO"
+                npx oz send-tx -n rinkeby -v --method createPromo --to $ADDRESS --value 100000000000000000 --args "685525412542, 25, 5, [15,50,70], [100,100,100,100], [50,50], 63, $TO, 0"
             else
-                npx oz send-tx -n rinkeby -v --method createPromo -f $FROM --to $ADDRESS --value 100000000000000000 --args "685525412542, 25, 5, [15,50,70], [100,100,100,100], [50,50], 63, $TO" 
+                npx oz send-tx -n rinkeby -v --method createPromo -f $FROM --to $ADDRESS --value 100000000000000000 --args "685525412542, 25, 5, [15,50,70], [100,100,100,100], [50,50], 63, $TO, 0" 
         fi
 fi
