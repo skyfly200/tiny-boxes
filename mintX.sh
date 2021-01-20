@@ -23,10 +23,9 @@ if [ -z "$TO" ]
     then
         echo "must set to address with -t"
     else        
-        if [ -z "$FROM" ]
-            then
-                npx oz send-tx -n rinkeby -v --method createTo --to $ADDRESS --value 100000000000000000 --args "685525412542, 25, 5, [15,50,70], [100,100,100,100], [50,50], 63, $TO, 0"
-            else
-                npx oz send-tx -n rinkeby -v --method createTo -f $FROM --to $ADDRESS --value 100000000000000000 --args "685525412542, 25, 5, [15,50,70], [100,100,100,100], [50,50], 63, $TO, 0" 
-        fi
+        # adjust count to mint here
+        for I in {0..499}
+        do  
+            npx oz send-tx -n rinkeby -v --method createTo --to $ADDRESS --value 100000000000000000 --args "685525412542, 25, 5, [15,50,70], [100,100,100,100], [50,50], 63, $TO, 0"
+        done
 fi

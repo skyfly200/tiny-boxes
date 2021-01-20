@@ -446,6 +446,11 @@
         "address": "0x2958fDf29DDE6CF23cF1b6E5e7Fee9695C1De05D",
         "kind": "NonProxy",
         "bytecodeHash": "355d6ce1142cc3ec5d9fd457a324525d223334ce9560892c9dc98413576fcfc6"
+      },
+      {
+        "address": "0xB91909eA409264eD3674f61573d12B9CCF423d42",
+        "kind": "NonProxy",
+        "bytecodeHash": "05a896fa7f8944cbf7b1c761071eecd6683ba0528c57e85c9c484f5130269106"
       }
     ],
     "tinyboxes/Randomizer": [
