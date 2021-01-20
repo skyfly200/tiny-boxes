@@ -3,9 +3,10 @@ pragma solidity ^0.6.8;
 pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract TinyBoxesLE is ERC721  {
+contract TinyBoxesLE is ERC721, Ownable {
     using Counters for Counters.Counter;
 
     Counters.Counter internal _tokensCounter;
@@ -15,7 +16,6 @@ contract TinyBoxesLE is ERC721  {
     uint256 UINT_MAX = uint256(-1); // -1 as an unsigned integer
     string public contractURI = "https://rinkeby.tinybox.shop/TinyBoxesLE.json";
 
-    address public admin;
     address public target;
 
     /**
@@ -25,7 +25,6 @@ contract TinyBoxesLE is ERC721  {
      */
     constructor(address _target) public ERC721("TinyBoxes LE", "[TB][LE]") {
         // Grant all roles to the account deploying this contract for testing
-        admin = msg.sender;
         target = _target;
     }
 
@@ -47,7 +46,7 @@ contract TinyBoxesLE is ERC721  {
     function setBaseURI(string calldata _uri)
         external
     {
-        onlyAddress(admin); // must be called by the admin
+        onlyAddress(owner()); // must be called by the admin
         _setBaseURI(_uri);
     }
 
@@ -59,7 +58,7 @@ contract TinyBoxesLE is ERC721  {
     function setContractURI(string calldata _uri)
         external
     {
-        onlyAddress(admin); // must be called by the admin
+        onlyAddress(owner()); // must be called by the admin
         contractURI = _uri;
     }
 
@@ -69,7 +68,7 @@ contract TinyBoxesLE is ERC721  {
      * @dev Only the admin can call this
      */
     function adminMint(address to) external {
-        onlyAddress(admin); // must be called by the admin
+        onlyAddress(owner()); // must be called by the admin
         mint(to);
     }
 

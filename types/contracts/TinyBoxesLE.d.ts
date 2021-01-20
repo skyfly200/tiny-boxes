@@ -42,7 +42,7 @@ export class TinyBoxesLE extends Contract {
       operator: string
     ): TransactionObject<boolean>;
 
-    mainMint(id: number | string, to: string): TransactionObject<void>;
+    mainMint(to: string): TransactionObject<void>;
 
     name(): TransactionObject<string>;
 

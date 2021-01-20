@@ -105,6 +105,11 @@
         "address": "0xBD7BA99cf5A998631E37DEb20Abcbb83D28192bc",
         "kind": "NonProxy",
         "bytecodeHash": "543cdc16511b89c7c28c3ec6f0576e32081b58954cf58e2fe9ff847fb14ac386"
+      },
+      {
+        "address": "0x07d194D6C46f83Cb3A57C0611Acf584F29175c4b",
+        "kind": "NonProxy",
+        "bytecodeHash": "6f8bc129da8a71affcfbe3be6256ac86dc5e1deecb75c2fd4aa7fb2f6754610a"
       }
     ]
   },
