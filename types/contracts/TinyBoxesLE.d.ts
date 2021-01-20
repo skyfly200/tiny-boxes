@@ -40,8 +40,6 @@ export class TinyBoxesLE extends Contract {
       operator: string
     ): TransactionObject<boolean>;
 
-    mainMint(to: string): TransactionObject<void>;
-
     name(): TransactionObject<string>;
 
     owner(): TransactionObject<string>;
@@ -74,6 +72,8 @@ export class TinyBoxesLE extends Contract {
     symbol(): TransactionObject<string>;
 
     target(): TransactionObject<string>;
+
+    targetMint(to: string): TransactionObject<void>;
 
     tokenByIndex(index: number | string): TransactionObject<string>;
 

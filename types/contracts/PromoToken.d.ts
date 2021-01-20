@@ -21,9 +21,69 @@ export class PromoToken extends Contract {
   );
   clone(): PromoToken;
   methods: {
+    approve(to: string, tokenId: number | string): TransactionObject<void>;
+
+    balanceOf(owner: string): TransactionObject<string>;
+
+    getApproved(tokenId: number | string): TransactionObject<string>;
+
+    isApprovedForAll(
+      owner: string,
+      operator: string
+    ): TransactionObject<boolean>;
+
+    ownerOf(tokenId: number | string): TransactionObject<string>;
+
     redeem(id: number | string): TransactionObject<void>;
+
+    safeTransferFrom(
+      from: string,
+      to: string,
+      tokenId: number | string
+    ): TransactionObject<void>;
+
+    setApprovalForAll(
+      operator: string,
+      _approved: boolean
+    ): TransactionObject<void>;
+
+    supportsInterface(
+      interfaceId: string | number[]
+    ): TransactionObject<boolean>;
+
+    targetMint(to: string): TransactionObject<void>;
+
+    transferFrom(
+      from: string,
+      to: string,
+      tokenId: number | string
+    ): TransactionObject<void>;
   };
   events: {
+    Approval: ContractEvent<{
+      owner: string;
+      approved: string;
+      tokenId: string;
+      0: string;
+      1: string;
+      2: string;
+    }>;
+    ApprovalForAll: ContractEvent<{
+      owner: string;
+      operator: string;
+      approved: boolean;
+      0: string;
+      1: string;
+      2: boolean;
+    }>;
+    Transfer: ContractEvent<{
+      from: string;
+      to: string;
+      tokenId: string;
+      0: string;
+      1: string;
+      2: string;
+    }>;
     allEvents: (
       options?: EventOptions,
       cb?: Callback<EventLog>

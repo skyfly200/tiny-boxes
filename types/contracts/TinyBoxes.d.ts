@@ -102,6 +102,8 @@ export class TinyBoxes extends Contract {
       operator: string
     ): TransactionObject<boolean>;
 
+    mintPromo(to: string): TransactionObject<void>;
+
     name(): TransactionObject<string>;
 
     ownerOf(tokenId: number | string): TransactionObject<string>;
@@ -157,6 +159,8 @@ export class TinyBoxes extends Contract {
     setContractURI(_uri: string): TransactionObject<void>;
 
     setPause(state: boolean): TransactionObject<void>;
+
+    setPromo(_promoTokenAddress: string): TransactionObject<void>;
 
     setRandom(rand: string): TransactionObject<void>;
 

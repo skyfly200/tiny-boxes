@@ -11,7 +11,7 @@ interface RandomizerInt {
     function returnValue() external view returns (bytes32);
 }
 
-interface PromoToken {
+interface PromoToken is IERC721 {
     function redeem(uint256 id) external;
     function targetMint(address to) external;
 }
@@ -22,6 +22,7 @@ contract TinyBoxesStore is TinyBoxesBase {
     using Utils for *;
 
     RandomizerInt entropySource;
+    PromoToken promoTokenContract;
 
     //uint256 public price = 100000000000000000; // in wei - 0.1 ETH
     uint256 public price = 1; // minimum for test run
@@ -113,6 +114,24 @@ contract TinyBoxesStore is TinyBoxesBase {
      */
     function currentPhase() public view returns (uint8) {
         return uint8(_tokenIds.current().div(phaseLen));
+    }
+
+    // Promo Token Functions
+
+    /**
+     * @dev set promo token contract
+     */
+    function setPromo(address _promoTokenAddress) external onlyRole(ADMIN_ROLE) {
+        // setup promo token contract
+        promoTokenContract = PromoToken(_promoTokenAddress);
+    }
+
+    /**
+     * @dev mint a promo token
+     */
+    function mintPromo(address to) external onlyRole(ADMIN_ROLE) {
+        // mint a promo to to the provided address
+        promoTokenContract.targetMint(to);
     }
 
     /**
@@ -254,7 +273,8 @@ contract TinyBoxesStore is TinyBoxesBase {
         uint256 id
     ) external notPaused returns (uint256) {
         // TODO - lookup promo token of matching id, check owner is recipient or caller and redeem (burn)
-        // require(promoToken.redeem())
+        require(promoTokenContract.ownerOf(id) == msg.sender, "NOPE");
+        promoTokenContract.redeem(id);
         // check box parameters are valid
         validateParams(shapes, hatching, color, size, spacing, true);
         // create a new box object
