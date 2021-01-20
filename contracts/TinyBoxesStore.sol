@@ -13,7 +13,7 @@ interface RandomizerInt {
 
 interface PromoToken {
     function redeem(uint256 id) external;
-    
+    function targetMint(address to) external;
 }
 
 contract TinyBoxesStore is TinyBoxesBase {

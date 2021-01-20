@@ -45,7 +45,7 @@ contract TinyBoxesLE is ERC721, Ownable {
     function setBaseURI(string calldata _uri)
         external
     {
-        onlyAddress(owner()); // must be called by the admin
+        onlyAddress(owner()); // must be called by the owner
         _setBaseURI(_uri);
     }
 
@@ -57,7 +57,7 @@ contract TinyBoxesLE is ERC721, Ownable {
     function setContractURI(string calldata _uri)
         external
     {
-        onlyAddress(owner()); // must be called by the admin
+        onlyAddress(owner()); // must be called by the owner
         contractURI = _uri;
     }
 
@@ -67,7 +67,7 @@ contract TinyBoxesLE is ERC721, Ownable {
      * @dev Only the admin can call this
      */
     function adminMint(address to) external {
-        onlyAddress(owner()); // must be called by the admin
+        onlyAddress(owner()); // must be called by the owner
         mint(to);
     }
 
@@ -76,7 +76,7 @@ contract TinyBoxesLE is ERC721, Ownable {
      * @param to recipient address of the new token
      * @dev Only the target can call this
      */
-    function mainMint(address to) external {
+    function targetMint(address to) external {
         onlyAddress(target); // must be called by the target promo contract
         mint(to);
     }

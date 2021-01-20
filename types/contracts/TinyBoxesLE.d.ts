@@ -23,8 +23,6 @@ export class TinyBoxesLE extends Contract {
   methods: {
     TOKEN_LIMIT(): TransactionObject<string>;
 
-    admin(): TransactionObject<string>;
-
     adminMint(to: string): TransactionObject<void>;
 
     approve(to: string, tokenId: number | string): TransactionObject<void>;
@@ -46,9 +44,13 @@ export class TinyBoxesLE extends Contract {
 
     name(): TransactionObject<string>;
 
+    owner(): TransactionObject<string>;
+
     ownerOf(tokenId: number | string): TransactionObject<string>;
 
     redeem(id: number | string): TransactionObject<void>;
+
+    renounceOwnership(): TransactionObject<void>;
 
     safeTransferFrom(
       from: string,
@@ -89,6 +91,8 @@ export class TinyBoxesLE extends Contract {
       to: string,
       tokenId: number | string
     ): TransactionObject<void>;
+
+    transferOwnership(newOwner: string): TransactionObject<void>;
   };
   events: {
     Approval: ContractEvent<{
@@ -106,6 +110,12 @@ export class TinyBoxesLE extends Contract {
       0: string;
       1: string;
       2: boolean;
+    }>;
+    OwnershipTransferred: ContractEvent<{
+      previousOwner: string;
+      newOwner: string;
+      0: string;
+      1: string;
     }>;
     Transfer: ContractEvent<{
       from: string;
