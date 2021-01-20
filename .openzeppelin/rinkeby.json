@@ -99,6 +99,13 @@
         "kind": "NonProxy",
         "bytecodeHash": "d0390988073446a891d1705c16a904e62ba68c49933cbbc9e77657983cbe9fb7"
       }
+    ],
+    "tinyboxes/TinyBoxesLE": [
+      {
+        "address": "0xBD7BA99cf5A998631E37DEb20Abcbb83D28192bc",
+        "kind": "NonProxy",
+        "bytecodeHash": "543cdc16511b89c7c28c3ec6f0576e32081b58954cf58e2fe9ff847fb14ac386"
+      }
     ]
   },
   "manifestVersion": "2.2",

@@ -70,8 +70,7 @@ contract TinyBoxesLE is ERC721  {
      */
     function adminMint(address to) external {
         onlyAddress(admin); // must be called by the admin
-        uint256 id = UINT_MAX.sub(_tokensCounter.current());
-        mint(id, to);
+        mint(to);
     }
 
     /**
@@ -79,18 +78,18 @@ contract TinyBoxesLE is ERC721  {
      * @param to recipient address of the new token
      * @dev Only the target can call this
      */
-    function mainMint(uint id, address to) external {
+    function mainMint(address to) external {
         onlyAddress(target); // must be called by the target promo contract
-        mint(id, to);
+        mint(to);
     }
 
     /**
      * @dev mint a new promo token
-     * @param id of the token to mint
      * @param to address of the token recipient
      */
-    function mint(uint256 id, address to) private {
+    function mint(address to) private {
         require(_tokensCounter.current() < TOKEN_LIMIT);
+        uint256 id = UINT_MAX.sub(_tokensCounter.current());
         _mint(to, id);
         _tokensCounter.increment();
     }

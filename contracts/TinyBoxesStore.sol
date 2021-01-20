@@ -11,6 +11,11 @@ interface RandomizerInt {
     function returnValue() external view returns (bytes32);
 }
 
+interface PromoToken {
+    function redeem(uint256 id) external;
+    
+}
+
 contract TinyBoxesStore is TinyBoxesBase {
     using SafeMath for uint256;
     using SignedSafeMath for int256;
