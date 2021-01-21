@@ -9,4 +9,5 @@ RAND="0x02F597BFdB0291FE0789CA123D0dD9A2babfE845"
 ## delete oz lock file ./.openzeppelin/.lock
 rm -f ./.openzeppelin/.lock
 
-npx oz deploy -v --no-interactive -k regular -n rinkeby TinyBoxes "$RAND"
+npx oz compile -v --no-interactive --typechain web3-v1 --solc-version 0.6.8
+npx oz deploy -v --skip-compile --no-interactive -k regular -n rinkeby TinyBoxes "$RAND"
