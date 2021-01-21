@@ -12,17 +12,20 @@ async function main() {
   // manually to make sure everything is compiled
   // await hre.run('compile');
 
+
+  const randomizer = "0x02F597BFdB0291FE0789CA123D0dD9A2babfE845";
+
   // We get the contract to deploy
   const TinyBoxes = await hre.ethers.getContractFactory("TinyBoxes",{
         libraries: {
             TinyBoxesRenderer: "0x863b06aD8826B7b7bbA5096210d0Ff67715acD5a",
         }
     });
-  const tinyboxes = await TinyBoxes.deploy("0x02F597BFdB0291FE0789CA123D0dD9A2babfE845");
+  const tinyboxes = await TinyBoxes.deploy(randomizer);
 
   await tinyboxes.deployed();
 
-  console.log("Greeter deployed to:", greeter.address);
+  console.log("TinyBoxes deployed to:", tinyboxes.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
