@@ -21,9 +21,13 @@ task("accounts", "Prints the list of accounts", async () => {
 module.exports = {
   defaultNetwork: "rinkeby",
   networks: {
+    hardhat: {
+    },
     rinkeby: {
       url: `https://rinkeby.infura.io/v3/${projectId}`,
-      accounts: mnemonic
+      accounts: {
+        mnemonic: mnemonic
+      }
     }
   },
   solidity: {
