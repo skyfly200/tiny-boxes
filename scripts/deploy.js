@@ -13,12 +13,27 @@ async function main() {
   // await hre.run('compile');
 
 
+  //TODO - deploy randomizer here instead
   const randomizer = "0x02F597BFdB0291FE0789CA123D0dD9A2babfE845";
+
+  // deploy the Renderer lib
+  const TinyBoxesRenderer = await hre.ethers.getContractFactory("TinyBoxesRenderer",{
+        libraries: {
+            Colors: "0x0B37DC0Adc2948f3689dfB8200F3419424360d85",
+            FixidityLib: "0x34cFa7d44a6698E68FB067e3C48ebB831873E534",
+            Utils: "0xA87158c03e304d88C93D2a9B8AE2046e8EaB29b9"
+        }
+    });
+  const tinyboxesrenderer = await TinyBoxesRenderer.deploy();
+
+  await tinyboxesrenderer.deployed();
+
+  console.log("TinyBoxesRenderer deployed to:", tinyboxesrenderer.address);
 
   // We get the contract to deploy
   const TinyBoxes = await hre.ethers.getContractFactory("TinyBoxes",{
         libraries: {
-            TinyBoxesRenderer: "0x863b06aD8826B7b7bbA5096210d0Ff67715acD5a",
+            TinyBoxesRenderer: tinyboxesrenderer.address,
         }
     });
   const tinyboxes = await TinyBoxes.deploy(randomizer);
