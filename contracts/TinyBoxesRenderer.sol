@@ -97,7 +97,7 @@ library TinyBoxesRenderer {
         // lookup a random color from the color palette
         uint8 hue = uint8(pool.uniform(0, 3));
         uint8 shade = uint8(pool.uniform(0, int256(dVals[2]).sub(1)));
-        HSL memory color = Colors.lookupColor(Palette(HSL(box.hue,box.saturation,box.lightness),dVals[3],dVals[2],dVals[1]),hue,shade); // TODO - for scheme 11 randomize hues from extra 7 bits of space in the hue
+        HSL memory color = Colors.lookupColor(Palette(HSL(box.hue,box.saturation,box.lightness),dVals[3],dVals[2],dVals[1]),hue,shade);
         return Shape(position, size, color);
     }
 
@@ -139,9 +139,7 @@ library TinyBoxesRenderer {
         string memory transform = string(abi.encodePacked(
             'scale(', scale.toString(), ' ', scale.toString(), ')'
         ));
-        string memory finalScale = SVG._g(transform, SVG._use('quad3'));
-        // add transparent click event target
-        //string memory target = '<rect id="target" width="2400" height="2400" style="fill:hsla(0,100%,50%,0%)" />';
+        string memory finalScale = SVG._g(transform, SVG._use('quad3'));// SVG._g(transform, 'clip-path="url(#clip)"', SVG._use('quad3'));
         return string(abi.encodePacked(symbols,finalScale));
     }
 
@@ -193,14 +191,28 @@ library TinyBoxesRenderer {
             ));
         }
         // wrap shapes in a symbol with the id "shapes"
-        string memory defs = string(abi.encodePacked(_slot,'<defs><symbol id="shapes">', shapes, '</symbol></defs>'));
+        string memory defs = string(abi.encodePacked(
+            _slot,
+            '<defs>',
+            //'<rect id="cover" width="100%" height="100%" fill="hsl(0,0%,0%,0%)" />',
+            //'<clipPath id="clip"><use xlink:href="#cover"/></clipPath>',
+            '<symbol id="shapes">',
+            shapes,
+            '</symbol></defs>'
+        ));
 
         // generate the footer
         string memory mirroring = _generateMirroring(box.mirroring);
 
         string memory svg = SVG._SVG(
             ((box.options/8)%2 == 1) ? "" : _parseBkg(box.bkg),
-            string(abi.encodePacked(metadata, defs, mirroring))
+            string(abi.encodePacked(
+                metadata,
+                defs,
+                mirroring
+                //SVG._use('cover', 'target')
+                //'<use id="target" xlink:href="#cover" />'
+            ))
         );
 
         return svg;

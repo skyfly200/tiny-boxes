@@ -51,30 +51,85 @@ library SVG {
     }
 
     /**
-     * @dev render an g(group) SVG tag with a transform
+     * @dev render an g(group) SVG tag with a transform and attributes
      * @param transformValues string, with SVG transform function
      * @param slot for nested group content
      */
     function _g(string memory transformValues, string memory slot) internal pure returns (string memory) {
-        return string(abi.encodePacked('<g', 
-        bytes(transformValues).length == 0 ? '' : string(abi.encodePacked(' transform="', transformValues, '"')),
-        '>', slot,'</g>'));
+        return string(abi.encodePacked(
+            '<g', 
+            bytes(transformValues).length == 0 ? '' : string(abi.encodePacked(' transform="', transformValues, '"')),
+            '>',
+            slot,
+            '</g>'
+        ));
     }
 
+    // /**
+    //  * @dev render an g(group) SVG tag with a transform and attributes
+    //  * @param transformValues string, with SVG transform function
+    //  * @param slot for nested group content
+    //  */
+    // function _g(string memory transformValues, string memory attr, string memory slot) internal pure returns (string memory) {
+    //     return _g(
+    //         bytes(transformValues).length == 0 ? '' : string(abi.encodePacked(' transform="', transformValues, '"')),
+    //         attr,
+    //         slot
+    //     );
+    // }
+
+    // /**
+    //  * @dev render an g(group) SVG tag with attributes
+    //  * @param attr string for attributes
+    //  * @param slot for nested group content
+    //  */
+    // function _g(string memory attr, string memory slot) internal pure returns (string memory) {
+    //     return string(abi.encodePacked(
+    //         '<g', 
+    //         bytes(attr).length == 0 ? '' : string(abi.encodePacked(' ',attr,' ')),
+    //         '>',
+    //         slot,
+    //         '</g>'
+    //     ));
+    // }
+
     /**
-     * @dev render a g(group) SVG tag
+     * @dev render a plain g(group) SVG tag
      * @param slot for nested group content
      */
     function _g(string memory slot) internal pure returns (string memory) {
         return _g('', slot);
     }
 
+    // /**
+    //  * @dev render a use SVG tag
+    //  * @param link id of the SVG tag to reference
+    //  */
+    // function _use(string memory link) internal pure returns (string memory) {
+    //     return _use('', link);
+    // }
+
+    // /**
+    //  * @dev render a use SVG tag
+    //  * @param id of the new SVG use tag
+    //  * @param link id of the SVG tag to reference
+    //  */
+    // function _use(string memory link, string memory id) internal pure returns (string memory) {
+    //     return string(abi.encodePacked(
+    //         '<use ',
+    //         bytes(id).length == 0 ? '' : string(abi.encodePacked(' id="',id,'" ')),
+    //         'xlink:href="#',link,'"/>'
+    //     ));
+    // }
+
     /**
      * @dev render a use SVG tag
-     * @param id of the SVG tag to reference
+     * @param link id of the SVG tag to reference
      */
-    function _use(string memory id) internal pure returns (string memory) {
-        return string(abi.encodePacked('<use xlink:href="#', id,'"/>'));
+    function _use(string memory link) internal pure returns (string memory) {
+        return string(abi.encodePacked(
+            '<use xlink:href="#',link,'"/>'
+        ));
     }
     
     /**

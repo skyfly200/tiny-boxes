@@ -14,7 +14,7 @@
     },
     "typechain": {
       "enabled": true,
-      "outDir": "./types/contracts/",
+      "outDir": "./types/contracts",
       "target": "web3-v1"
     },
     "manager": "openzeppelin",
