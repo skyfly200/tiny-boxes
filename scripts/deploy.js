@@ -13,10 +13,14 @@ async function main() {
   // await hre.run('compile');
 
   // We get the contract to deploy
-  const TinyBoxes = await hre.ethers.getContractFactory("TinyBoxes");
+  const TinyBoxes = await hre.ethers.getContractFactory("TinyBoxes",{
+        libraries: {
+            TinyBoxesRenderer: "0x863b06aD8826B7b7bbA5096210d0Ff67715acD5a",
+        }
+    });
   const tinyboxes = await TinyBoxes.deploy("0x02F597BFdB0291FE0789CA123D0dD9A2babfE845");
 
-  await greeter.deployed();
+  await tinyboxes.deployed();
 
   console.log("Greeter deployed to:", greeter.address);
 }
