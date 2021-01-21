@@ -24,6 +24,7 @@ library TinyBoxesRenderer {
     using Metadata for TinyBox;
     using DecimalUtils for *;
     using Strings for *;
+    using SVG for *;
 
     /**
      * @dev generate a shape
@@ -112,7 +113,7 @@ library TinyBoxesRenderer {
         string[4] memory scales = ['1 1','-1 1','1 -1','-1 -1'];
         uint16[3] memory levels = [600, 1200, 2400];
         // reference shapes symbol at core of mirroring
-        string memory symbols = string(abi.encodePacked('<symbol id="quad0">',SVG._g(SVG._use('shapes')),'</symbol>'));
+        string memory symbols = string(abi.encodePacked('<symbol id="quad0">',SVG._g('', SVG._use('', 'shapes')),'</symbol>'));
         // loop through nested mirroring levels
         for (uint256 s = 0; s < 3; s++) {
             string memory id = string(abi.encodePacked('quad', s.toString()));
@@ -126,9 +127,9 @@ library TinyBoxesRenderer {
             for (uint8 i = 0; i < 4; i++) {
                 if (switches[i]) {
                     string memory transform = string(abi.encodePacked(
-                        'scale(', scales[i], ') translate(', (i%2 == 1) ? value : '0', ' ', (i > 1) ? value : '0', ')'
+                        'transform="scale(', scales[i], ') translate(', (i%2 == 1) ? value : '0', ' ', (i > 1) ? value : '0', ')"'
                     ));
-                    copies = string(abi.encodePacked(copies,SVG._g(transform, SVG._use(id))));
+                    copies = string(abi.encodePacked(copies,SVG._g(transform, SVG._use('', id))));
                 }
             }
             // wrap symbol and all copies in a new symbol
@@ -137,9 +138,9 @@ library TinyBoxesRenderer {
         // add final scaling transform
         uint256 scale = uint256(mirroring).div(16) == 0 ? (uint256(mirroring).div(4) == 0 ? 4 : 2) : 1;
         string memory transform = string(abi.encodePacked(
-            'scale(', scale.toString(), ' ', scale.toString(), ')'
+            'transform="scale(', scale.toString(), ' ', scale.toString(), ')"'
         ));
-        string memory finalScale = SVG._g(transform, SVG._use('quad3'));// SVG._g(transform, 'clip-path="url(#clip)"', SVG._use('quad3'));
+        string memory finalScale = SVG._g(transform, SVG._use('', 'quad3'));// SVG._g(transform, 'clip-path="url(#clip)"', SVG._use('quad3'));
         return string(abi.encodePacked(symbols,finalScale));
     }
 
@@ -181,9 +182,9 @@ library TinyBoxesRenderer {
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
             Shape memory shape = _generateShape(i, box, dVals);
             shapes = string(abi.encodePacked(shapes, 
-                (box.options%8 != 0) ?
-                    SVG._rect(shape, Animation._generateAnimation(box,dVals[0],shape,i)) :
-                    SVG._rect(shape)
+                SVG._rect(shape, (box.options%8 != 0) ?
+                    Animation._generateAnimation(box,dVals[0],shape,i) : ''
+                )   
             ));
         }
         // wrap shapes in a symbol with the id "shapes"

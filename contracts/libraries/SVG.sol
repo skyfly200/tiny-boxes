@@ -41,72 +41,20 @@ library SVG {
                 string(abi.encodePacked('">',slot,'</rect>'))
         ));
     }
-    
-    /**
-     * @dev render a rectangle SVG tag
-     * @param shape object
-     */
-    function _rect(Shape memory shape) internal pure returns (string memory) {
-        return _rect(shape, '');
-    }
 
     /**
-     * @dev render an g(group) SVG tag with a transform and attributes
-     * @param transformValues string, with SVG transform function
+     * @dev render an g(group) SVG tag with attributes
+     * @param attr string for attributes
      * @param slot for nested group content
      */
-    function _g(string memory transformValues, string memory slot) internal pure returns (string memory) {
+    function _g(string memory attr, string memory slot) internal pure returns (string memory) {
         return string(abi.encodePacked(
             '<g', 
-            bytes(transformValues).length == 0 ? '' : string(abi.encodePacked(' transform="', transformValues, '"')),
+            bytes(attr).length == 0 ? '' : string(abi.encodePacked(' ',attr,' ')),
             '>',
             slot,
             '</g>'
         ));
-    }
-
-    // /**
-    //  * @dev render an g(group) SVG tag with a transform and attributes
-    //  * @param transformValues string, with SVG transform function
-    //  * @param slot for nested group content
-    //  */
-    // function _g(string memory transformValues, string memory attr, string memory slot) internal pure returns (string memory) {
-    //     return _g(
-    //         bytes(transformValues).length == 0 ? '' : string(abi.encodePacked(' transform="', transformValues, '"')),
-    //         attr,
-    //         slot
-    //     );
-    // }
-
-    // /**
-    //  * @dev render an g(group) SVG tag with attributes
-    //  * @param attr string for attributes
-    //  * @param slot for nested group content
-    //  */
-    // function _g(string memory attr, string memory slot) internal pure returns (string memory) {
-    //     return string(abi.encodePacked(
-    //         '<g', 
-    //         bytes(attr).length == 0 ? '' : string(abi.encodePacked(' ',attr,' ')),
-    //         '>',
-    //         slot,
-    //         '</g>'
-    //     ));
-    // }
-
-    /**
-     * @dev render a plain g(group) SVG tag
-     * @param slot for nested group content
-     */
-    function _g(string memory slot) internal pure returns (string memory) {
-        return _g('', slot);
-    }
-
-    /**
-     * @dev render a use SVG tag
-     * @param link id of the SVG tag to reference
-     */
-    function _use(string memory link) internal pure returns (string memory) {
-        return _use('', link);
     }
 
     /**

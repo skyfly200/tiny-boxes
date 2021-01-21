@@ -428,8 +428,8 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxesRenderer.sol": {
-      "lastModificationDate": 1611255661884,
-      "contentHash": "33de9a4dc95ae2f137b8addd3111b44d",
+      "lastModificationDate": 1611256590258,
+      "contentHash": "746dfdd740e86922e69a4f0e4e8b4bc0",
       "sourceName": "contracts/TinyBoxesRenderer.sol",
       "solcConfig": {
         "version": "0.6.8",
@@ -475,8 +475,8 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/SVG.sol": {
-      "lastModificationDate": 1611255907397,
-      "contentHash": "c68d9a14cd7db07e33713528a65388e2",
+      "lastModificationDate": 1611256535112,
+      "contentHash": "fbc3bd6ef1268e92cb07f8925ea2e1bc",
       "sourceName": "contracts/libraries/SVG.sol",
       "solcConfig": {
         "version": "0.6.8",
