@@ -68,14 +68,12 @@ library TinyBoxesRenderer {
 
     /**
      * @dev generate a shape
-     * @param pool randomn numbers
      * @param index of the shape
      * @param box data to make a shape from
      * @param dVals deterministicaly calculated values
      * @return positions of shape
      */
     function _generateShape(
-        bytes32[] memory pool,
         uint256 index,
         TinyBox memory box,
         uint8[4] memory dVals
@@ -84,6 +82,8 @@ library TinyBoxesRenderer {
         view
         returns (Shape memory)
     {
+        // seed PRNG
+        bytes32[] memory pool = Random.init(box.randomness);
         // calculate hatching switch
         bool hatching = (
             box.hatching > 0 &&
@@ -171,10 +171,6 @@ library TinyBoxesRenderer {
         view
         returns (string memory)
     {
-        // --- Calculate Generative Shape Data ---
-        // seed PRNG
-        bytes32[] memory pool = Random.init(box.randomness);
-
         // --- Render SVG Markup ---
 
         // generate the metadata
@@ -183,7 +179,7 @@ library TinyBoxesRenderer {
         // generate shapes (shapes + animations)
         string memory shapes = "";
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
-            Shape memory shape = _generateShape(pool, i, box, dVals);
+            Shape memory shape = _generateShape(i, box, dVals);
             shapes = string(abi.encodePacked(shapes, 
                 (box.options%8 != 0) ?
                     SVG._rect(shape, Animation._generateAnimation(box,dVals[0],shape,i)) :
@@ -204,7 +200,8 @@ library TinyBoxesRenderer {
         // generate the footer
         string memory mirroring = _generateMirroring(box.mirroring);
 
-        string memory svg = SVG._SVG(
+        // build up the SVG markup
+        return SVG._SVG(
             ((box.options/8)%2 == 1) ? "" : _parseBkg(box.bkg),
             string(abi.encodePacked(
                 metadata,
@@ -214,7 +211,5 @@ library TinyBoxesRenderer {
                 //'<use id="target" xlink:href="#cover" />'
             ))
         );
-
-        return svg;
     }
 }
