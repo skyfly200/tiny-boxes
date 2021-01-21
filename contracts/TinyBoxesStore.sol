@@ -272,8 +272,10 @@ contract TinyBoxesStore is TinyBoxesBase {
         address recipient,
         uint256 id
     ) external notPaused returns (uint256) {
-        // TODO - lookup promo token of matching id, check owner is recipient or caller and redeem (burn)
+        // TODO - move this require into PromoToken to save gas], pass in msg.sender
+        // lookup promo token of matching id, check owner is caller
         require(promoTokenContract.ownerOf(id) == msg.sender, "NOPE");
+        // redeem (burn) the PromoToken
         promoTokenContract.redeem(id);
         // check box parameters are valid
         validateParams(shapes, hatching, color, size, spacing, true);
