@@ -48,18 +48,6 @@ export class TinyBoxesStore extends Contract {
       settings: (number | string)[]
     ): TransactionObject<void>;
 
-    createPromo(
-      seed: number | string,
-      shapes: number | string,
-      hatching: number | string,
-      color: (number | string)[],
-      size: (number | string)[],
-      spacing: (number | string)[],
-      mirroring: number | string,
-      recipient: string,
-      id: number | string
-    ): TransactionObject<string>;
-
     createTo(
       _seed: string,
       shapes: number | string,
@@ -70,6 +58,18 @@ export class TinyBoxesStore extends Contract {
       mirroring: number | string,
       recipient: string,
       referalID: number | string
+    ): TransactionObject<string>;
+
+    createWithPromo(
+      seed: number | string,
+      shapes: number | string,
+      hatching: number | string,
+      color: (number | string)[],
+      size: (number | string)[],
+      spacing: (number | string)[],
+      mirroring: number | string,
+      recipient: string,
+      id: number | string
     ): TransactionObject<string>;
 
     currentPhase(): TransactionObject<string>;

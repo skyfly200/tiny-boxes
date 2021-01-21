@@ -58,37 +58,35 @@ contract TinyBoxes is TinyBoxesStore {
     /**
      * @dev Generate the token SVG art preview for given parameters
      * @param seed for renderer RNG
-     * @param shapes count
-     * @param hatching mod
+     * @param shapes count and hatching mod
      * @param color settings (hue, sat, light, contrast, shades)
      * @param size for shapes
      * @param spacing grid and spread
      * @param traits mirroring, scheme, shades, animation
      * @param settings adjustable render options - bkg, duration, options
-     * @param id of the token to preview
+     * @param slot string to enter at end of SVG markup
      * @return preview SVG art
      */
     function tokenPreview(
         string calldata seed,
-        uint8 shapes,
-        uint8 hatching,
         uint16[3] calldata color,
+        uint8[2] calldata shapes,
         uint8[4] calldata size,
         uint8[2] calldata spacing,
-        uint8[4] calldata traits,
-        uint8[3] calldata settings,
         uint8 mirroring,
-        uint256 id
+        uint8[3] calldata settings,
+        uint8[4] calldata traits,
+        string calldata slot
     ) external view returns (string memory) {
         require(settings[0] <= 101, "BKG % Invalid");
-        validateParams(shapes, hatching, color, size, spacing, true);
+        validateParams(shapes[0], shapes[1], color, size, spacing, true);
         TinyBox memory box = TinyBox({
             randomness: uint128(seed.stringToUint()),
             hue: color[0],
             saturation: uint8(color[1]),
             lightness: uint8(color[2]),
-            shapes: shapes,
-            hatching: hatching,
+            shapes: shapes[0],
+            hatching: shapes[1],
             widthMin: size[0],
             widthMax: size[1],
             heightMin: size[2],
@@ -100,7 +98,7 @@ contract TinyBoxes is TinyBoxesStore {
             duration: settings[1],
             options: settings[2]
         });
-        return box.perpetualRenderer(id, address(0), traits, "");
+        return box.perpetualRenderer(0, address(0), traits, slot);
     }
 
     /**

@@ -50,18 +50,6 @@ export class TinyBoxes extends Contract {
 
     contractURI(): TransactionObject<string>;
 
-    createPromo(
-      seed: number | string,
-      shapes: number | string,
-      hatching: number | string,
-      color: (number | string)[],
-      size: (number | string)[],
-      spacing: (number | string)[],
-      mirroring: number | string,
-      recipient: string,
-      id: number | string
-    ): TransactionObject<string>;
-
     createTo(
       _seed: string,
       shapes: number | string,
@@ -72,6 +60,18 @@ export class TinyBoxes extends Contract {
       mirroring: number | string,
       recipient: string,
       referalID: number | string
+    ): TransactionObject<string>;
+
+    createWithPromo(
+      seed: number | string,
+      shapes: number | string,
+      hatching: number | string,
+      color: (number | string)[],
+      size: (number | string)[],
+      spacing: (number | string)[],
+      mirroring: number | string,
+      recipient: string,
+      id: number | string
     ): TransactionObject<string>;
 
     currentPhase(): TransactionObject<string>;
@@ -218,15 +218,14 @@ export class TinyBoxes extends Contract {
 
     tokenPreview(
       seed: string,
-      shapes: number | string,
-      hatching: number | string,
-      color: (number | string)[],
+      shapes: (number | string)[],
       size: (number | string)[],
+      color: (number | string)[],
       spacing: (number | string)[],
-      traits: (number | string)[],
-      settings: (number | string)[],
       mirroring: number | string,
-      id: number | string
+      settings: (number | string)[],
+      traits: (number | string)[],
+      slot: string
     ): TransactionObject<string>;
 
     tokenRandomness(id: number | string): TransactionObject<string>;
