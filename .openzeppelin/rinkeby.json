@@ -16,18 +16,18 @@
       "deployedBytecodeHash": "6b468d8cde1d4f9855cbbf0f24baff56878878e55476f98038753eeb9dc87d7b"
     },
     "TinyBoxesRenderer": {
-      "address": "0x87dE08d5186766eC358783b1792e273d88105E4c",
+      "address": "0xca369846F48D76F213A1e159F1d9C0c6ffFFE30d",
       "constructorCode": "615ff462000027600b82828239805160001a60731461001a57fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "d598799f0e5709a34c267bb1560a3ebcd0eb2a38143f4601cf00c77965279a25",
+      "bodyBytecodeHash": "27b21f1419910b4be308ec555a6df5540d897aaff79b4697e6a87f778dce9331",
       "localBytecodeHash": "052c38def5b0c37d991635020a81a6166998196458592d13f7ff77e953a41cbc",
-      "deployedBytecodeHash": "3ae9d338a5957909929e242b49c30cba316bddd6133f1408054bdce772427c4f"
+      "deployedBytecodeHash": "38b42440e62cc0dc9a68268ebb1cbd0c858dba6eaba6c3810c0c5fa6d8cc20e3"
     },
     "Colors": {
-      "address": "0xb09b6CC5556fDeF5e14dc59D3014085a98c089Ea",
-      "constructorCode": "610d6a610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "5d4c98ee67dc410613a5b937914e3a6fe375943a8bf9411e471862120839cc0b",
-      "localBytecodeHash": "d3d1e1ac332b39aa2e1262927900dbd0d4d3df036f01b185138adae80dfcf0d8",
-      "deployedBytecodeHash": "d3d1e1ac332b39aa2e1262927900dbd0d4d3df036f01b185138adae80dfcf0d8"
+      "address": "0x8D3eC23421Aa252F49267f7d5f88139B78aF5d94",
+      "constructorCode": "610d99610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "0adbcca1871a2f97184df7fa6a99b988db80af1944317ea410dc1a0236ca4209",
+      "localBytecodeHash": "f716b676d5c46ac5d754351a8077b2e7acb8f10814c4c45c27f47e5d4e87ac29",
+      "deployedBytecodeHash": "f716b676d5c46ac5d754351a8077b2e7acb8f10814c4c45c27f47e5d4e87ac29"
     }
   },
   "proxies": {
@@ -41,6 +41,16 @@
         "address": "0x32B1d99C19E265aFAeAFddB68F3d0D72a22978C7",
         "kind": "NonProxy",
         "bytecodeHash": "62febf44d419daf2e32857e4df8386ee417a66d8c1714fc051a2101cccea48e9"
+      },
+      {
+        "address": "0x2EfD1da29F6C1aA8CAbf9B8dE0Fc210f059F2B1A",
+        "kind": "NonProxy",
+        "bytecodeHash": "62febf44d419daf2e32857e4df8386ee417a66d8c1714fc051a2101cccea48e9"
+      },
+      {
+        "address": "0xAF0BAAad97111e718798a99c7f02Baf780133634",
+        "kind": "NonProxy",
+        "bytecodeHash": "e57acb5674f99a79588ea4d04ae7e498fd118f4364ea7e87891f473895086b7f"
       }
     ],
     "tinyboxes/Randomizer": [

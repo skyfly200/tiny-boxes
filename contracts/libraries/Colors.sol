@@ -31,6 +31,11 @@ library Colors {
         // seed the random scheme from the extra bit space of the rootHue
         uint256 colorSeed = rootHue.div(360);
         bytes32[] memory huePool = Random.init(colorSeed);
+        uint16[3] memory randHues = [
+            uint16(huePool.uniform(0,359)),
+            uint16(uint256(huePool.uniform(10,369)).sub(10)),
+            uint16(uint256(huePool.uniform(20,379)).sub(20))
+        ];
         
         uint16[3][11] memory schemes = [
             [uint16(120), uint16(240), uint16(0)], // triadic
@@ -43,7 +48,7 @@ library Colors {
             [uint16(30), uint16(60), uint16(90)], // series
             [uint16(90), uint16(180), uint16(270)], // square
             [uint16(0), uint16(0), uint16(0)], // mono
-            [uint16(huePool.uniform(0,359)), uint16(huePool.uniform(0,359)), uint16(huePool.uniform(0,359))] // random
+            randHues // random
         ];
 
         require(scheme < schemes.length, "Invalid scheme id");
