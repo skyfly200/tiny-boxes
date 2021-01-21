@@ -218,9 +218,9 @@ export class TinyBoxes extends Contract {
 
     tokenPreview(
       seed: string,
+      color: (number | string)[],
       shapes: (number | string)[],
       size: (number | string)[],
-      color: (number | string)[],
       spacing: (number | string)[],
       mirroring: number | string,
       settings: (number | string)[],

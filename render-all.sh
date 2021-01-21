@@ -4,6 +4,7 @@ trap "exit" INT TERM    # Convert INT and TERM to EXIT
 trap "kill 0" EXIT      # Kill all child processes if we receive EXIT
 
 RAND="0xa30E0997782fe8B4E888b22d711611fBCd0a388B"
+SLOT='" "'
 
 ## deploy only on calls with a -d flag present
 while getopts "d:i:c:a:s:" arg; do
@@ -41,13 +42,13 @@ if [ -z "$ADDRESS" ]
                         ANIMATION=0
                 fi
                 # render svg at
-                npx oz call --method tokenPreview -n rinkeby --args "1, [2222,50,70], [30, 5], [100,100,100,100], [50,50], 63, [50,10,1], [$ANIMATION,3,7,70], ''" --to "$ADDRESS" > "./frames/Anim-$ANIMATION.svg"
+                npx oz call --method tokenPreview -n rinkeby --args "1, [222,50,70], [30,5], [100,100,100,100], [50,50], 63, [50,10,1], [$ANIMATION,10,7,70], $SLOT" --to "$ADDRESS" > "./frames/Anim-$ANIMATION.svg"
             else
                 # adjust max animation value here
                 for ANIMATION in {0..23}
                 do  
                     # render svg at
-                    npx oz call --method tokenPreview -n rinkeby --args "1, [2222,50,70], [30, 5], [100,100,100,100], [50,50], 63, [50,10,1], [$ANIMATION,3,7,70], ''" --to "$ADDRESS" > "./frames/Anim-$ANIMATION.svg"
+                    npx oz call --method tokenPreview -n rinkeby --args "1, [2222,50,70], [30,5], [100,100,100,100], [50,50], 63, [50,10,1], [$ANIMATION,10,7,70], $SLOT" --to "$ADDRESS" > "./frames/Anim-$ANIMATION.svg"
                 done
         fi
 fi
