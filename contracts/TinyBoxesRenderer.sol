@@ -206,9 +206,8 @@ library TinyBoxesRenderer {
             string(abi.encodePacked(
                 metadata,
                 defs,
-                mirroring
-                //SVG._use('cover', 'target')
-                //'<use id="target" xlink:href="#cover" />'
+                mirroring,
+                SVG._use('cover', 'target') //'<use id="target" xlink:href="#cover" />'
             ))
         );
     }
