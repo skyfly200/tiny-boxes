@@ -41,13 +41,13 @@ if [ -z "$ADDRESS" ]
                         ANIMATION=0
                 fi
                 # render svg at
-                npx oz call --method tokenPreview -n rinkeby --args "'', [50,10,1], [$ANIMATION,3,7,70], 63, [50,50], [100,100,100,100], 5, 30, [2222,50,70], 0" --to "$ADDRESS" > "./frames/Anim-$ANIMATION.svg"
+                npx oz call --method tokenPreview -n rinkeby --args "1, [2222,50,70], [30, 5], [100,100,100,100], [50,50], 63, [50,10,1], [$ANIMATION,3,7,70], ''" --to "$ADDRESS" > "./frames/Anim-$ANIMATION.svg"
             else
                 # adjust max animation value here
                 for ANIMATION in {0..23}
                 do  
                     # render svg at
-                    npx oz call --method tokenPreview -n rinkeby --args "'', [50,10,1], [$ANIMATION,3,7,70], 63, [50,50], [100,100,100,100], 5, 30, [2222,50,70], 0" --to "$ADDRESS" > "./frames/Anim-$ANIMATION.svg"
+                    npx oz call --method tokenPreview -n rinkeby --args "1, [2222,50,70], [30, 5], [100,100,100,100], [50,50], 63, [50,10,1], [$ANIMATION,3,7,70], ''" --to "$ADDRESS" > "./frames/Anim-$ANIMATION.svg"
                 done
         fi
 fi
