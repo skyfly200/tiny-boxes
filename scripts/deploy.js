@@ -31,12 +31,8 @@ async function main() {
   console.log("TinyBoxesRenderer deployed to:", tinyboxesrenderer.address);
 
   // We get the contract to deploy
-  const TinyBoxes = await hre.ethers.getContractFactory("TinyBoxes",{
-        libraries: {
-            TinyBoxesRenderer: tinyboxesrenderer.address,
-        }
-    });
-  const tinyboxes = await TinyBoxes.deploy(randomizer);
+  const TinyBoxes = await hre.ethers.getContractFactory("TinyBoxes");
+  const tinyboxes = await TinyBoxes.deploy(randomizer, tinyboxesrenderer.address);
 
   await tinyboxes.deployed();
 
