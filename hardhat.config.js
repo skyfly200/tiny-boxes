@@ -61,7 +61,7 @@ task("contract-uri", "Set the contract URI", async () => {
 
 
 module.exports = {
-  defaultNetwork: "rinkeby",
+  defaultNetwork: "hardhat",
   networks: {
     hardhat: {
     },
