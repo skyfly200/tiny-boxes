@@ -1,6 +1,6 @@
 //SPDX-License-Identifier: Unlicensed
-
 pragma solidity ^0.6.4;
+pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/math/SignedSafeMath.sol";
@@ -143,11 +143,11 @@ library Animation {
      * @return mod struct of modulator values
      */
     function _generateAnimation(
-        TinyBox memory box,
+        TinyBox calldata box,
         uint8 animation,
-        Shape memory shape,
+        Shape calldata shape,
         uint256 shapeIndex
-    ) internal pure returns (string memory) {
+    ) external pure returns (string memory) {
         string memory duration = string(abi.encodePacked(uint256(box.duration > 0 ? box.duration : 10).toString(),"s"));
         string memory attr = _calcAttributes((box.options/2)%8);
         // select animation based on animation id

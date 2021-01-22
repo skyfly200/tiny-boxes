@@ -12,9 +12,12 @@ import "./structs/TinyBox.sol";
 import "./structs/HSL.sol";
 
 import "./libraries/SVG.sol";
-import "./libraries/Animation.sol";
 import "./libraries/Metadata.sol";
 import "./libraries/Random.sol";
+
+interface AnimationLib {
+    function _generateAnimation(TinyBox calldata box,uint8 animation,Shape calldata shape,uint256 shapeIndex) external pure returns (string memory);
+}
 
 contract TinyBoxesRenderer {
     using SafeMath for uint256;
@@ -22,6 +25,17 @@ contract TinyBoxesRenderer {
     using Random for bytes32[];
     using Metadata for TinyBox;
     using Strings for *;
+
+    AnimationLib animator;
+    
+    /**
+     * @dev Contract constructor.
+     */
+    constructor(address _animator)
+        public
+    {
+        animator = AnimationLib(_animator);
+    }
 
     /**
      * @dev generate a shape
@@ -135,8 +149,7 @@ contract TinyBoxesRenderer {
         // add final scaling transform
         uint256 scale = uint256(mirroring).div(16) == 0 ? (uint256(mirroring).div(4) == 0 ? 4 : 2) : 1;
         string memory attrs = string(abi.encodePacked(
-            'transform="scale(', scale.toString(), ' ', scale.toString(), ')" ',
-            'clip-path="url(#clip)"'
+            'transform="scale(', scale.toString(), ' ', scale.toString(), ')" clip-path="url(#clip)"'
         ));
         string memory finalScale = SVG._g(attrs, SVG._use('', 'quad3'));
         return string(abi.encodePacked(symbols,finalScale));
@@ -162,7 +175,7 @@ contract TinyBoxesRenderer {
             Shape memory shape = _generateShape(i, box, dVals);
             shapes = string(abi.encodePacked(shapes,
                 SVG._rect(shape, (box.options%8 != 0) ?
-                    Animation._generateAnimation(box,dVals[0],shape,i) : ''
+                    animator._generateAnimation(box,dVals[0],shape,i) : ''
                 )
             ));
         }
@@ -181,7 +194,7 @@ contract TinyBoxesRenderer {
                 box._generateMetadata(dVals,id,owner),
                 defs,
                 _generateMirroring(box.mirroring),
-                SVG._use('cover', 'target') //'<use id="target" xlink:href="#cover" />'
+                SVG._use('cover', 'target')
             ))
         );
     }

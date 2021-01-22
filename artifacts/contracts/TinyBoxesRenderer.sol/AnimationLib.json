@@ -1,0 +1,161 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "AnimationLib",
+  "sourceName": "contracts/TinyBoxesRenderer.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint128",
+              "name": "randomness",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint16",
+              "name": "hue",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint8",
+              "name": "saturation",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "lightness",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "shapes",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "hatching",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "widthMin",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "widthMax",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "heightMin",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "heightMax",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "spread",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "grid",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "mirroring",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "bkg",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "duration",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "options",
+              "type": "uint8"
+            }
+          ],
+          "internalType": "struct TinyBox",
+          "name": "box",
+          "type": "tuple"
+        },
+        {
+          "internalType": "uint8",
+          "name": "animation",
+          "type": "uint8"
+        },
+        {
+          "components": [
+            {
+              "internalType": "int256[2]",
+              "name": "position",
+              "type": "int256[2]"
+            },
+            {
+              "internalType": "int256[2]",
+              "name": "size",
+              "type": "int256[2]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint16",
+                  "name": "hue",
+                  "type": "uint16"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "saturation",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "lightness",
+                  "type": "uint8"
+                }
+              ],
+              "internalType": "struct HSL",
+              "name": "color",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct Shape",
+          "name": "shape",
+          "type": "tuple"
+        },
+        {
+          "internalType": "uint256",
+          "name": "shapeIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "_generateAnimation",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
