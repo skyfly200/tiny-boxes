@@ -35,6 +35,8 @@ contract TinyBoxesStore is TinyBoxesBase {
         // promos.set(UINT_MAX - 1, natealex);
     }
 
+    // Payment Functions
+
     /**
      * @dev receive direct ETH transfers
      * @notice for splitting royalties
@@ -42,6 +44,40 @@ contract TinyBoxesStore is TinyBoxesBase {
     receive() external payable {
         _splitFunds(msg.value); 
     }
+
+    /**
+     * @dev Split payments
+     */
+    function _splitFunds(uint256 amount) internal {
+        if (amount > 0) {
+            uint256 partA = amount.mul(60).div(100);
+            skyfly.transfer(partA);
+            natealex.transfer(amount.sub(partA));
+        }
+    }
+
+    /**
+     * @dev handle the payment for tokens
+     */
+    function handlePayment(uint256 referalID, address recipient) internal {
+        // check for suficient payment
+        require(msg.value >= price, "insuficient payment");
+        // give the buyer change
+        if (msg.value > price) msg.sender.transfer(msg.value.sub(price));
+        // lookup the referer by the referal token id owner
+        address payable referer = _exists(referalID) ? payable(ownerOf(referalID)) : tx.origin;
+        // give a higher percent for refering a new user
+        uint256 percent = (balanceOf(tx.origin) == 0) ? referalNewPercent : referalPercent;
+        // referer can't be sender or reciever - no self referals
+        uint256 referal = (referer != msg.sender && referer != tx.origin && referer != recipient) ? 
+            price.mul(percent).div(100) : 0; 
+        // pay referal percentage
+        if (referal > 0) referer.transfer(referal);
+        // split remaining payment
+        _splitFunds(price.sub(referal));
+    }
+
+    // Require Functions
 
     /**
      * @notice Modifier to check if tokens are sold out
@@ -63,6 +99,8 @@ contract TinyBoxesStore is TinyBoxesBase {
     function notCountdown() view private {
         require(block.number >= blockStart, "WAIT");
     }
+
+    // Admin Functions
 
     /**
      * @dev pause minting
@@ -94,6 +132,8 @@ contract TinyBoxesStore is TinyBoxesBase {
         _tokenPromoIds.increment();
     }
 
+    // Utility Functions
+
     /**
      * @dev check current phase
      */
@@ -108,38 +148,6 @@ contract TinyBoxesStore is TinyBoxesBase {
         return int8(int256(id));
     }
 
-    /**
-     * @dev handle the payment for tokens
-     */
-    function handlePayment(uint256 referalID, address recipient) internal {
-        // check for suficient payment
-        require(msg.value >= price, "insuficient payment");
-        // give the buyer change
-        if (msg.value > price) msg.sender.transfer(msg.value.sub(price));
-        // lookup the referer by the referal token id owner
-        address payable referer = _exists(referalID) ? payable(ownerOf(referalID)) : tx.origin;
-        // give a higher percent for refering a new user
-        uint256 percent = (balanceOf(tx.origin) == 0) ? referalNewPercent : referalPercent;
-        // referer can't be sender or reciever - no self referals
-        uint256 referal = (referer != msg.sender && referer != tx.origin && referer != recipient) ? 
-            price.mul(percent).div(100) : 0; 
-        // pay referal percentage
-        if (referal > 0) referer.transfer(referal);
-        // split remaining payment
-        _splitFunds(price.sub(referal));
-    }
-
-    /**
-     * @dev Split payments
-     */
-    function _splitFunds(uint256 amount) internal {
-        if (amount > 0) {
-            uint256 partA = amount.mul(60).div(100);
-            skyfly.transfer(partA);
-            natealex.transfer(amount.sub(partA));
-        }
-    }
-
     function validateParams(uint8 shapes, uint8 hatching, uint16[3] memory color, uint8[4] memory size, uint8[2] memory position, bool exclusive) public pure {
         require(shapes > 0 && shapes < 31, "invalid shape count");
         require(hatching <= shapes, "invalid hatching");
@@ -151,6 +159,8 @@ contract TinyBoxesStore is TinyBoxesBase {
         require(size[2] <= size[3], "invalid height range");
         require(position[0] <= 100, "invalid spread");
     }
+
+    // Token Creation Functions
 
     /**
      * @dev Create a new TinyBox Token
