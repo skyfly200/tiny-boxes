@@ -21,38 +21,40 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     using Counters for Counters.Counter;
     using Random for bytes32[];
 
-    RandomizerInt entropySource;
-
     Counters.Counter internal _tokenIds;
     Counters.Counter internal _tokenPromoIds;
 
+    RandomizerInt entropySource;
+
     // set contract config constants
+    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE"); // define the admin role identifier
     uint16 public constant TOKEN_LIMIT = 110;
     uint8 public constant ANIMATION_COUNT = 24;
     uint8 public constant SCHEME_COUNT = 11;
+    uint8 public constant avgBlockTime = 15; // avg time per block mined in seconds
+    uint16 public constant phaseLen = TOKEN_LIMIT / SCHEME_COUNT; // token count per phase
+    uint32 public constant phaseCountdownTime = 2 minutes; // time to pause between phases
     
+    // TODO - look at a block timestamp based countdown
+    // set dynamic contract config
     bool public paused = true;
-    uint256 public blockStart; // start of the next phase
-    uint256 public phaseLen = TOKEN_LIMIT / SCHEME_COUNT; // token count per phase
-    uint256 public phaseCountdownTime = 2 minutes; // time to pause between phases
-    uint256 public phaseCountdown = phaseCountdownTime.div(15); // blocks to pause between phases
+    uint256 public blockStart; // next block that minting will start on, countdown end point
+    uint256 public phaseCountdown = uint256(phaseCountdownTime).div(avgBlockTime); // blocks to pause between phases
+    string public contractURI = "https://rinkeby.tinybox.shop/TinyBoxes.json";
 
     // mapping to store all the boxes info
     mapping(uint256 => TinyBox) internal boxes;
-
-    // Create role identifiers
-    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
 
     /**
      * @dev Contract constructor.
      * @notice Constructor inherits ERC721
      */
     constructor(address entropySourceAddress) public ERC721("TinyBoxes", "[#][#]") {
-        // TODO: setup better roles before launch
-        // Grant all roles to the account deploying this contract for testing
         _setupRole(ADMIN_ROLE, msg.sender);
         entropySource = RandomizerInt(entropySourceAddress);
     }
+
+    // Require Functions
 
     /**
      * @notice  only allow acounts of a specified role to call a function
@@ -61,6 +63,49 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         // Check that the calling account has the required role
         require(hasRole(_role, msg.sender), "Caller dosn't have permission to use this function");
     }
+
+    /**
+     * @notice check if tokens are sold out
+     */
+    function notSoldOut() view internal {
+        require(_tokenIds.current() < TOKEN_LIMIT, "ART SALE IS OVER");
+    }
+
+    /**
+     * @notice check if minting is paused
+     */
+    function notPaused() view internal {
+        require(!paused, "Paused");
+    }
+
+    /**
+     * @notice check if minting is waiting for a countdown
+     */
+    function notCountdown() view internal {
+        require(block.number >= blockStart, "WAIT");
+    }
+
+    // Store Mgmt. Functions
+
+    /**
+     * @dev pause minting
+     */
+    function setPause(bool state) external {
+        onlyRole(ADMIN_ROLE);
+        paused = state;
+    }
+
+    /**
+     * @dev set start block for next phase
+     */
+    function startCoundown(uint256 startBlock) external {
+        onlyRole(ADMIN_ROLE);
+        require(startBlock > block.number,"Must be future block");
+        blockStart = startBlock;
+        paused = false;
+    }
+
+    // Randomizer functions
 
     /**
      * @dev set Randomizer
@@ -79,8 +124,73 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     }
 
     /**
+     * @dev Call the Randomizer and get some randomness
+     */
+    function getRandomness(uint256 id, uint256 seed)
+        internal view returns (uint128 randomnesss)
+    {
+        uint256 randomness = uint256(keccak256(abi.encodePacked(
+            entropySource.returnValue(),
+            id,
+            seed
+        ))); // mix local and Randomizer entropy for the box randomness
+        return uint128(randomness % (2**128));
+    }
+
+    // Metadata URI Functions
+
+    /**
+     * @dev Set the tokens URI
+     * @param _id of a token to update
+     * @param _uri for the token
+     * @dev Only the admin can call this
+     */
+    function setTokenURI(uint256 _id, string calldata _uri) external {
+        onlyRole(ADMIN_ROLE);
+        _setTokenURI(_id, _uri);
+    }
+
+    /**
+     * @dev Update the base URI field
+     * @param _uri base for all tokens 
+     * @dev Only the admin can call this
+     */
+    function setBaseURI(string calldata _uri) external {
+        onlyRole(ADMIN_ROLE);
+        _setBaseURI(_uri);
+    }
+
+    /**
+     * @dev Update the contract URI field
+     * @dev Only the admin can call this
+     */
+    function setContractURI(string calldata _uri) external {
+        onlyRole(ADMIN_ROLE);
+        contractURI = _uri;
+    }
+
+    // Utility Functions
+
+    /**
+     * @dev check current phase
+     */
+    function currentPhase() public view returns (uint8) {
+        return uint8(_tokenIds.current().div(phaseLen));
+    }
+
+    /**
+     * @dev calculate the true id for the limited editions
+     */
+    function trueID(uint256 id) public pure returns (int8) {
+        return int8(int256(id));
+    }
+
+    // Token Info - Data & Settings
+
+    /**
      * @dev Lookup all token data in one call
      * @param _id for which we want token data
+     * @return randomness of the token
      * @return animation of token
      * @return shapes of token
      * @return hatching of token
@@ -96,6 +206,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         external
         view
         returns (
+            uint128 randomness,
             uint256 animation,
             uint8 shapes,
             uint8 hatching,
@@ -115,21 +226,14 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         scheme = parts[1];
         shades = parts[2];
         contrast = parts[3];
+
+        randomness = box.randomness;
         mirroring = box.mirroring;
         shapes = box.shapes;
         hatching = box.hatching;
         color = [box.hue, box.saturation, box.lightness];
         size = [box.widthMin, box.widthMax, box.heightMin, box.heightMax];
         spacing = [box.spread, box.grid];
-    }
-
-    /**
-     * @dev get the randomness bits for the token
-     * @param id of the token to fetch randomness for
-     */
-    function tokenRandomness(uint256 id) external view returns (uint128) {
-        TinyBox memory box = boxes[id];
-        return box.randomness;
     }
 
     /**
@@ -181,17 +285,15 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         }
     }
 
-    /**
-     * @dev Call the Randomizer and get some randomness
-     */
-    function getRandomness(uint256 id, uint256 seed)
-        internal view returns (uint128 randomnesss)
-    {
-        uint256 randomness = uint256(keccak256(abi.encodePacked(
-            entropySource.returnValue(),
-            id,
-            seed
-        ))); // mix local and Randomizer entropy for the box randomness
-        return uint128(randomness % (2**128));
+    function validateParams(uint8 shapes, uint8 hatching, uint16[3] memory color, uint8[4] memory size, uint8[2] memory position, bool exclusive) public pure {
+        require(shapes > 0 && shapes < 31, "invalid shape count");
+        require(hatching <= shapes, "invalid hatching");
+        require(color[2] <= 360, "invalid color");
+        require(color[1] <= 100, "invalid saturation");
+        if (!exclusive) require(color[1] >= 20, "invalid saturation");
+        require(color[2] <= 100, "invalid lightness");
+        require(size[0] <= size[1], "invalid width range");
+        require(size[2] <= size[3], "invalid height range");
+        require(position[0] <= 100, "invalid spread");
     }
 }

@@ -77,48 +77,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         _splitFunds(price.sub(referal));
     }
 
-    // Require Functions
-
-    /**
-     * @notice Modifier to check if tokens are sold out
-     */
-    function notSoldOut() view private {
-        require(_tokenIds.current() < TOKEN_LIMIT, "ART SALE IS OVER");
-    }
-
-    /**
-     * @notice Modifier to check if minting is paused
-     */
-    function notPaused() view private {
-        require(!paused, "Paused");
-    }
-
-    /**
-     * @notice Modifier to check if minting is waiting for a countdown
-     */
-    function notCountdown() view private {
-        require(block.number >= blockStart, "WAIT");
-    }
-
-    // Admin Functions
-
-    /**
-     * @dev pause minting
-     */
-    function setPause(bool state) external {
-        onlyRole(ADMIN_ROLE);
-        paused = state;
-    }
-
-    /**
-     * @dev set start block for next phase
-     */
-    function startCoundown(uint256 startBlock) external {
-        onlyRole(ADMIN_ROLE);
-        require(startBlock > block.number,"Must be future block");
-        blockStart = startBlock;
-        paused = false;
-    }
+    // Token Creation Functions
 
     /**
      * @dev Create a new TinyBox Promo Token
@@ -131,36 +90,6 @@ contract TinyBoxesStore is TinyBoxesBase {
         _safeMint(recipient, id); // mint the new token to the recipient address
         _tokenPromoIds.increment();
     }
-
-    // Utility Functions
-
-    /**
-     * @dev check current phase
-     */
-    function currentPhase() public view returns (uint8) {
-        return uint8(_tokenIds.current().div(phaseLen));
-    }
-
-    /**
-     * @dev calculate the true id for the limited editions
-     */
-    function trueID(uint256 id) public pure returns (int8) {
-        return int8(int256(id));
-    }
-
-    function validateParams(uint8 shapes, uint8 hatching, uint16[3] memory color, uint8[4] memory size, uint8[2] memory position, bool exclusive) public pure {
-        require(shapes > 0 && shapes < 31, "invalid shape count");
-        require(hatching <= shapes, "invalid hatching");
-        require(color[2] <= 360, "invalid color");
-        require(color[1] <= 100, "invalid saturation");
-        if (!exclusive) require(color[1] >= 20, "invalid saturation");
-        require(color[2] <= 100, "invalid lightness");
-        require(size[0] <= size[1], "invalid width range");
-        require(size[2] <= size[3], "invalid height range");
-        require(position[0] <= 100, "invalid spread");
-    }
-
-    // Token Creation Functions
 
     /**
      * @dev Create a new TinyBox Token

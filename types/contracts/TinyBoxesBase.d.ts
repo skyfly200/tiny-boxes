@@ -33,38 +33,22 @@ export class TinyBoxesBase extends Contract {
 
     approve(to: string, tokenId: number | string): TransactionObject<void>;
 
+    avgBlockTime(): TransactionObject<string>;
+
     balanceOf(owner: string): TransactionObject<string>;
 
     baseURI(): TransactionObject<string>;
 
     blockStart(): TransactionObject<string>;
 
-    calcedParts(
-      box: {
-        randomness: number | string;
-        hue: number | string;
-        saturation: number | string;
-        lightness: number | string;
-        shapes: number | string;
-        hatching: number | string;
-        widthMin: number | string;
-        widthMax: number | string;
-        heightMin: number | string;
-        heightMax: number | string;
-        spread: number | string;
-        grid: number | string;
-        mirroring: number | string;
-        bkg: number | string;
-        duration: number | string;
-        options: number | string;
-      },
-      id: number | string
-    ): TransactionObject<string[]>;
-
     changeSettings(
       id: number | string,
       settings: (number | string)[]
     ): TransactionObject<void>;
+
+    contractURI(): TransactionObject<string>;
+
+    currentPhase(): TransactionObject<string>;
 
     getApproved(tokenId: number | string): TransactionObject<string>;
 
@@ -136,7 +120,17 @@ export class TinyBoxesBase extends Contract {
       approved: boolean
     ): TransactionObject<void>;
 
+    setBaseURI(_uri: string): TransactionObject<void>;
+
+    setContractURI(_uri: string): TransactionObject<void>;
+
+    setPause(state: boolean): TransactionObject<void>;
+
     setRandom(rand: string): TransactionObject<void>;
+
+    setTokenURI(_id: number | string, _uri: string): TransactionObject<void>;
+
+    startCoundown(startBlock: number | string): TransactionObject<void>;
 
     supportsInterface(
       interfaceId: string | number[]
@@ -151,6 +145,7 @@ export class TinyBoxesBase extends Contract {
     tokenData(
       _id: number | string
     ): TransactionObject<{
+      randomness: string;
       animation: string;
       shapes: string;
       hatching: string;
@@ -164,21 +159,20 @@ export class TinyBoxesBase extends Contract {
       0: string;
       1: string;
       2: string;
-      3: string[];
+      3: string;
       4: string[];
-      5: string;
-      6: string[];
-      7: string;
+      5: string[];
+      6: string;
+      7: string[];
       8: string;
       9: string;
+      10: string;
     }>;
 
     tokenOfOwnerByIndex(
       owner: string,
       index: number | string
     ): TransactionObject<string>;
-
-    tokenRandomness(id: number | string): TransactionObject<string>;
 
     tokenURI(tokenId: number | string): TransactionObject<string>;
 
@@ -188,6 +182,17 @@ export class TinyBoxesBase extends Contract {
       from: string,
       to: string,
       tokenId: number | string
+    ): TransactionObject<void>;
+
+    trueID(id: number | string): TransactionObject<string>;
+
+    validateParams(
+      shapes: number | string,
+      hatching: number | string,
+      color: (number | string)[],
+      size: (number | string)[],
+      position: (number | string)[],
+      exclusive: boolean
     ): TransactionObject<void>;
   };
   events: {
