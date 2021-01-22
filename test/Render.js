@@ -11,7 +11,6 @@ describe("TinyBoxes Rendering", function() {
     // time. It receives a callback, which can be async.
     beforeEach(async function () {
         [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
-
         // deploy the Animation lib
         const Animation = await hre.ethers.getContractFactory("Animation",{
             libraries: {
@@ -20,11 +19,7 @@ describe("TinyBoxes Rendering", function() {
             }
         });
         const animation = await Animation.deploy();
-
         await animation.deployed();
-
-        console.log("Animation deployed to:", animation.address);
-
         // deploy the Renderer lib
         const TinyBoxesRenderer = await hre.ethers.getContractFactory("TinyBoxesRenderer",{
             libraries: {
@@ -33,31 +28,26 @@ describe("TinyBoxes Rendering", function() {
             }
         });
         const tinyboxesrenderer = await TinyBoxesRenderer.deploy(animation.address);
-
         await tinyboxesrenderer.deployed();
-
-        console.log("TinyBoxesRenderer deployed to:", tinyboxesrenderer.address);
-
         // deploy random stub
         const RandomStub = await hre.ethers.getContractFactory("RandomStub");
         const randomstub = await RandomStub.deploy();
-
         await randomstub.deployed();
-
-        console.log("RandomStub deployed to:", randomstub.address);
-
         // deploy the main contract
         const TinyBoxes = await hre.ethers.getContractFactory("TinyBoxes");
         tinyboxes = await TinyBoxes.deploy(randomstub.address, tinyboxesrenderer.address);
-
         await tinyboxes.deployed();
-
-        console.log("TinyBoxes deployed to:", tinyboxes.address);
     });
 
     it("Can Unpause", async function() {
         await tinyboxes.setPause(false);
         expect(await tinyboxes.paused()).to.equal(false);
+    });
+
+    it("Can get Randomness bytes", async function() {
+        const rand = await tinyboxes.testRandom();
+        console.log(rand);
+        expect(rand).to.be.a("string");
     });
 
     it("Can Mint Promo", async function() {
