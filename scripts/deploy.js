@@ -16,7 +16,7 @@ async function main() {
   //TODO - deploy randomizer here instead
   const randomizer = "0x02F597BFdB0291FE0789CA123D0dD9A2babfE845";
 
-  // deploy the Renderer lib
+  //deploy the Renderer lib
   const TinyBoxesRenderer = await hre.ethers.getContractFactory("TinyBoxesRenderer",{
         libraries: {
             Colors: "0x0B37DC0Adc2948f3689dfB8200F3419424360d85",

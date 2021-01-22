@@ -428,8 +428,8 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxesRenderer.sol": {
-      "lastModificationDate": 1611256590258,
-      "contentHash": "746dfdd740e86922e69a4f0e4e8b4bc0",
+      "lastModificationDate": 1611279159526,
+      "contentHash": "9b3fa1be903e0bfebfe2f5d06fddc63e",
       "sourceName": "contracts/TinyBoxesRenderer.sol",
       "solcConfig": {
         "version": "0.6.8",
@@ -475,8 +475,8 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/SVG.sol": {
-      "lastModificationDate": 1611256535112,
-      "contentHash": "fbc3bd6ef1268e92cb07f8925ea2e1bc",
+      "lastModificationDate": 1611260452798,
+      "contentHash": "92040b62a8500bd4a0d781824931283f",
       "sourceName": "contracts/libraries/SVG.sol",
       "solcConfig": {
         "version": "0.6.8",
@@ -501,12 +501,9 @@
         }
       },
       "imports": [
-        "@openzeppelin/contracts/math/SafeMath.sol",
         "@openzeppelin/contracts/utils/Strings.sol",
-        "../structs/Decimal.sol",
         "../structs/Shape.sol",
         "./Utils.sol",
-        "./Decimal.sol",
         "./Colors.sol"
       ],
       "versionPragmas": [

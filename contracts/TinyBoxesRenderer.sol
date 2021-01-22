@@ -24,7 +24,7 @@ library TinyBoxesRenderer {
     using Metadata for TinyBox;
     using DecimalUtils for *;
     using Strings for *;
-    using SVG for *;
+    //using SVG for *;
 
     /**
      * @dev generate a shape
@@ -207,8 +207,8 @@ library TinyBoxesRenderer {
             string(abi.encodePacked(
                 metadata,
                 defs,
-                mirroring,
-                SVG._use('cover', 'target') //'<use id="target" xlink:href="#cover" />'
+                mirroring
+                //SVG._use('cover', 'target') //'<use id="target" xlink:href="#cover" />'
             ))
         );
     }

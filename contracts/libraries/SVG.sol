@@ -2,19 +2,14 @@
 
 pragma solidity ^0.6.4;
 
-import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "../structs/Decimal.sol";
 import "../structs/Shape.sol";
 
 import "./Utils.sol";
-import "./Decimal.sol";
 import "./Colors.sol";
 
 library SVG {
-    using SafeMath for uint256;
-    using DecimalUtils for *;
     using Utils for *;
     using Colors for *;
     using Strings for *;
