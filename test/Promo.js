@@ -36,7 +36,6 @@ describe("Testing TinyBoxes Promo Methods", function() {
         const TinyBoxes = await hre.ethers.getContractFactory("TinyBoxes");
         tinyboxes = await TinyBoxes.deploy(randomstub.address, tinyboxesrenderer.address);
         await tinyboxes.deployed();
-        await tinyboxes.setPause(false);
     });
 
     it("Only admin can mint promo tokens", async function() {
@@ -62,7 +61,10 @@ describe("Testing TinyBoxes Promo Methods", function() {
         ).to.be.reverted;
     });
 
+    // can't redeem when paused
+
     it("Can redeem a promo token", async function() {
+        await tinyboxes.setPause(false);
         await expect(
             tinyboxes.createLE(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, BigInt(2**256) - 1n)
         ).to.emit(tinyboxes, 'LECreated');
@@ -83,5 +85,7 @@ describe("Testing TinyBoxes Promo Methods", function() {
             tinyboxes.createLE(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, 0)
         ).to.be.reverted;
     });
+
+    // promos run out
 });
 

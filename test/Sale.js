@@ -40,8 +40,14 @@ describe("Testing TinyBoxes Sale Methods", function() {
 
     it("Can lookup the mint price", async function() {
         price = await tinyboxes.price();
-        console.log("Price: ", price.hex);
+        console.log("Price: ", parseInt(price._hex.slice(2)), " wei");
         expect(price._isBigNumber);
+    });
+
+    it("Create reverts when paused", async function() {
+        await expect(
+            tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr1.address, 10000, {value:price})
+        ).to.be.reverted;
     });
 
     it("Can Unpause", async function() {
@@ -69,13 +75,18 @@ describe("Testing TinyBoxes Sale Methods", function() {
         expect(await tinyboxes._tokenIds()).to.equal(2);
     });
 
-    // phase mints out
+    it("Can mint through a phase", async function() {
+        for (let i=0; i<8; i++)
+            await tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr2.address, 10000, {value:price});
+        expect(await tinyboxes.balanceOf(addr2.address)).to.equal(9);
+        expect(await tinyboxes.currentPhase()).to.equal(1);
+    });
 
-    // phase count increases as expected
-
-    // minting fails when in countdown state
-
-    // minting fails when paused
+    it("Create fails when in countdown", async function() {
+        await expect(
+            tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr2.address, 10000, {value:price})
+        ).to.be.reverted;
+    });
 
     // sold out works
 });
