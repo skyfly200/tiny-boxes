@@ -44,13 +44,17 @@ describe("Testing TinyBoxes Settings Methods", function() {
 
     it("Can read a tokens settings", async function() {
         const settings = await tinyboxes.readSettings(0);
-        expect(settings).to.equal([0,10,1]);
+        expect(settings.bkg).to.equal(0);
+        expect(settings.duration).to.equal(10);
+        expect(settings.options).to.equal(1);
     });
 
     it("A tokens owner can set its settings", async function() {
         await tinyboxes.changeSettings(0, [10,5,7])
         const settings = await tinyboxes.readSettings(0);
-        expect(settings).to.equal([10,5,7]);
+        expect(settings.bkg).to.equal(10);
+        expect(settings.duration).to.equal(5);
+        expect(settings.options).to.equal(7);
     });
 
     it("Only a tokens owner can set its settings", async function() {
