@@ -6,6 +6,7 @@ describe("Testing TinyBoxes Render Methods", function() {
     let addr1;
     let addr2;
     let addrs;
+    let price = 1;
 
     before(async function () {
         [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
@@ -39,7 +40,7 @@ describe("Testing TinyBoxes Render Methods", function() {
         await tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr1.address, 10000, {value:price});
     });
 
-    it("Method tokenPreview should return a SVG string", async function() {
+    it("Can render a token preview", async function() {
         const art = await tinyboxes.tokenPreview(1111, [100,50,70], [30,5], [100,100,100,100], [50,50], 63, [50,10,1], [0,10,7,70], '');
         expect(art).to.be.a('string');
     });
@@ -49,9 +50,16 @@ describe("Testing TinyBoxes Render Methods", function() {
         expect(art).to.be.a('string');
     });
 
-    it("Can render a tokens art", async function() {
+    it("Can render a tokens art with settings + slot", async function() {
         const art = await tinyboxes.tokenArt(0, 0, 2, 1, '');
         expect(art).to.be.a('string');
+    });
+
+    it("Can lookup a tokens data", async function() {
+        const data = await tinyboxes.tokenData(0);
+        expect(data.shapes).to.equal(30);
+        expect(data.hatching).to.equal(5);
+        expect(data.mirroring).to.equal(63);
     });
 });
 

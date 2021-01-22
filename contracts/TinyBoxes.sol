@@ -75,7 +75,7 @@ contract TinyBoxes is TinyBoxesStore {
      * @param duration animation duration modifier
      * @param options bits - 0th is the animate switch to turn on or off animation
      * @param slot string for embeding custom additions
-     * @return animated SVG art of token _id at _frame.
+     * @return SVG art of token
      */
     function tokenArt(uint256 _id, uint8 bkg, uint8 duration, uint8 options, string calldata slot)
         external
@@ -92,7 +92,7 @@ contract TinyBoxes is TinyBoxesStore {
     /**
      * @dev Generate the token SVG art
      * @param _id for which we want art
-     * @return animated SVG art of token _id at _frame.
+     * @return SVG art of token 
      */
     function tokenArt(uint256 _id)
         external
