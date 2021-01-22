@@ -168,7 +168,7 @@ library Metadata {
             '</settings>'
         ));
 
-        string memory renderedAt = string(abi.encodePacked('<rendered-at>',now.toString(),'</rendered-at>')); // TODO: add timestamp here
+        string memory renderedAt = string(abi.encodePacked('<rendered-at>',now.toString(),'</rendered-at>'));
 
         return string(abi.encodePacked('<metadata>', contractAddress, renderedAt, token, settings, animation, colors, shapes, placement, mirror, '</metadata>'));
     }
