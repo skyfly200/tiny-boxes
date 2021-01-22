@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: Unlicensed
 pragma solidity ^0.6.0;
 
-contract Randomizer {
+contract RandomStub {
     // stub the core RNG service function
     function returnValue() external view returns (bytes32){
         return keccak256(abi.encodePacked(

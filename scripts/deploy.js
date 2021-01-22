@@ -12,7 +12,7 @@ async function main() {
   // manually to make sure everything is compiled
   // await hre.run('compile');
 
-  //deploy the Renderer lib
+  // deploy the Animation lib
   const Animation = await hre.ethers.getContractFactory("Animation",{
       libraries: {
           FixidityLib: "0x34cFa7d44a6698E68FB067e3C48ebB831873E534",
@@ -25,7 +25,7 @@ async function main() {
 
   console.log("Animation deployed to:", animation.address);
 
-  //deploy the Renderer lib
+  // deploy the Renderer lib
   const TinyBoxesRenderer = await hre.ethers.getContractFactory("TinyBoxesRenderer",{
         libraries: {
             Colors: "0x0B37DC0Adc2948f3689dfB8200F3419424360d85",
@@ -38,12 +38,17 @@ async function main() {
 
   console.log("TinyBoxesRenderer deployed to:", tinyboxesrenderer.address);
 
-  //TODO - deploy randomizer here instead
-  const randomizer = "0x02F597BFdB0291FE0789CA123D0dD9A2babfE845";
+  // deploy random stub
+  const RandomStub = await hre.ethers.getContractFactory("RandomStub");
+  const randomstub = await RandomStub.deploy();
 
-  // We get the contract to deploy
+  await randomstub.deployed();
+
+  console.log("RandomStub deployed to:", randomstub);
+
+  // deploy the main contract
   const TinyBoxes = await hre.ethers.getContractFactory("TinyBoxes");
-  const tinyboxes = await TinyBoxes.deploy(randomizer, tinyboxesrenderer.address);
+  const tinyboxes = await TinyBoxes.deploy(randomstub, tinyboxesrenderer.address);
 
   await tinyboxes.deployed();
 

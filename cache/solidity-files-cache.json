@@ -1403,6 +1403,40 @@
       "artifacts": [
         "Animation"
       ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/RandomStub.sol": {
+      "lastModificationDate": 1611338107219,
+      "contentHash": "3530d12238e4f797c83f53d359c549ed",
+      "sourceName": "contracts/RandomStub.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.0"
+      ],
+      "artifacts": [
+        "RandomStub"
+      ]
     }
   }
 }
