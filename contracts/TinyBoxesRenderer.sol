@@ -16,15 +16,17 @@ import "./libraries/Animation.sol";
 import "./libraries/Metadata.sol";
 import "./libraries/Random.sol";
 import "./libraries/Decimal.sol";
+import "./libraries/Utils.sol";
 
-library TinyBoxesRenderer {
+contract TinyBoxesRenderer {
     using SafeMath for uint256;
     using SignedSafeMath for int256;
     using Random for bytes32[];
     using Metadata for TinyBox;
     using DecimalUtils for *;
     using Strings for *;
-    //using SVG for *;
+    using Utils for *;
+    using SVG for *;
 
     /**
      * @dev generate a shape
@@ -172,8 +174,6 @@ library TinyBoxesRenderer {
         view
         returns (string memory)
     {
-        // --- Render SVG Markup ---
-
         // generate the metadata
         string memory metadata = box._generateMetadata(dVals,id,owner);
 

@@ -13,9 +13,15 @@ import "./structs/TinyBox.sol";
 import "./libraries/Utils.sol";
 import "./libraries/Random.sol";
 
+interface RandomizerInt {
+    function returnValue() external view returns (bytes32);
+}
+
 contract TinyBoxesBase is ERC721, AccessControl  {
     using Counters for Counters.Counter;
     using Random for bytes32[];
+
+    RandomizerInt entropySource;
 
     Counters.Counter internal _tokenIds;
     Counters.Counter internal _tokenPromoIds;
@@ -36,28 +42,40 @@ contract TinyBoxesBase is ERC721, AccessControl  {
 
     // Create role identifiers
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
-    bytes32 public constant ARTIST_ROLE = keccak256("ARTIST_ROLE");
-    bytes32 public constant ANIMATOR_ROLE = keccak256("ANIMATOR_ROLE");
 
     /**
      * @dev Contract constructor.
      * @notice Constructor inherits ERC721
      */
-    constructor() public ERC721("TinyBoxes", "[#][#]") {
+    constructor(address entropySourceAddress) public ERC721("TinyBoxes", "[#][#]") {
         // TODO: setup better roles before launch
         // Grant all roles to the account deploying this contract for testing
         _setupRole(ADMIN_ROLE, msg.sender);
-        _setupRole(ARTIST_ROLE, msg.sender);
-        _setupRole(ANIMATOR_ROLE, msg.sender);
+        entropySource = RandomizerInt(entropySourceAddress);
     }
 
     /**
-     * @notice Modifier to only allow acounts of a specified role to call a function
+     * @notice  only allow acounts of a specified role to call a function
      */
-    modifier onlyRole(bytes32 _role) {
+    function onlyRole(bytes32 _role) view internal {
         // Check that the calling account has the required role
         require(hasRole(_role, msg.sender), "Caller dosn't have permission to use this function");
-        _;
+    }
+
+    /**
+     * @dev set Randomizer
+     */
+    function setRandom(address rand) external {
+        onlyRole(ADMIN_ROLE);
+        entropySource = RandomizerInt(rand);
+    }
+
+    /**
+     * @dev test Randomizer
+     */
+    function testRandom() external view returns (bytes32) {
+        onlyRole(ADMIN_ROLE);
+        return entropySource.returnValue();
     }
 
     /**
@@ -142,8 +160,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     /**
      * @dev Calculate the randomized and phased values
      */
-    function calcedParts(TinyBox memory box, uint256 id)
-        internal view returns (uint8[4] memory parts)
+    function calcedParts(TinyBox memory box, uint256 id) public view returns (uint8[4] memory parts)
     {
         if (id < TOKEN_LIMIT) { // Normal Tokens
             bytes32[] memory pool = Random.init(box.randomness);
@@ -162,5 +179,19 @@ contract TinyBoxesBase is ERC721, AccessControl  {
             parts[2] = uint8((box.randomness / 2**116) % 2**3); //, shades
             parts[3] = uint8((box.randomness / 2**109) % 2**7); // contrast
         }
+    }
+
+    /**
+     * @dev Call the Randomizer and get some randomness
+     */
+    function getRandomness(uint256 id, uint256 seed)
+        internal view returns (uint128 randomnesss)
+    {
+        uint256 randomness = uint256(keccak256(abi.encodePacked(
+            entropySource.returnValue(),
+            id,
+            seed
+        ))); // mix local and Randomizer entropy for the box randomness
+        return uint128(randomness % (2**128));
     }
 }

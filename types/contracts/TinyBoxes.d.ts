@@ -25,10 +25,6 @@ export class TinyBoxes extends Contract {
 
     ANIMATION_COUNT(): TransactionObject<string>;
 
-    ANIMATOR_ROLE(): TransactionObject<string>;
-
-    ARTIST_ROLE(): TransactionObject<string>;
-
     DEFAULT_ADMIN_ROLE(): TransactionObject<string>;
 
     SCHEME_COUNT(): TransactionObject<string>;
@@ -43,6 +39,28 @@ export class TinyBoxes extends Contract {
 
     blockStart(): TransactionObject<string>;
 
+    calcedParts(
+      box: {
+        randomness: number | string;
+        hue: number | string;
+        saturation: number | string;
+        lightness: number | string;
+        shapes: number | string;
+        hatching: number | string;
+        widthMin: number | string;
+        widthMax: number | string;
+        heightMin: number | string;
+        heightMax: number | string;
+        spread: number | string;
+        grid: number | string;
+        mirroring: number | string;
+        bkg: number | string;
+        duration: number | string;
+        options: number | string;
+      },
+      id: number | string
+    ): TransactionObject<string[]>;
+
     changeSettings(
       id: number | string,
       settings: (number | string)[]
@@ -50,7 +68,7 @@ export class TinyBoxes extends Contract {
 
     contractURI(): TransactionObject<string>;
 
-    createTo(
+    create(
       _seed: string,
       shapes: number | string,
       hatching: number | string,
@@ -62,7 +80,7 @@ export class TinyBoxes extends Contract {
       referalID: number | string
     ): TransactionObject<string>;
 
-    createWithPromo(
+    createLimitedEdition(
       seed: number | string,
       shapes: number | string,
       hatching: number | string,
@@ -70,9 +88,8 @@ export class TinyBoxes extends Contract {
       size: (number | string)[],
       spacing: (number | string)[],
       mirroring: number | string,
-      recipient: string,
       id: number | string
-    ): TransactionObject<string>;
+    ): TransactionObject<void>;
 
     currentPhase(): TransactionObject<string>;
 
@@ -102,7 +119,7 @@ export class TinyBoxes extends Contract {
       operator: string
     ): TransactionObject<boolean>;
 
-    mintPromo(to: string): TransactionObject<void>;
+    mintPromo(recipient: string): TransactionObject<void>;
 
     name(): TransactionObject<string>;
 
@@ -159,8 +176,6 @@ export class TinyBoxes extends Contract {
     setContractURI(_uri: string): TransactionObject<void>;
 
     setPause(state: boolean): TransactionObject<void>;
-
-    setPromo(_promoTokenAddress: string): TransactionObject<void>;
 
     setRandom(rand: string): TransactionObject<void>;
 
@@ -241,6 +256,15 @@ export class TinyBoxes extends Contract {
     ): TransactionObject<void>;
 
     trueID(id: number | string): TransactionObject<string>;
+
+    validateParams(
+      shapes: number | string,
+      hatching: number | string,
+      color: (number | string)[],
+      size: (number | string)[],
+      position: (number | string)[],
+      exclusive: boolean
+    ): TransactionObject<void>;
   };
   events: {
     Approval: ContractEvent<{
@@ -259,6 +283,7 @@ export class TinyBoxes extends Contract {
       1: string;
       2: boolean;
     }>;
+    LECreated: ContractEvent<string>;
     RoleAdminChanged: ContractEvent<{
       role: string;
       previousAdminRole: string;

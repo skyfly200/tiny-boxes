@@ -3,21 +3,25 @@ pragma solidity ^0.6.8;
 pragma experimental ABIEncoderV2;
 
 import "./TinyBoxesStore.sol";
-import "./TinyBoxesRenderer.sol";
+
+interface Renderer {
+    function perpetualRenderer(TinyBox calldata box, uint256 id, address owner, uint8[4] calldata dVals, string calldata _slot) external view returns (string memory);
+}
 
 contract TinyBoxes is TinyBoxesStore {
-    using TinyBoxesRenderer for TinyBox;
-
     string public contractURI = "https://rinkeby.tinybox.shop/TinyBoxes.json";
+    Renderer renderer;
 
     /**
      * @dev Contract constructor.
      * @notice Constructor inherits from TinyBoxesStore
      */
-    constructor(address rand)
+    constructor(address rand, address _renderer)
         public
         TinyBoxesStore(rand)
-    {}
+    {
+        renderer = Renderer(_renderer);
+    }
 
     /**
      * @dev Set the tokens URI
@@ -25,10 +29,8 @@ contract TinyBoxes is TinyBoxesStore {
      * @param _uri for the token
      * @dev Only the animator role can call this
      */
-    function setTokenURI(uint256 _id, string calldata _uri)
-        external
-        onlyRole(ANIMATOR_ROLE)
-    {
+    function setTokenURI(uint256 _id, string calldata _uri) external {
+        onlyRole(ADMIN_ROLE);
         _setTokenURI(_id, _uri);
     }
 
@@ -37,10 +39,8 @@ contract TinyBoxes is TinyBoxesStore {
      * @param _uri base for all tokens 
      * @dev Only the admin role can call this
      */
-    function setBaseURI(string calldata _uri)
-        external
-        onlyRole(ADMIN_ROLE)
-    {
+    function setBaseURI(string calldata _uri) external {
+        onlyRole(ADMIN_ROLE);
         _setBaseURI(_uri);
     }
 
@@ -48,13 +48,11 @@ contract TinyBoxes is TinyBoxesStore {
      * @dev Update the contract URI field
      * @dev Only the admin role can call this
      */
-    function setContractURI(string calldata _uri)
-        external
-        onlyRole(ADMIN_ROLE)
-    {
+    function setContractURI(string calldata _uri) external {
+        onlyRole(ADMIN_ROLE);
         contractURI = _uri;
     }
-
+    
     /**
      * @dev Generate the token SVG art preview for given parameters
      * @param seed for renderer RNG
@@ -98,7 +96,7 @@ contract TinyBoxes is TinyBoxesStore {
             duration: settings[1],
             options: settings[2]
         });
-        return box.perpetualRenderer(0, address(0), traits, slot);
+        return renderer.perpetualRenderer(box, 0, address(0), traits, slot);
     }
 
     /**
@@ -119,20 +117,6 @@ contract TinyBoxes is TinyBoxesStore {
         box.bkg = bkg;
         box.options = options;
         box.duration = duration;
-        return box.perpetualRenderer(_id, ownerOf(_id), calcedParts(box, _id), slot);
-    }
-
-    /**
-     * @dev Generate the token SVG art
-     * @param _id for which we want art
-     * @return animated SVG art of token _id at _frame.
-     */
-    function tokenArt(uint256 _id)
-        external
-        view
-        returns (string memory)
-    {
-        TinyBox memory box = boxes[_id];
-        return box.perpetualRenderer(_id, ownerOf(_id), calcedParts(box, _id), "");
+        return renderer.perpetualRenderer(box ,_id, ownerOf(_id), calcedParts(box, _id), slot);
     }
 }

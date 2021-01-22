@@ -25,10 +25,6 @@ export class TinyBoxesBase extends Contract {
 
     ANIMATION_COUNT(): TransactionObject<string>;
 
-    ANIMATOR_ROLE(): TransactionObject<string>;
-
-    ARTIST_ROLE(): TransactionObject<string>;
-
     DEFAULT_ADMIN_ROLE(): TransactionObject<string>;
 
     SCHEME_COUNT(): TransactionObject<string>;
@@ -42,6 +38,28 @@ export class TinyBoxesBase extends Contract {
     baseURI(): TransactionObject<string>;
 
     blockStart(): TransactionObject<string>;
+
+    calcedParts(
+      box: {
+        randomness: number | string;
+        hue: number | string;
+        saturation: number | string;
+        lightness: number | string;
+        shapes: number | string;
+        hatching: number | string;
+        widthMin: number | string;
+        widthMax: number | string;
+        heightMin: number | string;
+        heightMax: number | string;
+        spread: number | string;
+        grid: number | string;
+        mirroring: number | string;
+        bkg: number | string;
+        duration: number | string;
+        options: number | string;
+      },
+      id: number | string
+    ): TransactionObject<string[]>;
 
     changeSettings(
       id: number | string,
@@ -118,11 +136,15 @@ export class TinyBoxesBase extends Contract {
       approved: boolean
     ): TransactionObject<void>;
 
+    setRandom(rand: string): TransactionObject<void>;
+
     supportsInterface(
       interfaceId: string | number[]
     ): TransactionObject<boolean>;
 
     symbol(): TransactionObject<string>;
+
+    testRandom(): TransactionObject<string>;
 
     tokenByIndex(index: number | string): TransactionObject<string>;
 

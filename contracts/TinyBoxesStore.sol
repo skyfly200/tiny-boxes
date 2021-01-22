@@ -7,21 +7,10 @@ import "@openzeppelin/contracts/utils/EnumerableMap.sol";
 
 import "./TinyBoxesBase.sol";
 
-interface RandomizerInt {
-    function returnValue() external view returns (bytes32);
-}
-
-interface PromoToken is IERC721 {
-    function redeem(uint256 id) external;
-    function targetMint(address to) external;
-}
-
 contract TinyBoxesStore is TinyBoxesBase {
     using SafeMath for uint256;
     using SignedSafeMath for int256;
     using Utils for *;
-
-    RandomizerInt entropySource;
 
     //uint256 public price = 100000000000000000; // in wei - 0.1 ETH
     uint256 public price = 1; // minimum for test run
@@ -40,9 +29,8 @@ contract TinyBoxesStore is TinyBoxesBase {
      */
     constructor(address entropySourceAddress)
         public
-        TinyBoxesBase()
+        TinyBoxesBase(entropySourceAddress)
     {
-        entropySource = RandomizerInt(entropySourceAddress);
         // promos.set(UINT_MAX - 0, skyfly);
         // promos.set(UINT_MAX - 1, natealex);
     }
@@ -58,55 +46,37 @@ contract TinyBoxesStore is TinyBoxesBase {
     /**
      * @notice Modifier to check if tokens are sold out
      */
-    modifier notSoldOut {
-        require(
-            _tokenIds.current() < TOKEN_LIMIT,
-            "ART SALE IS OVER"
-        );
-        _;
+    function notSoldOut() view private {
+        require(_tokenIds.current() < TOKEN_LIMIT, "ART SALE IS OVER");
     }
 
     /**
      * @notice Modifier to check if minting is paused
      */
-    modifier notPaused {
+    function notPaused() view private {
         require(!paused, "Paused");
-        _;
     }
 
     /**
      * @notice Modifier to check if minting is waiting for a countdown
      */
-    modifier notCountdown {
+    function notCountdown() view private {
         require(block.number >= blockStart, "WAIT");
-        _;
-    }
-
-    /**
-     * @dev set Randomizer
-     */
-    function setRandom(address rand) external onlyRole(ADMIN_ROLE) {
-        entropySource = RandomizerInt(rand);
-    }
-
-    /**
-     * @dev test Randomizer
-     */
-    function testRandom() external view onlyRole(ADMIN_ROLE) returns (bytes32) {
-        return entropySource.returnValue();
     }
 
     /**
      * @dev pause minting
      */
-    function setPause(bool state) external onlyRole(ADMIN_ROLE) {
+    function setPause(bool state) external {
+        onlyRole(ADMIN_ROLE);
         paused = state;
     }
 
     /**
      * @dev set start block for next phase
      */
-    function startCoundown(uint256 startBlock) external onlyRole(ADMIN_ROLE) {
+    function startCoundown(uint256 startBlock) external {
+        onlyRole(ADMIN_ROLE);
         require(startBlock > block.number,"Must be future block");
         blockStart = startBlock;
         paused = false;
@@ -116,7 +86,8 @@ contract TinyBoxesStore is TinyBoxesBase {
      * @dev Create a new TinyBox Promo Token
      * @param recipient of the new TinyBox promo token
      */
-    function mintPromo(address recipient) external onlyRole(ADMIN_ROLE) {
+    function mintPromo(address recipient) external {
+        onlyRole(ADMIN_ROLE);
         require(_tokenPromoIds.current() < MAX_PROMOS, "NO MORE");
         uint256 id = UINT_MAX - _tokenPromoIds.current();
         _safeMint(recipient, id); // mint the new token to the recipient address
@@ -169,7 +140,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         }
     }
 
-    function validateParams(uint8 shapes, uint8 hatching, uint16[3] memory color, uint8[4] memory size, uint8[2] memory position, bool exclusive) internal pure {
+    function validateParams(uint8 shapes, uint8 hatching, uint16[3] memory color, uint8[4] memory size, uint8[2] memory position, bool exclusive) public pure {
         require(shapes > 0 && shapes < 31, "invalid shape count");
         require(hatching <= shapes, "invalid hatching");
         require(color[2] <= 360, "invalid color");
@@ -202,7 +173,10 @@ contract TinyBoxesStore is TinyBoxesBase {
         uint8 mirroring,
         address recipient,
         uint256 referalID
-    ) external payable notPaused notCountdown notSoldOut returns (uint256) {
+    ) external payable returns (uint256) {
+        notSoldOut();
+        notPaused();
+        notCountdown();
         handlePayment(referalID, recipient);
         // check box parameters
         validateParams(shapes, hatching, color, size, spacing, false);
@@ -260,7 +234,8 @@ contract TinyBoxesStore is TinyBoxesBase {
         uint8[2] calldata spacing,
         uint8 mirroring,
         uint256 id
-    ) external notPaused {
+    ) external {
+        notPaused();
         //  check owner is caller
         require(ownerOf(id) == msg.sender, "NOPE");
         // check token is unredeemed
@@ -287,19 +262,5 @@ contract TinyBoxesStore is TinyBoxesBase {
             options: 1
         });
         emit LECreated(id);
-    }
-
-    /**
-     * @dev Call the Randomizer and get some randomness
-     */
-    function getRandomness(uint256 id, uint256 seed)
-        internal view returns (uint128 randomnesss)
-    {
-        uint256 randomness = uint256(keccak256(abi.encodePacked(
-            entropySource.returnValue(),
-            id,
-            seed
-        ))); // mix local and Randomizer entropy for the box randomness
-        return uint128(randomness % (2**128));
     }
 }

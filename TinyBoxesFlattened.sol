@@ -811,7 +811,6 @@ pragma solidity ^0.6.8;
 
 pragma solidity ^0.6.4;
 
-
 library Utils {
     using SignedSafeMath for int256;
     using Strings for *;
