@@ -119,4 +119,18 @@ contract TinyBoxes is TinyBoxesStore {
         box.duration = duration;
         return renderer.perpetualRenderer(box ,_id, ownerOf(_id), calcedParts(box, _id), slot);
     }
+
+    /**
+     * @dev Generate the token SVG art
+     * @param _id for which we want art
+     * @return animated SVG art of token _id at _frame.
+     */
+    function tokenArt(uint256 _id)
+        external
+        view
+        returns (string memory)
+    {
+        TinyBox memory box = boxes[_id];
+        return renderer.perpetualRenderer(box, _id, ownerOf(_id), calcedParts(box, _id), "");
+    }
 }
