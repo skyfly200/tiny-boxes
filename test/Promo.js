@@ -6,6 +6,7 @@ describe("Testing TinyBoxes Promo Methods", function() {
     let addr1;
     let addr2;
     let addrs;
+    let promoID = BigInt((2**256)) - 1n;
 
     before(async function () {
         [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
@@ -48,7 +49,7 @@ describe("Testing TinyBoxes Promo Methods", function() {
     });
 
     it("Check the new promo token is shown as unredeemed", async function() {
-        expect(await tinyboxes.unredeemed(BigInt((2**256)) - 1n)).to.equal(true);
+        expect(await tinyboxes.unredeemed(promoID)).to.equal(true);
     });
 
     it("Can lookup promo token counter", async function() {
@@ -57,7 +58,7 @@ describe("Testing TinyBoxes Promo Methods", function() {
 
     it("Only a promo tokens owner can redeem", async function() {
         await expect(
-            tinyboxes.connect(addr1).createLE(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, BigInt((2**256)) - 1n)
+            tinyboxes.connect(addr1).createLE(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, promoID)
         ).to.be.reverted;
     });
 
@@ -67,13 +68,20 @@ describe("Testing TinyBoxes Promo Methods", function() {
         ).to.emit(tinyboxes, 'LECreated');
     });
 
-    // cant redeem twice
+    it("Check the token is shown as redeemed", async function() {
+        expect(await tinyboxes.unredeemed(promoID)).to.equal(false);
+    });
 
-    // it("Check the token is shown as redeemed", async function() {
-    //     const id = 2**256-1;
-    //     assert(await tinyboxes.unredeemed(id));
-    // });
+    it("Can't redeem a promo token twice", async function() {
+        await expect(
+            tinyboxes.createLE(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, BigInt(2**256) - 1n)
+        ).to.be.reverted;
+    });
 
-    // cant redeem a normal token
+    it("Can't redeem a normal token", async function() {
+        await expect(
+            tinyboxes.createLE(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, 0)
+        ).to.be.reverted;
+    });
 });
 
