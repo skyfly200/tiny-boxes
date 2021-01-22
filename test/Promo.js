@@ -55,6 +55,10 @@ describe("Testing TinyBoxes Promo Methods", function() {
         expect(await tinyboxes._tokenPromoIds()).to.equal(1);
     });
 
+    // Can check a token is a promo
+
+    // Can check a token is not a promo
+
     it("Only a promo tokens owner can redeem", async function() {
         await expect(
             tinyboxes.connect(addr1).createLE(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, promoID)
