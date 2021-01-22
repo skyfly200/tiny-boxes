@@ -1,6 +1,6 @@
 const { expect } = require("chai");
 
-describe("Testing TinyBoxes", function() {
+describe("Testing TinyBoxes Promo Methods", function() {
     let tinyboxes;
     let owner;
     let addr1;

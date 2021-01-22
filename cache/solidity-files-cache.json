@@ -498,8 +498,8 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/Metadata.sol": {
-      "lastModificationDate": 1610241359758,
-      "contentHash": "0bbae666604ed002e5fdf0dc7832c79b",
+      "lastModificationDate": 1611348408139,
+      "contentHash": "5ef7a2cfb2061c0e3a4efd80fac040a3",
       "sourceName": "contracts/libraries/Metadata.sol",
       "solcConfig": {
         "version": "0.6.8",
