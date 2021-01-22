@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/Animation.sol": {
-      "lastModificationDate": 1611129087773,
-      "contentHash": "8b815a0c20501d24d61c4f4a6658659f",
+      "lastModificationDate": 1611296023738,
+      "contentHash": "da8f9cb90b07d256366e61d7ac165890",
       "sourceName": "contracts/libraries/Animation.sol",
       "solcConfig": {
         "version": "0.6.8",
@@ -428,8 +428,8 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxesRenderer.sol": {
-      "lastModificationDate": 1611291874877,
-      "contentHash": "45b733322a1ea18eefe91c2bda91f890",
+      "lastModificationDate": 1611296325917,
+      "contentHash": "b7bfb387dc40933b58c089f99169c8e6",
       "sourceName": "contracts/TinyBoxesRenderer.sol",
       "solcConfig": {
         "version": "0.6.8",

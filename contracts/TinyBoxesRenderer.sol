@@ -139,10 +139,11 @@ contract TinyBoxesRenderer {
         }
         // add final scaling transform
         uint256 scale = uint256(mirroring).div(16) == 0 ? (uint256(mirroring).div(4) == 0 ? 4 : 2) : 1;
-        string memory transform = string(abi.encodePacked(
-            'transform="scale(', scale.toString(), ' ', scale.toString(), ')"'
+        string memory attrs = string(abi.encodePacked(
+            'transform="scale(', scale.toString(), ' ', scale.toString(), ')" ',
+            'clip-path="url(#clip)"'
         ));
-        string memory finalScale = SVG._g(transform, SVG._use('', 'quad3'));// SVG._g(transform, 'clip-path="url(#clip)"', SVG._use('quad3'));
+        string memory finalScale = SVG._g(attrs, SVG._use('', 'quad3'));
         return string(abi.encodePacked(symbols,finalScale));
     }
 
@@ -152,12 +153,10 @@ contract TinyBoxesRenderer {
      * @return HSL color style CSS string
      */
     function _parseBkg(uint8 bkg) internal pure returns (string memory) {
-        // TODO - fix bkg colors
-        // uint256 hue = (bkg / 16) * 24;
-        // uint256 sat = hue == 0 ? 0 : ((bkg / 4) % 4) * 25;
-        // uint256 lit = hue == 0 ? (625 * (bkg % 16)) / 100 : ((bkg % 4) + 1) * 20;
-        return string(abi.encodePacked("background-color:hsl(0,0%,", uint256(bkg), "%);"));
-        //return string(abi.encodePacked("background-color:hsl(", hue.toString(), ",", sat.toString(), "%,", lit.toString(), "%);"));
+        uint256 hue = (bkg / 16) * 24;
+        uint256 sat = hue == 0 ? 0 : ((bkg / 4) % 4) * 25;
+        uint256 lit = hue == 0 ? (625 * (bkg % 16)) / 100 : ((bkg % 4) + 1) * 20;
+        return string(abi.encodePacked("background-color:hsl(", hue.toString(), ",", sat.toString(), "%,", lit.toString(), "%);"));
     }
 
     /**
@@ -174,41 +173,35 @@ contract TinyBoxesRenderer {
         view
         returns (string memory)
     {
-        // generate the metadata
-        string memory metadata = box._generateMetadata(dVals,id,owner);
-
         // generate shapes (shapes + animations)
         string memory shapes = "";
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
             Shape memory shape = _generateShape(i, box, dVals);
-            shapes = string(abi.encodePacked(shapes, 
-                SVG._rect(shape, (box.options%8 != 0) ?
-                    Animation._generateAnimation(box,dVals[0],shape,i) : ''
-                )   
-            ));
+            // shapes = string(abi.encodePacked(shapes, 
+            //     SVG._rect(shape, (box.options%8 != 0) ?
+            //         Animation._generateAnimation(box,dVals[0],shape,i) : ''
+            //     )   
+            // ));
         }
         // wrap shapes in a symbol with the id "shapes"
         string memory defs = string(abi.encodePacked(
             _slot,
             '<defs>',
-            //'<rect id="cover" width="100%" height="100%" fill="hsl(0,0%,0%,0%)" />',
-            //'<clipPath id="clip"><use xlink:href="#cover"/></clipPath>',
+            '<rect id="cover" width="100%" height="100%" fill="hsl(0,0%,0%,0%)" />',
+            '<clipPath id="clip"><use xlink:href="#cover"/></clipPath>',
             '<symbol id="shapes">',
             shapes,
             '</symbol></defs>'
         ));
 
-        // generate the footer
-        string memory mirroring = _generateMirroring(box.mirroring);
-
         // build up the SVG markup
         return SVG._SVG(
             ((box.options/8)%2 == 1) ? "" : _parseBkg(box.bkg),
             string(abi.encodePacked(
-                metadata,
+                box._generateMetadata(dVals,id,owner),
                 defs,
-                mirroring
-                //SVG._use('cover', 'target') //'<use id="target" xlink:href="#cover" />'
+                _generateMirroring(box.mirroring),
+                SVG._use('cover', 'target') //'<use id="target" xlink:href="#cover" />'
             ))
         );
     }

@@ -116,14 +116,14 @@ library Animation {
         uint8[3] memory counts = [1,2,25];
         string memory repeat = string(abi.encodePacked(
             'repeatCount="',
-            'indefinite',//mode <= 4 ? 'indefinite' : uint256(counts[mode-5]).toString(),
+            mode <= 4 ? 'indefinite' : uint256(counts[mode-5]).toString(),
             '" '
         ));
-        string memory begin = "";//mode <= 1 ? '' : string(abi.encodePacked(
-        //     'begin="target.',
-        //     '',//mode == 2 ? 'mouseenter ' : mode == 3 ? 'dblclick' : 'click',
-        //     '" '
-        // ));
+        string memory begin = mode <= 1 ? '' : string(abi.encodePacked(
+            'begin="target.',
+            mode == 2 ? 'mouseenter ' : mode == 3 ? 'dblclick' : 'click',
+            '" '
+        ));
         string memory end = mode == 3 ? 'end="target.click" ' : '';
         return string(abi.encodePacked(repeat, begin, end));
         // 0 - 000    '',
