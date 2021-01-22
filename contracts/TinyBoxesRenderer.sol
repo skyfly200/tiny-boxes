@@ -15,18 +15,13 @@ import "./libraries/SVG.sol";
 import "./libraries/Animation.sol";
 import "./libraries/Metadata.sol";
 import "./libraries/Random.sol";
-import "./libraries/Decimal.sol";
-import "./libraries/Utils.sol";
 
 contract TinyBoxesRenderer {
     using SafeMath for uint256;
     using SignedSafeMath for int256;
     using Random for bytes32[];
     using Metadata for TinyBox;
-    using DecimalUtils for *;
     using Strings for *;
-    using Utils for *;
-    using SVG for *;
 
     /**
      * @dev generate a shape
@@ -166,18 +161,15 @@ contract TinyBoxesRenderer {
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
             Shape memory shape = _generateShape(i, box, dVals);
             shapes = string(abi.encodePacked(shapes,
-                // SVG._rect(shape, (box.options%8 != 0) ?
-                //     Animation._generateAnimation(box,dVals[0],shape,i) : ''
-                // )
+                SVG._rect(shape, (box.options%8 != 0) ?
+                    Animation._generateAnimation(box,dVals[0],shape,i) : ''
+                )
             ));
         }
         // wrap shapes in a symbol with the id "shapes"
         string memory defs = string(abi.encodePacked(
             _slot,
-            '<defs>',
-            '<rect id="cover" width="100%" height="100%" fill="hsl(0,0%,0%,0%)" />',
-            '<clipPath id="clip"><use xlink:href="#cover"/></clipPath>',
-            '<symbol id="shapes">',
+            '<defs><rect id="cover" width="100%" height="100%" fill="hsl(0,0%,0%,0%)" /><clipPath id="clip"><use xlink:href="#cover"/></clipPath><symbol id="shapes">',
             shapes,
             '</symbol></defs>'
         ));
