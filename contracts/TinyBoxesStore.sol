@@ -12,16 +12,6 @@ contract TinyBoxesStore is TinyBoxesBase {
     using SignedSafeMath for int256;
     using Utils for *;
 
-    //uint256 public price = 100000000000000000; // in wei - 0.1 ETH
-    uint256 public price = 1; // minimum for test run
-    uint256 public referalPercent = 10;
-    uint256 public referalNewPercent = 15;
-    uint256 UINT_MAX = uint256(-1);
-    uint256 MAX_PROMOS = 100;
-
-    address payable skyfly = 0x7A832c86002323a5de3a317b3281Eb88EC3b2C00;
-    address payable natealex = 0x63a9dbCe75413036B2B778E670aaBd4493aAF9F3;
-
     event LECreated(uint256 id);
 
     /**

@@ -55,9 +55,13 @@ describe("Testing TinyBoxes Promo Methods", function() {
         expect(await tinyboxes._tokenPromoIds()).to.equal(1);
     });
 
-    // Can check a token is a promo
+    it("Can check a token id is a Limited Edition", async function() {
+        expect(await tinyboxes.isTokenLE(promoID)).to.equal(true);
+    });
 
-    // Can check a token is not a promo
+    it("Can check a token id is not a Limited Edition", async function() {
+        expect(await tinyboxes.isTokenLE(0)).to.equal(false);
+    });
 
     it("Only a promo tokens owner can redeem", async function() {
         await expect(
@@ -65,7 +69,11 @@ describe("Testing TinyBoxes Promo Methods", function() {
         ).to.be.reverted;
     });
 
-    // can't redeem when paused
+    it("Can't redeem when paused", async function() {
+        await expect(
+            tinyboxes.createLE(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, BigInt(2**256) - 1n)
+        ).to.be.reverted;
+    });
 
     it("Can redeem a promo token", async function() {
         await tinyboxes.setPause(false);
@@ -90,6 +98,13 @@ describe("Testing TinyBoxes Promo Methods", function() {
         ).to.be.reverted;
     });
 
-    // promos run out
+    it("Can mint up to promos max", async function() {
+        for (let i=0; i<99; i++)
+            await expect(tinyboxes.mintPromo(owner.address)).to.emit(tinyboxes, 'Transfer');
+    });
+
+    it("Can't mint past promos max", async function() {
+        await expect(tinyboxes.mintPromo(owner.address)).to.be.reverted;
+    });
 });
 

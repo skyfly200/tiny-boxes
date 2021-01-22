@@ -27,6 +27,17 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     RandomizerInt entropySource;
 
     // set contract config constants
+
+    address payable skyfly = 0x7A832c86002323a5de3a317b3281Eb88EC3b2C00;
+    address payable natealex = 0x63a9dbCe75413036B2B778E670aaBd4493aAF9F3;
+
+    //uint256 public constant price = 100000000000000000; // in wei - 0.1 ETH
+    uint256 public constant price = 1; // minimum for test runs
+    uint256 public constant referalPercent = 10;
+    uint256 public constant referalNewPercent = 15;
+    uint256 UINT_MAX = uint256(-1);
+    uint256 MAX_PROMOS = 100;
+
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE"); // define the admin role identifier
     uint16 public constant TOKEN_LIMIT = 110;
     uint8 public constant ANIMATION_COUNT = 24;
@@ -183,6 +194,14 @@ contract TinyBoxesBase is ERC721, AccessControl  {
      */
     function trueID(uint256 id) public pure returns (int8) {
         return int8(int256(id));
+    }
+
+    /**
+     * @dev check if id is one of limited editions
+     * @param id of token to check
+     */
+    function isTokenLE(uint256 id) public view returns (bool) {
+        return id > UINT_MAX - MAX_PROMOS;
     }
 
     // Token Info - Data & Settings
