@@ -112,7 +112,6 @@ library Animation {
      * @dev calculate attributes for an animation tag based of the animation mode
      */
     function _calcAttributes(uint256 mode) internal pure returns (string memory) {
-        // TODO - fix the calculations commented out below
         uint8[3] memory counts = [1,2,25];
         string memory repeat = string(abi.encodePacked(
             'repeatCount="',

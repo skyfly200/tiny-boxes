@@ -24,7 +24,35 @@ task("accounts", "Prints the list of accounts", async () => {
   }
 });
 
+task("unpause", "Unpause minting", async () => {
+  
+});
+
+task("set-countdown", "Set the block countdown", async () => {
+  
+});
+
 task("mint", "Mints a token", async () => {
+  
+});
+
+task("promo", "Mints a new promo token", async () => {
+  
+});
+
+task("redeem", "Redeems a promo token", async () => {
+  
+});
+
+task("settings", "Update a tokens settings", async () => {
+  
+});
+
+task("base-uri", "Set the base URI", async () => {
+  
+});
+
+task("contract-uri", "Set the contract URI", async () => {
   
 });
 
