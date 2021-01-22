@@ -1330,44 +1330,6 @@
         "Ownable"
       ]
     },
-    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/PromoToken.sol": {
-      "lastModificationDate": 1611181805868,
-      "contentHash": "583282902aa08367054234dffe0419ce",
-      "sourceName": "contracts/PromoToken.sol",
-      "solcConfig": {
-        "version": "0.6.8",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/token/ERC721/ERC721.sol",
-        "@openzeppelin/contracts/access/Ownable.sol",
-        "@openzeppelin/contracts/utils/Counters.sol"
-      ],
-      "versionPragmas": [
-        "^0.6.8"
-      ],
-      "artifacts": [
-        "TinyBoxesLE"
-      ]
-    },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/Randomizer.sol": {
       "lastModificationDate": 1611122479959,
       "contentHash": "638b7751175de9ed7f451e647d76bf0a",
