@@ -22,15 +22,18 @@ contract TinyBoxesStore is TinyBoxesBase {
     using Utils for *;
 
     RandomizerInt entropySource;
-    PromoToken promoTokenContract;
 
     //uint256 public price = 100000000000000000; // in wei - 0.1 ETH
     uint256 public price = 1; // minimum for test run
     uint256 public referalPercent = 10;
     uint256 public referalNewPercent = 15;
+    uint256 UINT_MAX = uint256(-1);
+    uint256 MAX_PROMOS = 100;
 
     address payable skyfly = 0x7A832c86002323a5de3a317b3281Eb88EC3b2C00;
     address payable natealex = 0x63a9dbCe75413036B2B778E670aaBd4493aAF9F3;
+
+    event LECreated(uint256 id);
 
     /**
      * @dev Contract constructor.
@@ -110,28 +113,21 @@ contract TinyBoxesStore is TinyBoxesBase {
     }
 
     /**
+     * @dev Create a new TinyBox Promo Token
+     * @param recipient of the new TinyBox promo token
+     */
+    function mintPromo(address recipient) external onlyRole(ADMIN_ROLE) {
+        require(_tokenPromoIds.current() < MAX_PROMOS, "NO MORE");
+        uint256 id = UINT_MAX - _tokenPromoIds.current();
+        _safeMint(recipient, id); // mint the new token to the recipient address
+        _tokenPromoIds.increment();
+    }
+
+    /**
      * @dev check current phase
      */
     function currentPhase() public view returns (uint8) {
         return uint8(_tokenIds.current().div(phaseLen));
-    }
-
-    // Promo Token Functions
-
-    /**
-     * @dev set promo token contract
-     */
-    function setPromo(address _promoTokenAddress) external onlyRole(ADMIN_ROLE) {
-        // setup promo token contract
-        promoTokenContract = PromoToken(_promoTokenAddress);
-    }
-
-    /**
-     * @dev mint a promo token
-     */
-    function mintPromo(address to) external onlyRole(ADMIN_ROLE) {
-        // mint a promo to to the provided address
-        promoTokenContract.targetMint(to);
     }
 
     /**
@@ -186,7 +182,7 @@ contract TinyBoxesStore is TinyBoxesBase {
     }
 
     /**
-     * @dev Create a new TinyBox Token to a given address
+     * @dev Create a new TinyBox Token
      * @param _seed of token
      * @param shapes count
      * @param hatching mod value
@@ -196,7 +192,7 @@ contract TinyBoxesStore is TinyBoxesBase {
      * @param recipient of the token
      * @return id of the new token
      */
-    function createTo(
+    function create(
         string calldata _seed,
         uint8 shapes,
         uint8 hatching,
@@ -224,30 +220,26 @@ contract TinyBoxesStore is TinyBoxesBase {
         uint256 seed = _seed.stringToUint();
         // request randomness
         uint128 rand = getRandomness(id, seed);
-        // create a new box object
-        createBox(
-            TinyBox({
-                randomness: rand,
-                hue: color[0],
-                saturation: (rand % 200 == 0) ? uint8(0) : uint8(color[1]), // 0.5% chance of grayscale
-                lightness: uint8(color[2]),
-                shapes: shapes,
-                hatching: hatching,
-                widthMin: size[0],
-                widthMax: size[1],
-                heightMin: size[2],
-                heightMax: size[3],
-                spread: spacing[0],
-                grid: spacing[1],
-                mirroring: mirroring,
-                bkg: 0,
-                duration: 10,
-                options: 1
-            }),
-            id,
-            recipient
-        );
-        return id;
+        // create a new box object in storage
+        boxes[id] = TinyBox({
+            randomness: rand,
+            hue: color[0],
+            saturation: (rand % 200 == 0) ? uint8(0) : uint8(color[1]), // 0.5% chance of grayscale
+            lightness: uint8(color[2]),
+            shapes: shapes,
+            hatching: hatching,
+            widthMin: size[0],
+            widthMax: size[1],
+            heightMin: size[2],
+            heightMax: size[3],
+            spread: spacing[0],
+            grid: spacing[1],
+            mirroring: mirroring,
+            bkg: 0,
+            duration: 10,
+            options: 1
+        });
+        _safeMint(recipient, id); // mint the new token to the recipient address
     }
 
     /**
@@ -258,10 +250,8 @@ contract TinyBoxesStore is TinyBoxesBase {
      * @param color settings (hue, sat, light, contrast, shades)
      * @param size range for boxes
      * @param spacing grid and spread params
-     * @param recipient of the token
-     * @return id of the new token
      */
-    function createWithPromo(
+    function createLimitedEdition(
         uint128 seed,
         uint8 shapes,
         uint8 hatching,
@@ -269,51 +259,34 @@ contract TinyBoxesStore is TinyBoxesBase {
         uint8[4] calldata size,
         uint8[2] calldata spacing,
         uint8 mirroring,
-        address recipient,
         uint256 id
-    ) external notPaused returns (uint256) {
-        // TODO - move this require into PromoToken to save gas], pass in msg.sender
-        // lookup promo token of matching id, check owner is caller
-        require(promoTokenContract.ownerOf(id) == msg.sender, "NOPE");
-        // redeem (burn) the PromoToken
-        promoTokenContract.redeem(id);
+    ) external notPaused {
+        //  check owner is caller
+        require(ownerOf(id) == msg.sender, "NOPE");
+        // check token is unredeemed
+        require(boxes[id].shapes == 0, "USED");
         // check box parameters are valid
         validateParams(shapes, hatching, color, size, spacing, true);
         // create a new box object
-        createBox(
-            TinyBox({
-                randomness: uint128(seed),
-                hue: color[0],
-                saturation: uint8(color[1]),
-                lightness: uint8(color[2]),
-                shapes: shapes,
-                hatching: hatching,
-                widthMin: size[0],
-                widthMax: size[1],
-                heightMin: size[2],
-                heightMax: size[3],
-                spread: spacing[0],
-                grid: spacing[1],
-                mirroring: mirroring,
-                bkg: 0,
-                duration: 10,
-                options: 1
-            }),
-            id,
-            recipient
-        );
-        return id;
-    }
-
-    /**
-     * @dev Create a new TinyBox Token
-     * @param box object of token options
-     * @param id of the new TinyBox token
-     * @param recipient of the new TinyBox token
-     */
-    function createBox(TinyBox memory box, uint256 id, address recipient) private {
-        boxes[id] = box; // store the new box
-        _safeMint(recipient, id); // mint the new token to the recipient address
+        boxes[id] = TinyBox({
+            randomness: uint128(seed),
+            hue: color[0],
+            saturation: uint8(color[1]),
+            lightness: uint8(color[2]),
+            shapes: shapes,
+            hatching: hatching,
+            widthMin: size[0],
+            widthMax: size[1],
+            heightMin: size[2],
+            heightMax: size[3],
+            spread: spacing[0],
+            grid: spacing[1],
+            mirroring: mirroring,
+            bkg: 0,
+            duration: 10,
+            options: 1
+        });
+        emit LECreated(id);
     }
 
     /**

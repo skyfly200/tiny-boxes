@@ -709,8 +709,8 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxesBase.sol": {
-      "lastModificationDate": 1611124928630,
-      "contentHash": "332a4872b86910c33d6f3c1150ff1f7b",
+      "lastModificationDate": 1611279650786,
+      "contentHash": "4e70c440ee1769aac9875a3839ab3125",
       "sourceName": "contracts/TinyBoxesBase.sol",
       "solcConfig": {
         "version": "0.6.8",
@@ -1218,8 +1218,8 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxesStore.sol": {
-      "lastModificationDate": 1611191373099,
-      "contentHash": "3bf6505fed27d31bad22de9c927f6a15",
+      "lastModificationDate": 1611280437344,
+      "contentHash": "d0b922cd53cb4f43c05426f09d2ab867",
       "sourceName": "contracts/TinyBoxesStore.sol",
       "solcConfig": {
         "version": "0.6.8",
