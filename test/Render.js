@@ -36,7 +36,7 @@ describe("Testing TinyBoxes", function() {
         tinyboxes = await TinyBoxes.deploy(randomstub.address, tinyboxesrenderer.address);
         await tinyboxes.deployed();
     });
-    
+
     describe("TinyBoxes Rendering", function() {
         it("Method tokenPreview should return a SVG string", async function() {
             const art = await tinyboxes.tokenPreview(1111, [100,50,70], [30,5], [100,100,100,100], [50,50], 63, [50,10,1], [0,10,7,70], '');

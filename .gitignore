@@ -3,6 +3,7 @@ node_modules
 /dist
 /build
 /lambda
+/artifacts
 
 /tests/e2e/videos/
 /tests/e2e/screenshots/
@@ -34,8 +35,6 @@ yarn-error.log*
 *.sw?
 
 .openzeppelin/.session
-
-/artifacts
 
 # Local Netlify folder
 .netlify
