@@ -1,0 +1,132 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "Renderer",
+  "sourceName": "contracts/TinyBoxes.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint128",
+              "name": "randomness",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint16",
+              "name": "hue",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint8",
+              "name": "saturation",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "lightness",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "shapes",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "hatching",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "widthMin",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "widthMax",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "heightMin",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "heightMax",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "spread",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "grid",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "mirroring",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "bkg",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "duration",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "options",
+              "type": "uint8"
+            }
+          ],
+          "internalType": "struct TinyBox",
+          "name": "box",
+          "type": "tuple"
+        },
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "uint8[4]",
+          "name": "dVals",
+          "type": "uint8[4]"
+        },
+        {
+          "internalType": "string",
+          "name": "_slot",
+          "type": "string"
+        }
+      ],
+      "name": "perpetualRenderer",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

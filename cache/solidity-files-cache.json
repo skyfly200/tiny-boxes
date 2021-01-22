@@ -428,8 +428,8 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxesRenderer.sol": {
-      "lastModificationDate": 1611279159526,
-      "contentHash": "9b3fa1be903e0bfebfe2f5d06fddc63e",
+      "lastModificationDate": 1611291874877,
+      "contentHash": "45b733322a1ea18eefe91c2bda91f890",
       "sourceName": "contracts/TinyBoxesRenderer.sol",
       "solcConfig": {
         "version": "0.6.8",
@@ -465,7 +465,8 @@
         "./libraries/Animation.sol",
         "./libraries/Metadata.sol",
         "./libraries/Random.sol",
-        "./libraries/Decimal.sol"
+        "./libraries/Decimal.sol",
+        "./libraries/Utils.sol"
       ],
       "versionPragmas": [
         "^0.6.8"
@@ -709,8 +710,8 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxesBase.sol": {
-      "lastModificationDate": 1611279650786,
-      "contentHash": "4e70c440ee1769aac9875a3839ab3125",
+      "lastModificationDate": 1611293648418,
+      "contentHash": "733fc3760422b001f843e3dcc5053b60",
       "sourceName": "contracts/TinyBoxesBase.sol",
       "solcConfig": {
         "version": "0.6.8",
@@ -746,6 +747,7 @@
         "^0.6.8"
       ],
       "artifacts": [
+        "RandomizerInt",
         "TinyBoxesBase"
       ]
     },
@@ -1217,46 +1219,6 @@
         "IERC165"
       ]
     },
-    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxesStore.sol": {
-      "lastModificationDate": 1611280437344,
-      "contentHash": "d0b922cd53cb4f43c05426f09d2ab867",
-      "sourceName": "contracts/TinyBoxesStore.sol",
-      "solcConfig": {
-        "version": "0.6.8",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/math/SignedSafeMath.sol",
-        "@openzeppelin/contracts/utils/EnumerableMap.sol",
-        "./TinyBoxesBase.sol"
-      ],
-      "versionPragmas": [
-        "^0.6.8"
-      ],
-      "artifacts": [
-        "PromoToken",
-        "RandomizerInt",
-        "TinyBoxesStore"
-      ]
-    },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/XML.sol": {
       "lastModificationDate": 1609348520952,
       "contentHash": "6bd5071ffcbde167d1c26365fa63eef2",
@@ -1370,8 +1332,8 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxes.sol": {
-      "lastModificationDate": 1611189693338,
-      "contentHash": "9856fc41b757649909630063bd577853",
+      "lastModificationDate": 1611295057435,
+      "contentHash": "c42b7bc78a382d59ff02fbdf392c5e72",
       "sourceName": "contracts/TinyBoxes.sol",
       "solcConfig": {
         "version": "0.6.8",
@@ -1396,14 +1358,52 @@
         }
       },
       "imports": [
-        "./TinyBoxesStore.sol",
-        "./TinyBoxesRenderer.sol"
+        "./TinyBoxesStore.sol"
       ],
       "versionPragmas": [
         "^0.6.8"
       ],
       "artifacts": [
+        "Renderer",
         "TinyBoxes"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxesStore.sol": {
+      "lastModificationDate": 1611294926603,
+      "contentHash": "df4a90aac92569b4974715ba9f133730",
+      "sourceName": "contracts/TinyBoxesStore.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/math/SignedSafeMath.sol",
+        "@openzeppelin/contracts/utils/EnumerableMap.sol",
+        "./TinyBoxesBase.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "TinyBoxesStore"
       ]
     }
   }
