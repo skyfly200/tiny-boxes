@@ -44,11 +44,11 @@ async function main() {
 
   await randomstub.deployed();
 
-  console.log("RandomStub deployed to:", randomstub);
+  console.log("RandomStub deployed to:", randomstub.address);
 
   // deploy the main contract
   const TinyBoxes = await hre.ethers.getContractFactory("TinyBoxes");
-  const tinyboxes = await TinyBoxes.deploy(randomstub, tinyboxesrenderer.address);
+  const tinyboxes = await TinyBoxes.deploy(randomstub.address, tinyboxesrenderer.address);
 
   await tinyboxes.deployed();
 
