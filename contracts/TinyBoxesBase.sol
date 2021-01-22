@@ -98,7 +98,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     /**
      * @dev set start block for next phase
      */
-    function startCoundown(uint256 startBlock) external {
+    function startCountdown(uint256 startBlock) external {
         onlyRole(ADMIN_ROLE);
         require(startBlock > block.number,"Must be future block");
         blockStart = startBlock;
