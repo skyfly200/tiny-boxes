@@ -148,18 +148,6 @@ contract TinyBoxesRenderer {
     }
 
     /**
-     * @dev parse the bkg value into an HSL color
-     * @param bkg settings packed int 8 bits
-     * @return HSL color style CSS string
-     */
-    function _parseBkg(uint8 bkg) internal pure returns (string memory) {
-        uint256 hue = (bkg / 16) * 24;
-        uint256 sat = hue == 0 ? 0 : ((bkg / 4) % 4) * 25;
-        uint256 lit = hue == 0 ? (625 * (bkg % 16)) / 100 : ((bkg % 4) + 1) * 20;
-        return string(abi.encodePacked("background-color:hsl(", hue.toString(), ",", sat.toString(), "%,", lit.toString(), "%);"));
-    }
-
-    /**
      * @dev render a token's art
      * @param box TinyBox data structure
      * @param id of the token to render
@@ -177,11 +165,11 @@ contract TinyBoxesRenderer {
         string memory shapes = "";
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
             Shape memory shape = _generateShape(i, box, dVals);
-            // shapes = string(abi.encodePacked(shapes, 
-            //     SVG._rect(shape, (box.options%8 != 0) ?
-            //         Animation._generateAnimation(box,dVals[0],shape,i) : ''
-            //     )   
-            // ));
+            shapes = string(abi.encodePacked(shapes,
+                // SVG._rect(shape, (box.options%8 != 0) ?
+                //     Animation._generateAnimation(box,dVals[0],shape,i) : ''
+                // )
+            ));
         }
         // wrap shapes in a symbol with the id "shapes"
         string memory defs = string(abi.encodePacked(
@@ -196,7 +184,7 @@ contract TinyBoxesRenderer {
 
         // build up the SVG markup
         return SVG._SVG(
-            ((box.options/8)%2 == 1) ? "" : _parseBkg(box.bkg),
+            ((box.options/8)%2 == 1) ? "" : Colors._parseBkg(box.bkg),
             string(abi.encodePacked(
                 box._generateMetadata(dVals,id,owner),
                 defs,

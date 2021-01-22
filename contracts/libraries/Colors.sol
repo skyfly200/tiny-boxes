@@ -76,4 +76,16 @@ library Colors {
         }
         return HSL(h, s, l);
     }
+
+    /**
+     * @dev parse the bkg value into an HSL color
+     * @param bkg settings packed int 8 bits
+     * @return HSL color style CSS string
+     */
+    function _parseBkg(uint8 bkg) internal pure returns (string memory) {
+        uint256 hue = (bkg / 16) * 24;
+        uint256 sat = hue == 0 ? 0 : ((bkg / 4) % 4) * 25;
+        uint256 lit = hue == 0 ? (625 * (bkg % 16)) / 100 : ((bkg % 4) + 1) * 20;
+        return string(abi.encodePacked("background-color:hsl(", hue.toString(), ",", sat.toString(), "%,", lit.toString(), "%);"));
+    }
 }
