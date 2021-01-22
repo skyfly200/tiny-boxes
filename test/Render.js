@@ -55,9 +55,17 @@ describe("TinyBoxes Rendering", function() {
         console.log("TinyBoxes deployed to:", tinyboxes.address);
     });
 
+    it("Can Unpause", async function() {
+        await tinyboxes.setPause(false);
+        expect(await tinyboxes.paused()).to.equal(false);
+    });
 
+    it("Can Mint Promo", async function() {
+        await tinyboxes.mintPromo(addr1.address);
+        expect(await tinyboxes.balanceOf(addr1.address)).to.equal(1);
+    });
 
-    it("tokenPreview should return a SVG string", async function() {
+    it("Method tokenPreview should return a SVG string", async function() {
         const art = await tinyboxes.tokenPreview(1111, [100,50,70], [30,5], [100,100,100,100], [50,50], 63, [50,10,1], [0,10,7,70], '');
         expect(art).to.be.a('string');
     });
