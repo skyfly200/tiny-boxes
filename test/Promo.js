@@ -35,43 +35,33 @@ describe("Testing TinyBoxes", function() {
         const TinyBoxes = await hre.ethers.getContractFactory("TinyBoxes");
         tinyboxes = await TinyBoxes.deploy(randomstub.address, tinyboxesrenderer.address);
         await tinyboxes.deployed();
-    });
-
-    it("Can Unpause", async function() {
         await tinyboxes.setPause(false);
-        expect(await tinyboxes.paused()).to.equal(false);
     });
 
-    it("Can create a TinyBox", async function() {
-        await tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr1.address, 10000, {value:1});
+    it("Admin can mint promo tokens", async function() {
+        await tinyboxes.mintPromo(addr1.address);
         expect(await tinyboxes.balanceOf(addr1.address)).to.equal(1);
     });
 
-    it("Can create a TinyBox to another account", async function() {
-        await tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr2.address, 10000, {value:1});
-        expect(await tinyboxes.balanceOf(addr2.address)).to.equal(1);
+    it("Can lookup promo token counter", async function() {
+        expect(await tinyboxes._tokenPromoIds()).to.equal(1);
     });
 
-    it("Token totalSupply is correctly tallied", async function() {
-        expect(await tinyboxes.totalSupply()).to.equal(2);
+    it("normal users can't mint promo tokens", async function() {
+        await tinyboxes.connect(addr2).mintPromo(addr2.address);
+        expect(await tinyboxes.balanceOf(addr2.address)).to.equal(0);
     });
 
-    it("Can lookup token counter", async function() {
-        expect(await tinyboxes._tokenIds()).to.equal(2);
-    });
+    // test redeeming the token
+    // it("Can Mint a Promo token", async function() {
+    //     await tinyboxes.mintPromo(addr1.address);
+    //     expect(await tinyboxes.balanceOf(addr1.address)).to.equal(1);
+    // });
 
-    // set and read a tokens settings
+    // only owner can redeem
 
-    // only owner can set settings
+    // cant redeem twice
 
-    // phase mints out
-
-    // phase count increases as expected
-
-    // minting fails when in countdown state
-
-    // minting fails when paused
-
-    // sold out works
+    // cant redeem a normal token
 });
 

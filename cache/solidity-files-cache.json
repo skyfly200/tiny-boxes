@@ -666,8 +666,8 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxesBase.sol": {
-      "lastModificationDate": 1611344852117,
-      "contentHash": "9407d2314f35afd7e50849c1a2c1f82a",
+      "lastModificationDate": 1611346629092,
+      "contentHash": "5068fedacc69c76dcaea37b15a48da27",
       "sourceName": "contracts/TinyBoxesBase.sol",
       "solcConfig": {
         "version": "0.6.8",

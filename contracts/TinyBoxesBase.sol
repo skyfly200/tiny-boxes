@@ -21,8 +21,8 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     using Counters for Counters.Counter;
     using Random for bytes32[];
 
-    Counters.Counter internal _tokenIds;
-    Counters.Counter internal _tokenPromoIds;
+    Counters.Counter public _tokenIds;
+    Counters.Counter public _tokenPromoIds;
 
     RandomizerInt entropySource;
 
