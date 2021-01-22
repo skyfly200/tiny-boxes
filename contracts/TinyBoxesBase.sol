@@ -160,7 +160,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     /**
      * @dev Calculate the randomized and phased values
      */
-    function calcedParts(TinyBox memory box, uint256 id) public view returns (uint8[4] memory parts)
+    function calcedParts(TinyBox memory box, uint256 id) internal view returns (uint8[4] memory parts)
     {
         if (id < TOKEN_LIMIT) { // Normal Tokens
             bytes32[] memory pool = Random.init(box.randomness);
