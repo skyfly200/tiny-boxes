@@ -38,17 +38,13 @@ describe("Testing TinyBoxes Promo Methods", function() {
         await tinyboxes.setPause(false);
     });
 
-    it("Admin can mint promo tokens", async function() {
-        await tinyboxes.mintPromo(addr1.address);
-        expect(await tinyboxes.balanceOf(addr1.address)).to.equal(1);
-    });
-
-    it("Can lookup promo token counter", async function() {
-        expect(await tinyboxes._tokenPromoIds()).to.equal(1);
-    });
-
     it("Only admin can mint promo tokens", async function() {
         await expect(tinyboxes.connect(addr2).mintPromo(addr2.address)).to.be.reverted;
+    });
+
+    it("Admin can mint promo tokens", async function() {
+        await expect(tinyboxes.mintPromo(addr1.address)).to.emit(tinyboxes, 'Transfer');
+        expect(await tinyboxes.balanceOf(addr1.address)).to.equal(1);
     });
 
     it("Check the new promo token is shown as unredeemed", async function() {
@@ -56,11 +52,16 @@ describe("Testing TinyBoxes Promo Methods", function() {
         expect(await tinyboxes.unredeemed(id)).to.equal(true);
     });
 
+    it("Can lookup promo token counter", async function() {
+        expect(await tinyboxes._tokenPromoIds()).to.equal(1);
+    });
+
     // test redeeming the token
-    // it("Can Mint a Promo token", async function() {
-    //     await tinyboxes.mintPromo(addr1.address);
-    //     expect(await tinyboxes.balanceOf(addr1.address)).to.equal(1);
-    // });
+    it("Can Mint a Promo token", async function() {
+        const id = (2**256)-1;
+        await expect(tinyboxes.createLE((1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr1.address, 10000, id)).to.emit(tinyboxes, 'LECreated');
+        expect(await tinyboxes.balanceOf(addr1.address)).to.equal(1);
+    });
 
     // only owner can redeem
 

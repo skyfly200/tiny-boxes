@@ -50,7 +50,9 @@ describe("Testing TinyBoxes Sale Methods", function() {
     });
 
     it("Can create a TinyBox", async function() {
-        await tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr1.address, 10000, {value:price});
+        await expect(
+            tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr1.address, 10000, {value:price})
+        ).to.emit(tinyboxes, 'Transfer');
         expect(await tinyboxes.balanceOf(addr1.address)).to.equal(1);
     });
 

@@ -172,7 +172,7 @@ contract TinyBoxesStore is TinyBoxesBase {
      * @param size range for boxes
      * @param spacing grid and spread params
      */
-    function createLimitedEdition(
+    function createLE(
         uint128 seed,
         uint8 shapes,
         uint8 hatching,
