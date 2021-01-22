@@ -1,6 +1,6 @@
 const { expect } = require("chai");
 
-describe("TinyBoxes Rendering", function() {
+describe("Testing TinyBoxes", function() {
     let tinyboxes;
     let owner;
     let addr1;
@@ -50,13 +50,48 @@ describe("TinyBoxes Rendering", function() {
         expect(rand).to.be.a("string");
     });
 
-    it("Can Mint Promo", async function() {
-        await tinyboxes.mintPromo(addr1.address);
-        expect(await tinyboxes.balanceOf(addr1.address)).to.equal(1);
+    describe("TinyBoxes Rendering", function() {
+        it("Method tokenPreview should return a SVG string", async function() {
+            const art = await tinyboxes.tokenPreview(1111, [100,50,70], [30,5], [100,100,100,100], [50,50], 63, [50,10,1], [0,10,7,70], '');
+            expect(art).to.be.a('string');
+        });
     });
 
-    it("Method tokenPreview should return a SVG string", async function() {
-        const art = await tinyboxes.tokenPreview(1111, [100,50,70], [30,5], [100,100,100,100], [50,50], 63, [50,10,1], [0,10,7,70], '');
-        expect(art).to.be.a('string');
+    describe("TinyBoxes Minting", function() {
+        beforeEach(async function () {
+            await tinyboxes.setPause(false);
+        });
+
+        it("Can create a TinyBox", async function() {
+            await tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr1.address, 10000, {value:1});
+            expect(await tinyboxes.balanceOf(addr1.address)).to.equal(1);
+        });
+
+        it("Can create a TinyBox to another account", async function() {
+            await tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr2.address, 10000, {value:1});
+            expect(await tinyboxes.balanceOf(addr2.address)).to.equal(1);
+        });
+
+        it("Token totalSupply is correctly tallied", async function() {
+            expect(await tinyboxes.totalSupply()).to.equal(2);
+        });
+    });
+    
+    describe("TinyBoxes Limited Editions System Tests", function() {
+        beforeEach(async function () {
+            await tinyboxes.setPause(false);
+        });
+
+        it("Can Mint a Promo token", async function() {
+            await tinyboxes.mintPromo(addr1.address);
+            expect(await tinyboxes.balanceOf(addr1.address)).to.equal(1);
+        });
+
+        // test redeeming the token
+        // it("Can Mint a Promo token", async function() {
+        //     await tinyboxes.mintPromo(addr1.address);
+        //     expect(await tinyboxes.balanceOf(addr1.address)).to.equal(1);
+        // });
     });
 });
+
