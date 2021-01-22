@@ -15,6 +15,8 @@ import "./libraries/SVG.sol";
 import "./libraries/Metadata.sol";
 import "./libraries/Random.sol";
 
+import "hardhat/console.sol";
+
 interface AnimationLib {
     function _generateAnimation(TinyBox calldata box,uint8 animation,Shape calldata shape,uint256 shapeIndex) external pure returns (string memory);
 }
