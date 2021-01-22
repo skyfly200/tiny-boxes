@@ -47,9 +47,13 @@ describe("Testing TinyBoxes Promo Methods", function() {
         expect(await tinyboxes._tokenPromoIds()).to.equal(1);
     });
 
-    it("normal users can't mint promo tokens", async function() {
-        await tinyboxes.connect(addr2).mintPromo(addr2.address);
-        expect(await tinyboxes.balanceOf(addr2.address)).to.equal(0);
+    it("Only admin can mint promo tokens", async function() {
+        await expect(tinyboxes.connect(addr2).mintPromo(addr2.address)).to.be.reverted;
+    });
+
+    it("Check the new promo token is shown as unredeemed", async function() {
+        const id = (2**256)-1;
+        expect(await tinyboxes.unredeemed(id)).to.equal(true);
     });
 
     // test redeeming the token
@@ -61,6 +65,11 @@ describe("Testing TinyBoxes Promo Methods", function() {
     // only owner can redeem
 
     // cant redeem twice
+
+    // it("Check the token is shown as redeemed", async function() {
+    //     const id = 2**256-1;
+    //     assert(await tinyboxes.unredeemed(id));
+    // });
 
     // cant redeem a normal token
 });

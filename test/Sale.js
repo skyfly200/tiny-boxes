@@ -6,6 +6,7 @@ describe("Testing TinyBoxes Sale Methods", function() {
     let addr1;
     let addr2;
     let addrs;
+    let price;
 
     before(async function () {
         [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
@@ -37,18 +38,24 @@ describe("Testing TinyBoxes Sale Methods", function() {
         await tinyboxes.deployed();
     });
 
+    it("Can lookup the mint price", async function() {
+        price = await tinyboxes.price();
+        console.log("Price: ", price.hex);
+        expect(price._isBigNumber);
+    });
+
     it("Can Unpause", async function() {
         await tinyboxes.setPause(false);
         expect(await tinyboxes.paused()).to.equal(false);
     });
 
     it("Can create a TinyBox", async function() {
-        await tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr1.address, 10000, {value:1});
+        await tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr1.address, 10000, {value:price});
         expect(await tinyboxes.balanceOf(addr1.address)).to.equal(1);
     });
 
     it("Can create a TinyBox to another account", async function() {
-        await tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr2.address, 10000, {value:1});
+        await tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr2.address, 10000, {value:price});
         expect(await tinyboxes.balanceOf(addr2.address)).to.equal(1);
     });
 
@@ -59,10 +66,6 @@ describe("Testing TinyBoxes Sale Methods", function() {
     it("Can lookup token counter", async function() {
         expect(await tinyboxes._tokenIds()).to.equal(2);
     });
-
-    // set and read a tokens settings
-
-    // only owner can set settings
 
     // phase mints out
 

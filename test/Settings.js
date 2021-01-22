@@ -1,5 +1,5 @@
 
-const { expect, assert } = require("chai");
+const { expect } = require("chai");
 
 describe("Testing TinyBoxes Settings Methods", function() {
     let tinyboxes;
@@ -7,6 +7,7 @@ describe("Testing TinyBoxes Settings Methods", function() {
     let addr1;
     let addr2;
     let addrs;
+    let price = 1;
 
     before(async function () {
         [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
@@ -36,6 +37,24 @@ describe("Testing TinyBoxes Settings Methods", function() {
         const TinyBoxes = await hre.ethers.getContractFactory("TinyBoxes");
         tinyboxes = await TinyBoxes.deploy(randomstub.address, tinyboxesrenderer.address);
         await tinyboxes.deployed();
+        // unpasue and mint a token for testing
+        await tinyboxes.setPause(false);
+        await tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, owner.address, 10000, {value:price});
+    });
+
+    it("Can read a tokens settings", async function() {
+        const settings = await tinyboxes.readSettings(0);
+        expect(settings).to.equal([0,10,1]);
+    });
+
+    it("A tokens owner can set its settings", async function() {
+        await tinyboxes.changeSettings(0, [10,5,7])
+        const settings = await tinyboxes.readSettings(0);
+        expect(settings).to.equal([10,5,7]);
+    });
+
+    it("Only a tokens owner can set its settings", async function() {
+        await expect(tinyboxes.connect(addr2).changeSettings(0, [10,5,7])).to.be.reverted;
     });
 
 });

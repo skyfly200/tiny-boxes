@@ -6,6 +6,7 @@ describe("Testing TinyBoxes Admin Methods", function() {
     let addr1;
     let addr2;
     let addrs;
+    let price = 1;
 
     before(async function () {
         [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
@@ -82,7 +83,7 @@ describe("Testing TinyBoxes Admin Methods", function() {
     });
 
     it("Can Set Token ABI", async function() {
-        await tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr1.address, 10000, {value:1});
+        await tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr1.address, 10000, {value:price});
         await tinyboxes.setTokenURI(0,0);
         expect(await tinyboxes.tokenURI(0)).to.equal("test/0");
     });

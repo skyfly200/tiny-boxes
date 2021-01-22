@@ -77,6 +77,14 @@ contract TinyBoxesStore is TinyBoxesBase {
         _splitFunds(price.sub(referal));
     }
 
+    /**
+     * @dev Check if a TinyBox Promo Token is unredeemed
+     * @param id of the token to check
+     */
+    function unredeemed(uint256 id) public view returns (bool) {
+        return boxes[id].shapes == 0;
+    }
+
     // Token Creation Functions
 
     /**
@@ -178,7 +186,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         //  check owner is caller
         require(ownerOf(id) == msg.sender, "NOPE");
         // check token is unredeemed
-        require(boxes[id].shapes == 0, "USED");
+        require(unredeemed(id), "USED");
         // check box parameters are valid
         validateParams(shapes, hatching, color, size, spacing, true);
         // create a new box object
