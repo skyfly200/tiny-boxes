@@ -47,11 +47,10 @@ describe("Testing TinyBoxes State Methods", function() {
     });
 
     it("Can read block start", async function() {
-        expect(await tinyboxes.blockStart()).to.be.a("number");
+        assert((await tinyboxes.blockStart())._isBigNumber);
     });
 
     it("Can read phase countdown", async function() {
-        console.log(await tinyboxes.phaseCountdown())
-        assert(true);
+        assert((await tinyboxes.phaseCountdown())._isBigNumber);
     });
 });
