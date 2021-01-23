@@ -8,6 +8,9 @@
 <script>
 import Vue from "vue";
 import Nav from "@/components/Nav.vue";
+import Axios from 'axios'
+
+Vue.prototype.$http = Axios;
 
 export default Vue.extend({
   name: "App",
