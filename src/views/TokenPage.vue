@@ -206,7 +206,7 @@ export default Vue.extend({
             t.txHash = txHash;
             t.loadSettings();
             // push auto metadata refresh on OpenSea
-            const refeshEndpoint  = 'https://api.opensea.io/asset/' + this.$store.state.tinyboxesAddress + '/' + this.id + '/?force_update=true';
+            const refeshEndpoint  = 'https://testnets-api.opensea.io/asset/' + this.$store.state.tinyboxesAddress + '/' + this.id + '/?force_update=true';
             await this.$http.get(refeshEndpoint);
           }
         }
