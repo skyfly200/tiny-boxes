@@ -104,9 +104,9 @@ describe("Testing TinyBoxes Sale Methods", function() {
         for (let i=3; i<=11; i++) {
             let current, start;
             do {
-                current = await ethers.provider.getBlockNumber();
                 start = parseInt((await tinyboxes.blockStart())._hex.slice(2), 16);
-                if (start - current > 2) await tinyboxes.startCountdown(current + 1); // cause test chain blocks to advance + shorten wait
+                current = await ethers.provider.getBlockNumber();
+                if (start - current > 2) await tinyboxes.startCountdown(current + 2); // cause test chain blocks to advance + shorten wait
                 else await tinyboxes.setContractURI("test"); // just advance the local networks block
             }
             while (current < start)
