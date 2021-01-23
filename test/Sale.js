@@ -40,7 +40,7 @@ describe("Testing TinyBoxes Sale Methods", function() {
 
     it("Can lookup the mint price", async function() {
         price = await tinyboxes.price();
-        console.log("Price: ", parseInt(price._hex.slice(2)), " wei");
+        console.log("Price: ", parseInt(price._hex.slice(2), 16), " wei");
         expect(price._isBigNumber);
     });
 
@@ -78,7 +78,6 @@ describe("Testing TinyBoxes Sale Methods", function() {
     it("Can mint through a phase", async function() {
         for (let i=0; i<8; i++)
             await tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr2.address, 10000, {value:price});
-        expect(await tinyboxes.balanceOf(addr2.address)).to.equal(9);
         expect(await tinyboxes.currentPhase()).to.equal(1);
     });
 
@@ -88,6 +87,38 @@ describe("Testing TinyBoxes Sale Methods", function() {
         ).to.be.reverted;
     });
 
-    // sold out works
+    it("Can mint through next phase after block timer expires", async function() {
+        let current, start;
+        do {
+            current = await ethers.provider.getBlockNumber();
+            start = parseInt((await tinyboxes.blockStart())._hex.slice(2), 16);
+            await tinyboxes.setContractURI("test"); // cause test chain blocks to advance
+        }
+        while (current < start)
+        for (let j=0; j<10; j++)
+            await tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr2.address, 10000, {value:price});
+        expect(await tinyboxes.currentPhase()).to.equal(2);
+    });
+
+    it("Can mint through all 11 phases", async function() {
+        for (let i=3; i<=11; i++) {
+            let current, start;
+            do {
+                current = await ethers.provider.getBlockNumber();
+                start = parseInt((await tinyboxes.blockStart())._hex.slice(2), 16);
+                await tinyboxes.setContractURI("test"); // cause test chain blocks to advance
+            }
+            while (current < start)
+            for (let j=0; j<10; j++)
+                await tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr2.address, 10000, {value:price});
+            expect(await tinyboxes.currentPhase()).to.equal(i);
+        }
+    });
+
+    it("Create reverts when sold out", async function() {
+        await expect(
+            tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr2.address, 10000, {value:price})
+        ).to.be.reverted;
+    });
 });
 

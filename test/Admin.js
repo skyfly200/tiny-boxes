@@ -44,6 +44,8 @@ describe("Testing TinyBoxes Admin Methods", function() {
         await tinyboxes.startCountdown(nextBlock);
         expect(await tinyboxes.blockStart()).to.equal(nextBlock);
     });
+
+    // block timer invalid options
     
     it("Can Pause", async function() {
         await tinyboxes.setPause(true);
