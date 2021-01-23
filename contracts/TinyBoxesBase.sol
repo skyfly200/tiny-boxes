@@ -74,14 +74,14 @@ contract TinyBoxesBase is ERC721, AccessControl  {
      */
     function onlyRole(bytes32 _role) view internal {
         // Check that the calling account has the required role
-        require(hasRole(_role, msg.sender), "Caller dosn't have permission to use this function");
+        require(hasRole(_role, msg.sender), "DENIED");
     }
 
     /**
      * @notice check if tokens are sold out
      */
     function notSoldOut() view internal {
-        require(_tokenIds.current() < TOKEN_LIMIT, "ART SALE IS OVER");
+        require(_tokenIds.current() < TOKEN_LIMIT, "SOLD OUT");
     }
 
     /**
