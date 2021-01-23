@@ -38,14 +38,22 @@ describe("Testing TinyBoxes Admin Methods", function() {
         await tinyboxes.deployed();
     });
 
-    it("Can Set Block Timer", async function() {
+    it("Can Set Block Timer in the Future", async function() {
         const nextBlock = await ethers.provider.getBlockNumber() + 2;
         console.log("Countdown to ", nextBlock);
         await tinyboxes.startCountdown(nextBlock);
         expect(await tinyboxes.blockStart()).to.equal(nextBlock);
     });
 
-    // block timer invalid options
+    it("Can't Set Block Timer as the Current Block", async function() {
+        const current = await ethers.provider.getBlockNumber();
+        await expect(tinyboxes.startCountdown(current)).to.be.reverted;
+    });
+
+    it("Can't Set Block Timer in the Past", async function() {
+        const current = await ethers.provider.getBlockNumber() - 10;
+        await expect(tinyboxes.startCountdown(current)).to.be.reverted;
+    });
     
     it("Can Pause", async function() {
         await tinyboxes.setPause(true);
