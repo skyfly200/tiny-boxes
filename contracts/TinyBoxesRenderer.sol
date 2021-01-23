@@ -158,7 +158,7 @@ contract TinyBoxesRenderer {
     }
 
     /**
-     * @dev render a token's art
+     * @dev render TinyBox artwork
      * @param box TinyBox data structure
      * @param id of the token to render
      * @param owner of the token rendered
