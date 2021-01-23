@@ -19,14 +19,15 @@ describe("Testing TinyBoxes Render Methods", function() {
         });
         const animation = await Animation.deploy();
         await animation.deployed();
-        // deploy the Renderer lib
+        // deploy the Renderer contract
         const TinyBoxesRenderer = await hre.ethers.getContractFactory("TinyBoxesRenderer",{
             libraries: {
+                Animation: animation.address,
                 Colors: "0x0B37DC0Adc2948f3689dfB8200F3419424360d85",
                 Utils: "0xA87158c03e304d88C93D2a9B8AE2046e8EaB29b9"
             }
         });
-        const tinyboxesrenderer = await TinyBoxesRenderer.deploy(animation.address);
+        const tinyboxesrenderer = await TinyBoxesRenderer.deploy();
         await tinyboxesrenderer.deployed();
         // deploy random stub
         const RandomStub = await hre.ethers.getContractFactory("RandomStub");

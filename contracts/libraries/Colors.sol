@@ -11,7 +11,6 @@ import "./Utils.sol";
 import "./Random.sol";
 
 import "../structs/HSL.sol";
-import "../structs/Palette.sol";
 
 library Colors {
     using Strings for *;
@@ -59,20 +58,25 @@ library Colors {
     }
 
     function lookupColor(
-        Palette memory pal,
-        uint8 hueIndex,
-        uint8 shade
+        uint8 scheme,
+        uint16 hue,
+        uint8 saturation,
+        uint8 lightness,
+        uint8 shades,
+        uint8 contrast,
+        uint8 shade,
+        uint8 hueIndex
     ) public view returns (HSL memory) {
-        uint16 h = lookupHue(pal.root.hue, pal.scheme, hueIndex);
-        uint8 s = pal.root.saturation;
+        uint16 h = lookupHue(hue, scheme, hueIndex);
+        uint8 s = saturation;
         uint8 l;
-        if (pal.shades > 1) {
-            uint256 range = uint256(pal.contrast);
-            uint256 step = range.div(uint256(pal.shades));
+        if (shades > 1) {
+            uint256 range = uint256(contrast);
+            uint256 step = range.div(uint256(shades));
             uint256 offset = uint256(shade.mul(step));
-            l = uint8(uint256(pal.root.lightness).sub(offset));
+            l = uint8(uint256(lightness).sub(offset));
         } else {
-            l = pal.root.lightness;
+            l = lightness;
         }
         return HSL(h, s, l);
     }

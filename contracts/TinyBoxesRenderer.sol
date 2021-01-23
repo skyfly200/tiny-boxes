@@ -24,6 +24,7 @@ contract TinyBoxesRenderer {
     using SignedSafeMath for int256;
     using Random for bytes32[];
     using Metadata for TinyBox;
+    using Animation for TinyBox;
     using Strings for *;
     using Colors for *;
     using SVG for *;
@@ -100,7 +101,7 @@ contract TinyBoxesRenderer {
         // lookup a random color from the color palette
         uint8 hue = uint8(pool.uniform(0, 3));
         uint8 shade = uint8(pool.uniform(0, int256(dVals[2]).sub(1)));
-        HSL memory color = Colors.lookupColor(Palette(HSL(box.hue,box.saturation,box.lightness),dVals[3],dVals[2],dVals[1]),hue,shade);
+        HSL memory color = dVals[1].lookupColor(box.hue,box.saturation,box.lightness,dVals[3],dVals[2],hue,shade);
         return Shape(position, size, color);
     }
 
@@ -166,7 +167,7 @@ contract TinyBoxesRenderer {
             Shape memory shape = _generateShape(i, box, dVals);
             shapes = string(abi.encodePacked(shapes,
                 SVG._rect(shape, (box.options%8 != 0) ?
-                    animator._generateAnimation(box,dVals[0],shape,i) : ''
+                    box._generateAnimation(dVals[0],shape,i) : ''
                 )
             ));
         }
@@ -180,7 +181,7 @@ contract TinyBoxesRenderer {
 
         // build up the SVG markup
         return SVG._SVG(
-            ((box.options/8)%2 == 1) ? "" : Colors._parseBkg(box.bkg),
+            ((box.options/8)%2 == 1) ? "" : box.bkg._parseBkg(),
             string(abi.encodePacked(
                 box._generateMetadata(dVals,id,owner),
                 defs,

@@ -6,14 +6,14 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/math/SignedSafeMath.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "./structs/Decimal.sol";
-import "./structs/Shape.sol";
-import "./structs/TinyBox.sol";
+import "../structs/Decimal.sol";
+import "../structs/Shape.sol";
+import "../structs/TinyBox.sol";
 
-import "./libraries/Utils.sol";
-import "./libraries/Decimal.sol";
+import "./Utils.sol";
+import "./Decimal.sol";
 
-contract Animation {
+library Animation {
     using SafeMath for uint256;
     using SignedSafeMath for int256;
     using DecimalUtils for *;

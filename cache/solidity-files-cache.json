@@ -204,49 +204,6 @@
         "Ownable"
       ]
     },
-    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/Animation.sol": {
-      "lastModificationDate": 1611370355623,
-      "contentHash": "018eb6d099a0099d5badb9975d6028fd",
-      "sourceName": "contracts/Animation.sol",
-      "solcConfig": {
-        "version": "0.6.8",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/math/SafeMath.sol",
-        "@openzeppelin/contracts/math/SignedSafeMath.sol",
-        "@openzeppelin/contracts/utils/Strings.sol",
-        "./structs/Decimal.sol",
-        "./structs/Shape.sol",
-        "./structs/TinyBox.sol",
-        "./libraries/Utils.sol",
-        "./libraries/Decimal.sol"
-      ],
-      "versionPragmas": [
-        "^0.6.4"
-      ],
-      "artifacts": [
-        "Animation"
-      ]
-    },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/math/SafeMath.sol": {
       "lastModificationDate": 1608685667199,
       "contentHash": "168f50d923a8f64094d8e761ca2e5fe6",
@@ -617,8 +574,8 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/Colors.sol": {
-      "lastModificationDate": 1611371838007,
-      "contentHash": "ae99f9baaca0cd8fda082b5a20708b4c",
+      "lastModificationDate": 1611429619208,
+      "contentHash": "9a1c0b87dccdefe32aa3351c1b297abc",
       "sourceName": "contracts/libraries/Colors.sol",
       "solcConfig": {
         "version": "0.6.8",
@@ -648,8 +605,7 @@
         "@openzeppelin/contracts/math/SafeMath.sol",
         "./Utils.sol",
         "./Random.sol",
-        "../structs/HSL.sol",
-        "../structs/Palette.sol"
+        "../structs/HSL.sol"
       ],
       "versionPragmas": [
         "^0.6.8"
@@ -659,8 +615,8 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxesRenderer.sol": {
-      "lastModificationDate": 1611392982027,
-      "contentHash": "01d65bbe148b3b9f4f33bc9846f09ecf",
+      "lastModificationDate": 1611429648235,
+      "contentHash": "b85b297cd6c09378c06cc95366cd05e2",
       "sourceName": "contracts/TinyBoxesRenderer.sol",
       "solcConfig": {
         "version": "0.6.8",
@@ -693,6 +649,7 @@
         "./structs/TinyBox.sol",
         "./structs/HSL.sol",
         "./libraries/SVG.sol",
+        "./libraries/Animation.sol",
         "./libraries/Metadata.sol",
         "./libraries/Random.sol",
         "./libraries/Colors.sol",
@@ -702,13 +659,12 @@
         "^0.6.8"
       ],
       "artifacts": [
-        "AnimationLib",
         "TinyBoxesRenderer"
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/SVG.sol": {
-      "lastModificationDate": 1611392040180,
-      "contentHash": "053a3b58cf0a7af97c68e4716a78572f",
+      "lastModificationDate": 1611393837080,
+      "contentHash": "69c3adacafa5d0db4c2dc9e7e71a2cd3",
       "sourceName": "contracts/libraries/SVG.sol",
       "solcConfig": {
         "version": "0.6.8",
@@ -1472,6 +1428,49 @@
       ],
       "artifacts": [
         "RandomStub"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/Animation.sol": {
+      "lastModificationDate": 1611428733972,
+      "contentHash": "8f984ab1f2f76a04123beaee5e5402dc",
+      "sourceName": "contracts/libraries/Animation.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/math/SafeMath.sol",
+        "@openzeppelin/contracts/math/SignedSafeMath.sol",
+        "@openzeppelin/contracts/utils/Strings.sol",
+        "../structs/Decimal.sol",
+        "../structs/Shape.sol",
+        "../structs/TinyBox.sol",
+        "./Utils.sol",
+        "./Decimal.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.4"
+      ],
+      "artifacts": [
+        "Animation"
       ]
     }
   }
