@@ -12,15 +12,12 @@ import "./structs/TinyBox.sol";
 import "./structs/HSL.sol";
 
 import "./libraries/SVG.sol";
+import "./libraries/Animation.sol";
 import "./libraries/Metadata.sol";
 import "./libraries/Random.sol";
 import "./libraries/Colors.sol";
 
 import "hardhat/console.sol";
-
-interface AnimationLib {
-    function _generateAnimation(TinyBox calldata box,uint8 animation,Shape calldata shape,uint256 shapeIndex) external pure returns (string memory);
-}
 
 contract TinyBoxesRenderer {
     using SafeMath for uint256;
@@ -30,17 +27,6 @@ contract TinyBoxesRenderer {
     using Strings for *;
     using Colors for *;
     using SVG for *;
-
-    AnimationLib animator;
-    
-    /**
-     * @dev Contract constructor.
-     */
-    constructor(address _animator)
-        public
-    {
-        animator = AnimationLib(_animator);
-    }
 
     /**
      * @dev generate a shape
@@ -114,7 +100,7 @@ contract TinyBoxesRenderer {
         // lookup a random color from the color palette
         uint8 hue = uint8(pool.uniform(0, 3));
         uint8 shade = uint8(pool.uniform(0, int256(dVals[2]).sub(1)));
-        HSL memory color = HSL(box.hue,box.saturation,box.lightness);//Colors.lookupColor(Palette(HSL(box.hue,box.saturation,box.lightness),dVals[3],dVals[2],dVals[1]),hue,shade);
+        HSL memory color = Colors.lookupColor(Palette(HSL(box.hue,box.saturation,box.lightness),dVals[3],dVals[2],dVals[1]),hue,shade);
         return Shape(position, size, color);
     }
 
