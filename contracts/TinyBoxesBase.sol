@@ -56,6 +56,8 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     // mapping to store all the boxes info
     mapping(uint256 => TinyBox) internal boxes;
 
+    event SettingsChanged(uint8[3] settings);
+
     /**
      * @dev Contract constructor.
      * @notice Constructor inherits ERC721
@@ -278,6 +280,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         boxes[id].bkg = settings[0];
         boxes[id].duration = settings[1];
         boxes[id].options = settings[2];
+        emit SettingsChanged(settings);
     }
 
     /**
