@@ -106,11 +106,12 @@ describe("Testing TinyBoxes Sale Methods", function() {
             do {
                 current = await ethers.provider.getBlockNumber();
                 start = parseInt((await tinyboxes.blockStart())._hex.slice(2), 16);
-                await tinyboxes.setContractURI("test"); // cause test chain blocks to advance
+                if (start - current > 2) await tinyboxes.startCountdown(current + 1); // cause test chain blocks to advance + shorten wait
+                else await tinyboxes.setContractURI("test"); // just advance the local networks block
             }
             while (current < start)
             for (let j=0; j<10; j++)
-                await tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr2.address, 10000, {value:price});
+                tinyboxes.create(1111, 30, 5, [100,50,70], [100,100,100,100], [50,50], 63, addr2.address, 10000, {value:price});
             expect(await tinyboxes.currentPhase()).to.equal(i);
         }
     });
