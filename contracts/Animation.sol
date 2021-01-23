@@ -1,4 +1,4 @@
-//SPDX-License-Identifier: Unlicensed
+//SPDX-License-Identifier: MIT
 pragma solidity ^0.6.4;
 pragma experimental ABIEncoderV2;
 
@@ -13,7 +13,7 @@ import "./structs/TinyBox.sol";
 import "./libraries/Utils.sol";
 import "./libraries/Decimal.sol";
 
-library Animation {
+contract Animation {
     using SafeMath for uint256;
     using SignedSafeMath for int256;
     using DecimalUtils for *;
