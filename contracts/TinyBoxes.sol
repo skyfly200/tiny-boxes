@@ -69,27 +69,6 @@ contract TinyBoxes is TinyBoxesStore {
     }
 
     /**
-     * @dev Generate the token SVG art with specific options
-     * @param _id for which we want art
-     * @param bkg for the token
-     * @param duration animation duration modifier
-     * @param options bits - 0th is the animate switch to turn on or off animation
-     * @param slot string for embeding custom additions
-     * @return SVG art of token
-     */
-    function tokenArt(uint256 _id, uint8 bkg, uint8 duration, uint8 options, string calldata slot)
-        external
-        view
-        returns (string memory)
-    {
-        TinyBox memory box = boxes[_id];
-        box.bkg = bkg;
-        box.options = options;
-        box.duration = duration;
-        return renderer.perpetualRenderer(box ,_id, ownerOf(_id), calcedParts(box, _id), slot);
-    }
-
-    /**
      * @dev Generate the token SVG art
      * @param _id for which we want art
      * @return SVG art of token 
@@ -101,5 +80,26 @@ contract TinyBoxes is TinyBoxesStore {
     {
         TinyBox memory box = boxes[_id];
         return renderer.perpetualRenderer(box, _id, ownerOf(_id), calcedParts(box, _id), "");
+    }
+
+    /**
+     * @dev Generate the token SVG art with specific options
+     * @param _id for which we want art
+     * @param bkg for the token
+     * @param duration animation duration modifier
+     * @param options bits - 0th is the animate switch to turn on or off animation
+     * @param slot string for embeding custom additions
+     * @return animated SVG art of token
+     */
+    function tokenArt(uint256 _id, uint8 bkg, uint8 duration, uint8 options, string calldata slot)
+        external
+        view
+        returns (string memory)
+    {
+        TinyBox memory box = boxes[_id];
+        box.bkg = bkg;
+        box.options = options;
+        box.duration = duration;
+        return renderer.perpetualRenderer(box ,_id, ownerOf(_id), calcedParts(box, _id), slot);
     }
 }
