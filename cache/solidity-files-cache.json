@@ -574,8 +574,8 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/Colors.sol": {
-      "lastModificationDate": 1611429619208,
-      "contentHash": "9a1c0b87dccdefe32aa3351c1b297abc",
+      "lastModificationDate": 1611437997415,
+      "contentHash": "5cfda465951255c45a2e7c49abc3701d",
       "sourceName": "contracts/libraries/Colors.sol",
       "solcConfig": {
         "version": "0.6.8",
@@ -615,8 +615,8 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxesRenderer.sol": {
-      "lastModificationDate": 1611429648235,
-      "contentHash": "b85b297cd6c09378c06cc95366cd05e2",
+      "lastModificationDate": 1611437519672,
+      "contentHash": "c6810fbcb9113e43b373107e6cacae31",
       "sourceName": "contracts/TinyBoxesRenderer.sol",
       "solcConfig": {
         "version": "0.6.8",
@@ -649,11 +649,11 @@
         "./structs/TinyBox.sol",
         "./structs/HSL.sol",
         "./libraries/SVG.sol",
+        "./libraries/Utils.sol",
         "./libraries/Animation.sol",
         "./libraries/Metadata.sol",
         "./libraries/Random.sol",
-        "./libraries/Colors.sol",
-        "hardhat/console.sol"
+        "./libraries/Colors.sol"
       ],
       "versionPragmas": [
         "^0.6.8"
@@ -736,8 +736,8 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxesBase.sol": {
-      "lastModificationDate": 1611388871097,
-      "contentHash": "0f26a0e934ede27bd7890d83bc829311",
+      "lastModificationDate": 1611430002854,
+      "contentHash": "94a88627e9631c8499695c0123bf4468",
       "sourceName": "contracts/TinyBoxesBase.sol",
       "solcConfig": {
         "version": "0.6.8",
@@ -1245,43 +1245,6 @@
         "IERC165"
       ]
     },
-    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/XML.sol": {
-      "lastModificationDate": 1611371951761,
-      "contentHash": "f4a936a37c8fd208f49d188ba8d4e747",
-      "sourceName": "contracts/libraries/XML.sol",
-      "solcConfig": {
-        "version": "0.6.8",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/utils/Strings.sol",
-        "./Utils.sol"
-      ],
-      "versionPragmas": [
-        "^0.6.4"
-      ],
-      "artifacts": [
-        "XML"
-      ]
-    },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxesStore.sol": {
       "lastModificationDate": 1611371778869,
       "contentHash": "158d2b455f7baef8ea2fc51bc61d15e5",
@@ -1321,8 +1284,8 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxes.sol": {
-      "lastModificationDate": 1611371761542,
-      "contentHash": "cebd23742c6bacf5e02f1bb4e9b233c1",
+      "lastModificationDate": 1611437037491,
+      "contentHash": "d4ad0d16e03a45051ce32b5ab1f81f22",
       "sourceName": "contracts/TinyBoxes.sol",
       "solcConfig": {
         "version": "0.6.8",
@@ -1353,7 +1316,6 @@
         "^0.6.8"
       ],
       "artifacts": [
-        "Renderer",
         "TinyBoxes"
       ]
     },
@@ -1431,7 +1393,7 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/Animation.sol": {
-      "lastModificationDate": 1611428733972,
+      "lastModificationDate": 1611433234035,
       "contentHash": "8f984ab1f2f76a04123beaee5e5402dc",
       "sourceName": "contracts/libraries/Animation.sol",
       "solcConfig": {

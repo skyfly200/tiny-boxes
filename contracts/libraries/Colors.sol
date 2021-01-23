@@ -26,7 +26,7 @@ library Colors {
         uint16 rootHue,
         uint8 scheme,
         uint8 index
-    ) public view returns (uint16 hue) {
+    ) internal view returns (uint16 hue) {
         // seed the random scheme from the extra bit space of the rootHue
         uint256 colorSeed = rootHue.div(360);
         bytes32[] memory huePool = Random.init(colorSeed);
@@ -66,7 +66,7 @@ library Colors {
         uint8 contrast,
         uint8 shade,
         uint8 hueIndex
-    ) public view returns (HSL memory) {
+    ) external view returns (HSL memory) {
         uint16 h = lookupHue(hue, scheme, hueIndex);
         uint8 s = saturation;
         uint8 l;
@@ -86,7 +86,7 @@ library Colors {
      * @param bkg settings packed int 8 bits
      * @return HSL color style CSS string
      */
-    function _parseBkg(uint8 bkg) internal pure returns (string memory) {
+    function _parseBkg(uint8 bkg) external pure returns (string memory) {
         uint256 hue = (bkg / 16) * 24;
         uint256 sat = hue == 0 ? 0 : ((bkg / 4) % 4) * 25;
         uint256 lit = hue == 0 ? (625 * (bkg % 16)) / 100 : ((bkg % 4) + 1) * 20;

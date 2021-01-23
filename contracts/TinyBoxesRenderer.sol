@@ -12,12 +12,13 @@ import "./structs/TinyBox.sol";
 import "./structs/HSL.sol";
 
 import "./libraries/SVG.sol";
+import "./libraries/Utils.sol";
 import "./libraries/Animation.sol";
 import "./libraries/Metadata.sol";
 import "./libraries/Random.sol";
 import "./libraries/Colors.sol";
 
-import "hardhat/console.sol";
+//import "hardhat/console.sol";
 
 contract TinyBoxesRenderer {
     using SafeMath for uint256;
@@ -28,6 +29,7 @@ contract TinyBoxesRenderer {
     using Strings for *;
     using Colors for *;
     using SVG for *;
+    using Utils for *;
 
     /**
      * @dev generate a shape
@@ -156,8 +158,8 @@ contract TinyBoxesRenderer {
      * @param _slot string for embeding custom additions
      * @return markup of the SVG graphics of the token as a string
      */
-    function perpetualRenderer(TinyBox calldata box, uint256 id, address owner, uint8[4] calldata dVals, string calldata _slot)
-        external
+    function perpetualRenderer(TinyBox memory box, uint256 id, address owner, uint8[4] memory dVals, string memory _slot)
+        internal
         view
         returns (string memory)
     {
@@ -189,5 +191,63 @@ contract TinyBoxesRenderer {
                 SVG._use('cover', 'target')
             ))
         );
+    }
+    
+    /**
+     * @dev Generate the token SVG art preview for given parameters
+     * @param seed for renderer RNG
+     * @param shapes count and hatching mod
+     * @param color settings (hue, sat, light, contrast, shades)
+     * @param size for shapes
+     * @param spacing grid and spread
+     * @param traits mirroring, scheme, shades, animation
+     * @param settings adjustable render options - bkg, duration, options
+     * @param slot string to enter at end of SVG markup
+     * @return preview SVG art
+     */
+    function tokenPreview(
+        string calldata seed,
+        uint16[3] calldata color,
+        uint8[2] calldata shapes,
+        uint8[4] calldata size,
+        uint8[2] calldata spacing,
+        uint8 mirroring,
+        uint8[3] calldata settings,
+        uint8[4] calldata traits,
+        string calldata slot
+    ) external view returns (string memory) {
+        require(settings[0] <= 101, "BKG % Invalid"); // TODO - remove for new bkg colors
+        validateParams(shapes[0], shapes[1], color, size, spacing, true);
+        TinyBox memory box = TinyBox({
+            randomness: uint128(seed.stringToUint()),
+            hue: color[0],
+            saturation: uint8(color[1]),
+            lightness: uint8(color[2]),
+            shapes: shapes[0],
+            hatching: shapes[1],
+            widthMin: size[0],
+            widthMax: size[1],
+            heightMin: size[2],
+            heightMax: size[3],
+            spread: spacing[0],
+            mirroring: mirroring,
+            grid: spacing[1],
+            bkg: settings[0],
+            duration: settings[1],
+            options: settings[2]
+        });
+        return perpetualRenderer(box, 0, address(0), traits, slot);
+    }
+
+    function validateParams(uint8 shapes, uint8 hatching, uint16[3] memory color, uint8[4] memory size, uint8[2] memory position, bool exclusive) public pure {
+        require(shapes > 0 && shapes < 31, "invalid shape count");
+        require(hatching <= shapes, "invalid hatching");
+        require(color[2] <= 360, "invalid color");
+        require(color[1] <= 100, "invalid saturation");
+        if (!exclusive) require(color[1] >= 20, "invalid saturation");
+        require(color[2] <= 100, "invalid lightness");
+        require(size[0] <= size[1], "invalid width range");
+        require(size[2] <= size[3], "invalid height range");
+        require(position[0] <= 100, "invalid spread");
     }
 }
