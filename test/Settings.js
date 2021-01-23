@@ -50,7 +50,9 @@ describe("Testing TinyBoxes Settings Methods", function() {
     });
 
     it("A tokens owner can set its settings", async function() {
-        await tinyboxes.changeSettings(0, [10,5,7])
+        await expect(tinyboxes.changeSettings(0, [10,5,7]))
+            .to.emit(tinyboxes, 'SettingsChanged')
+            .withArgs([10,5,7]);
         const settings = await tinyboxes.readSettings(0);
         expect(settings.bkg).to.equal(10);
         expect(settings.duration).to.equal(5);
@@ -58,7 +60,8 @@ describe("Testing TinyBoxes Settings Methods", function() {
     });
 
     it("Only a tokens owner can set its settings", async function() {
-        await expect(tinyboxes.connect(addr2).changeSettings(0, [10,5,7])).to.be.reverted;
+        await expect(tinyboxes.connect(addr2).changeSettings(0, [10,5,7]))
+            .to.be.reverted;
     });
 
 });
