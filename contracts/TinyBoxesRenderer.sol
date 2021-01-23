@@ -1,4 +1,4 @@
-//SPDX-License-Identifier: Unlicensed
+//SPDX-License-Identifier: MIT
 pragma solidity ^0.6.8;
 pragma experimental ABIEncoderV2;
 
@@ -14,6 +14,7 @@ import "./structs/HSL.sol";
 import "./libraries/SVG.sol";
 import "./libraries/Metadata.sol";
 import "./libraries/Random.sol";
+import "./libraries/Colors.sol";
 
 import "hardhat/console.sol";
 
@@ -27,6 +28,8 @@ contract TinyBoxesRenderer {
     using Random for bytes32[];
     using Metadata for TinyBox;
     using Strings for *;
+    using Colors for *;
+    using SVG for *;
 
     AnimationLib animator;
     
@@ -111,7 +114,7 @@ contract TinyBoxesRenderer {
         // lookup a random color from the color palette
         uint8 hue = uint8(pool.uniform(0, 3));
         uint8 shade = uint8(pool.uniform(0, int256(dVals[2]).sub(1)));
-        HSL memory color = Colors.lookupColor(Palette(HSL(box.hue,box.saturation,box.lightness),dVals[3],dVals[2],dVals[1]),hue,shade);
+        HSL memory color = HSL(box.hue,box.saturation,box.lightness);//Colors.lookupColor(Palette(HSL(box.hue,box.saturation,box.lightness),dVals[3],dVals[2],dVals[1]),hue,shade);
         return Shape(position, size, color);
     }
 
