@@ -123,8 +123,7 @@ export class TinyBoxesStore extends Contract {
 
     redeemLE(
       seed: number | string,
-      shapes: number | string,
-      hatching: number | string,
+      shapes: (number | string)[],
       color: (number | string)[],
       size: (number | string)[],
       spacing: (number | string)[],

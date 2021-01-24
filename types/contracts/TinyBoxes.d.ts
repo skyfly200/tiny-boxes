@@ -123,8 +123,7 @@ export class TinyBoxes extends Contract {
 
     redeemLE(
       seed: number | string,
-      shapes: number | string,
-      hatching: number | string,
+      shapes: (number | string)[],
       color: (number | string)[],
       size: (number | string)[],
       spacing: (number | string)[],
@@ -135,6 +134,18 @@ export class TinyBoxes extends Contract {
     referalNewPercent(): TransactionObject<string>;
 
     referalPercent(): TransactionObject<string>;
+
+    renderPreview(
+      seed: string,
+      color: (number | string)[],
+      shapes: (number | string)[],
+      size: (number | string)[],
+      spacing: (number | string)[],
+      mirroring: number | string,
+      settings: (number | string)[],
+      traits: (number | string)[],
+      slot: string
+    ): TransactionObject<string>;
 
     renounceRole(
       role: string | number[],
