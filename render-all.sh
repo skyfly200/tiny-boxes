@@ -44,13 +44,13 @@ if [ -z "$ADDRESS" ]
                         ANIMATION=0
                 fi
                 # render svg at
-                npx oz call --method perpetualRenderer -n rinkeby --args "[1111,100,50,70,30,5,100,100,100,100,75,50,63,50,10,1], $ID, $OWNER, [$ANIMATION,10,7,70], $SLOT" --to "$ADDRESS" > "./frames/Anim-$ANIMATION.svg"
+                npx oz call --method perpetualRenderer -n rinkeby --args "[1111,100,50,70,30,5,100,100,100,100,75,50,63,135,10,3], $ID, $OWNER, [$ANIMATION,10,7,70], $SLOT" --to "$ADDRESS" > "./frames/Anim-$ANIMATION.svg"
             else
                 # adjust max animation value here
                 for ANIMATION in {0..23}
                 do  
                     # render svg at
-                    npx oz call --method perpetualRenderer -n rinkeby --args "[1111,100,50,70,30,5,100,100,100,100,75,50,63,50,10,1], $ID, $OWNER, [$ANIMATION,10,7,70], $SLOT" --to "$ADDRESS" > "./frames/Anim-$ANIMATION.svg"
+                    npx oz call --method perpetualRenderer -n rinkeby --args "[1111,100,50,70,30,5,100,100,100,100,75,50,63,0,10,1], $ID, $OWNER, [$ANIMATION,10,7,70], $SLOT" --to "$ADDRESS" > "./frames/Anim-$ANIMATION.svg"
                 done
         fi
 fi
