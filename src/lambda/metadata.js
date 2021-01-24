@@ -214,6 +214,21 @@ exports.handler = async (event, context) => {
           max_value: 30
         },
         {
+          trait_type: 'Max Width',
+          value: data.size[1],
+          max_value: 255
+        },
+        {
+          trait_type: 'Min Height',
+          value: data.size[2],
+          max_value: 255
+        },
+        {
+          trait_type: 'Max Height',
+          value: data.size[3],
+          max_value: 255
+        },
+        {
           trait_type: 'Spread',
           value: data.spacing[0] + "%",
           max_value: 100
