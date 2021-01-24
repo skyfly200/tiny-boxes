@@ -21,7 +21,7 @@ export class TinyBoxesRenderer extends Contract {
   );
   clone(): TinyBoxesRenderer;
   methods: {
-    tokenPreview(
+    renderToken(
       seed: string,
       color: (number | string)[],
       shapes: (number | string)[],
