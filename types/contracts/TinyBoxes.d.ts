@@ -177,7 +177,13 @@ export class TinyBoxes extends Contract {
 
     testRandom(): TransactionObject<string>;
 
-    tokenArt(_id: number | string): TransactionObject<string>;
+    tokenArt(
+      _id: number | string,
+      bkg: number | string,
+      duration: number | string,
+      options: number | string,
+      slot: string
+    ): TransactionObject<string>;
 
     tokenByIndex(index: number | string): TransactionObject<string>;
 
@@ -211,18 +217,6 @@ export class TinyBoxes extends Contract {
     tokenOfOwnerByIndex(
       owner: string,
       index: number | string
-    ): TransactionObject<string>;
-
-    tokenPreview(
-      seed: string,
-      color: (number | string)[],
-      shapes: (number | string)[],
-      size: (number | string)[],
-      spacing: (number | string)[],
-      mirroring: number | string,
-      settings: (number | string)[],
-      traits: (number | string)[],
-      slot: string
     ): TransactionObject<string>;
 
     tokenURI(tokenId: number | string): TransactionObject<string>;

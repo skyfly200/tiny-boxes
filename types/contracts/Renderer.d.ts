@@ -45,18 +45,6 @@ export class Renderer extends Contract {
       dVals: (number | string)[],
       _slot: string
     ): TransactionObject<string>;
-
-    renderToken(
-      seed: string,
-      color: (number | string)[],
-      shapes: (number | string)[],
-      size: (number | string)[],
-      spacing: (number | string)[],
-      mirroring: number | string,
-      settings: (number | string)[],
-      traits: (number | string)[],
-      slot: string
-    ): TransactionObject<string>;
   };
   events: {
     allEvents: (

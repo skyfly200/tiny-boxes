@@ -46,7 +46,7 @@ export class TinyBoxesRenderer extends Contract {
       _slot: string
     ): TransactionObject<string>;
 
-    renderToken(
+    renderPreview(
       seed: string,
       color: (number | string)[],
       shapes: (number | string)[],

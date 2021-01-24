@@ -205,7 +205,7 @@ contract TinyBoxesRenderer {
      * @param slot string to enter at end of SVG markup
      * @return preview SVG art
      */
-    function renderToken(
+    function renderPreview(
         string calldata seed,
         uint16[3] calldata color,
         uint8[2] calldata shapes,
