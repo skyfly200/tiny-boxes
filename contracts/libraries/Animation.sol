@@ -148,7 +148,7 @@ library Animation {
         uint256 shapeIndex
     ) external pure returns (string memory) {
         string memory duration = string(abi.encodePacked(uint256(box.duration > 0 ? box.duration : 10).toString(),"s"));
-        string memory attr = _calcAttributes((box.options/2)%8);
+        string memory attr = _calcAttributes(box.options%8);
         // select animation based on animation id
         if (animation == 0) {
             // snap spin 90
