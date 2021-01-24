@@ -216,7 +216,6 @@ contract TinyBoxesRenderer {
     //     uint8[4] calldata traits,
     //     string calldata slot
     // ) external view returns (string memory) {
-    //     require(settings[0] <= 101, "BKG % Invalid"); // TODO - remove for new bkg colors
     //     validateParams(shapes[0], shapes[1], color, size, spacing, true);
     //     TinyBox memory box = TinyBox({
     //         randomness: uint128(seed.stringToUint()),

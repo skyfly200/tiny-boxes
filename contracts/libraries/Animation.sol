@@ -123,7 +123,8 @@ library Animation {
             mode == 2 ? 'mouseenter ' : mode == 3 ? 'dblclick' : 'click',
             '" '
         ));
-        string memory end = mode == 3 ? 'end="target.click" ' : '';
+        string memory end = mode == 2 ? 'end="target.mouseleave" ' :
+            mode == 3 ? 'end="target.click" ' : '';
         return string(abi.encodePacked(repeat, begin, end));
         // 0 - 000    '',
         // 1 - 001    'repeatCount="indefinite" ',
