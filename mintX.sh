@@ -11,6 +11,9 @@ while getopts "c:f:t:" arg; do
     esac
 done
 
+#VALUE=100000000000000000
+VALUE=1
+
 ## if deploy or render
 ## delete oz lock file ./.openzeppelin/.lock
 rm -f ./.openzeppelin/.lock
@@ -26,6 +29,6 @@ if [ -z "$TO" ]
         # adjust count to mint here
         for I in {0..10}
         do  
-            npx oz send-tx -n rinkeby -v --method createTo --to $ADDRESS --value 100000000000000000 --args "685525412542, 25, 5, [15,50,70], [100,100,100,100], [50,50], 63, $TO, 0"
+            npx oz send-tx -n rinkeby -v --method create --to $ADDRESS --value $VALUE --args "685525412542, 25, 5, [15,50,70], [100,100,100,100], [50,50], 63, $TO, 0"
         done
 fi
