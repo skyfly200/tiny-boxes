@@ -78,10 +78,10 @@ contract TinyBoxesStore is TinyBoxesBase {
     // Token Creation Functions
 
     /**
-     * @dev Create a new TinyBox Promo Token
-     * @param recipient of the new TinyBox promo token
+     * @dev Create a new LimitedEdition TinyBox Token
+     * @param recipient of the new LE TinyBox token
      */
-    function mintPromo(address recipient) external {
+    function mintLE(address recipient) external {
         onlyRole(ADMIN_ROLE);
         require(_tokenPromoIds.current() < MAX_PROMOS, "NO MORE");
         uint256 id = UINT_MAX - _tokenPromoIds.current();
@@ -162,7 +162,7 @@ contract TinyBoxesStore is TinyBoxesBase {
      * @param size range for boxes
      * @param spacing grid and spread params
      */
-    function createLE(
+    function redeemLE(
         uint128 seed,
         uint8 shapes,
         uint8 hatching,
