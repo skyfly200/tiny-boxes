@@ -26,11 +26,8 @@ library Colors {
         uint16 rootHue,
         uint8 scheme,
         uint8 index
-    ) internal view returns (uint16 hue) {
-        // seed the random scheme from the extra bit space of the rootHue
-        bytes32[] memory huePool = Random.init(rootHue.div(360));
-
-        uint16[3][11] memory schemes = [
+    ) internal pure returns (uint16 hue) {
+        uint16[3][10] memory schemes = [
             [uint16(120), uint16(240), uint16(0)], // triadic
             [uint16(180), uint16(180), uint16(0)], // complimentary
             [uint16(60), uint16(180), uint16(240)], // tetradic
@@ -40,19 +37,13 @@ library Colors {
             [uint16(150), uint16(180), uint16(210)], // complimentary and analogous
             [uint16(30), uint16(60), uint16(90)], // series
             [uint16(90), uint16(180), uint16(270)], // square
-            [uint16(0), uint16(0), uint16(0)], // mono
-            [
-                uint16(huePool.uniform(0,359)),
-                uint16(huePool.uniform(10,369)),
-                uint16(huePool.uniform(20,379))
-            ] // random
+            [uint16(0), uint16(0), uint16(0)] // mono
         ];
 
         require(scheme < schemes.length, "Invalid scheme id");
         require(index < 4, "Invalid color index");
 
-        hue = index == 0 ? uint16(rootHue.mod(360)) :
-            uint16(rootHue.mod(360).add(schemes[scheme][index-1]));
+        hue = index == 0 ? rootHue : uint16(rootHue.mod(360).add(schemes[scheme][index-1]));
     }
 
     function lookupColor(
@@ -64,10 +55,19 @@ library Colors {
         uint8 contrast,
         uint8 shade,
         uint8 hueIndex
-    ) external view returns (HSL memory) {
+    ) external pure returns (HSL memory) {
         uint16 h = lookupHue(hue, scheme, hueIndex);
         uint8 s = saturation;
-        uint8 l;
+        uint8 l = calcShade(lightness, shades, contrast, shade);
+        return HSL(h, s, l);
+    }
+
+    function calcShade(
+        uint8 lightness,
+        uint8 shades,
+        uint8 contrast,
+        uint8 shade
+    ) public pure returns (uint8 l) {
         if (shades > 1) {
             uint256 range = uint256(contrast);
             uint256 step = range.div(uint256(shades));
@@ -76,7 +76,6 @@ library Colors {
         } else {
             l = lightness;
         }
-        return HSL(h, s, l);
     }
 
     /**

@@ -23,6 +23,13 @@ export class Colors extends Contract {
   methods: {
     _parseBkg(bkg: number | string): TransactionObject<string>;
 
+    calcShade(
+      lightness: number | string,
+      shades: number | string,
+      contrast: number | string,
+      shade: number | string
+    ): TransactionObject<string>;
+
     lookupColor(
       scheme: number | string,
       hue: number | string,

@@ -102,7 +102,18 @@ contract TinyBoxesRenderer {
         // lookup a random color from the color palette
         uint8 hue = uint8(pool.uniform(0, 3));
         uint8 shade = uint8(pool.uniform(0, int256(dVals[2]).sub(1)));
-        HSL memory color = dVals[1].lookupColor(box.hue,box.saturation,box.lightness,dVals[2],dVals[3],shade,hue);
+        HSL memory color;
+        if (dVals[1] == 10) {
+            // seed the random scheme from the extra bit space of the rootHue
+            bytes32[] memory huePool = Random.init(uint256(box.hue).div(360).add(hue));
+            color = HSL(
+                hue == 0 ? box.hue : uint16(huePool.uniform(0,359)),
+                box.saturation,
+                Colors.calcShade(box.lightness, dVals[2], dVals[3], shade)
+            );
+        } else {
+            color = dVals[1].lookupColor(box.hue,box.saturation,box.lightness,dVals[2],dVals[3],shade,hue);
+        }
         return Shape(position, size, color);
     }
 
@@ -164,7 +175,7 @@ contract TinyBoxesRenderer {
     {
         // seed PRNG
         bytes32[] memory pool = Random.init(box.randomness);
-        
+
         // generate shapes (shapes + animations)
         string memory shapes = "";
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
