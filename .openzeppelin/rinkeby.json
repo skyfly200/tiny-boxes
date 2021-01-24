@@ -100,13 +100,6 @@
         "bytecodeHash": "d0390988073446a891d1705c16a904e62ba68c49933cbbc9e77657983cbe9fb7"
       }
     ],
-    "tinyboxes/TinyBoxesLE": [
-      {
-        "address": "0x5b6B7Ba1FC62A076d59687B7d0E5f0A213bDCe80",
-        "kind": "NonProxy",
-        "bytecodeHash": "1e833b92680c21208b450d9b254a76e254b17bb040acfa20ec95771d81245deb"
-      }
-    ],
     "tinyboxes/TinyBoxesRenderer": [
       {
         "address": "0xa70E7E42C9A98a87126474448130ac89d28ab876",
