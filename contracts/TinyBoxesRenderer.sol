@@ -80,6 +80,7 @@ contract TinyBoxesRenderer {
      * @return positions of shape
      */
     function _generateShape(
+        bytes32[] memory pool,
         uint256 index,
         TinyBox memory box,
         uint8[4] memory dVals
@@ -88,8 +89,6 @@ contract TinyBoxesRenderer {
         view
         returns (Shape memory)
     {
-        // seed PRNG
-        bytes32[] memory pool = Random.init(box.randomness);
         // calculate hatching switch
         bool hatching = (
             box.hatching > 0 &&
@@ -163,10 +162,13 @@ contract TinyBoxesRenderer {
         view
         returns (string memory)
     {
+        // seed PRNG
+        bytes32[] memory pool = Random.init(box.randomness);
+        
         // generate shapes (shapes + animations)
         string memory shapes = "";
         for (uint256 i = 0; i < uint256(box.shapes); i++) {
-            Shape memory shape = _generateShape(i, box, dVals);
+            Shape memory shape = _generateShape(pool, i, box, dVals);
             shapes = string(abi.encodePacked(shapes,
                 SVG._rect(shape, (box.options%8 != 0) ?
                     box._generateAnimation(dVals[0],shape,i) : ''
