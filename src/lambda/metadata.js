@@ -260,7 +260,7 @@ exports.handler = async (event, context) => {
         {
           display_type: "number",
           trait_type: 'Phase',
-          value:  data.scheme,
+          value:  parseInt(data.scheme) + 1,
         },
         {
           trait_type: 'Animation',
