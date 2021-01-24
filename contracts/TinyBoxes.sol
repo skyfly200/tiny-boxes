@@ -4,22 +4,22 @@ pragma experimental ABIEncoderV2;
 
 import "./TinyBoxesStore.sol";
 
-// interface Renderer {
-//     function perpetualRenderer(TinyBox calldata box, uint256 id, address owner, uint8[4] calldata dVals, string calldata _slot) external view returns (string memory);
-// }
+interface Renderer {
+    function perpetualRenderer(TinyBox calldata box, uint256 id, address owner, uint8[4] calldata dVals, string calldata _slot) external view returns (string memory);
+}
 
 contract TinyBoxes is TinyBoxesStore {
-    // Renderer renderer;
+    Renderer renderer;
 
     /**
      * @dev Contract constructor.
      * @notice Constructor inherits from TinyBoxesStore
      */
-    constructor(address rand)//, address _renderer)
+    constructor(address rand, address _renderer)
         public
         TinyBoxesStore(rand)
     {
-        //renderer = Renderer(_renderer);
+        renderer = Renderer(_renderer);
     }
 
     // /**
