@@ -9,13 +9,11 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "../structs/Decimal.sol";
 import "../structs/Shape.sol";
 import "../structs/TinyBox.sol";
-import "../structs/HSL.sol";
 
 import "./Random.sol";
 import "./Utils.sol";
 import "./Decimal.sol";
 import "./Colors.sol";
-import "../structs/Decimal.sol";
 
 library Metadata {
     using Math for uint256;

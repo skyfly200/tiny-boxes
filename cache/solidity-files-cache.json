@@ -134,40 +134,6 @@
       ],
       "artifacts": []
     },
-    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/structs/Palette.sol": {
-      "lastModificationDate": 1611371821770,
-      "contentHash": "903b6751126611ba5dd8f1cec2726628",
-      "sourceName": "contracts/structs/Palette.sol",
-      "solcConfig": {
-        "version": "0.6.8",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "./HSL.sol"
-      ],
-      "versionPragmas": [
-        "^0.6.4"
-      ],
-      "artifacts": []
-    },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
       "lastModificationDate": 1608685665941,
       "contentHash": "140e80ebd07ed05e7fe907c531e6746f",
@@ -455,8 +421,8 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/Metadata.sol": {
-      "lastModificationDate": 1611371857827,
-      "contentHash": "a71408623863089100577641a57552e6",
+      "lastModificationDate": 1611497782111,
+      "contentHash": "41e0695558ee9852aa19f03d39c03c54",
       "sourceName": "contracts/libraries/Metadata.sol",
       "solcConfig": {
         "version": "0.6.8",
@@ -488,7 +454,6 @@
         "../structs/Decimal.sol",
         "../structs/Shape.sol",
         "../structs/TinyBox.sol",
-        "../structs/HSL.sol",
         "./Random.sol",
         "./Utils.sol",
         "./Decimal.sol",
@@ -573,49 +538,8 @@
         "Random"
       ]
     },
-    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/Colors.sol": {
-      "lastModificationDate": 1611437997415,
-      "contentHash": "5cfda465951255c45a2e7c49abc3701d",
-      "sourceName": "contracts/libraries/Colors.sol",
-      "solcConfig": {
-        "version": "0.6.8",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/utils/Strings.sol",
-        "@openzeppelin/contracts/utils/SafeCast.sol",
-        "@openzeppelin/contracts/math/SafeMath.sol",
-        "./Utils.sol",
-        "./Random.sol",
-        "../structs/HSL.sol"
-      ],
-      "versionPragmas": [
-        "^0.6.8"
-      ],
-      "artifacts": [
-        "Colors"
-      ]
-    },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxesRenderer.sol": {
-      "lastModificationDate": 1611437519672,
+      "lastModificationDate": 1611497571990,
       "contentHash": "c6810fbcb9113e43b373107e6cacae31",
       "sourceName": "contracts/TinyBoxesRenderer.sol",
       "solcConfig": {
@@ -663,7 +587,7 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/SVG.sol": {
-      "lastModificationDate": 1611393837080,
+      "lastModificationDate": 1611497571995,
       "contentHash": "69c3adacafa5d0db4c2dc9e7e71a2cd3",
       "sourceName": "contracts/libraries/SVG.sol",
       "solcConfig": {
@@ -1433,6 +1357,47 @@
       ],
       "artifacts": [
         "Animation"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/Colors.sol": {
+      "lastModificationDate": 1611497571992,
+      "contentHash": "5cfda465951255c45a2e7c49abc3701d",
+      "sourceName": "contracts/libraries/Colors.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/utils/Strings.sol",
+        "@openzeppelin/contracts/utils/SafeCast.sol",
+        "@openzeppelin/contracts/math/SafeMath.sol",
+        "./Utils.sol",
+        "./Random.sol",
+        "../structs/HSL.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "Colors"
       ]
     }
   }
