@@ -118,7 +118,7 @@ contract TinyBoxesRenderer {
         string[4] memory scales = ['1 1','-1 1','1 -1','-1 -1'];
         uint16[3] memory levels = [600, 1200, 2400];
         // reference shapes symbol at core of mirroring
-        string memory symbols = string(abi.encodePacked('<symbol id="quad0">',SVG._g('', SVG._use('', 'shapes')),'</symbol>'));
+        string memory symbols = string(abi.encodePacked('<symbol id="quad0">',SVG._g('', SVG._use('shapes','')),'</symbol>'));
         // loop through nested mirroring levels
         for (uint256 s = 0; s < 3; s++) {
             string memory id = string(abi.encodePacked('quad', s.toString()));
@@ -134,7 +134,7 @@ contract TinyBoxesRenderer {
                     string memory transform = string(abi.encodePacked(
                         'transform="scale(', scales[i], ') translate(', (i%2 == 1) ? value : '0', ' ', (i > 1) ? value : '0', ')"'
                     ));
-                    copies = string(abi.encodePacked(copies,SVG._g(transform, SVG._use('', id))));
+                    copies = string(abi.encodePacked(copies,SVG._g(transform, SVG._use(id,''))));
                 }
             }
             // wrap symbol and all copies in a new symbol
@@ -145,7 +145,7 @@ contract TinyBoxesRenderer {
         string memory attrs = string(abi.encodePacked(
             'transform="scale(', scale.toString(), ' ', scale.toString(), ')" clip-path="url(#clip)"'
         ));
-        string memory finalScale = SVG._g(attrs, SVG._use('', 'quad3'));
+        string memory finalScale = SVG._g(attrs, SVG._use('quad3', ''));
         return string(abi.encodePacked(symbols,finalScale));
     }
 

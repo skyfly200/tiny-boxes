@@ -45,27 +45,6 @@ export class TinyBoxesRenderer extends Contract {
       dVals: (number | string)[],
       _slot: string
     ): TransactionObject<string>;
-
-    renderPreview(
-      seed: string,
-      color: (number | string)[],
-      shapes: (number | string)[],
-      size: (number | string)[],
-      spacing: (number | string)[],
-      mirroring: number | string,
-      settings: (number | string)[],
-      traits: (number | string)[],
-      slot: string
-    ): TransactionObject<string>;
-
-    validateParams(
-      shapes: number | string,
-      hatching: number | string,
-      color: (number | string)[],
-      size: (number | string)[],
-      position: (number | string)[],
-      exclusive: boolean
-    ): TransactionObject<void>;
   };
   events: {
     allEvents: (
