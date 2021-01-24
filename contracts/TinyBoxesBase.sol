@@ -29,7 +29,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     address payable natealex = 0x63a9dbCe75413036B2B778E670aaBd4493aAF9F3;
 
     //uint256 public constant price = 100000000000000000; // in wei - 0.1 ETH
-    uint256 public constant price = 1; // minimum for test runs
+    uint256 public constant price = 10000; // lowered for test runs
     uint256 public constant referalPercent = 10;
     uint256 public constant referalNewPercent = 15;
     uint256 UINT_MAX = uint256(-1);
