@@ -15,13 +15,6 @@
       "localBytecodeHash": "6b468d8cde1d4f9855cbbf0f24baff56878878e55476f98038753eeb9dc87d7b",
       "deployedBytecodeHash": "6b468d8cde1d4f9855cbbf0f24baff56878878e55476f98038753eeb9dc87d7b"
     },
-    "TinyBoxesRenderer": {
-      "address": "0x863b06aD8826B7b7bbA5096210d0Ff67715acD5a",
-      "constructorCode": "615ff662000027600b82828239805160001a60731461001a57fe5b30600052607381538281f3fe",
-      "bodyBytecodeHash": "8c8e5ebc4d6fbcfead502f5efb242e9eaa0b1e2c6a180eb4b14650a080705bcb",
-      "localBytecodeHash": "5a1fac157738f4aff0a96cf615ebe8e6b5fee210780edffe7ef81abf4991128d",
-      "deployedBytecodeHash": "496a54bc996c22befa4b58ae0f668e883d1b608e74161ac453f9dbccfb522772"
-    },
     "Colors": {
       "address": "0x482061da021C0C562892065Cb208A2370160AB31",
       "constructorCode": "610de2610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
