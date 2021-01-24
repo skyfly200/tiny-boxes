@@ -92,8 +92,7 @@ contract TinyBoxesStore is TinyBoxesBase {
     /**
      * @dev Create a new TinyBox Token
      * @param _seed of token
-     * @param shapes count
-     * @param hatching mod value
+     * @param shapes count and hatching mod value
      * @param color settings (hue, sat, light, contrast, shades)
      * @param size range for boxes
      * @param spacing grid and spread params
@@ -102,8 +101,7 @@ contract TinyBoxesStore is TinyBoxesBase {
      */
     function create(
         string calldata _seed,
-        uint8 shapes,
-        uint8 hatching,
+        uint8[2] calldata shapes,
         uint16[3] calldata color,
         uint8[4] calldata size,
         uint8[2] calldata spacing,
@@ -116,7 +114,7 @@ contract TinyBoxesStore is TinyBoxesBase {
         notCountdown();
         handlePayment(referalID, recipient);
         // check box parameters
-        validateParams(shapes, hatching, color, size, spacing, false);
+        validateParams(shapes[0], shapes[1], color, size, spacing, false);
         // make sure caller is never the 0 address
         require(recipient != address(0), "0x00 Recipient Invalid");
         // check payment and give change
@@ -137,8 +135,8 @@ contract TinyBoxesStore is TinyBoxesBase {
             hue: color[0],
             saturation: (rand % 200 == 0) ? uint8(0) : uint8(color[1]), // 0.5% chance of grayscale
             lightness: uint8(color[2]),
-            shapes: shapes,
-            hatching: hatching,
+            shapes: shapes[0],
+            hatching: shapes[1],
             widthMin: size[0],
             widthMax: size[1],
             heightMin: size[2],
@@ -156,16 +154,14 @@ contract TinyBoxesStore is TinyBoxesBase {
     /**
      * @dev Create a Limited Edition TinyBox Token from a Promo token
      * @param seed for the token
-     * @param shapes count
-     * @param hatching mod value
+     * @param shapes count and hatching mod value
      * @param color settings (hue, sat, light, contrast, shades)
      * @param size range for boxes
      * @param spacing grid and spread params
      */
     function redeemLE(
         uint128 seed,
-        uint8 shapes,
-        uint8 hatching,
+        uint8[2] calldata shapes,
         uint16[3] calldata color,
         uint8[4] calldata size,
         uint8[2] calldata spacing,
@@ -178,15 +174,15 @@ contract TinyBoxesStore is TinyBoxesBase {
         // check token is unredeemed
         require(unredeemed(id), "USED");
         // check box parameters are valid
-        validateParams(shapes, hatching, color, size, spacing, true);
+        validateParams(shapes[0], shapes[1], color, size, spacing, true);
         // create a new box object
         boxes[id] = TinyBox({
             randomness: uint128(seed),
             hue: color[0],
             saturation: uint8(color[1]),
             lightness: uint8(color[2]),
-            shapes: shapes,
-            hatching: hatching,
+            shapes: shapes[0],
+            hatching: shapes[1],
             widthMin: size[0],
             widthMax: size[1],
             heightMin: size[2],

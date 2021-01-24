@@ -54,8 +54,7 @@ export class TinyBoxes extends Contract {
 
     create(
       _seed: string,
-      shapes: number | string,
-      hatching: number | string,
+      shapes: (number | string)[],
       color: (number | string)[],
       size: (number | string)[],
       spacing: (number | string)[],
