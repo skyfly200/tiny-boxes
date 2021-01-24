@@ -103,7 +103,7 @@ contract TinyBoxesRenderer {
         // lookup a random color from the color palette
         uint8 hue = uint8(pool.uniform(0, 3));
         uint8 shade = uint8(pool.uniform(0, int256(dVals[2]).sub(1)));
-        HSL memory color = dVals[1].lookupColor(box.hue,box.saturation,box.lightness,dVals[3],dVals[2],hue,shade);
+        HSL memory color = dVals[1].lookupColor(box.hue,box.saturation,box.lightness,dVals[2],dVals[3],shade,hue);
         return Shape(position, size, color);
     }
 

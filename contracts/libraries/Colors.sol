@@ -28,9 +28,8 @@ library Colors {
         uint8 index
     ) internal view returns (uint16 hue) {
         // seed the random scheme from the extra bit space of the rootHue
-        uint256 colorSeed = rootHue.div(360);
-        bytes32[] memory huePool = Random.init(colorSeed);
-        
+        bytes32[] memory huePool = Random.init(rootHue.div(360));
+
         uint16[3][11] memory schemes = [
             [uint16(120), uint16(240), uint16(0)], // triadic
             [uint16(180), uint16(180), uint16(0)], // complimentary
@@ -52,7 +51,7 @@ library Colors {
         require(scheme < schemes.length, "Invalid scheme id");
         require(index < 4, "Invalid color index");
 
-        hue = index == 0 ? rootHue :
+        hue = index == 0 ? uint16(rootHue.mod(360)) :
             uint16(rootHue.mod(360).add(schemes[scheme][index-1]));
     }
 
