@@ -159,7 +159,7 @@ contract TinyBoxesRenderer {
      * @return markup of the SVG graphics of the token as a string
      */
     function perpetualRenderer(TinyBox memory box, uint256 id, address owner, uint8[4] memory dVals, string memory _slot)
-        internal
+        public
         view
         returns (string memory)
     {

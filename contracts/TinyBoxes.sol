@@ -16,6 +16,13 @@ interface Renderer {
         uint8[4] calldata traits,
         string calldata slot
     ) external view returns (string memory);
+    function perpetualRenderer(
+        TinyBox calldata box,
+        uint256 id,
+        address owner,
+        uint8[4] calldata dVals,
+        string calldata _slot
+    ) external view returns (string memory);
 }
 
 contract TinyBoxes is TinyBoxesStore {
@@ -32,19 +39,20 @@ contract TinyBoxes is TinyBoxesStore {
         renderer = Renderer(_renderer);
     }
 
-    // /**
-    //  * @dev Generate the token SVG art
-    //  * @param _id for which we want art
-    //  * @return SVG art of token 
-    //  */
-    // function tokenArt(uint256 _id)
-    //     external
-    //     view
-    //     returns (string memory)
-    // {
-    //     TinyBox memory box = boxes[_id];
-    //     return renderer.perpetualRenderer(box, _id, ownerOf(_id), calcedParts(box, _id), "");
-    // }
+    /**
+     * @dev Generate the token SVG art
+     * @param _id for which we want art
+     * @return SVG art of token 
+     */
+    function tokenArt(uint256 _id)
+        external
+        view
+        returns (string memory)
+    {
+        TinyBox memory box = boxes[_id];
+        //return renderer.renderToken(box.randomness,[box],[box.shapes,box.hatching],box.size,box.spacing,box.mirroring,box.settings,calcedParts(box, _id),"");
+        return renderer.perpetualRenderer(box, _id, ownerOf(_id), calcedParts(box, _id), "");
+    }
 
     // /**
     //  * @dev Generate the token SVG art with specific options
@@ -92,32 +100,6 @@ contract TinyBoxes is TinyBoxesStore {
     ) external view returns (string memory) {
         require(settings[0] <= 101, "BKG % Invalid");
         validateParams(shapes[0], shapes[1], color, size, spacing, true);
-        TinyBox memory box = TinyBox({
-            randomness: uint128(seed.stringToUint()),
-            hue: color[0],
-            saturation: uint8(color[1]),
-            lightness: uint8(color[2]),
-            shapes: shapes[0],
-            hatching: shapes[1],
-            widthMin: size[0],
-            widthMax: size[1],
-            heightMin: size[2],
-            heightMax: size[3],
-            spread: spacing[0],
-            mirroring: mirroring,
-            grid: spacing[1],
-            bkg: settings[0],
-            duration: settings[1],
-            options: settings[2]
-        });
         return renderer.renderToken(seed,color,shapes,size,spacing,mirroring,settings,traits,slot);
-            // uint16[3] calldata color,
-            // uint8[2] calldata shapes,
-            // uint8[4] calldata size,
-            // uint8[2] calldata spacing,
-            // uint8 mirroring,
-            // uint8[3] calldata settings,
-            // uint8[4] calldata traits,
-            // string calldata slot
     }
 }
