@@ -96,6 +96,16 @@
         "address": "0x0a973C96b4DaeCd2983d78A2694F7F0B0115d103",
         "kind": "NonProxy",
         "bytecodeHash": "10456388dedbbf7381903c7c66419e4c006e8f76fa01c9ccc54101f6dffebcaf"
+      },
+      {
+        "address": "0x4d8b6CF99e757b50233C87fbD69456246Ee9eFFa",
+        "kind": "NonProxy",
+        "bytecodeHash": "2294d00c8f57ef5b13ed88f8f643d243b082f26e83931c760ccb1f31fa12f5e2"
+      },
+      {
+        "address": "0x1a38EC2d31b0b795Cd7786E57e673eCF28Cc1e8b",
+        "kind": "NonProxy",
+        "bytecodeHash": "7db6dd4f445fefd6875134ca783864263e0b7537aec3e556c54a39b3082d617f"
       }
     ],
     "tinyboxes/Randomizer": [

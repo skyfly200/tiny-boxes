@@ -64,17 +64,6 @@ export class TinyBoxesStore extends Contract {
       referalID: number | string
     ): TransactionObject<string>;
 
-    createLE(
-      seed: number | string,
-      shapes: number | string,
-      hatching: number | string,
-      color: (number | string)[],
-      size: (number | string)[],
-      spacing: (number | string)[],
-      mirroring: number | string,
-      id: number | string
-    ): TransactionObject<void>;
-
     currentPhase(): TransactionObject<string>;
 
     getApproved(tokenId: number | string): TransactionObject<string>;
@@ -105,7 +94,7 @@ export class TinyBoxesStore extends Contract {
 
     isTokenLE(id: number | string): TransactionObject<boolean>;
 
-    mintPromo(recipient: string): TransactionObject<void>;
+    mintLE(recipient: string): TransactionObject<void>;
 
     name(): TransactionObject<string>;
 
@@ -131,6 +120,17 @@ export class TinyBoxesStore extends Contract {
       1: string;
       2: string;
     }>;
+
+    redeemLE(
+      seed: number | string,
+      shapes: number | string,
+      hatching: number | string,
+      color: (number | string)[],
+      size: (number | string)[],
+      spacing: (number | string)[],
+      mirroring: number | string,
+      id: number | string
+    ): TransactionObject<void>;
 
     referalNewPercent(): TransactionObject<string>;
 

@@ -64,17 +64,6 @@ export class TinyBoxes extends Contract {
       referalID: number | string
     ): TransactionObject<string>;
 
-    createLE(
-      seed: number | string,
-      shapes: number | string,
-      hatching: number | string,
-      color: (number | string)[],
-      size: (number | string)[],
-      spacing: (number | string)[],
-      mirroring: number | string,
-      id: number | string
-    ): TransactionObject<void>;
-
     currentPhase(): TransactionObject<string>;
 
     getApproved(tokenId: number | string): TransactionObject<string>;
@@ -105,7 +94,7 @@ export class TinyBoxes extends Contract {
 
     isTokenLE(id: number | string): TransactionObject<boolean>;
 
-    mintPromo(recipient: string): TransactionObject<void>;
+    mintLE(recipient: string): TransactionObject<void>;
 
     name(): TransactionObject<string>;
 
@@ -131,6 +120,17 @@ export class TinyBoxes extends Contract {
       1: string;
       2: string;
     }>;
+
+    redeemLE(
+      seed: number | string,
+      shapes: number | string,
+      hatching: number | string,
+      color: (number | string)[],
+      size: (number | string)[],
+      spacing: (number | string)[],
+      mirroring: number | string,
+      id: number | string
+    ): TransactionObject<void>;
 
     referalNewPercent(): TransactionObject<string>;
 
@@ -177,6 +177,14 @@ export class TinyBoxes extends Contract {
 
     testRandom(): TransactionObject<string>;
 
+    tokenArt(
+      _id: number | string,
+      bkg: number | string,
+      duration: number | string,
+      options: number | string,
+      slot: string
+    ): TransactionObject<string>;
+
     tokenByIndex(index: number | string): TransactionObject<string>;
 
     tokenData(
@@ -209,6 +217,18 @@ export class TinyBoxes extends Contract {
     tokenOfOwnerByIndex(
       owner: string,
       index: number | string
+    ): TransactionObject<string>;
+
+    tokenPreview(
+      seed: string,
+      color: (number | string)[],
+      shapes: (number | string)[],
+      size: (number | string)[],
+      spacing: (number | string)[],
+      mirroring: number | string,
+      settings: (number | string)[],
+      traits: (number | string)[],
+      slot: string
     ): TransactionObject<string>;
 
     tokenURI(tokenId: number | string): TransactionObject<string>;
