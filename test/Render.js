@@ -24,7 +24,7 @@ describe("Testing TinyBoxes Render Methods", function() {
         const TinyBoxesRenderer = await hre.ethers.getContractFactory("TinyBoxesRenderer",{
             libraries: {
                 Animation: animation.address,
-                Colors: "0x0B37DC0Adc2948f3689dfB8200F3419424360d85",
+                Colors: "0x482061da021C0C562892065Cb208A2370160AB31",
                 Utils: "0xA87158c03e304d88C93D2a9B8AE2046e8EaB29b9"
             }
         });

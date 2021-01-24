@@ -31,6 +31,10 @@ export class TinyBoxesBase extends Contract {
 
     TOKEN_LIMIT(): TransactionObject<string>;
 
+    _tokenIds(): TransactionObject<string>;
+
+    _tokenPromoIds(): TransactionObject<string>;
+
     approve(to: string, tokenId: number | string): TransactionObject<void>;
 
     avgBlockTime(): TransactionObject<string>;
@@ -76,6 +80,8 @@ export class TinyBoxesBase extends Contract {
       operator: string
     ): TransactionObject<boolean>;
 
+    isTokenLE(id: number | string): TransactionObject<boolean>;
+
     name(): TransactionObject<string>;
 
     ownerOf(tokenId: number | string): TransactionObject<string>;
@@ -88,6 +94,8 @@ export class TinyBoxesBase extends Contract {
 
     phaseLen(): TransactionObject<string>;
 
+    price(): TransactionObject<string>;
+
     readSettings(
       id: number | string
     ): TransactionObject<{
@@ -98,6 +106,10 @@ export class TinyBoxesBase extends Contract {
       1: string;
       2: string;
     }>;
+
+    referalNewPercent(): TransactionObject<string>;
+
+    referalPercent(): TransactionObject<string>;
 
     renounceRole(
       role: string | number[],
@@ -130,7 +142,7 @@ export class TinyBoxesBase extends Contract {
 
     setTokenURI(_id: number | string, _uri: string): TransactionObject<void>;
 
-    startCoundown(startBlock: number | string): TransactionObject<void>;
+    startCountdown(startBlock: number | string): TransactionObject<void>;
 
     supportsInterface(
       interfaceId: string | number[]
@@ -236,6 +248,7 @@ export class TinyBoxesBase extends Contract {
       1: string;
       2: string;
     }>;
+    SettingsChanged: ContractEvent<string[]>;
     Transfer: ContractEvent<{
       from: string;
       to: string;

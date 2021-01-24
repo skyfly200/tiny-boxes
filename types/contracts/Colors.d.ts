@@ -21,30 +21,22 @@ export class Colors extends Contract {
   );
   clone(): Colors;
   methods: {
+    _parseBkg(bkg: number | string): TransactionObject<string>;
+
     lookupColor(
-      pal: {
-        root: {
-          hue: number | string;
-          saturation: number | string;
-          lightness: number | string;
-        };
-        contrast: number | string;
-        shades: number | string;
-        scheme: number | string;
-      },
-      hueIndex: number | string,
-      shade: number | string
+      scheme: number | string,
+      hue: number | string,
+      saturation: number | string,
+      lightness: number | string,
+      shades: number | string,
+      contrast: number | string,
+      shade: number | string,
+      hueIndex: number | string
     ): TransactionObject<{
       hue: string;
       saturation: string;
       lightness: string;
     }>;
-
-    lookupHue(
-      rootHue: number | string,
-      scheme: number | string,
-      index: number | string
-    ): TransactionObject<string>;
 
     toString(color: {
       hue: number | string;

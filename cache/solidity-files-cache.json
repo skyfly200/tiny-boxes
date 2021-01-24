@@ -69,8 +69,8 @@
       "artifacts": []
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/structs/TinyBox.sol": {
-      "lastModificationDate": 1611371830881,
-      "contentHash": "893150baa709e29e3c877aa8b0b53d79",
+      "lastModificationDate": 1611497808727,
+      "contentHash": "0802da514a8eed982be23d3b27ebfcf5",
       "sourceName": "contracts/structs/TinyBox.sol",
       "solcConfig": {
         "version": "0.6.8",
@@ -94,9 +94,7 @@
           }
         }
       },
-      "imports": [
-        "./HSL.sol"
-      ],
+      "imports": [],
       "versionPragmas": [
         "^0.6.4"
       ],
@@ -421,8 +419,8 @@
       ]
     },
     "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/Metadata.sol": {
-      "lastModificationDate": 1611497782111,
-      "contentHash": "41e0695558ee9852aa19f03d39c03c54",
+      "lastModificationDate": 1611497874689,
+      "contentHash": "1f7ca5253d1416445cedb1edae864eb9",
       "sourceName": "contracts/libraries/Metadata.sol",
       "solcConfig": {
         "version": "0.6.8",
@@ -457,8 +455,7 @@
         "./Random.sol",
         "./Utils.sol",
         "./Decimal.sol",
-        "./Colors.sol",
-        "../structs/Decimal.sol"
+        "./Colors.sol"
       ],
       "versionPragmas": [
         "^0.6.4"

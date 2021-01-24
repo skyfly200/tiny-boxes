@@ -31,6 +31,10 @@ export class TinyBoxes extends Contract {
 
     TOKEN_LIMIT(): TransactionObject<string>;
 
+    _tokenIds(): TransactionObject<string>;
+
+    _tokenPromoIds(): TransactionObject<string>;
+
     approve(to: string, tokenId: number | string): TransactionObject<void>;
 
     avgBlockTime(): TransactionObject<string>;
@@ -60,7 +64,7 @@ export class TinyBoxes extends Contract {
       referalID: number | string
     ): TransactionObject<string>;
 
-    createLimitedEdition(
+    createLE(
       seed: number | string,
       shapes: number | string,
       hatching: number | string,
@@ -98,6 +102,8 @@ export class TinyBoxes extends Contract {
       owner: string,
       operator: string
     ): TransactionObject<boolean>;
+
+    isTokenLE(id: number | string): TransactionObject<boolean>;
 
     mintPromo(recipient: string): TransactionObject<void>;
 
@@ -161,7 +167,7 @@ export class TinyBoxes extends Contract {
 
     setTokenURI(_id: number | string, _uri: string): TransactionObject<void>;
 
-    startCoundown(startBlock: number | string): TransactionObject<void>;
+    startCountdown(startBlock: number | string): TransactionObject<void>;
 
     supportsInterface(
       interfaceId: string | number[]
@@ -170,14 +176,6 @@ export class TinyBoxes extends Contract {
     symbol(): TransactionObject<string>;
 
     testRandom(): TransactionObject<string>;
-
-    tokenArt(
-      _id: number | string,
-      bkg: number | string,
-      duration: number | string,
-      options: number | string,
-      slot: string
-    ): TransactionObject<string>;
 
     tokenByIndex(index: number | string): TransactionObject<string>;
 
@@ -213,18 +211,6 @@ export class TinyBoxes extends Contract {
       index: number | string
     ): TransactionObject<string>;
 
-    tokenPreview(
-      seed: string,
-      color: (number | string)[],
-      shapes: (number | string)[],
-      size: (number | string)[],
-      spacing: (number | string)[],
-      mirroring: number | string,
-      settings: (number | string)[],
-      traits: (number | string)[],
-      slot: string
-    ): TransactionObject<string>;
-
     tokenURI(tokenId: number | string): TransactionObject<string>;
 
     totalSupply(): TransactionObject<string>;
@@ -236,6 +222,8 @@ export class TinyBoxes extends Contract {
     ): TransactionObject<void>;
 
     trueID(id: number | string): TransactionObject<string>;
+
+    unredeemed(id: number | string): TransactionObject<boolean>;
 
     validateParams(
       shapes: number | string,
@@ -288,6 +276,7 @@ export class TinyBoxes extends Contract {
       1: string;
       2: string;
     }>;
+    SettingsChanged: ContractEvent<string[]>;
     Transfer: ContractEvent<{
       from: string;
       to: string;

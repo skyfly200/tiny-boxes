@@ -64,6 +64,9 @@ module.exports = {
   defaultNetwork: "hardhat",
   networks: {
     hardhat: {
+      forking: {
+        url: `https://rinkeby.infura.io/v3/${projectId}`
+      },
       allowUnlimitedContractSize: true
     },
     rinkeby: {
