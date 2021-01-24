@@ -50,12 +50,15 @@ contract TinyBoxesRenderer {
         returns (int256[2] memory positions, int256[2] memory dimensions)
     {
         // PRNG for box position
-        int256[2] memory grid = [int256(spacing[1] % 16).add(1), int256(spacing[1] / 16).add(1)];
+        int256[2] memory grid = [
+            int256(uint256(spacing[1]).mod(16)).add(1),
+            int256(uint256(spacing[1]).div(16)).add(1)
+        ];
         positions = [
-            pool.uniform( -(int256(600).div(grid[0]).div(200).mul(int256(spacing[0]))), (int256(600).div(grid[0]).div(200).mul(int256(spacing[0])))) +
-            (int256(600).div(grid[0].add(1)).mul(pool.uniform(0, grid[0]))),
-            pool.uniform( -(int256(600).div(grid[1]).div(200).mul(int256(spacing[0]))), (int256(600).div(grid[1]).div(200).mul(int256(spacing[0])))) +
-            (int256(600).div(grid[1].add(1)).mul(pool.uniform(0, grid[1])))
+            pool.uniform( -(int256(600).div(grid[0]).div(200).mul(int256(spacing[0]))), (int256(600).div(grid[0]).div(200).mul(int256(spacing[0])))).add(
+            (int256(600).div(grid[0].add(1)).mul(pool.uniform(0, grid[0])))),
+            pool.uniform( -(int256(600).div(grid[1]).div(200).mul(int256(spacing[0]))), (int256(600).div(grid[1]).div(200).mul(int256(spacing[0])))).add(
+            (int256(600).div(grid[1].add(1)).mul(pool.uniform(0, grid[1]))))
         ];
         // PRNG for box size
         if (hatched) {
