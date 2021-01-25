@@ -111,7 +111,7 @@ export default {
       return (this as any).$store.state.contracts.tinyboxes.methods.ownerOf(id).call();
     },
     lookupSupply: function() {
-      return (this as any).$store.state.contracts.tinyboxes.methods.totalSupply().call();
+      return (this as any).$store.state.contracts.tinyboxes.methods._tokenIds().call();
     },
     lookupBalance: function() {
       return (this as any).$store.state.contracts.tinyboxes.methods.balanceOf((this as any).currentAccount).call();
@@ -130,16 +130,19 @@ export default {
     },
     loadToken: async function(tokenID: any) {
       const t = this as any;
-      const artPromise = t.lookupArt(tokenID);
-      const ownerPromise = t.lookupOwner(tokenID);
-      const art = await artPromise;
-      const owner = await ownerPromise;
-      t.$set(t.tokens, tokenID, {
-        id: tokenID,
-        art: art,
-        owner: owner,
-      });
-      t.loading = false;
+      console.log(tokenID, t.limit)
+      if (tokenID < t.limit) {
+        const artPromise = t.lookupArt(tokenID);
+        const ownerPromise = t.lookupOwner(tokenID);
+        const art = await artPromise;
+        const owner = await ownerPromise;
+        t.$set(t.tokens, tokenID, {
+          id: tokenID,
+          art: art,
+          owner: owner,
+        });
+        t.loading = false;
+      }
     },
     listenForTokens: function() {
       const t = this as any;
