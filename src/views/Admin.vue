@@ -4,10 +4,67 @@
       v-row
         v-col(align="center").token-title
           h1.title TinyBoxes Admin Panel
-      template(v-else)
-        v-row(no-gutters)
-          v-col(cols="12" md="4")
-            p add contract admin info and controls here
+      v-row
+        v-col(cols="12")
+          v-toolbar
+            v-toolbar-title Phase: {{  }}
+            v-spacer
+            span Created This Phase: {{  }}
+            v-spacer
+            span Total Created: {{  }}
+            v-spacer
+          v-progress-linear(indeterminate="false" value="50" striped height="1rem" color="secondary")
+          v-progress-linear(indeterminate="false" value="10" striped height="1rem" color="accent")
+      v-row(no-gutters)
+        v-col(cols="12" md="4")
+          v-card
+            v-card-title Start Countdown
+            v-card-text
+              p Set the countdown blockstart
+          v-card
+            v-card-title Un/Pause Minting
+            v-card-text
+              p Curent State: {{  }}
+            v-card-actions
+              v-btn(icon)
+                v-icon(large) mdi-pause
+          v-card
+            v-card-title Metadata
+            v-card-text
+              p Contract URI: {{  }}
+              v-input(label="Contract URI")
+              p Base: {{  }}
+              v-input(label="Base URI")
+              v-divider
+              p Token URI
+              v-input(label="Token ID")
+              p URI: {{  }}
+              v-input(label="Token URI")
+            v-card-actions
+              v-btn Reset
+              v-spacer
+              v-btn Save
+        v-col(cols="12" md="8")
+          v-card
+            v-card-title LE Minter
+            v-card-text
+              p Mint a Limited Edition Token
+              p {{  }} of 100 Limited Editions Minted
+              v-input(label="Recipient")
+              v-btn Mint
+            v-progress-linear(indeterminate="false" value="10" striped height="1rem")
+          v-card
+            v-card-title Randomizer
+            v-card-text
+              p Set the Randomizer Contract
+              p Current Contract: {{  }}
+              .d-flex
+                v-btn Test
+                p.ml-5 Randomness: {{  }}
+              p Block: {{  }}
+              v-divider
+              v-input(label="Randomizer")
+              v-btn Update
 </template>
 
 <script lang="ts">
