@@ -401,7 +401,6 @@ export default Vue.extend({
       const c = q.c.split("-");
       const m = q.m.split("-");
       const out: any = {
-        referal: q.i,
         seed: q.r,
         shapes: s[0],
         hatching: s[1],

@@ -144,7 +144,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
             id,
             seed
         ))); // mix local and Randomizer entropy for the box randomness
-        return uint128(randomness % (2**128));
+        return uint128(randomness % (2**128)); // cut off half the bits
     }
 
     // Metadata URI Functions
