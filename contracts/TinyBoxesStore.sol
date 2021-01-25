@@ -146,7 +146,7 @@ contract TinyBoxesStore is TinyBoxesBase {
             mirroring: mirroring,
             bkg: 0,
             duration: 10,
-            options: 2
+            options: 1
         });
         _safeMint(recipient, id); // mint the new token to the recipient address
     }
@@ -192,7 +192,7 @@ contract TinyBoxesStore is TinyBoxesBase {
             mirroring: mirroring,
             bkg: 0,
             duration: 10,
-            options: 2
+            options: 1
         });
         emit LECreated(id);
     }
