@@ -456,7 +456,7 @@ export default Vue.extend({
       if (!t.form.valid) { console.log("Invalid Form Values"); return; }
       t.loading = true;
       await t.loadStatus()
-      const v = {...t.values, ...t.assembleDials(), palette: t.assemblePalette(), settings: [5, 0, 0]};
+      const v = {...t.values, ...t.assembleDials(), palette: t.assemblePalette(), settings: [0, 10, 0]};
       const traits = [
         v.traits[0],
         v.traits[1],
@@ -464,7 +464,7 @@ export default Vue.extend({
         v.color.luminosity
       ];
       this.$store.state.contracts.tinyboxes.methods
-        .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.palette, v.size, v.spacing, traits, v.settings, v.mirroring, t.id)
+        .renderPreview(v.seed.toString(), v.palette, [v.shapes, v.hatching], v.size, v.spacing, v.mirroring, v.settings, traits, '')
         .call()
         .then((result: any) => {
           t.data = result;
@@ -484,7 +484,7 @@ export default Vue.extend({
         to: this.$store.state.tinyboxesAddress,
         value: t.price,
         data: this.$store.state.contracts.tinyboxes.methods
-          .buyFor(v.seed.toString(), v.shapes, v.hatching, v.palette, v.size, v.spacing, v.mirroring, t.recipient)
+          .create(v.seed.toString(), [v.shapes, v.hatching], v.palette, v.size, v.spacing, v.mirroring, t.recipient, t.referal)
           .encodeABI(),
       };
       // TODO - warn of likely TX failure and require secondary verify step
