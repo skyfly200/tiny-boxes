@@ -13,14 +13,21 @@
             v-spacer
             span Total Created: {{  }}
             v-spacer
-          v-progress-linear(indeterminate="false" value="50" striped height="1rem" color="secondary")
-          v-progress-linear(indeterminate="false" value="10" striped height="1rem" color="accent")
+          v-progress-linear(:indeterminate="false" value="50" striped height="1rem" color="secondary")
+          v-progress-linear(:indeterminate="false" value="10" striped height="1rem" color="accent")
       v-row(no-gutters)
         v-col(cols="12" md="4")
           v-card
-            v-card-title Start Countdown
+            v-card-title Countdown
             v-card-text
+              p Curent Block: {{  }}
+              p Block Start: {{  }}
+              p Aproximate Start Time: {{  }}
+              v-divider
               p Set the countdown blockstart
+              v-input(label="Block")
+              v-input(label="Time")
+              v-btn Set
           v-card
             v-card-title Un/Pause Minting
             v-card-text
@@ -52,7 +59,7 @@
               p {{  }} of 100 Limited Editions Minted
               v-input(label="Recipient")
               v-btn Mint
-            v-progress-linear(indeterminate="false" value="10" striped height="1rem")
+            v-progress-linear(:indeterminate="false" value="10" striped height="1rem")
           v-card
             v-card-title Randomizer
             v-card-text
