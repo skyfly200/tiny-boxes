@@ -20,7 +20,7 @@ const {
 } = process.env
 
 // init web3 provider and load contract
-var web3 = new Web3(WEB3_PROVIDER_ENDPOINT)
+var web3 = new Web3(RINK_WEB3_PROVIDER_ENDPOINT)
 const tinyboxesContract = new web3.eth.Contract(
   tinyboxesABI,
   CONTRACT_ADDRESS,
