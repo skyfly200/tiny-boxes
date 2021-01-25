@@ -1,23 +1,13 @@
 <template lang="pug">
   .token-creator
     v-dialog(:value="dialog" transition="fade" :persistent="inProgress" @click:outside="overlay=''" width="500")
-      Share.dialog-share(v-if="overlay === 'share'" key="share")
-      v-card.dialog-verify(v-else-if="overlay === 'verify'" key="verify")
+      v-card.dialog-verify(v-if="overlay === 'verify'" key="verify")
         v-card-title Submit The Transaction
         v-card-text
           .message
             h3 Mint for {{ priceInETH }}
               v-icon mdi-ethereum
             h3 To {{ recipient }}
-      v-card.dialog-recipient(v-else-if="overlay === 'recipient'" key="recipient")
-        v-card-title Set Token Recipient
-        v-card-text
-          .message                      
-            v-text-field(v-model="recipient")
-        v-card-actions
-          v-btn(@click="recipient = currentAccount; overlay = ''") Cancel
-          v-spacer
-          v-btn(@click="mintToken") Mint
       v-card.dialog-confirm(v-else-if="overlay === 'confirm'" key="confirm")
         v-card-title Minting
         v-card-text
@@ -38,8 +28,6 @@
         v-card-title.text-center You Minted Token {{ "#" + minted.id }}
         v-card-actions
           v-btn(:to="'/token/' + minted.id" color="primary") View Token
-          v-spacer
-          v-btn(@click="overlay = ''; loadToken()" color="success") Mint Another
       v-card.dialog-error(v-else-if="overlay === 'error'" key="error")
         v-card-title Transaction Error
         v-card-text
@@ -54,7 +42,7 @@
           v-card.token-preview
             v-card-title.token-stats(align="center")
               v-skeleton-loader(v-if="id === null" type="card-heading" width="20vw")
-              span(v-else) Preview Your TinyBox
+              span(v-else) Preview Your Limited Edition TinyBox
             v-card-subtitle
               v-skeleton-loader(v-if="id === null" type="card-heading" width="20vw")
               span(v-else) Color Scheme: {{ schemeTitles[phase] }}
@@ -65,36 +53,19 @@
             v-card-actions
               v-skeleton-loader(v-if="price === ''" type="card-heading" width="100%")
               template(v-else)
-                .price-tag
-                  h2 {{ priceInETH }}
-                  v-icon(large) mdi-ethereum
                 v-spacer
-                TooltipIconBtn(icon="mdi-forward" tip="Forward Mint" @click="overlay='recipient'" bottom).forward-btn
-                vac(v-if="paused" :end-time="pauseEndTime")
-                  template(v-slot:process="{ timeObj }")
-                    span {{ `${timeObj.m}:${timeObj.s}` }} to phase {{ Math.floor(id / phaseLen) }}
-                v-btn(v-else @click="mintToken" :disabled="!form.valid || soldOut || loading" large color="primary")
-                  | Mint {{ ((id % phaseLen) + 1) + "/" + (phaseLen - this.grayPerPhase) }}
+                v-btn(@click="mintToken" :disabled="!form.valid || loading" large color="primary") Create
           v-alert(v-if="!loading && !form.valid" type="error" prominent outlined border="left").invalid-options Invalid Box Options!
-          v-alert(v-if="!loading && soldOut" type="warning" prominent outlined border="left").sold-out
-            p All boxes have sold, minting is disabled.
-            p Try the secondary market
-            v-btn(href="//opensea.io" target="new" color="warning" outlined) Browse OpenSea
-          .explore-link.mt-4
-            p Need some inspiration?
-            v-btn(to="/explore" color="secondary") Explore The Possibilities
         v-col(align="center" cols="12" md="5")
-          h1 Create a TinyBox
+          h1 Design Your Limited Edition TinyBox
           v-form(v-model="form.valid").create-form
             .form-buttons
-              TooltipIconBtn(icon="mdi-seed" tip="New Seed" @click="reseed" bottom).reseed-btn
               v-spacer
               TooltipIconBtn(icon="mdi-close" tip="Reset" @click="reset" bottom).reset-btn
               TooltipIconBtn(icon="mdi-undo" tip="Undo" @click="undo" bottom).undo-btn
               TooltipIconBtn(icon="mdi-redo" tip="Redo" @click="redo" bottom).redo-btn
               TooltipIconBtn(icon="mdi-dice-multiple" tip="Randomize" @click="randomizeSection('all')" bottom).randomize-btn
               v-spacer
-              TooltipIconBtn(icon="mdi-share" tip="Share" @click="overlay = 'share'" bottom).share-btn
             br
             v-expansion-panels(v-model="form.section" popout tile)
               v-expansion-panel.section(v-for="section,s of active" :key="section.title" ripple)
@@ -108,10 +79,13 @@
                     span Randomize
                 v-expansion-panel-content.section-content
                   template(v-if="section.title === 'Color'")
+                    v-select(v-model="values.scheme" @change="changed" label="Scheme")
                     HuesGrid(:color="values.color" :scheme="phase").ma-2
                     ColorPicker(v-bind="values.color" variant="persistent" @change="setHue").picker.ma-2
-                    v-slider(v-model="values.color.saturation" @change="changed" thumb-label required label="Saturation" min="20" max="100")
+                    v-slider(v-model="values.color.saturation" @change="changed" thumb-label required label="Saturation" min="0" max="100")
                     v-slider(v-model="values.color.luminosity" @change="changed" thumb-label required label="Lightness" min="0" max="100")
+                    v-slider(v-model="values.contrast" @change="changed" thumb-label required label="Contrast" min="0" :max="lightness")
+                    v-slider(v-model="values.shades" @change="changed" thumb-label required label="Shades" min="0" max="100")
                   template(v-else-if="section.title === 'Shapes'")
                     v-slider(v-model="values.shapes" @change="changed" thumb-label required label="Count" min="1" max="30")
                     v-slider(v-model="values.hatching" @change="changed" thumb-label required label="Hatching" min="0" :max="values.shapes")
@@ -125,16 +99,17 @@
                     v-slider(v-model="values.m1" @change="changed" thumb-label required label="Level 1" min="0" max="3")
                     v-slider(v-model="values.m2" @change="changed" thumb-label required label="Level 2" min="0" max="3")
                     v-slider(v-model="values.m3" @change="changed" thumb-label required label="Level 3" min="0" max="3")
-                      
+                  template(v-else-if="section.title === 'Special'")
+                    v-select(label="Animation" :items="animationTitles")
+                    v-text-input(label="Seed Bits")
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { log } from 'console';
 import { mapGetters, mapState } from "vuex";
-import { sections } from "./create-form";
+import { sections } from "./create-le-form";
 import Token from "@/components/Token.vue";
-import Share from "@/components/Share.vue";
 import TooltipIconBtn from "@/components/TooltipIconBtn.vue";
 import ColorPicker from '@radial-color-picker/vue-color-picker';
 import HuesGrid from '@/components/HuesGrid.vue';
@@ -142,7 +117,7 @@ import { rejects } from "assert";
 
 export default Vue.extend({
   name: "CreateLE",
-  components: { Token, Share, TooltipIconBtn, ColorPicker, HuesGrid },
+  components: { Token, TooltipIconBtn, ColorPicker, HuesGrid },
   data: function() {
     return {
       usersReferal: null as number | null,
@@ -241,9 +216,6 @@ export default Vue.extend({
     await this.$store.dispatch("initialize");
     if (!this.wrongNetwork) {
       t.recipient = t.currentAccount;
-      const balance = await t.lookupBalance();
-      if (balance > 0) t.usersReferal = await t.lookupUsersToken(0);
-      t.lookupLimit();
       if (t.paramsSet) t.loadParams();
       else t.updateParams();
       t.loadToken();
@@ -252,40 +224,6 @@ export default Vue.extend({
     }
   },
   methods: {
-    getSupply: function() {
-      return this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
-    },
-    getPrice: function() {
-      return this.$store.state.contracts.tinyboxes.methods.price().call();
-    },
-    lookupLimit: async function() {
-      (this as any).limit = await this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
-    },
-    lookupBalance: function() {
-      return (this as any).$store.state.contracts.tinyboxes.methods.balanceOf((this as any).currentAccount).call();
-    },
-    lookupUsersToken(i: any) {
-      return (this as any).$store.state.contracts.tinyboxes.methods.tokenOfOwnerByIndex((this as any).currentAccount, i).call();
-    },
-    lookupBlockStart: async function() {
-      (this as any).blockStart = await this.$store.state.contracts.tinyboxes.methods.blockStart().call();
-    },
-    loadStatus: async function() {
-      const t = this as any;
-      const idLookup = t.getSupply();
-      const priceLookup = t.getPrice();
-      t.lookupBlockStart();
-      t.id = await idLookup;
-      t.price = await priceLookup;
-      t.values.traits[1] = t.id == 0 ? 0 : Math.floor(t.id / (t.limit / 10)); // auto update scheme preview
-      const currentBlock =  await this.$store.state.web3.eth.getBlockNumber();
-      if (currentBlock < t.blockStart) {
-        t.paused = true;
-        const timeLeft = (t.blockStart - currentBlock) * 15000;
-        t.pauseEndTime = new Date().getTime() + timeLeft;
-        t.listenForBlocks();
-      }
-    },
     setHue: function(hue: any) {
       (this as any).values.color.hue = parseInt(hue);
       (this as any).changed();
@@ -355,11 +293,6 @@ export default Vue.extend({
       t.loadFormDefaults();
       t.changed();
     },
-    reseed() {
-      const t = this as any;
-      t.values.seed = Date.now();
-      t.changed();
-    },
     loadFormDefaults: function() {
       const t = this as any;
       Object.assign(t.values, t.defaults); // set values to default
@@ -374,15 +307,14 @@ export default Vue.extend({
     async updateParams() {
       const t = this as any;
       const q = t.buildQuery();
-      if (t.$route.query === {}) this.$router.replace({ path: "/create", query: q });
-      else this.$router.push({ path: "/create", query: q });
+      if (t.$route.query === {}) this.$router.replace({ path: "/le", query: q });
+      else this.$router.push({ path: "/le", query: q });
     },
     buildQuery() {
       const t = this as any;
       const v = t.values;
       // condense keys and values for shorter URL encoding
       const out: any = {
-        i: v.referal ? v.referal : t.usersReferal,
         r: v.seed,
         s: [v.shapes, v.hatching].join("-"), // shapes - count, hatching
         d: [v.width.join("~"), v.height.join("~")].join("-"), // dimensions ranges
@@ -486,8 +418,6 @@ export default Vue.extend({
           .buyFor(v.seed.toString(), v.shapes, v.hatching, v.palette, v.size, v.spacing, v.mirroring, t.recipient)
           .encodeABI(),
       };
-      // TODO - warn of likely TX failure and require secondary verify step
-      //t.gasEstimate = await t.$store.state.web3.eth.estimateGas(t.tx);
       t.minted = {};
       t.overlay = "verify";
       t.$store.state.web3.eth.sendTransaction(t.tx,
@@ -532,35 +462,6 @@ export default Vue.extend({
           (this as any).loadToken();
         });
     },
-    listenForBlocks: function() {
-      const t = this as any;
-      t.blockSubscription = t.$store.state.web3.eth
-        .subscribe("newBlockHeaders", function(error: any, result: any){
-            if (!error) {
-                console.log(result);
-                return;
-            }
-            console.error(error);
-        })
-        .on("data", async function(blockHeader: any){
-          const currentBlock = blockHeader.number;
-          const timeLeft = (t.blockStart - currentBlock) * 15000;
-          t.pauseEndTime = new Date().getTime() + timeLeft;
-          if (currentBlock >= t.blockStart) {
-            t.paused = false;
-            t.unsubscribeBlocks();
-          }
-        })
-        .on("error", console.error);
-    },
-    unsubscribeBlocks: function() {
-        // unsubscribes the subscription
-        (this as any).blockSubscription.unsubscribe(function(error: any, success: any){
-            if (success) {
-                console.log('Successfully unsubscribed blocks listener');
-            }
-        });
-    },
     deepEqual(object1: any, object2: any) {
       const t = this as any;
       const keys1 = Object.keys(object1);
@@ -581,7 +482,6 @@ export default Vue.extend({
           return false;
         }
       }
-
       return true;
     },
     isObject(object: any) {
