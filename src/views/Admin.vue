@@ -72,6 +72,15 @@
               v-divider
               v-input(label="Randomizer")
               v-btn Update
+          v-card
+            v-card-title Renderer
+            v-card-text
+              p Current Contract: {{  }}
+              v-divider
+              p Set the Renderer Contract
+              v-input(label="Randomizer")
+              v-btn Test
+              v-btn Update
 </template>
 
 <script lang="ts">
