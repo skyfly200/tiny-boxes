@@ -131,6 +131,11 @@
         "address": "0x4F3B5404179be957930378ECB9fEAA36B3C0DbB3",
         "kind": "NonProxy",
         "bytecodeHash": "af8005beceb22b87ceceedca0717bfbf811d9b175a06a57bcffd5debc3aa87d7"
+      },
+      {
+        "address": "0x3cAEAF0c7e0D373d3eF754a87486373dE99875b5",
+        "kind": "NonProxy",
+        "bytecodeHash": "cebe4e1d3e7433ff66d124847e51d06c36ac72d7f786d3fb839e37a6260a2aae"
       }
     ],
     "tinyboxes/Randomizer": [
