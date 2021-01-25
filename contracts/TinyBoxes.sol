@@ -29,6 +29,14 @@ contract TinyBoxes is TinyBoxesStore {
     }
 
     /**
+     * @dev update the Renderer to a new contract
+     */
+    function updateRenderer(address _renderer) external {
+        onlyRole(ADMIN_ROLE);
+        renderer = Renderer(_renderer);
+    }
+
+    /**
      * @dev Generate the token SVG art
      * @param _id for which we want art
      * @return SVG art of token 

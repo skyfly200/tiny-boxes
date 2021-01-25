@@ -243,6 +243,8 @@ export class TinyBoxes extends Contract {
 
     unredeemed(id: number | string): TransactionObject<boolean>;
 
+    updateRenderer(_renderer: string): TransactionObject<void>;
+
     validateParams(
       shapes: number | string,
       hatching: number | string,
