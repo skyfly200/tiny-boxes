@@ -78,15 +78,16 @@
         v-row
           v-col(cols="12")
             v-card
-              v-card-title(align="center") TinyBox {{ id + "'s" }} Story
+              v-card-title(align="center") TinyBox Number {{ id + "'s" }} Story
               v-card-text
-                .box-story
-                  p TinyBox number {{ + id }} was created at {{ (new Date(data.block.timestamp * 1000)).toLocaleTimeString() }} on {{ (new Date(data.block.timestamp * 1000)).toLocaleDateString() }} by&nbsp;
+                .box-story(align="center")
+                  p TinyBox number {{ + id }} was created at {{ (new Date(data.block.timestamp * 1000)).toLocaleTimeString() }} on {{ (new Date(data.block.timestamp * 1000)).toLocaleDateString() }}
+                  p by&nbsp;
                     a(:href="'https://rinkeby.etherscan.io/address/' + data.tx.from" target="_blank") {{ data.tx.from }}
-                    span &nbsp;in TX&nbsp;
-                      a(:href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash" target="_blank") {{ data.creation.transactionHash }}
-                    span &nbsp;of block {{ data.block.number }}
-                  p Its current owner is
+                  p &nbsp;in TX&nbsp;
+                    a(:href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash" target="_blank") {{ data.creation.transactionHash }}
+                  p &nbsp;of block number {{ data.block.number }}
+                  p Its current owner is&nbsp;
                     a(:href="'https://rinkeby.etherscan.io/address/' + owner" target="_blank") {{ owner }}
         v-row(v-if="ownerOf")
           v-col(cols="12")
@@ -355,6 +356,7 @@ export default Vue.extend({
   align-items: center
 .box-story
   font-size: 1.2rem
+  line-height: 2rem
 .v-card
   margin: 1rem
 .timestamp-date
