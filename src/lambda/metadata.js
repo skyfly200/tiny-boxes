@@ -13,10 +13,10 @@ const {
   PINATA_API_KEY,
   PINATA_API_SECRET,
   WALLET_PRIVATE_KEY,
-  WEBSITE,
-  EXTERNAL_URL_BASE,
-  WEB3_PROVIDER_ENDPOINT,
-  CONTRACT_ADDRESS,
+  RINK_WEBSITE,
+  RINK_EXTERNAL_URL_BASE,
+  RINK_WEB3_PROVIDER_ENDPOINT,
+  RINK_CONTRACT_ADDRESS,
 } = process.env
 
 // init web3 provider and load contract
@@ -190,14 +190,14 @@ exports.handler = async (event, context) => {
       tokenID: id,
       description:
         'A scattering of tiny boxes, Arranged in patterns ranging from mundane to magnificent.',
-      website: WEBSITE,
-      external_url: EXTERNAL_URL_BASE + id,
+      website: RINK_WEBSITE,
+      external_url: RINK_EXTERNAL_URL_BASE + id,
       image_data: art,
       background_color: '121212',
       artist: "NonFungibleTeam",
       license: "NFT License",
       royaltyInfo:{
-        artistAddress: CONTRACT_ADDRESS,
+        artistAddress: RINK_CONTRACT_ADDRESS,
         //additionalPayee: "0xffffffffff",
         //additionalPayeePercentage: 100,
         royaltyFeeByID: 5
