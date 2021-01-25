@@ -71,10 +71,8 @@
               .columns.stat
                 span.stat-value {{ Math.floor(data.tokenData.spacing[1] % 16) + 1 }}
                 .stat-title Columns
-              .buttons.d-flex
-                v-btn.my-4(height="3rem" width="160px" color="secondary" @click="gotoMint") Copy Options
-                a(:href="openseaTokenURL + id" title="View on OpenSea" target="_blank")
-                  img(style="width:160px; border-radius:0px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);" src="https://storage.googleapis.com/opensea-static/opensea-brand/listed-button-blue.png" alt="Listed on OpenSea badge")
+            .copy-btn.d-flex
+              v-btn.my-4(height="3rem" width="160px" color="secondary" @click="gotoMint") Copy Options
         v-row
           v-col(cols="12")
             v-card
@@ -89,6 +87,8 @@
                   p &nbsp;of block number {{ data.block.number }}
                   p Its current owner is&nbsp;
                     a(:href="'https://rinkeby.etherscan.io/address/' + owner" target="_blank") {{ owner }}
+                  a(:href="openseaTokenURL + id" title="View on OpenSea" target="_blank")
+                    img(style="width:160px; border-radius:0px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);" src="https://storage.googleapis.com/opensea-static/opensea-brand/listed-button-blue.png" alt="Listed on OpenSea badge")
         v-row(v-if="ownerOf")
           v-col(cols="12")
             v-sheet
@@ -317,8 +317,9 @@ export default Vue.extend({
     color: #FFF !important
 .content
   margin-top: 35vh
-.buttons
-  flex-direction: column
+.copy-btn
+  margin-top: 3rem
+  justify-content: space-around
 .id
   font-size: 2rem
 .render-settings
