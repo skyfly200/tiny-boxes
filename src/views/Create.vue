@@ -514,7 +514,7 @@ export default Vue.extend({
         .on("data", async (log: any) => {
           const t = this as any;
           t.minted.id = parseInt(log.topics[3], 16);
-          t.minted.art = await t.$store.state.contracts.tinyboxes.methods.tokenArt(t.minted.id, 5, 0, 1, '').call();
+          t.minted.art = await t.$store.state.contracts.tinyboxes.methods.tokenArt(t.minted.id, 0, 0, 1, '').call();
           t.overlay = "ready";
         });
     },
