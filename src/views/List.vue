@@ -130,7 +130,6 @@ export default {
     },
     loadToken: async function(tokenID: any) {
       const t = this as any;
-      console.log(tokenID, t.limit)
       if (tokenID < t.limit) {
         const artPromise = t.lookupArt(tokenID);
         const ownerPromise = t.lookupOwner(tokenID);
