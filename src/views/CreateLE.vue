@@ -395,7 +395,7 @@ export default Vue.extend({
         v.color.luminosity
       ];
       this.$store.state.contracts.tinyboxes.methods
-        .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.palette, v.size, v.spacing, traits, v.settings, v.mirroring, t.id)
+        .renderPreview(v.seed.toString(), v.palette, [v.shapes, v.hatching], v.size, v.spacing, v.mirroring, v.settings, traits, '')
         .call()
         .then((result: any) => {
           t.data = result;
@@ -415,7 +415,7 @@ export default Vue.extend({
         to: this.$store.state.tinyboxesAddress,
         value: t.price,
         data: this.$store.state.contracts.tinyboxes.methods
-          .buyFor(v.seed.toString(), v.shapes, v.hatching, v.palette, v.size, v.spacing, v.mirroring, t.recipient)
+          .redeemLE(v.seed.toString(), v.shapes, v.hatching, v.palette, v.size, v.spacing, v.mirroring, 0)
           .encodeABI(),
       };
       t.minted = {};
@@ -445,7 +445,7 @@ export default Vue.extend({
         .on("data", async (log: any) => {
           const t = this as any;
           t.minted.id = parseInt(log.topics[3], 16);
-          t.minted.art = await t.$store.state.contracts.tinyboxes.methods.tokenArt(t.minted.id, 5, 0, 1).call();
+          t.minted.art = await t.$store.state.contracts.tinyboxes.methods.tokenArt(t.minted.id, 5, 0, 1, '').call();
           t.overlay = "ready";
         });
     },

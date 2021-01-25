@@ -63,7 +63,7 @@ export default {
     search: '',
     filter: {},
     sortDesc: false,
-    bkg: 5,
+    bkg: 0,
     owned: false,
     page: 0,
     itemsPerPageSelector: 20,
@@ -105,7 +105,7 @@ export default {
       (this as any).$router.push({ params: {page: e} })
     },
     lookupArt: function(id: any) {
-      return (this as any).$store.state.contracts.tinyboxes.methods.tokenArt(id, (this as any).bkg, 0, 0).call();
+      return (this as any).$store.state.contracts.tinyboxes.methods.tokenArt(id, (this as any).bkg, 10, 0, '').call();
     },
     lookupOwner: function(id: any) {
       return (this as any).$store.state.contracts.tinyboxes.methods.ownerOf(id).call();

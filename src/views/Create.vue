@@ -484,11 +484,9 @@ export default Vue.extend({
         to: this.$store.state.tinyboxesAddress,
         value: t.price,
         data: this.$store.state.contracts.tinyboxes.methods
-          .create(v.seed.toString(), [v.shapes, v.hatching], v.palette, v.size, v.spacing, v.mirroring, t.recipient, t.referal)
+          .create(v.seed.toString(), [v.shapes, v.hatching], v.palette, v.size, v.spacing, v.mirroring, t.recipient, 0)
           .encodeABI(),
       };
-      // TODO - warn of likely TX failure and require secondary verify step
-      //t.gasEstimate = await t.$store.state.web3.eth.estimateGas(t.tx);
       t.minted = {};
       t.overlay = "verify";
       t.$store.state.web3.eth.sendTransaction(t.tx,
@@ -516,7 +514,7 @@ export default Vue.extend({
         .on("data", async (log: any) => {
           const t = this as any;
           t.minted.id = parseInt(log.topics[3], 16);
-          t.minted.art = await t.$store.state.contracts.tinyboxes.methods.tokenArt(t.minted.id, 5, 0, 1).call();
+          t.minted.art = await t.$store.state.contracts.tinyboxes.methods.tokenArt(t.minted.id, 5, 0, 1, '').call();
           t.overlay = "ready";
         });
     },

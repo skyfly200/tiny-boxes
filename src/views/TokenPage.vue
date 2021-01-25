@@ -259,8 +259,8 @@ export default Vue.extend({
       } else {
         // load all token data
         const creationPromise = t.lookupMinting();
-        const animationPromise = this.$store.state.contracts.tinyboxes.methods.tokenArt(this.id, this.settings.bkg, this.settings.duration, 1).call();
-        const artPromise = this.$store.state.contracts.tinyboxes.methods.tokenArt(this.id, this.settings.bkg, this.settings.duration, 0).call();
+        const animationPromise = this.$store.state.contracts.tinyboxes.methods.tokenArt(this.id, this.settings.bkg, this.settings.duration, 1, '').call();
+        const artPromise = this.$store.state.contracts.tinyboxes.methods.tokenArt(this.id, this.settings.bkg, this.settings.duration, 0, '').call();
         const tokenDataPromise = this.$store.state.contracts.tinyboxes.methods.tokenData(this.id).call();
         this.data.creation = await creationPromise;
         this.data.tx = await this.$store.state.web3.eth.getTransaction(this.data.creation.transactionHash);
