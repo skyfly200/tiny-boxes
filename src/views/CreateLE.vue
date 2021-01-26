@@ -95,7 +95,7 @@
                     v-slider(v-model="values.m3" @change="changed" thumb-label required label="Level 3" min="0" max="3")
                   template(v-else-if="section.title === 'Special'")
                     v-select(v-model="values.animation" label="Animation" @change="changed"  :items="animations" item-text="title" item-value="index")
-                    v-text-field(v-model="values.seedBits" label="Seed Bits" @change="changed" )
+                    v-text-field(v-model="values.seedBits" label="Seed Bits" @change="changed")
 </template>
 
 <script lang="ts">
@@ -243,6 +243,12 @@ export default Vue.extend({
     },
     changed: async function() {
       const t = this as any;
+      // pack seed with traits values
+      t.values.seed = t.values.seedBits +
+        (2**123 * t.values.animation) +
+        (2**119 * t.values.scheme) +
+        (2**116 * t.values.shades) +
+        (2**109 * t.values.contrast);
       if (t.values.hatching > t.values.shapes) t.values.hatching = t.values.shapes;
       if (!t.deepEqual(t.$route.query, t.buildQuery())) { // check the values have changed
         t.updateParams();
