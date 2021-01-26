@@ -278,6 +278,7 @@ export default Vue.extend({
       const con = (BigInt(t.values.contrast) << 109n);
       t.values.seed = ( (BigInt(t.values.seedBits) % 109n) + anim + sch + sha + con ).toString(10);
       if (t.values.hatching > t.values.shapes) t.values.hatching = t.values.shapes;
+      if (t.values.contrast > t.values.color.luminosity) t.values.contrast = t.values.color.luminosity;
       if (!t.deepEqual(t.$route.query, t.buildQuery())) { // check the values have changed
         t.updateParams();
         t.loadToken();
