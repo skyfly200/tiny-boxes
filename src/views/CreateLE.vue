@@ -127,6 +127,7 @@ export default Vue.extend({
       recipient: null,
       tx: {},
       limit: null as number | null,
+      redeemID: (2n**256n) - 1n,
       form: {
         section: 0,
         valid: true,
@@ -434,13 +435,11 @@ export default Vue.extend({
     mintToken: async function() {
       const t = this as any;
       const v = {...t.values, ...t.assembleDials(), palette: t.assemblePalette()};
-      t.price = await t.getPrice();
       t.tx = {
         from: this.currentAccount,
         to: this.$store.state.tinyboxesAddress,
-        value: t.price,
         data: this.$store.state.contracts.tinyboxes.methods
-          .redeemLE(v.seed.toString(), v.shapes, v.hatching, v.palette, v.size, v.spacing, v.mirroring, 0)
+          .redeemLE(v.seed.toString(), v.shapes, v.hatching, v.palette, v.size, v.spacing, v.mirroring, t.redeemID)
           .encodeABI(),
       };
       t.minted = {};
