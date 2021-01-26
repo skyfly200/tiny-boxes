@@ -27,8 +27,8 @@
               p Aproximate Start Time: {{  }}
               v-divider
               p Set the countdown blockstart
-              v-input(label="Block")
-              v-input(label="Time")
+              v-text-field(label="Block")
+              v-text-field(label="Time")
               v-btn Set
           v-card
             v-card-title Un/Pause Minting
@@ -43,11 +43,11 @@
               p Contract URI:
               span
                 a(:href="contractURI") {{ contractURI }}
-              v-input(label="Contract URI")
+              v-text-field(label="Contract URI")
               p Base URI:
               span
                 a(:href="baseURI") {{ baseURI }}
-              v-input(label="Base URI")
+              v-text-field(label="Base URI")
               v-divider
               p Token URI
               v-text-field(label="Token ID")
@@ -69,13 +69,12 @@
           v-card
             v-card-title Randomizer
             v-card-text
-              p Set the Randomizer Contract
               .d-flex
-                v-btn Test
+                v-btn Test Randomizer
                 p.ml-5 Randomness: {{  }}
-              p Block: {{  }}
               v-divider
-              v-input(label="Randomizer")
+              p Set the Randomizer Contract
+              v-text-field(label="Randomizer")
               v-btn Update
           v-card
             v-card-title Renderer
