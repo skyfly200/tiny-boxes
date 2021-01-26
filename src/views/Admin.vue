@@ -50,9 +50,9 @@
               v-input(label="Base URI")
               v-divider
               p Token URI
-              v-input(label="Token ID")
+              v-text-field(label="Token ID")
               p URI: {{  }}
-              v-input(label="Token URI")
+              v-text-field(label="Token URI")
             v-card-actions
               v-btn Reset
               v-spacer
@@ -63,7 +63,7 @@
             v-card-text
               p Mint a Limited Edition Token
               p {{ leCount }} of 100 Limited Editions Minted
-              v-input(label="Recipient")
+              v-text-field(label="Recipient")
               v-btn Mint
             v-progress-linear(:indeterminate="false" :value="leCount" striped height="1rem")
           v-card
@@ -81,7 +81,7 @@
             v-card-title Renderer
             v-card-text
               p Set the Renderer Contract
-              v-input(label="Randomizer")
+              v-text-field(label="Randomizer")
               v-btn Test
               v-btn Update
 </template>

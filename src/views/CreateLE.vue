@@ -94,8 +94,8 @@
                     v-slider(v-model="values.m2" @change="changed" thumb-label required label="Level 2" min="0" max="3")
                     v-slider(v-model="values.m3" @change="changed" thumb-label required label="Level 3" min="0" max="3")
                   template(v-else-if="section.title === 'Special'")
-                    v-select(label="Animation" :items="animationTitles")
-                    v-text-input(label="Seed Bits")
+                    v-select(label="Animation" @change="changed"  :items="animationTitles")
+                    v-text-field(label="Seed Bits" @change="changed" )
 </template>
 
 <script lang="ts">
