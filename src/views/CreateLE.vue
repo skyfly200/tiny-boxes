@@ -33,7 +33,7 @@
         v-card-text
           v-alert(type="error" border="left") An error occured while atempting to mint your token
         v-card-actions
-          v-btn(@click="mintToken" color="success") Try Again
+          v-btn(@click="redeemToken" color="success") Try Again
           v-spacer
           v-btn(@click="overlay = ''; loadToken()" color="error") Cancel
     v-container(fluid)
@@ -48,7 +48,7 @@
                 Token(v-else :id="id" :data="data")
             v-card-actions
               v-spacer
-              v-btn(@click="mintToken" :disabled="!form.valid || loading" large color="primary") Create
+              v-btn(@click="redeemToken" :disabled="!form.valid || loading" large color="primary") Create
           v-alert(v-if="!loading && !form.valid" type="error" prominent outlined border="left").invalid-options Invalid Box Options!
         v-col(align="center" cols="12" md="5")
           h1 Design Your LE TinyBox
@@ -235,8 +235,6 @@ export default Vue.extend({
       t.listenForMyTokens();
       t.lookupLimit();
       t.loadLimitedEditions();
-      // TODO - select with dialog
-      t.redeemID = t.limitedEditions[0];
     }
   },
   methods: {
@@ -247,6 +245,8 @@ export default Vue.extend({
       for (let i=0; i<balance; i++)
         tokens.push(await t.lookupUsersToken(i));
       t.limitedEditions = tokens.filter( (id: any) => parseInt(id) > parseInt(t.limit) );
+      // TODO - select with dialog
+      t.redeemID = t.limitedEditions[0];
     },
     lookupBalance: function() {
       return (this as any).$store.state.contracts.tinyboxes.methods.balanceOf((this as any).currentAccount).call();
@@ -264,11 +264,11 @@ export default Vue.extend({
     changed: async function() {
       const t = this as any;
       // pack seed with traits values
-      t.values.seed = t.values.seedBits +
-        (2**123 * t.values.animation) +
-        (2**119 * t.values.scheme) +
-        (2**116 * t.values.shades) +
-        (2**109 * t.values.contrast);
+      const anim = (BigInt(t.values.animation) << 123n);
+      const sch = (BigInt(t.values.scheme) << 119n);
+      const sha = (BigInt(t.values.shades) << 116n);
+      const con = (BigInt(t.values.contrast) << 109n);
+      t.values.seed = ( (BigInt(t.values.seedBits) % 109n) + anim + sch + sha + con ).toString(10);
       if (t.values.hatching > t.values.shapes) t.values.hatching = t.values.shapes;
       if (!t.deepEqual(t.$route.query, t.buildQuery())) { // check the values have changed
         t.updateParams();
@@ -440,6 +440,7 @@ export default Vue.extend({
         v.shades,
         v.contrast
       ];
+      console.log(v.seed.toString(), v.shapesPacked, v.palette, v.size, v.spacing, v.mirroring, t.redeemID )
       this.$store.state.contracts.tinyboxes.methods
         .renderPreview(v.seed.toString(), v.palette, v.shapesPacked, v.size, v.spacing, v.mirroring, v.settings, traits, '')
         .call()
@@ -452,14 +453,14 @@ export default Vue.extend({
           console.error(err);
         });
     },
-    mintToken: async function() {
+    redeemToken: async function() {
       const t = this as any;
       const v = {...t.values, ...t.assembleDials(), palette: t.assemblePalette()};
       t.tx = {
         from: this.currentAccount,
         to: this.$store.state.tinyboxesAddress,
         data: this.$store.state.contracts.tinyboxes.methods
-          .redeemLE(v.seed.toString(), v.shapes, v.palette, v.size, v.spacing, v.mirroring, t.redeemID )
+          .redeemLE(v.seed.toString(), v.shapesPacked, v.palette, v.size, v.spacing, v.mirroring, t.redeemID )
           .encodeABI(),
       };
       t.minted = {};
