@@ -264,6 +264,7 @@ export default Vue.extend({
       return (this as any).$store.state.contracts.tinyboxes.methods.balanceOf((this as any).currentAccount).call();
     },
     lookupUsersToken(i: any) {
+      console.log(typeof (this as any).currentAccount, typeof i);
       return (this as any).$store.state.contracts.tinyboxes.methods.tokenOfOwnerByIndex((this as any).currentAccount, i).call();
     },
     lookupPause: async function() {

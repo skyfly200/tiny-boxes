@@ -63,8 +63,8 @@
             v-card-text
               p Mint a Limited Edition Token
               p {{ leCount }} of 100 Limited Editions Minted
-              v-text-field(label="Recipient")
-              v-btn Mint
+              v-text-field(label="Recipient" v-model="leRecipient")
+              v-btn(@click="mintLE") Mint
             v-progress-linear(:indeterminate="false" :value="leCount" striped height="1rem")
           v-card
             v-card-title Randomizer
@@ -110,6 +110,9 @@ export default Vue.extend({
     t.lookupBaseURI();
   },
   methods: {
+    mintLE: async function(){
+      if (this.leRecipient !== '') await this.$store.state.contracts.tinyboxes.methods.mintLE(this.leRecipient).call();
+    },
     lookupContractURI: async function() {
       (this as any).contractURI = await this.$store.state.contracts.tinyboxes.methods.contractURI().call();
     },
@@ -155,7 +158,7 @@ export default Vue.extend({
     phaseLen: null as number | null,
     baseURI: '',
     contractURI: '',
-
+    leRecipient: '',
   }),
 });
 </script>

@@ -126,7 +126,8 @@ export default Vue.extend({
       price: "",
       tx: {},
       limit: null as number | null,
-      redeemID: (2n**256n) - 1n,
+      redeemID: '',
+      limitedEditions: [],
       form: {
         section: 0,
         valid: true,
@@ -231,11 +232,31 @@ export default Vue.extend({
       if (t.paramsSet) t.loadParams();
       else t.updateParams();
       t.loadToken();
-      t.listenForTokens();
       t.listenForMyTokens();
+      t.lookupLimit();
+      t.loadLimitedEditions();
+      // TODO - select with dialog
+      t.redeemID = t.limitedEditions[0];
     }
   },
   methods: {
+    loadLimitedEditions: async function() {
+      const t = this as any;
+      const balance = await t.lookupBalance();
+      const tokens: any = [];
+      for (let i=0; i<balance; i++)
+        tokens.push(await t.lookupUsersToken(i));
+      t.limitedEditions = tokens.filter( (id: any) => parseInt(id) > parseInt(t.limit) );
+    },
+    lookupBalance: function() {
+      return (this as any).$store.state.contracts.tinyboxes.methods.balanceOf((this as any).currentAccount).call();
+    },
+    lookupUsersToken: async function(i: number) {
+      return (this as any).$store.state.contracts.tinyboxes.methods.tokenOfOwnerByIndex((this as any).currentAccount, i).call();
+    },
+    lookupLimit: async function() {
+      (this as any).limit = await this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
+    },
     setHue: function(hue: any) {
       (this as any).values.color.hue = parseInt(hue);
       (this as any).changed();
@@ -437,7 +458,7 @@ export default Vue.extend({
         from: this.currentAccount,
         to: this.$store.state.tinyboxesAddress,
         data: this.$store.state.contracts.tinyboxes.methods
-          .redeemLE(v.seed.toString(), v.shapes, v.hatching, v.palette, v.size, v.spacing, v.mirroring, t.redeemID)
+          .redeemLE(v.seed.toString(), v.shapes, v.hatching, v.palette, v.size, v.spacing, v.mirroring, t.redeemID )
           .encodeABI(),
       };
       t.minted = {};
@@ -468,19 +489,6 @@ export default Vue.extend({
           t.minted.id = parseInt(log.topics[3], 16);
           t.minted.art = await t.$store.state.contracts.tinyboxes.methods.tokenArt(t.minted.id, 5, 0, 1, '').call();
           t.overlay = "ready";
-        });
-    },
-    listenForTokens: function() {
-      this.$store.state.web3.eth
-        .subscribe("logs", {
-          address: this.$store.state.tinyboxesAddress,
-          topics: [
-            "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-            "0x0000000000000000000000000000000000000000000000000000000000000000",
-          ],
-        })
-        .on("data", (log: any) => {
-          (this as any).loadToken();
         });
     },
     deepEqual(object1: any, object2: any) {
