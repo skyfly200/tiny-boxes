@@ -423,6 +423,7 @@ export default Vue.extend({
       v.width = v.width.sort((a: any,b: any) => a - b);
       v.height = v.height.sort((a: any,b: any) => a - b);
       return {
+        shapes: [v.shapes, v.hatching],
         spacing: [ v.spread, ((v.rows-1) * 16) + v.cols-1 ],
         size: [ ...v.width, ...v.height ],
         mirroring: v.m1 + (v.m2 * 4) + (v.m3 * 16)
@@ -440,7 +441,7 @@ export default Vue.extend({
         v.contrast
       ];
       this.$store.state.contracts.tinyboxes.methods
-        .renderPreview(v.seed.toString(), v.palette, [v.shapes, v.hatching], v.size, v.spacing, v.mirroring, v.settings, traits, '')
+        .renderPreview(v.seed.toString(), v.palette, v.shapes, v.size, v.spacing, v.mirroring, v.settings, traits, '')
         .call()
         .then((result: any) => {
           t.data = result;
@@ -458,7 +459,7 @@ export default Vue.extend({
         from: this.currentAccount,
         to: this.$store.state.tinyboxesAddress,
         data: this.$store.state.contracts.tinyboxes.methods
-          .redeemLE(v.seed.toString(), v.shapes, v.hatching, v.palette, v.size, v.spacing, v.mirroring, t.redeemID )
+          .redeemLE(v.seed.toString(), v.shapes, v.palette, v.size, v.spacing, v.mirroring, t.redeemID )
           .encodeABI(),
       };
       t.minted = {};
