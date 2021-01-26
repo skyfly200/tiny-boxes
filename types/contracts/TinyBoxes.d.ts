@@ -271,7 +271,12 @@ export class TinyBoxes extends Contract {
       1: string;
       2: boolean;
     }>;
-    LECreated: ContractEvent<string>;
+    RedeemedLE: ContractEvent<{
+      by: string;
+      id: string;
+      0: string;
+      1: string;
+    }>;
     RoleAdminChanged: ContractEvent<{
       role: string;
       previousAdminRole: string;

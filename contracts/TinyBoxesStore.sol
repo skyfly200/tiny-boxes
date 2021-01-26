@@ -12,7 +12,7 @@ contract TinyBoxesStore is TinyBoxesBase {
     using SignedSafeMath for int256;
     using Utils for *;
 
-    event LECreated(uint256 id);
+    event RedeemedLE(address by, uint256 id);
 
     /**
      * @dev Contract constructor.
@@ -194,6 +194,6 @@ contract TinyBoxesStore is TinyBoxesBase {
             duration: 10,
             options: 1
         });
-        emit LECreated(id);
+        emit RedeemedLE(msg.sender, id);
     }
 }
