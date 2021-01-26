@@ -74,7 +74,7 @@
                 v-expansion-panel-content.section-content
                   template(v-if="section.title === 'Color'")
                     v-select(v-model="values.scheme" :items="schemes" item-text="title" item-value="index" @change="changed" label="Scheme")
-                    HuesGrid(:color="values.color" :scheme="phase").ma-2
+                    HuesGrid(:color="values.color" :scheme="values.scheme").ma-2
                     ColorPicker(v-bind="values.color" variant="persistent" @change="setHue").picker.ma-2
                     v-slider(v-model="values.color.saturation" @change="changed" thumb-label required label="Saturation" min="0" max="100")
                     v-slider(v-model="values.color.luminosity" @change="changed" thumb-label required label="Lightness" min="0" max="100")
