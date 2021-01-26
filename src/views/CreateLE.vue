@@ -25,7 +25,7 @@
       v-card.dialog-ready(v-else-if="overlay === 'ready'" key="ready")
         v-skeleton-loader(:value="!minted.art" type="image")
           Token(:id="minted.id+'-preview'" :data="minted.art")
-        v-card-title.text-center You Minted Token {{ "#" + minted.id }}
+        v-card-title.text-center You Redeemed Token {{ "#" + minted.id }}
         v-card-actions
           v-btn(:to="'/token/' + minted.id" color="primary") View Token
       v-card.dialog-error(v-else-if="overlay === 'error'" key="error")
