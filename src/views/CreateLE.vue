@@ -73,13 +73,13 @@
                     span Randomize
                 v-expansion-panel-content.section-content
                   template(v-if="section.title === 'Color'")
-                    v-select(v-model="values.scheme" :items="schemeTitles" @change="changed" label="Scheme")
+                    v-select(v-model="values.scheme" :items="schemes" item-text="title" item-value="index" @change="changed" label="Scheme")
                     HuesGrid(:color="values.color" :scheme="phase").ma-2
                     ColorPicker(v-bind="values.color" variant="persistent" @change="setHue").picker.ma-2
                     v-slider(v-model="values.color.saturation" @change="changed" thumb-label required label="Saturation" min="0" max="100")
                     v-slider(v-model="values.color.luminosity" @change="changed" thumb-label required label="Lightness" min="0" max="100")
                     v-slider(v-model="values.contrast" @change="changed" thumb-label required label="Contrast" min="0" :max="values.color.luminosity")
-                    v-slider(v-model="values.shades" @change="changed" thumb-label required label="Shades" min="0" max="100")
+                    v-slider(v-model="values.shades" @change="changed" thumb-label required label="Shades" min="1" max="7")
                   template(v-else-if="section.title === 'Shapes'")
                     v-slider(v-model="values.shapes" @change="changed" thumb-label required label="Count" min="1" max="30")
                     v-slider(v-model="values.hatching" @change="changed" thumb-label required label="Hatching" min="0" :max="values.shapes")
@@ -94,8 +94,8 @@
                     v-slider(v-model="values.m2" @change="changed" thumb-label required label="Level 2" min="0" max="3")
                     v-slider(v-model="values.m3" @change="changed" thumb-label required label="Level 3" min="0" max="3")
                   template(v-else-if="section.title === 'Special'")
-                    v-select(label="Animation" @change="changed"  :items="animationTitles")
-                    v-text-field(label="Seed Bits" @change="changed" )
+                    v-select(v-model="values.animation" label="Animation" @change="changed"  :items="animations" item-text="title" item-value="index")
+                    v-text-field(v-model="values.seedBits" label="Seed Bits" @change="changed" )
 </template>
 
 <script lang="ts">
@@ -122,7 +122,6 @@ export default Vue.extend({
       blockStart: new Date(),
       blockSubscription: null,
       overlay: "",
-      grayPerPhase: 5,
       data: null as object | null,
       price: "",
       recipient: null,
@@ -145,16 +144,20 @@ export default Vue.extend({
         spread: 50,
         rows: 2,
         cols: 2,
+        scheme: 0,
         color: {
           hue: Date.now() % 360,
           saturation: 80,
           luminosity: 70
         },
+        contrast: 50,
+        shades: 1,
+        animation: 0,
         animate: false,
         m1: 3,
         m2: 3,
         m3: 3,
-        traits: [0,0,7,0],
+        seedBits: '',
       },
       sections: sections,
     };
@@ -194,6 +197,22 @@ export default Vue.extend({
     },
     soldOut: function() {
       return parseInt((this as any).id) >= parseInt((this as any).limit);
+    },
+    schemes() {
+      return this.schemeTitles.map( (s: any, i: any) => {
+        return {
+          title: s,
+          index: i
+        }
+      });
+    },
+    animations() {
+      return this.animationTitles.map( (a: any, i: any) => {
+        return {
+          title: a,
+          index: i
+        }
+      });
     },
     ...mapState({
         animationTitles: 'animationTitles',
@@ -310,10 +329,12 @@ export default Vue.extend({
       // condense keys and values for shorter URL encoding
       const out: any = {
         r: v.seed,
+        a: v.animation,
         s: [v.shapes, v.hatching].join("-"), // shapes - count, hatching
         d: [v.width.join("~"), v.height.join("~")].join("-"), // dimensions ranges
         p: [v.spread, (v.rows * 16) + v.cols].join("-"), // positioning - spread, grid
         c: [v.color.hue, v.color.saturation, v.color.luminosity].join("-"), // color - hue, saturation, luminosity
+        t: [v.scheme, v.contrast, v.shades].join("-"), // color - hue, saturation, luminosity
         m: [v.m1, v.m2, v.m3].join("-") // mirroring levels
       };
       return out;
@@ -325,9 +346,11 @@ export default Vue.extend({
       const d = q.d.split("-");
       const p = q.p.split("-");
       const c = q.c.split("-");
+      const b = q.t.split("-");
       const m = q.m.split("-");
       const out: any = {
         seed: q.r,
+        animation: q.a,
         shapes: s[0],
         hatching: s[1],
         width: d[0].split("~"),
@@ -340,6 +363,9 @@ export default Vue.extend({
           saturation: c[1],
           luminosity: c[2],
         },
+        scheme: b[0],
+        contrast: b[1],
+        shades: b[2],
         m1: m[0],
         m2: m[1],
         m3: m[2],
@@ -382,10 +408,10 @@ export default Vue.extend({
       t.loading = true;
       const v = {...t.values, ...t.assembleDials(), palette: t.assemblePalette(), settings: [0, 0, 1]};
       const traits = [
-        v.traits[0],
-        v.traits[1],
-        v.traits[2],
-        v.color.luminosity
+        v.animation,
+        v.scheme,
+        v.shades,
+        v.contrast
       ];
       this.$store.state.contracts.tinyboxes.methods
         .renderPreview(v.seed.toString(), v.palette, [v.shapes, v.hatching], v.size, v.spacing, v.mirroring, v.settings, traits, '')
