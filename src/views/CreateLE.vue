@@ -79,7 +79,7 @@
                     span Randomize
                 v-expansion-panel-content.section-content
                   template(v-if="section.title === 'Color'")
-                    v-select(v-model="values.scheme" @change="changed" label="Scheme")
+                    v-select(v-model="values.scheme" :items="schemeTitles" @change="changed" label="Scheme")
                     HuesGrid(:color="values.color" :scheme="phase").ma-2
                     ColorPicker(v-bind="values.color" variant="persistent" @change="setHue").picker.ma-2
                     v-slider(v-model="values.color.saturation" @change="changed" thumb-label required label="Saturation" min="0" max="100")

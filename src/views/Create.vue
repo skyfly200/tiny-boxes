@@ -267,6 +267,9 @@ export default Vue.extend({
     lookupUsersToken(i: any) {
       return (this as any).$store.state.contracts.tinyboxes.methods.tokenOfOwnerByIndex((this as any).currentAccount, i).call();
     },
+    lookupPause: async function() {
+      (this as any).paused = await this.$store.state.contracts.tinyboxes.methods.paused().call();
+    },
     lookupBlockStart: async function() {
       (this as any).blockStart = await this.$store.state.contracts.tinyboxes.methods.blockStart().call();
     },
@@ -279,6 +282,7 @@ export default Vue.extend({
       t.price = await priceLookup;
       t.values.traits[1] = t.id == 0 ? 0 : Math.floor(t.id / (t.limit / 10)); // auto update scheme preview
       const currentBlock =  await this.$store.state.web3.eth.getBlockNumber();
+      t.lookupPause();
       if (currentBlock < t.blockStart) {
         t.paused = true;
         const timeLeft = (t.blockStart - currentBlock) * 15000;

@@ -7,11 +7,13 @@
       v-row
         v-col(cols="12")
           v-toolbar
-            v-toolbar-title Phase: {{  }}
+            span Phase: {{ phase }}
             v-spacer
-            span Created This Phase: {{  }}
+            span Phase Length: {{ phaseLen }}
             v-spacer
-            span Total Created: {{  }}
+            span Created This Phase: {{ tokenCount % phaseLen }}
+            v-spacer
+            span Total Created: {{ tokenCount }}
             v-spacer
           v-progress-linear(:indeterminate="false" value="50" striped height="1rem" color="secondary")
           v-progress-linear(:indeterminate="false" value="10" striped height="1rem" color="accent")
@@ -21,7 +23,7 @@
             v-card-title Countdown
             v-card-text
               p Curent Block: {{  }}
-              p Block Start: {{  }}
+              p Block Start: {{ blockStart }}
               p Aproximate Start Time: {{  }}
               v-divider
               p Set the countdown blockstart
@@ -31,16 +33,20 @@
           v-card
             v-card-title Un/Pause Minting
             v-card-text
-              p Curent State: {{  }}
+              p Curent State: {{ paused ? "Paused" : "Unpaused" }}
             v-card-actions
               v-btn(icon)
-                v-icon(large) mdi-pause
+                v-icon(large) {{ paused ? 'mdi-play' : 'mdi-pause' }}
           v-card
             v-card-title Metadata
             v-card-text
-              p Contract URI: {{  }}
+              p Contract URI:
+              span
+                a(:href="contractURI") {{ contractURI }}
               v-input(label="Contract URI")
-              p Base: {{  }}
+              p Base URI:
+              span
+                a(:href="baseURI") {{ baseURI }}
               v-input(label="Base URI")
               v-divider
               p Token URI
@@ -56,7 +62,7 @@
             v-card-title LE Minter
             v-card-text
               p Mint a Limited Edition Token
-              p {{  }} of 100 Limited Editions Minted
+              p {{ leCount }} of 100 Limited Editions Minted
               v-input(label="Recipient")
               v-btn Mint
             v-progress-linear(:indeterminate="false" value="10" striped height="1rem")
@@ -64,7 +70,6 @@
             v-card-title Randomizer
             v-card-text
               p Set the Randomizer Contract
-              p Current Contract: {{  }}
               .d-flex
                 v-btn Test
                 p.ml-5 Randomness: {{  }}
@@ -75,8 +80,6 @@
           v-card
             v-card-title Renderer
             v-card-text
-              p Current Contract: {{  }}
-              v-divider
               p Set the Renderer Contract
               v-input(label="Randomizer")
               v-btn Test
@@ -96,11 +99,64 @@ export default Vue.extend({
   mounted: async function() {
     await this.$store.dispatch("initialize");
     const t = this as any;
+    t.lookupSupply();
+    t.lookupLimit();
+    t.lookupPause();
+    t.lookupBlockStart();
+    t.lookupLE();
+    t.lookupTokens();
+    t.lookupPhase();
+    t.lookupPhaseLen();
+    t.lookupContractURI();
+    t.lookupBaseURI();
   },
   methods: {
+    lookupContractURI: async function() {
+      (this as any).contractURI = await this.$store.state.contracts.tinyboxes.methods.contractURI().call();
+    },
+    lookupBaseURI: async function() {
+      (this as any).baseURI = await this.$store.state.contracts.tinyboxes.methods.baseURI().call();
+    },
+    lookupSupply: async function() {
+      (this as any).supply = await this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
+    },
+    lookupLE: async function() {
+      (this as any).leCount = await this.$store.state.contracts.tinyboxes.methods._tokenPromoIds().call();
+    },
+    lookupTokens: async function() {
+      (this as any).tokenCount = await this.$store.state.contracts.tinyboxes.methods._tokenIds().call();
+    },
+    lookupLimit: async function() {
+      (this as any).limit = await this.$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
+    },
+    lookupPhase: async function() {
+      (this as any).phase = await this.$store.state.contracts.tinyboxes.methods.currentPhase().call();
+    },
+    lookupPhaseLen: async function() {
+      (this as any).phaseLen = await this.$store.state.contracts.tinyboxes.methods.phaseLen().call();
+    },
+    lookupPause: async function() {
+      (this as any).paused = await this.$store.state.contracts.tinyboxes.methods.paused().call();
+    },
+    lookupBlockStart: async function() {
+      (this as any).blockStart = await this.$store.state.contracts.tinyboxes.methods.blockStart().call();
+    },
   },
   data: () => ({
-    loading: true
+    loading: true,
+    paused: false,
+    pauseEndTime: new Date(),
+    blockStart: null as number | null,
+    blockSubscription: null,
+    supply: null as number | null,
+    limit: null as number | null,
+    leCount: null as number | null,
+    tokenCount: null as number | null,
+    phase: null as number | null,
+    phaseLen: null as number | null,
+    baseURI: '',
+    contractURI: '',
+
   }),
 });
 </script>
