@@ -15,8 +15,8 @@
             v-spacer
             span Total Created: {{ tokenCount }}
             v-spacer
-          v-progress-linear(:indeterminate="false" value="50" striped height="1rem" color="secondary")
-          v-progress-linear(:indeterminate="false" value="10" striped height="1rem" color="accent")
+          v-progress-linear(:indeterminate="false" :value="(tokenCount % phaseLen) / phaseLen * 100" striped height="1rem" color="secondary")
+          v-progress-linear(:indeterminate="false" :value="tokenCount / limit * 100" striped height="1rem" color="accent")
       v-row(no-gutters)
         v-col(cols="12" md="4")
           v-card
@@ -65,7 +65,7 @@
               p {{ leCount }} of 100 Limited Editions Minted
               v-input(label="Recipient")
               v-btn Mint
-            v-progress-linear(:indeterminate="false" value="10" striped height="1rem")
+            v-progress-linear(:indeterminate="false" :value="leCount" striped height="1rem")
           v-card
             v-card-title Randomizer
             v-card-text
