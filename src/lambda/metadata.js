@@ -23,7 +23,7 @@ const {
 var web3 = new Web3(RINK_WEB3_PROVIDER_ENDPOINT)
 const tinyboxesContract = new web3.eth.Contract(
   tinyboxesABI,
-  CONTRACT_ADDRESS,
+  RINK_CONTRACT_ADDRESS,
 )
 
 const generateResponse = (body, statusCode) => {
@@ -55,7 +55,7 @@ function lookupMintedBlock(id) {
   return new Promise((resolve, reject) => {
     web3.eth
       .subscribe('logs', {
-        address: CONTRACT_ADDRESS,
+        address: RINK_CONTRACT_ADDRESS,
         fromBlock: 0,
         topics: [
           '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
@@ -79,7 +79,7 @@ exports.handler = async (event, context) => {
   try {
     const id = parseInt(event.queryStringParameters.id, 10)
 
-    console.log(CONTRACT_ADDRESS);
+    console.log(RINK_CONTRACT_ADDRESS);
 
     if (event.httpMethod !== 'GET') {
       // Only GET requests allowed
