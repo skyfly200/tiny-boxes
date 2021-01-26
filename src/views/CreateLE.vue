@@ -7,7 +7,7 @@
           .message
             h3 Mint for {{ priceInETH }}
               v-icon mdi-ethereum
-            h3 To {{ recipient }}
+            h3 To {{ currentAccount }}
       v-card.dialog-confirm(v-else-if="overlay === 'confirm'" key="confirm")
         v-card-title Minting
         v-card-text
@@ -124,7 +124,6 @@ export default Vue.extend({
       overlay: "",
       data: null as object | null,
       price: "",
-      recipient: null,
       tx: {},
       limit: null as number | null,
       redeemID: (2n**256n) - 1n,
@@ -229,7 +228,6 @@ export default Vue.extend({
     const t = this as any;
     await this.$store.dispatch("initialize");
     if (!this.wrongNetwork) {
-      t.recipient = t.currentAccount;
       if (t.paramsSet) t.loadParams();
       else t.updateParams();
       t.loadToken();
@@ -452,7 +450,6 @@ export default Vue.extend({
             t.minted.txHash = txHash;
             t.overlay =  "confirm";
           }
-          t.recipient = t.currentAccount;
         }
       );
     },
