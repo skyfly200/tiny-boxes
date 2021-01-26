@@ -41,23 +41,17 @@
         v-col(align="center" cols="12" sm="10" md="5" offset-sm="1")
           v-card.token-preview
             v-card-title.token-stats(align="center")
-              v-skeleton-loader(v-if="id === null" type="card-heading" width="20vw")
-              span(v-else) Preview Your Limited Edition TinyBox
-            v-card-subtitle
-              v-skeleton-loader(v-if="id === null" type="card-heading" width="20vw")
-              span(v-else) Color Scheme: {{ schemeTitles[phase] }}
+              span Limited Edition TinyBox Preview
             v-card-text.token-graphic
               v-fade-transition(mode="out-in")
                 v-skeleton-loader(v-if="loading" tile type="image")
                 Token(v-else :id="id" :data="data")
             v-card-actions
-              v-skeleton-loader(v-if="price === ''" type="card-heading" width="100%")
-              template(v-else)
-                v-spacer
-                v-btn(@click="mintToken" :disabled="!form.valid || loading" large color="primary") Create
+              v-spacer
+              v-btn(@click="mintToken" :disabled="!form.valid || loading" large color="primary") Create
           v-alert(v-if="!loading && !form.valid" type="error" prominent outlined border="left").invalid-options Invalid Box Options!
         v-col(align="center" cols="12" md="5")
-          h1 Design Your Limited Edition TinyBox
+          h1 Design Your LE TinyBox
           v-form(v-model="form.valid").create-form
             .form-buttons
               v-spacer
@@ -84,7 +78,7 @@
                     ColorPicker(v-bind="values.color" variant="persistent" @change="setHue").picker.ma-2
                     v-slider(v-model="values.color.saturation" @change="changed" thumb-label required label="Saturation" min="0" max="100")
                     v-slider(v-model="values.color.luminosity" @change="changed" thumb-label required label="Lightness" min="0" max="100")
-                    v-slider(v-model="values.contrast" @change="changed" thumb-label required label="Contrast" min="0" :max="lightness")
+                    v-slider(v-model="values.contrast" @change="changed" thumb-label required label="Contrast" min="0" :max="values.color.luminosity")
                     v-slider(v-model="values.shades" @change="changed" thumb-label required label="Shades" min="0" max="100")
                   template(v-else-if="section.title === 'Shapes'")
                     v-slider(v-model="values.shapes" @change="changed" thumb-label required label="Count" min="1" max="30")
@@ -386,8 +380,7 @@ export default Vue.extend({
       const t = this as any;
       if (!t.form.valid) { console.log("Invalid Form Values"); return; }
       t.loading = true;
-      await t.loadStatus()
-      const v = {...t.values, ...t.assembleDials(), palette: t.assemblePalette(), settings: [5, 0, 0]};
+      const v = {...t.values, ...t.assembleDials(), palette: t.assemblePalette(), settings: [0, 0, 1]};
       const traits = [
         v.traits[0],
         v.traits[1],
