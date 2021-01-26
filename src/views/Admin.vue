@@ -25,7 +25,7 @@
               p Curent Block: {{  }}
               p Block Start: {{ blockStart }}
               p Aproximate Start Time: {{  }}
-              v-divider
+              v-divider.my-3
               p Set the countdown blockstart
               v-text-field(label="Block")
               v-text-field(label="Time")
@@ -48,7 +48,7 @@
               span
                 a(:href="baseURI") {{ baseURI }}
               v-text-field(label="Base URI")
-              v-divider
+              v-divider.my-3
               p Token URI
               v-text-field(label="Token ID")
               p URI: {{  }}
@@ -72,7 +72,7 @@
               .d-flex
                 v-btn Test Randomizer
                 p.ml-5 Randomness: {{  }}
-              v-divider
+              v-divider.my-3
               p Set the Randomizer Contract
               v-text-field(label="Randomizer")
               v-btn Update
