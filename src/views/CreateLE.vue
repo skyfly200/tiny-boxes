@@ -128,6 +128,7 @@ export default Vue.extend({
       limit: null as number | null,
       redeemID: '',
       limitedEditions: [],
+      unredeemedLimitedEditions: [],
       form: {
         section: 0,
         valid: true,
@@ -245,8 +246,15 @@ export default Vue.extend({
       for (let i=0; i<balance; i++)
         tokens.push(await t.lookupUsersToken(i));
       t.limitedEditions = tokens.filter( (id: any) => parseInt(id) > parseInt(t.limit) );
+      for (const id of t.limitedEditions) {
+        console.log(id)
+        if (await t.isUnredeemed(id)) t.unredeemedLimitedEditions.push(id);
+      }
       // TODO - select with dialog
-      t.redeemID = t.limitedEditions[0];
+      t.redeemID = t.unredeemedLimitedEditions[0];
+    },
+    async isUnredeemed(id: any) {
+      return await (this as any).$store.state.contracts.tinyboxes.methods.unredeemed(id).call();
     },
     lookupBalance: function() {
       return (this as any).$store.state.contracts.tinyboxes.methods.balanceOf((this as any).currentAccount).call();
@@ -440,7 +448,6 @@ export default Vue.extend({
         v.shades,
         v.contrast
       ];
-      console.log(v.seed.toString(), v.shapesPacked, v.palette, v.size, v.spacing, v.mirroring, t.redeemID )
       this.$store.state.contracts.tinyboxes.methods
         .renderPreview(v.seed.toString(), v.palette, v.shapesPacked, v.size, v.spacing, v.mirroring, v.settings, traits, '')
         .call()
@@ -481,14 +488,13 @@ export default Vue.extend({
         .subscribe("logs", {
           address: this.$store.state.tinyboxesAddress,
           topics: [
-            "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-            "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "0xeaa4f184b7f3d10bde81fc2d884889a91fbadf176d0ecc02895ab30b5aba08ef",
             "0x000000000000000000000000" + this.currentAccount.slice(2),
           ],
         })
         .on("data", async (log: any) => {
           const t = this as any;
-          t.minted.id = parseInt(log.topics[3], 16);
+          t.minted.id = parseInt(log.topics[3], 16).toString(10);
           t.minted.art = await t.$store.state.contracts.tinyboxes.methods.tokenArt(t.minted.id, 5, 0, 1, '').call();
           t.overlay = "ready";
         });
