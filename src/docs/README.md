@@ -4,7 +4,7 @@ heroImage: ./img/logo.svg
 heroText: TinyBoxes Guide
 tagline: Learn the tricks to minting the best Boxes
 actionText: Get Started →
-actionLink: /dapp
+actionLink: /intro
 features:
 - title: ART
   details: Discover all the differentiating features and options
