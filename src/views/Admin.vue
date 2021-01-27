@@ -11,7 +11,7 @@
             v-spacer
             span Phase Length: {{ phaseLen }}
             v-spacer
-            span Created This Phase: {{ tokenCount % phaseLen }}
+            span Created This Phase: {{ tokenCount === null ? '' : tokenCount % phaseLen }}
             v-spacer
             span Total Created: {{ tokenCount }}
             v-spacer
@@ -29,7 +29,7 @@
               p Aprox. Time (Local): {{ pauseEndTime | dateTime }}
               p Aprox. Time (UTC): {{ pauseEndTimeUTC | dateTime }}
               p Countdown: 
-              vac(v-if="paused" :end-time="pauseEndTime")
+              vac(:end-time="(pauseEndTimestamp === null ? Date() : pauseEndTimestamp)")
                 template(v-slot:process="{ timeObj }")
                   span {{ `${timeObj.m}:${timeObj.s}` }}
               v-divider.my-3
@@ -124,6 +124,8 @@ export default Vue.extend({
     await this.$store.dispatch("initialize");
     const t = this as any;
     dayjs.extend(utc)
+    t.currentBlock = t.currentBlock = await t.$store.state.web3.eth.getBlockNumber();;
+    t.currentBlockTimestamp = new Date().getTime() * 1000;
     t.loadStats();
     t.lookupPhaseLen();
     t.lookupContractURI();
@@ -135,8 +137,7 @@ export default Vue.extend({
   },
   filters: {
     dateTime: function (timestamp: any) {
-      if (!timestamp) return ''
-      return (dayjs as any)(timestamp).format("h:mm:ss A DD/MM/YYYY");
+      return !timestamp ? '' : (dayjs as any)(timestamp).format("h:mm:ss A DD/MM/YYYY");
     },
   },
   methods: {
@@ -212,6 +213,14 @@ export default Vue.extend({
       t.lookupLE();
       t.lookupTokens();
       t.lookupPhase();
+      t.loadCountdown();
+    },
+    loadCountdown() {
+      const t = this as any;
+      t.timeLeft = (t.blockStart - t.currentBlock) * 15000;
+      t.pauseEndTimestamp = new Date(t.currentBlockTimestamp).getTime() + t.timeLeft;
+      t.pauseEndTime = dayjs(t.currentBlockTimestamp).add(t.timeLeft, 'ms');
+      t.pauseEndTimeUTC = dayjs(t.currentBlockTimestamp).add(t.timeLeft, 'ms');
     },
     lookupContractURI: async function() {
       (this as any).contractURI = await this.$store.state.contracts.tinyboxes.methods.contractURI().call();
@@ -253,13 +262,9 @@ export default Vue.extend({
             }
             console.error(error);
         })
-        .on("data", async function(blockHeader: any){
+        .on("data", async function(blockHeader: any) {
           t.currentBlock = blockHeader.number;
           t.currentBlockTimestamp = blockHeader.timestamp * 1000;
-          t.timeLeft = (t.blockStart - t.currentBlock) * 15000;
-          t.pauseEndTimestamp = new Date(t.currentBlockTimestamp) + t.timeLeft;
-          t.pauseEndTime = dayjs(t.currentBlockTimestamp).add(t.timeLeft, 'ms');
-          t.pauseEndTimeUTC = dayjs(t.currentBlockTimestamp).add(t.timeLeft, 'ms');
           t.loadStats();
         })
         .on("error", console.error);
