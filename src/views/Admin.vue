@@ -22,9 +22,13 @@
           v-card
             v-card-title Countdown
             v-card-text
-              p Curent Block: {{  }}
+              p Curent Block: {{ currentBlock }}
               p Block Start: {{ blockStart }}
-              p Aproximate Start Time: {{  }}
+              p Aproximate Start Time: {{ pauseEndTime }}
+              p Countdown: 
+                vac(v-if="paused" :end-time="pauseEndTime")
+                  template(v-slot:process="{ timeObj }")
+                    span {{ `${timeObj.m}:${timeObj.s}` }}
               v-divider.my-3
               p Set the countdown blockstart
               v-text-field(label="Block")
@@ -35,7 +39,7 @@
             v-card-text
               p Curent State: {{ paused ? "Paused" : "Unpaused" }}
             v-card-actions
-              v-btn(icon)
+              v-btn(icon @click="setPause(!paused)")
                 v-icon(large) {{ paused ? 'mdi-play' : 'mdi-pause' }}
           v-card
             v-card-title Metadata
@@ -81,7 +85,9 @@
             v-card-text
               p Set the Renderer Contract
               v-text-field(label="Randomizer")
+            v-card-actions
               v-btn Test
+              v-spacer
               v-btn Update
 </template>
 
@@ -108,20 +114,23 @@ export default Vue.extend({
     t.lookupPhaseLen();
     t.lookupContractURI();
     t.lookupBaseURI();
+    t.listenForBlocks();
+  },
+  beforeDestroy: function() {
+    (this as any).unsubscribeBlocks();
   },
   methods: {
     mintLE: async function(){
       const t = this as any;
       if (t.leRecipient !== '') {
-        t.tx = {
+        t.$store.state.web3.eth.sendTransaction({
           from: t.currentAccount,
           to: t.$store.state.tinyboxesAddress,
           value: t.price,
           data: t.$store.state.contracts.tinyboxes.methods
             .mintLE(this.leRecipient)
             .encodeABI(),
-        };
-        t.$store.state.web3.eth.sendTransaction(t.tx,
+        },
           async (err: any, txHash: string) => {
             const t = this as any;
             if (err) t.overlay = err.code === 4001 ? "" : "error";
@@ -129,6 +138,24 @@ export default Vue.extend({
           }
         );
       }
+    },
+    setPause: async function(state: boolean){
+      const t = this as any;
+      t.$store.state.web3.eth.sendTransaction({
+        from: t.currentAccount,
+        to: t.$store.state.tinyboxesAddress,
+        value: t.price,
+        data: t.$store.state.contracts.tinyboxes.methods
+          .setPause(state)
+          .encodeABI(),
+      },
+        async (err: any, txHash: string) => {
+          const t = this as any;
+          if (err) t.overlay = err.code === 4001 ? "" : "error";
+          t.leRecipient = '';
+          t.lookupPause();
+        }
+      );
     },
     lookupContractURI: async function() {
       (this as any).contractURI = await this.$store.state.contracts.tinyboxes.methods.contractURI().call();
@@ -160,10 +187,37 @@ export default Vue.extend({
     lookupBlockStart: async function() {
       (this as any).blockStart = await this.$store.state.contracts.tinyboxes.methods.blockStart().call();
     },
+    listenForBlocks: function() {
+      const t = this as any;
+      t.blockSubscription = t.$store.state.web3.eth
+        .subscribe("newBlockHeaders", function(error: any, result: any){
+            if (!error) {
+                console.log(result);
+                return;
+            }
+            console.error(error);
+        })
+        .on("data", async function(blockHeader: any){
+          t.currentBlock = blockHeader.number;
+          t.timeLeft = (t.blockStart - t.currentBlock) * 15000;
+          t.pauseEndTime = new Date().getTime() + t.timeLeft;
+        })
+        .on("error", console.error);
+    },
+    unsubscribeBlocks: function() {
+        // unsubscribes the subscription
+        (this as any).blockSubscription.unsubscribe(function(error: any, success: any){
+            if (success) {
+                console.log('Successfully unsubscribed blocks listener');
+            }
+        });
+    },
   },
   data: () => ({
     loading: true,
     paused: false,
+    currentBlock: null as number | null,
+    timeLeft: null as number | null,
     pauseEndTime: new Date(),
     blockStart: null as number | null,
     blockSubscription: null,
