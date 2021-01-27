@@ -71,6 +71,10 @@
               .columns.stat
                 span.stat-value {{ Math.floor(data.tokenData.spacing[1] % 16) + 1 }}
                 .stat-title Columns
+              .le.stat(v-if="isLE")
+                span.stat-value
+                  v-icon(large) mdi-crystal-ball
+                .stat-title Limited Edition
             .copy-btn.d-flex
               v-btn.my-4(height="3rem" width="160px" color="secondary" @click="gotoMint") Copy Options
         v-row
