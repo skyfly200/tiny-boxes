@@ -108,7 +108,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { mapGetters, mapState } from "vuex";
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc';
 
 export default Vue.extend({
