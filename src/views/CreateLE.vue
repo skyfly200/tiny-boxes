@@ -48,7 +48,7 @@
         v-col(align="center" cols="12" sm="10" md="5" offset-sm="1")
           v-card.token-preview
             v-card-title.token-stats(align="center")
-              span Limited Edition TinyBox Preview
+              span Limited Edition Preview
             v-card-text.token-graphic
               v-fade-transition(mode="out-in")
                 v-skeleton-loader(v-if="loading" tile type="image")
