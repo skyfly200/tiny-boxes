@@ -31,9 +31,20 @@
                     span {{ `${timeObj.m}:${timeObj.s}` }}
               v-divider.my-3
               p Set the countdown blockstart
-              v-text-field(label="Block")
-              v-text-field(label="Time")
-              v-btn Set
+              v-dialog(ref="dateDialog" v-model="datePicker" :return-value.sync="startDate" width="290px")
+                template(v-slot:activator="{ on, attrs }")
+                  v-text-field(v-model="startDate" label="Start Date" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on")
+                v-date-picker(v-model="startDate" :min="new Date().toISOString().substr(0, 10)")
+                  v-btn(text color="primary" @click="datePicker = false") Cancel
+                  v-btn(text color="primary" @click="$refs.dateDialog.save(startDate)") Ok
+              v-dialog(ref="timeDialog" v-model="timePicker" :return-value.sync="startTime" width="290px")
+                template(v-slot:activator="{ on, attrs }")
+                  v-text-field(v-model="startTime" label="Start Time" prepend-icon="mdi-clock" readonly v-bind="attrs" v-on="on")
+                v-time-picker(v-model="startTime" :min="new Date().toISOString().substr(11)")
+                  v-btn(text color="primary" @click="timePicker = false") Cancel
+                  v-btn(text color="primary" @click="$refs.timeDialog.save(startTime)") Ok
+              v-text-field(v-model="startBlock" @change="syncDateTimeToBlock" label="Block")
+              v-btn(@click="setCountdown") Set
           v-card
             v-card-title Un/Pause Minting
             v-card-text
@@ -126,7 +137,6 @@ export default Vue.extend({
         t.$store.state.web3.eth.sendTransaction({
           from: t.currentAccount,
           to: t.$store.state.tinyboxesAddress,
-          value: t.price,
           data: t.$store.state.contracts.tinyboxes.methods
             .mintLE(this.leRecipient)
             .encodeABI(),
@@ -144,7 +154,6 @@ export default Vue.extend({
       t.$store.state.web3.eth.sendTransaction({
         from: t.currentAccount,
         to: t.$store.state.tinyboxesAddress,
-        value: t.price,
         data: t.$store.state.contracts.tinyboxes.methods
           .setPause(state)
           .encodeABI(),
@@ -156,6 +165,34 @@ export default Vue.extend({
           t.lookupPause();
         }
       );
+    },
+    setCountdown: async function(){
+      const t = this as any;
+      t.$store.state.web3.eth.sendTransaction({
+        from: t.currentAccount,
+        to: t.$store.state.tinyboxesAddress,
+        data: t.$store.state.contracts.tinyboxes.methods
+          .startCountdown(t.startBlock)
+          .encodeABI(),
+      },
+        async (err: any, txHash: string) => {
+          const t = this as any;
+          if (err) t.overlay = err.code === 4001 ? "" : "error";
+          t.leRecipient = '';
+          t.lookupBlockStart();
+        }
+      );
+    },
+    syncBlockToDateTime() {
+      const t = this as any;
+      //t.startBlock = t.startDate + t.startTime;
+    },
+    syncDateTimeToBlock() {
+      const t = this as any;
+      // const blockDifference = t.startBlock - t.currentBlock;
+      // const timeDifference = blockDifference * t.avgBlockTime;
+      // t.startDate = timeDifference;
+      // t.startTime = timeDifference;
     },
     lookupContractURI: async function() {
       (this as any).contractURI = await this.$store.state.contracts.tinyboxes.methods.contractURI().call();
@@ -216,6 +253,12 @@ export default Vue.extend({
   data: () => ({
     loading: true,
     paused: false,
+    avgBlockTime: 15000,
+    datePicker: false,
+    timePicker: false,
+    startBlock: null as number | null,
+    startDate: null as number | null,
+    startTime: null as number | null,
     currentBlock: null as number | null,
     timeLeft: null as number | null,
     pauseEndTime: new Date(),
