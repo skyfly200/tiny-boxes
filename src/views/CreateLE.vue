@@ -8,6 +8,14 @@
             h3 Mint for {{ priceInETH }}
               v-icon mdi-ethereum
             h3 To {{ currentAccount }}
+      .dialog-confirm(v-else-if="overlay === 'select'" key="select")
+        h1(align="center") Select the Token to Redeem
+        .tokens.d-flex.wrap
+          template(v-if="unredeemedLimitedEditions.length > 0")
+            v-card.id-card.ma-5.pa-3(v-for="id of unredeemedLimitedEditions" @click="redeemToken(id)" min-width="5rem")
+              v-card-title(align="center" color="primary") {{ parseID(id) }}
+          template(v-else)
+            h2 No tokens to redeem
       v-card.dialog-confirm(v-else-if="overlay === 'confirm'" key="confirm")
         v-card-title Minting
         v-card-text
@@ -33,9 +41,8 @@
         v-card-text
           v-alert(type="error" border="left") An error occured while atempting to mint your token
         v-card-actions
-          v-btn(@click="redeemToken" color="success") Try Again
           v-spacer
-          v-btn(@click="overlay = ''; loadToken()" color="error") Cancel
+          v-btn(@click="overlay = ''; loadToken()" color="error") Close
     v-container(fluid)
       v-row(flex)
         v-col(align="center" cols="12" sm="10" md="5" offset-sm="1")
@@ -48,7 +55,7 @@
                 Token(v-else :id="id" :data="data")
             v-card-actions
               v-spacer
-              v-btn(@click="redeemToken" :disabled="!form.valid || loading" large color="primary")
+              v-btn(@click="overlay = 'select'" :disabled="!form.valid || loading" large color="primary")
                 v-icon.mr-2 mdi-creation
                 span Create
           v-alert(v-if="!loading && !form.valid" type="error" prominent outlined border="left").invalid-options Invalid Box Options!
@@ -131,6 +138,7 @@ export default Vue.extend({
       redeemID: '',
       limitedEditions: [],
       unredeemedLimitedEditions: [],
+      max256: 115792089237316195423570985008687907853269984665640564039457584007913129639936n,
       form: {
         section: 0,
         valid: true,
@@ -241,6 +249,9 @@ export default Vue.extend({
     }
   },
   methods: {
+    parseID(id: any) {
+      return (BigInt(id) - (this as any).max256).toString();
+    },
     loadLimitedEditions: async function() {
       const t = this as any;
       const balance = await t.lookupBalance();
@@ -461,14 +472,14 @@ export default Vue.extend({
           console.error(err);
         });
     },
-    redeemToken: async function() {
+    redeemToken: async function(id: any) {
       const t = this as any;
       const v = {...t.values, ...t.assembleDials(), palette: t.assemblePalette()};
       t.tx = {
         from: this.currentAccount,
         to: this.$store.state.tinyboxesAddress,
         data: this.$store.state.contracts.tinyboxes.methods
-          .redeemLE(v.seed.toString(), v.shapesPacked, v.palette, v.size, v.spacing, v.mirroring, t.redeemID )
+          .redeemLE(v.seed.toString(), v.shapesPacked, v.palette, v.size, v.spacing, v.mirroring, id )
           .encodeABI(),
       };
       t.minted = {};
@@ -536,6 +547,14 @@ export default Vue.extend({
     color: #FFF !important
 .content
   margin-top: 35vh
+.tokens
+  flex-wrap: wrap
+  justify-content: space-around
+  .id-card
+    display: flex
+    justify-content: space-around
+    .v-card__title
+      font-size: 1.5rem
 .id
   font-size: 2rem
 .token-loading
