@@ -246,10 +246,8 @@ export default Vue.extend({
       for (let i=0; i<balance; i++)
         tokens.push(await t.lookupUsersToken(i));
       t.limitedEditions = tokens.filter( (id: any) => parseInt(id) > parseInt(t.limit) );
-      for (const id of t.limitedEditions) {
-        console.log(id)
+      for (const id of t.limitedEditions)
         if (await t.isUnredeemed(id)) t.unredeemedLimitedEditions.push(id);
-      }
       // TODO - select with dialog
       t.redeemID = t.unredeemedLimitedEditions[0];
     },
