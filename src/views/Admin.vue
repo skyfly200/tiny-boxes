@@ -7,7 +7,7 @@
       v-row
         v-col(cols="12")
           v-toolbar
-            span Phase: {{ phase }}
+            span Phase: {{ phase }} - {{ schemeTitles[phase] }}
             v-spacer
             span Phase Length: {{ phaseLen }}
             v-spacer
@@ -24,8 +24,8 @@
             v-card-text
               p Curent Block: {{ currentBlock }}
               p Block Start: {{ blockStart }}
-              p Aproximate Start Time (Local): {{ new Date(pauseEndTime) }}
-              p Aproximate Start Time (UTC): {{ new Date(pauseEndTime) }}
+              p Aproximate Start Time (Local): {{ pauseEndTime }}
+              p Aproximate Start Time (UTC): {{ pauseEndTimeUTC }}
               p Countdown: 
                 vac(v-if="paused" :end-time="pauseEndTime")
                   template(v-slot:process="{ timeObj }")
@@ -106,16 +106,25 @@
 <script lang="ts">
 import Vue from "vue";
 import { mapGetters, mapState } from "vuex";
-import dayjs from 'dayjs'
+import * as dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'; // timezone plugin dependent on utc plugin
+import timezone from 'dayjs/plugin/timezone';
+
 
 export default Vue.extend({
   name: "Admin",
   computed: {
+    ...mapState({
+        animationTitles: 'animationTitles',
+        schemeTitles: 'schemeTitles',
+    }),
     ...mapGetters(["currentAccount"]),
   },
   mounted: async function() {
     await this.$store.dispatch("initialize");
     const t = this as any;
+    dayjs.extend(utc)
+    dayjs.extend(timezone)
     t.lookupSupply();
     t.lookupLimit();
     t.lookupPause();
@@ -230,15 +239,18 @@ export default Vue.extend({
       t.blockSubscription = t.$store.state.web3.eth
         .subscribe("newBlockHeaders", function(error: any, result: any){
             if (!error) {
-                console.log(result);
+                //console.log(result);
                 return;
             }
             console.error(error);
         })
         .on("data", async function(blockHeader: any){
           t.currentBlock = blockHeader.number;
+          t.currentBlockTimestamp = blockHeader.timestamp * 1000;
           t.timeLeft = (t.blockStart - t.currentBlock) * 15000;
-          t.pauseEndTime = new Date().getTime() + t.timeLeft;
+          t.pauseEndTimestamp = new Date(t.currentBlockTimestamp) + t.timeLeft;
+          t.pauseEndTime = dayjs(t.currentBlockTimestamp).add(t.timeLeft, 'ms').format('h:mm:ss A DD/MM/YYYY z');
+          t.pauseEndTimeUTC = dayjs(t.currentBlockTimestamp).add(t.timeLeft, 'ms').utc().format('h:mm:ss A DD/MM/YYYY');
         })
         .on("error", console.error);
     },
@@ -261,8 +273,11 @@ export default Vue.extend({
     startDate: null as number | null,
     startTime: null as number | null,
     currentBlock: null as number | null,
+    currentBlockTimestamp: null as number | null,
     timeLeft: null as number | null,
-    pauseEndTime: null as Date | null,
+    pauseEndTime: null as any,
+    pauseEndTimeUTC: null as any,
+    pauseEndTimestamp: null as number | null,
     blockStart: null as number | null,
     blockSubscription: null,
     supply: null as number | null,
