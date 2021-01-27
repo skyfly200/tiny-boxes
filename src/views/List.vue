@@ -38,7 +38,7 @@
             v-col(v-for="t of items" :key="'token-col-'+t.id" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
               v-card.token(:to="'/token/' + t.id" tile)
                 Token(:id="t.id" :data="t.art")
-                v-card-text.title {{ t.id }}
+                v-card-text.title {{ t.title }}
         template(v-slot:no-data)
           v-row.get-started
             v-col(cols="12")
@@ -67,6 +67,7 @@ export default {
     owned: false,
     page: 0,
     itemsPerPageSelector: 20,
+    max256: 115792089237316195423570985008687907853269984665640564039457584007913129639936n,
     count: null,
     userCount: null,
     supply: null,
@@ -111,13 +112,16 @@ export default {
       return (this as any).$store.state.contracts.tinyboxes.methods.ownerOf(id).call();
     },
     lookupSupply: function() {
-      return (this as any).$store.state.contracts.tinyboxes.methods._tokenIds().call();
+      return (this as any).$store.state.contracts.tinyboxes.methods.totalSupply().call();
     },
     lookupBalance: function() {
       return (this as any).$store.state.contracts.tinyboxes.methods.balanceOf((this as any).currentAccount).call();
     },
     lookupUsersToken(i: any) {
       return (this as any).$store.state.contracts.tinyboxes.methods.tokenOfOwnerByIndex((this as any).currentAccount, i).call();
+    },
+    lookupTokenByIndex(i: any) {
+      return (this as any).$store.state.contracts.tinyboxes.methods.tokenByIndex(i).call();
     },
     lookupLimit: function() {
       return (this as any).$store.state.contracts.tinyboxes.methods.TOKEN_LIMIT().call();
@@ -126,22 +130,24 @@ export default {
       const t = this as any;
       t.tokens = {};
       t.count = t.owned ? t.userCount : t.supply;
-      for (let i = 0; i < t.count; i++) t.loadToken(i);
+      for (let i = 0; i < t.count; i++) {
+        const id = t.owned ? await t.lookupUsersToken(i) : await t.lookupTokenByIndex(i);
+        t.loadToken(id);
+      }
     },
     loadToken: async function(tokenID: any) {
       const t = this as any;
-      if (tokenID < t.limit) {
-        const artPromise = t.lookupArt(tokenID);
-        const ownerPromise = t.lookupOwner(tokenID);
-        const art = await artPromise;
-        const owner = await ownerPromise;
-        t.$set(t.tokens, tokenID, {
-          id: tokenID,
-          art: art,
-          owner: owner,
-        });
-        t.loading = false;
-      }
+      const artPromise = t.lookupArt(tokenID);
+      const ownerPromise = t.lookupOwner(tokenID);
+      const art = await artPromise;
+      const owner = await ownerPromise;
+      t.$set(t.tokens, tokenID, {
+        id: tokenID,
+        title: tokenID > 100000 ? (BigInt(tokenID) - t.max256).toString() : tokenID,
+        art: art,
+        owner: owner,
+      });
+      t.loading = false;
     },
     listenForTokens: function() {
       const t = this as any;

@@ -168,7 +168,7 @@ export default Vue.extend({
     const t = this as any;
     await t.loadSettings();
     t.isLE = await t.checkLE();
-    const leID = (BigInt(t.id) - (115792089237316195423570985008687907853269984665640564039457584007913129639936n) ).toString();
+    const leID = (BigInt(t.id) - t.max256 ).toString();
     t.formatedID = t.isLE ? leID : t.id;
     t.$store.state.contracts.tinyboxes.methods.ownerOf(t.id).call()
       .then( (owner: any) => {
@@ -309,6 +309,7 @@ export default Vue.extend({
     settingsPane: false,
     isLE: false,
     formatedID: '',
+    max256: 115792089237316195423570985008687907853269984665640564039457584007913129639936n,
     settings: {
       bkg: 0,
       duration: 10,
