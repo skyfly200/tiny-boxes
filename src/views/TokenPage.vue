@@ -32,6 +32,10 @@
               .mirror-a.stat
                 span.stat-value {{ data.tokenData.mirroring % 4 }},{{ Math.floor(data.tokenData.mirroring / 4) % 4 }},{{ Math.floor(data.tokenData.mirroring / 16) % 4 }}
                 .stat-title Mirroring
+              .le.stat(v-if="isLE")
+                span.stat-value
+                  v-icon(large) mdi-crystal-ball
+                .stat-title Limited Edition
           v-col(cols="12" md="4")
             v-card
               Token(v-if="animate" :id="id+'A'" :data="data.animation" key="anim").token-graphic
@@ -71,10 +75,6 @@
               .columns.stat
                 span.stat-value {{ Math.floor(data.tokenData.spacing[1] % 16) + 1 }}
                 .stat-title Columns
-              .le.stat(v-if="isLE")
-                span.stat-value
-                  v-icon(large) mdi-crystal-ball
-                .stat-title Limited Edition
             .copy-btn.d-flex
               v-btn.my-4(height="3rem" width="160px" color="secondary" @click="gotoMint") Copy Options
         v-row
