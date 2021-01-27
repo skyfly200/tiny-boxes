@@ -72,13 +72,14 @@
                   h2 {{ priceInETH }}
                   v-icon(large) mdi-ethereum
                 v-spacer
-                TooltipIconBtn(icon="mdi-forward" tip="Forward Mint" @click="overlay='recipient'" bottom).forward-btn
                 vac(v-if="paused" :end-time="pauseEndTime")
                   template(v-slot:process="{ timeObj }")
                     span {{ `${timeObj.m}:${timeObj.s}` }} to phase {{ Math.floor(id / phaseLen) }}
-                v-btn(v-else @click="mintToken" :disabled="!form.valid || soldOut || loading" large color="primary")
-                  v-icon.mr-2 mdi-creation
-                  span Mint {{ ((id % phaseLen) + 1) + "/" + phaseLen }}
+                template(v-else)
+                  TooltipIconBtn(icon="mdi-forward" tip="Forward Mint" @click="overlay='recipient'" bottom).forward-btn
+                  v-btn(@click="mintToken" :disabled="!form.valid || soldOut || loading" large color="primary")
+                    v-icon.mr-2 mdi-creation
+                    span Mint {{ ((id % phaseLen) + 1) + "/" + phaseLen }}
           v-alert(v-if="!loading && !form.valid" type="error" prominent outlined border="left").invalid-options Invalid Box Options!
           v-alert(v-if="!loading && soldOut" type="warning" prominent outlined border="left").sold-out
             p All boxes have sold, minting is disabled.
