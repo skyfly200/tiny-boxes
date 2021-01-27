@@ -72,7 +72,8 @@
                   h2 {{ priceInETH }}
                   v-icon(large) mdi-ethereum
                 v-spacer
-                vac(v-if="paused" :end-time="pauseEndTime")
+                h1(v-if="paused") Minting Paused
+                vac(v-else-if="countdown" :end-time="pauseEndTime")
                   template(v-slot:process="{ timeObj }")
                     span {{ `${timeObj.m}:${timeObj.s}` }} to phase {{ Math.floor(id / phaseLen) }}
                 template(v-else)
@@ -155,6 +156,7 @@ export default Vue.extend({
       id: null as number | null,
       loading: true,
       paused: false,
+      countdown: false,
       pauseEndTime: null,
       blockStart: new Date(),
       blockSubscription: null,
@@ -275,27 +277,32 @@ export default Vue.extend({
       return (this as any).$store.state.contracts.tinyboxes.methods.tokenOfOwnerByIndex((this as any).currentAccount, i).call();
     },
     lookupPause: async function() {
-      (this as any).paused = await this.$store.state.contracts.tinyboxes.methods.paused().call();
+      return (this as any).paused = await this.$store.state.contracts.tinyboxes.methods.paused().call();
     },
     lookupBlockStart: async function() {
-      (this as any).blockStart = await this.$store.state.contracts.tinyboxes.methods.blockStart().call();
+      return (this as any).blockStart = await this.$store.state.contracts.tinyboxes.methods.blockStart().call();
     },
     loadStatus: async function() {
       const t = this as any;
       const idLookup = t.getSupply();
       const priceLookup = t.getPrice();
-      t.lookupBlockStart();
       t.id = await idLookup;
       t.price = await priceLookup;
       t.values.traits[1] = t.id == 0 ? 0 : Math.floor(t.id / (t.limit / 10)); // auto update scheme preview
+      t.checkForCountdown();
+      t.listenForBlocks();
+    },
+    async checkForCountdown() {
+      const t = this as any;
       const currentBlock =  await this.$store.state.web3.eth.getBlockNumber();
-      t.lookupPause();
-      if (currentBlock < t.blockStart) {
-        t.paused = true;
+      await t.lookupBlockStart();
+      await t.lookupPause();
+      t.countdown = currentBlock <= t.blockStart;
+      if (t.countdown) {
         const timeLeft = (t.blockStart - currentBlock) * 15000;
         t.pauseEndTime = new Date().getTime() + timeLeft;
-        t.listenForBlocks();
       }
+      return t.countdown;
     },
     setHue: function(hue: any) {
       (this as any).values.color.hue = parseInt(hue);
@@ -549,19 +556,13 @@ export default Vue.extend({
       t.blockSubscription = t.$store.state.web3.eth
         .subscribe("newBlockHeaders", function(error: any, result: any){
             if (!error) {
-                console.log(result);
+                //console.log(result);
                 return;
             }
             console.error(error);
         })
         .on("data", async function(blockHeader: any){
-          const currentBlock = blockHeader.number;
-          const timeLeft = (t.blockStart - currentBlock) * 15000;
-          t.pauseEndTime = new Date().getTime() + timeLeft;
-          if (currentBlock >= t.blockStart) {
-            t.paused = false;
-            t.unsubscribeBlocks();
-          }
+          t.checkForCountdown();
         })
         .on("error", console.error);
     },
