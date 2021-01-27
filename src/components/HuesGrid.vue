@@ -3,7 +3,7 @@
       svg(:width="(2.2*(schemeH(scheme).length)) + 'em'" height="2.2em")
         g(v-for="h,i of schemeH(scheme)")
           rect(:x="2.2*i+'em'" y="0" width="2.2em" height="2.2em"
-            :style="'fill: hsl('+(parseInt(color.hue)+h)+','+color.saturation+'%,'+color.luminosity+'%)'")
+            :style="'fill: hsl('+(parseInt(color.hue)+h)+','+color.saturation+'%,'+(color.luminosity/2)+'%)'")
 </template>
 
 <script lang="ts">
