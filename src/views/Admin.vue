@@ -109,9 +109,7 @@
 import Vue from "vue";
 import { mapGetters, mapState } from "vuex";
 import * as dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'; // timezone plugin dependent on utc plugin
-import timezone from 'dayjs/plugin/timezone';
-
+import utc from 'dayjs/plugin/utc';
 
 export default Vue.extend({
   name: "Admin",
@@ -126,7 +124,6 @@ export default Vue.extend({
     await this.$store.dispatch("initialize");
     const t = this as any;
     dayjs.extend(utc)
-    dayjs.extend(timezone)
     t.lookupSupply();
     t.lookupLimit();
     t.lookupPause();
