@@ -24,7 +24,8 @@
             v-card-text
               p Curent Block: {{ currentBlock }}
               p Block Start: {{ blockStart }}
-              p Aproximate Start Time: {{ pauseEndTime }}
+              p Aproximate Start Time (Local): {{ new Date(pauseEndTime) }}
+              p Aproximate Start Time (UTC): {{ new Date(pauseEndTime) }}
               p Countdown: 
                 vac(v-if="paused" :end-time="pauseEndTime")
                   template(v-slot:process="{ timeObj }")
@@ -105,7 +106,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { mapGetters, mapState } from "vuex";
-import { log } from 'util';
+import dayjs from 'dayjs'
 
 export default Vue.extend({
   name: "Admin",
@@ -261,7 +262,7 @@ export default Vue.extend({
     startTime: null as number | null,
     currentBlock: null as number | null,
     timeLeft: null as number | null,
-    pauseEndTime: new Date(),
+    pauseEndTime: null as Date | null,
     blockStart: null as number | null,
     blockSubscription: null,
     supply: null as number | null,
