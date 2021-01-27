@@ -124,13 +124,7 @@ export default Vue.extend({
     await this.$store.dispatch("initialize");
     const t = this as any;
     dayjs.extend(utc)
-    t.lookupSupply();
-    t.lookupLimit();
-    t.lookupPause();
-    t.lookupBlockStart();
-    t.lookupLE();
-    t.lookupTokens();
-    t.lookupPhase();
+    t.loadStats();
     t.lookupPhaseLen();
     t.lookupContractURI();
     t.lookupBaseURI();
@@ -209,6 +203,16 @@ export default Vue.extend({
       // t.startDate = timeDifference;
       // t.startTime = timeDifference;
     },
+    loadStats() {
+      const t = this as any;
+      t.lookupSupply();
+      t.lookupLimit();
+      t.lookupPause();
+      t.lookupBlockStart();
+      t.lookupLE();
+      t.lookupTokens();
+      t.lookupPhase();
+    },
     lookupContractURI: async function() {
       (this as any).contractURI = await this.$store.state.contracts.tinyboxes.methods.contractURI().call();
     },
@@ -256,6 +260,7 @@ export default Vue.extend({
           t.pauseEndTimestamp = new Date(t.currentBlockTimestamp) + t.timeLeft;
           t.pauseEndTime = dayjs(t.currentBlockTimestamp).add(t.timeLeft, 'ms');
           t.pauseEndTimeUTC = dayjs(t.currentBlockTimestamp).add(t.timeLeft, 'ms');
+          t.loadStats();
         })
         .on("error", console.error);
     },
