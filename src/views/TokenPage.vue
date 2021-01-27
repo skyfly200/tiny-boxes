@@ -3,7 +3,7 @@
     v-container(fluid)
       v-row
         v-col(align="center").token-title
-          h1.title TinyBox {{ id }}
+          h1.title TinyBox {{ formatedID }}
       v-row(v-if="loading")
         v-col(align="center").token-loading
             v-progress-circular(indeterminate size="75" color="primary")
@@ -76,10 +76,10 @@
         v-row
           v-col(cols="12")
             v-card
-              v-card-title(align="center") TinyBox Number {{ id + "'s" }} Story
+              v-card-title(align="center") TinyBox Number {{ formatedID + "'s" }} Story
               v-card-text
                 .box-story(align="center")
-                  p TinyBox number {{ + id }} was created at {{ (new Date(data.block.timestamp * 1000)).toLocaleTimeString() }} on {{ (new Date(data.block.timestamp * 1000)).toLocaleDateString() }}
+                  p TinyBox number {{ formatedID }} was created at {{ (new Date(data.block.timestamp * 1000)).toLocaleTimeString() }} on {{ (new Date(data.block.timestamp * 1000)).toLocaleDateString() }}
                   p by&nbsp;
                     a(:href="'https://rinkeby.etherscan.io/address/' + data.tx.from" target="_blank") {{ data.tx.from }}
                   p &nbsp;in TX&nbsp;
@@ -129,8 +129,8 @@ export default Vue.extend({
   name: "TokenPage",
   components: { Token, ColorsGrid },
   computed: {
-    id(): number {
-      return parseInt(this.$route.params.id);
+    id(): string {
+      return this.$route.params.id.toString();
     },
     palette() {
       return {
@@ -163,17 +163,23 @@ export default Vue.extend({
     await this.$store.dispatch("initialize");
     const t = this as any;
     await t.loadSettings();
+    t.isLE = await t.checkLE();
+    const leID = (BigInt(t.id) - (115792089237316195423570985008687907853269984665640564039457584007913129639936n) ).toString();
+    t.formatedID = t.isLE ? leID : t.id;
     t.$store.state.contracts.tinyboxes.methods.ownerOf(t.id).call()
-    .then( (owner: any) => {
-      t.owner = owner;
-      t.exists = owner > 0;
-      t.loadToken();
-    })
-    .catch( () => {
-      t.loading = false;
-    });
+      .then( (owner: any) => {
+        t.owner = owner;
+        t.exists = owner > 0;
+        t.loadToken();
+      })
+      .catch( () => {
+        t.loading = false;
+      });
   },
   methods: {
+    async checkLE() {
+      return this.$store.state.contracts.tinyboxes.methods.isTokenLE((this as any).id).call();
+    },
     async loadSettings() {
       const t = this as any;
       const settings =  await t.$store.state.contracts.tinyboxes.methods.readSettings(t.id).call();
@@ -284,7 +290,7 @@ export default Vue.extend({
               "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
               "0x0000000000000000000000000000000000000000000000000000000000000000",
               null,
-              "0x" + (this.id as number).toString(16).padStart(64, "0"),
+              "0x" + BigInt(this.id as number).toString(16).padStart(64, "0"),
             ],
           })
           .on("data", resolve)
@@ -297,6 +303,8 @@ export default Vue.extend({
     exists: false,
     animate: true,
     settingsPane: false,
+    isLE: false,
+    formatedID: '',
     settings: {
       bkg: 0,
       duration: 10,
