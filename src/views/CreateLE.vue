@@ -13,7 +13,7 @@
         .tokens.d-flex.wrap
           template(v-if="unredeemedLimitedEditions.length > 0")
             v-card.id-card.ma-5.pa-3(v-for="id of unredeemedLimitedEditions" @click="redeemToken(id)" min-width="5rem")
-              v-card-title(align="center" color="primary") {{ parseID(id) }}
+              v-card-title(align="center" :key="parseID(id)" color="primary") {{ parseID(id) }}
           template(v-else)
             h2 No tokens to redeem
       v-card.dialog-confirm(v-else-if="overlay === 'confirm'" key="confirm")
