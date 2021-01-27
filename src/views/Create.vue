@@ -394,6 +394,7 @@ export default Vue.extend({
       const out: any = {
         i: v.referal ? v.referal : t.usersReferal,
         r: v.seed,
+        h: v.hueSeed,
         s: [v.shapes, v.hatching].join("-"), // shapes - count, hatching
         d: [v.width.join("~"), v.height.join("~")].join("-"), // dimensions ranges
         p: [v.spread, (v.rows * 16) + v.cols].join("-"), // positioning - spread, grid
@@ -413,6 +414,7 @@ export default Vue.extend({
       const out: any = {
         referal: q.i,
         seed: q.r,
+        hueSeed: q.h,
         shapes: s[0],
         hatching: s[1],
         width: d[0].split("~"),
@@ -445,7 +447,7 @@ export default Vue.extend({
       const t = this as any;
       const v = (this as any).values;
       return [
-        v.color.hue,
+        t.phase === 10 ? (v.color.hue + (v.hueSeed * 360)) : v.color.hue,
         v.color.saturation,
         v.color.luminosity
       ];

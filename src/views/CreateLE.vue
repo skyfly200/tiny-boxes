@@ -378,6 +378,7 @@ export default Vue.extend({
       const out: any = {
         r: v.seed,
         a: v.animation,
+        h: v.hueSeed,
         s: [v.shapes, v.hatching].join("-"), // shapes - count, hatching
         d: [v.width.join("~"), v.height.join("~")].join("-"), // dimensions ranges
         p: [v.spread, (v.rows * 16) + v.cols].join("-"), // positioning - spread, grid
@@ -398,6 +399,7 @@ export default Vue.extend({
       const m = q.m.split("-");
       const out: any = {
         seed: q.r,
+        hueSeed: q.h,
         animation: q.a,
         shapes: s[0],
         hatching: s[1],
@@ -434,7 +436,7 @@ export default Vue.extend({
       const t = this as any;
       const v = (this as any).values;
       return [
-        v.color.hue,
+        v.scheme === 10 ? (v.color.hue + (v.hueSeed * 360)) : v.color.hue,
         v.color.saturation,
         v.color.luminosity
       ];
