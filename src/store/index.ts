@@ -78,12 +78,18 @@ const tinyboxesABI = [
       "inputs": [
         {
           "indexed": false,
+          "internalType": "address",
+          "name": "by",
+          "type": "address"
+        },
+        {
+          "indexed": false,
           "internalType": "uint256",
           "name": "id",
           "type": "uint256"
         }
       ],
-      "name": "LECreated",
+      "name": "RedeemedLE",
       "type": "event"
     },
     {
@@ -1505,9 +1511,9 @@ const store = new Vuex.Store({
       "Mono",
       "Random"
     ],
-    tinyboxesAddress: '0x3cAEAF0c7e0D373d3eF754a87486373dE99875b5',
+    tinyboxesAddress: '0xC02fe6ee8eD0AFe06C9Ff134299DB179A9D2DfEB',
     openseaStoreURL: 'https://testnets.opensea.io/assets/tinyboxes-lvupeos4gn',
-    openseaTokenURL: 'https://testnets.opensea.io/assets/0x3cAEAF0c7e0D373d3eF754a87486373dE99875b5/',
+    openseaTokenURL: 'https://testnets.opensea.io/assets/0xC02fe6ee8eD0AFe06C9Ff134299DB179A9D2DfEB/',
     currentAccount: "",
     web3Status: "loading",
     web3: null,

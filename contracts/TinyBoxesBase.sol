@@ -36,7 +36,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     uint256 MAX_PROMOS = 100;
 
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE"); // define the admin role identifier
-    uint16 public constant TOKEN_LIMIT = 110;
+    uint16 public constant TOKEN_LIMIT = 2222;
     uint8 public constant ANIMATION_COUNT = 24;
     uint8 public constant SCHEME_COUNT = 11;
     uint8 public constant avgBlockTime = 15; // avg time per block mined in seconds
