@@ -198,7 +198,7 @@ export default Vue.extend({
   },
   computed: {
     phaseLen() {
-      return (this as any).limit / 10;
+      return (this as any).limit / 11;
     },
     phase() {
       return Math.floor((this as any).id / (this as any).phaseLen);
