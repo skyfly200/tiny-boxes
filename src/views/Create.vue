@@ -114,6 +114,7 @@
                   template(v-if="section.title === 'Color'")
                     HuesGrid(:color="values.color" :scheme="phase").ma-2
                     ColorPicker(v-bind="values.color" variant="persistent" @change="setHue").picker.ma-2
+                    v-slider(v-if="phase === 10" v-model="values.color.saturation" @change="changed" thumb-label required label="Hue Seed" min="0" max="182")
                     v-slider(v-model="values.color.saturation" @change="changed" thumb-label required label="Saturation" min="20" max="100")
                     v-slider(v-model="values.color.luminosity" @change="changed" thumb-label required label="Lightness" min="0" max="100")
                   template(v-else-if="section.title === 'Shapes'")
@@ -256,7 +257,7 @@ export default Vue.extend({
   },
   methods: {
     getSupply: function() {
-      return this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
+      return this.$store.state.contracts.tinyboxes.methods._tokenIds().call();
     },
     getPrice: function() {
       return this.$store.state.contracts.tinyboxes.methods.price().call();
