@@ -114,7 +114,7 @@
                   template(v-if="section.title === 'Color'")
                     HuesGrid(:color="values.color" :scheme="phase").ma-2
                     ColorPicker(v-bind="values.color" variant="persistent" @change="setHue").picker.ma-2
-                    v-slider(v-if="phase === 10" v-model="values.color.saturation" @change="changed" thumb-label required label="Hue Seed" min="0" max="182")
+                    v-slider(v-if="phase === 10" v-model="values.hueSeed" @change="changed" thumb-label required label="Hue Seed" min="0" max="182")
                     v-slider(v-model="values.color.saturation" @change="changed" thumb-label required label="Saturation" min="20" max="100")
                     v-slider(v-model="values.color.luminosity" @change="changed" thumb-label required label="Lightness" min="0" max="100")
                   template(v-else-if="section.title === 'Shapes'")
@@ -185,6 +185,7 @@ export default Vue.extend({
           saturation: 80,
           luminosity: 70
         },
+        hueSeed: 0,
         animate: false,
         m1: 3,
         m2: 3,

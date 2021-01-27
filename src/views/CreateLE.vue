@@ -85,6 +85,7 @@
                     v-select(v-model="values.scheme" :items="schemes" item-text="title" item-value="index" @change="changed" label="Scheme")
                     HuesGrid(:color="values.color" :scheme="values.scheme").ma-2
                     ColorPicker(v-bind="values.color" variant="persistent" @change="setHue").picker.ma-2
+                    v-slider(v-if="values.scheme === 10" v-model="values.hueSeed" @change="changed" thumb-label required label="Hue Seed" min="0" max="182")
                     v-slider(v-model="values.color.saturation" @change="changed" thumb-label required label="Saturation" min="0" max="100")
                     v-slider(v-model="values.color.luminosity" @change="changed" thumb-label required label="Lightness" min="0" max="100")
                     v-slider(v-model="values.contrast" @change="changed" thumb-label required label="Contrast" min="0" :max="values.color.luminosity")
@@ -162,6 +163,7 @@ export default Vue.extend({
           saturation: 80,
           luminosity: 70
         },
+        hueSeed: 0,
         contrast: 50,
         shades: 1,
         animation: 0,
