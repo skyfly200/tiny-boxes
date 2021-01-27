@@ -57,7 +57,10 @@
               span(v-else) Preview Your TinyBox
             v-card-subtitle
               v-skeleton-loader(v-if="id === null" type="card-heading" width="20vw")
-              span(v-else) Color Scheme: {{ schemeTitles[phase] }}
+              template(v-else)
+                span Phase: {{ phase }}
+                v-spacer
+                span Color Scheme: {{ schemeTitles[phase] }}
             v-card-text.token-graphic
               v-fade-transition(mode="out-in")
                 v-skeleton-loader(v-if="loading" tile type="image")
