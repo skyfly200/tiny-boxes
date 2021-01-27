@@ -111,7 +111,24 @@ export default Vue.extend({
   },
   methods: {
     mintLE: async function(){
-      if (this.leRecipient !== '') await this.$store.state.contracts.tinyboxes.methods.mintLE(this.leRecipient).call();
+      const t = this as any;
+      if (t.leRecipient !== '') {
+        t.tx = {
+          from: t.currentAccount,
+          to: t.$store.state.tinyboxesAddress,
+          value: t.price,
+          data: t.$store.state.contracts.tinyboxes.methods
+            .mintLE(this.leRecipient)
+            .encodeABI(),
+        };
+        t.$store.state.web3.eth.sendTransaction(t.tx,
+          async (err: any, txHash: string) => {
+            const t = this as any;
+            if (err) t.overlay = err.code === 4001 ? "" : "error";
+            t.leRecipient = '';
+          }
+        );
+      }
     },
     lookupContractURI: async function() {
       (this as any).contractURI = await this.$store.state.contracts.tinyboxes.methods.contractURI().call();
