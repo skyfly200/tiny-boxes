@@ -23,13 +23,15 @@
             v-card-title Countdown
             v-card-text
               p Curent Block: {{ currentBlock }}
-              p Block Start: {{ blockStart }}
-              p Aproximate Start Time (Local): {{ pauseEndTime }}
-              p Aproximate Start Time (UTC): {{ pauseEndTimeUTC }}
+              p Mined At: {{ currentBlockTimestamp | dateTime }}
+              br
+              p Start Block: {{ blockStart }}
+              p Aprox. Time (Local): {{ pauseEndTime | dateTime }}
+              p Aprox. Time (UTC): {{ pauseEndTimeUTC | dateTime }}
               p Countdown: 
-                vac(v-if="paused" :end-time="pauseEndTime")
-                  template(v-slot:process="{ timeObj }")
-                    span {{ `${timeObj.m}:${timeObj.s}` }}
+              vac(v-if="paused" :end-time="pauseEndTime")
+                template(v-slot:process="{ timeObj }")
+                  span {{ `${timeObj.m}:${timeObj.s}` }}
               v-divider.my-3
               p Set the countdown blockstart
               v-dialog(ref="dateDialog" v-model="datePicker" :return-value.sync="startDate" width="290px")
@@ -140,6 +142,12 @@ export default Vue.extend({
   beforeDestroy: function() {
     (this as any).unsubscribeBlocks();
   },
+  filters: {
+    dateTime: function (timestamp: any) {
+      if (!timestamp) return ''
+      return (dayjs as any)(timestamp).format("h:mm:ss A DD/MM/YYYY");
+    },
+  },
   methods: {
     mintLE: async function(){
       const t = this as any;
@@ -249,8 +257,8 @@ export default Vue.extend({
           t.currentBlockTimestamp = blockHeader.timestamp * 1000;
           t.timeLeft = (t.blockStart - t.currentBlock) * 15000;
           t.pauseEndTimestamp = new Date(t.currentBlockTimestamp) + t.timeLeft;
-          t.pauseEndTime = dayjs(t.currentBlockTimestamp).add(t.timeLeft, 'ms').format('h:mm:ss A DD/MM/YYYY z');
-          t.pauseEndTimeUTC = dayjs(t.currentBlockTimestamp).add(t.timeLeft, 'ms').utc().format('h:mm:ss A DD/MM/YYYY');
+          t.pauseEndTime = dayjs(t.currentBlockTimestamp).add(t.timeLeft, 'ms');
+          t.pauseEndTimeUTC = dayjs(t.currentBlockTimestamp).add(t.timeLeft, 'ms');
         })
         .on("error", console.error);
     },
