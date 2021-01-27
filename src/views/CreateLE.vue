@@ -48,7 +48,9 @@
                 Token(v-else :id="id" :data="data")
             v-card-actions
               v-spacer
-              v-btn(@click="redeemToken" :disabled="!form.valid || loading" large color="primary") Create
+              v-btn(@click="redeemToken" :disabled="!form.valid || loading" large color="primary")
+                v-icon.mr-2 mdi-creation
+                span Create
           v-alert(v-if="!loading && !form.valid" type="error" prominent outlined border="left").invalid-options Invalid Box Options!
         v-col(align="center" cols="12" md="5")
           h1 Design Your LE TinyBox
