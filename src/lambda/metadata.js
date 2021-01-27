@@ -214,6 +214,11 @@ exports.handler = async (event, context) => {
           max_value: 30
         },
         {
+          trait_type: 'Min Width',
+          value: data.size[0],
+          max_value: 255
+        },
+        {
           trait_type: 'Max Width',
           value: data.size[1],
           max_value: 255
