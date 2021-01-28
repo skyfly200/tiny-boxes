@@ -231,6 +231,8 @@ export class TinyBoxesStore extends Contract {
       position: (number | string)[],
       exclusive: boolean
     ): TransactionObject<void>;
+
+    withdraw(): TransactionObject<void>;
   };
   events: {
     Approval: ContractEvent<{
