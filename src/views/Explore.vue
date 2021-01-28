@@ -29,6 +29,9 @@ export default Vue.extend({
   name: "Explore",
   components: { Token },
   computed: {
+    phase() {
+      return Math.floor((this as any).id / (this as any).phaseLen);
+    },
     ...mapState({
         animationTitles: 'animationTitles',
         schemeTitles: 'schemeTitles',
@@ -81,7 +84,7 @@ export default Vue.extend({
       }
       randomSettings.traits = [
         0,
-        Math.floor(t.id / (t.limit / 10)),
+        0,
         t.between({ min: 1, max: 7 }),
         t.between({ min: 0, max: randomSettings.color.luminosity })
       ];
@@ -147,7 +150,7 @@ export default Vue.extend({
     assemblePalette: function() {
       const v = (this as any).values;
       return [
-        v.hue,
+        (this as any).phase === 10 ? (v.color.hue + (v.hueSeed * 360)) : v.color.hue,
         v.saturation,
         v.lightness
       ];
@@ -166,9 +169,10 @@ export default Vue.extend({
     loadToken: function() {
       return new Promise((resolve, reject) => {
         const t = this as any;
-        const v = {...t.values, ...t.assembleDials(), palette: t.assemblePalette(), settings: [5, 0, 0]};
+        const v = {...t.values, ...t.assembleDials(), palette: t.assemblePalette(), settings: [0, 10, 0]};
+        const traits = [ 0, t.phase, v.traits[2], v.traits[3] ];
         this.$store.state.contracts.tinyboxes.methods
-          .tokenPreview(v.seed.toString(), v.shapes, v.hatching, v.palette, v.size, v.spacing, v.traits, v.settings, v.mirroring, t.id)
+          .renderPreview(v.seed.toString(), v.palette, [v.shapes, v.hatching], v.size, v.spacing, v.mirroring, v.settings, traits, '')
           .call()
           .then((result: any) => {
             t.data = result;
@@ -190,6 +194,7 @@ export default Vue.extend({
       tokens: [] as any,
       values: {} as any,
       itemsPerPage: 100,
+      phaseLen: 202,
       defaults: {
         seed: Date.now(),
         shapes: 11,
