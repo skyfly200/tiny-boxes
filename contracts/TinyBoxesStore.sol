@@ -36,6 +36,14 @@ contract TinyBoxesStore is TinyBoxesBase {
     }
 
     /**
+     * @dev withdraw any funds leftover in contract
+     */
+    function withdraw() external {
+        onlyRole(ADMIN_ROLE);
+        msg.sender.transfer(address(this).balance);
+    }
+
+    /**
      * @dev Split payments
      */
     function _splitFunds(uint256 amount) internal {
