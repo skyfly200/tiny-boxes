@@ -1483,7 +1483,7 @@ const store = new Vuex.Store({
       "Slow Mo",
       "Clockwork",
       "Spread",
-      "Staggered Spread",
+      "Unfurl",
       "Jitter",
       "Jiggle",
       "Jolt",
