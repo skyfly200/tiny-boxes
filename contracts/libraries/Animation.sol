@@ -101,7 +101,7 @@ library Animation {
      */
     function generateSplines(uint8 transitions, uint8 curve) internal pure returns (string memory curves) {
         string[2] memory bezierCurves = [
-            "0.5 0 0.75 1", // ease in and out fast
+            ".5 0 .75 1", // ease in and out fast
             ".4 0 .6 1" // ease in fast + soft
         ];
         for (uint8 i=0; i < transitions; i++)
@@ -154,34 +154,34 @@ library Animation {
         if (animation == 0) {
             // snap spin 90
             return _animateTransform(
-                "rotate", duration, "0;90;90;360;360", "0;0.2;0.3;0.9;1", generateSplines(4,0), attr
+                "rotate", duration, "0;90;90;360;360", "0;.2;.3;.9;1", generateSplines(4,0), attr
             );
         } else if (animation == 1) {
             // snap spin 180
             return _animateTransform(
-                "rotate", duration, "0;180;180;360;360", "0;0.4;0.5;0.9;1", generateSplines(4,0), attr
+                "rotate", duration, "0;180;180;360;360", "0;.4;.5;.9;1", generateSplines(4,0), attr
             );
         } else if (animation == 2) {
             // snap spin 270
             return _animateTransform(
-                "rotate", duration, "0;270;270;360;360", "0;0.6;0.7;0.9;1", generateSplines(4,0), attr
+                "rotate", duration, "0;270;270;360;360", "0;.6;.7;.9;1", generateSplines(4,0), attr
             );
         } else if (animation == 3) {
             // snap spin tri
             return _animateTransform(
-                "rotate", duration, "0;120;120;240;240;360;360", "0;0.166;0.333;0.5;0.666;0.833;1",
+                "rotate", duration, "0;120;120;240;240;360;360", "0;.166;.333;.5;.666;.833;1",
                 generateSplines(6,0), attr
             );
         } else if (animation == 4) {
             // snap spin quad
             return _animateTransform(
-                "rotate", duration, "0;90;90;180;180;270;270;360;360", "0;0.125;0.25;0.375;0.5;0.625;0.8;0.925;1",
+                "rotate", duration, "0;90;90;180;180;270;270;360;360", "0;.125;.25;.375;.5;.625;.8;.925;1",
                 generateSplines(8,0), attr
             );
         } else if (animation == 5) {
             // snap spin tetra
             return _animateTransform(
-                "rotate", duration, "0;72;72;144;144;216;216;278;278;360;360", "0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1",
+                "rotate", duration, "0;72;72;144;144;216;216;278;278;360;360", "0;.1;.2;.3;.4;.5;.6;.7;.8;.9;1",
                 generateSplines(10,0), attr
             );
         } else if (animation == 6) {
@@ -189,7 +189,7 @@ library Animation {
             return _animateTransform( "rotate", duration, "0;360", "0;1", attr );
         } else if (animation == 7) {
             // 2 Speed Spin
-            return _animateTransform( "rotate", duration, "0;90;270;360", "0;0.1;0.9;1", attr );
+            return _animateTransform( "rotate", duration, "0;90;270;360", "0;.1;.9;1", attr );
         } else if (animation == 8) {
             // indexed speed
             return _animateTransform(
@@ -204,12 +204,12 @@ library Animation {
             uint256 spread = uint256(300).div(uint256(box.shapes));
             string memory angle = shapeIndex.add(1).mul(spread).toString();
             string memory values = string(abi.encodePacked("0;",  angle, ";",  angle, ";360;360"));
-            return _animateTransform( "rotate", duration, values, "0;0.5;0.6;0.9;1", generateSplines(4,0), attr );
+            return _animateTransform( "rotate", duration, values, "0;.5;.6;.9;1", generateSplines(4,0), attr );
         } else if (animation == 10) {
             // spread w time
             string memory angle = shapeIndex.add(1).mul(uint256(300).div(uint256(box.shapes))).toString();
             uint256 timeShift = uint256(900).sub(uint256(box.shapes).sub(shapeIndex).mul(uint256(800).div(uint256(box.shapes))));
-            string memory times = string(abi.encodePacked("0;0.",timeShift.toString(),";0.9;1"));
+            string memory times = string(abi.encodePacked("0;.",timeShift.toString(),";.9;1"));
             return _animateTransform( "rotate", duration, string(abi.encodePacked("0;",angle,";",angle,";360")), times, generateSplines(3,0), attr );
         } else if (animation == 11) {
             // jitter
@@ -261,7 +261,7 @@ library Animation {
             ));
         } else if (animation == 14) {
             // grow n shrink
-            return _animateTransform( "scale", duration, "1 1;1.5 1.5;1 1;0.5 0.5;1 1", "0;0.25;0.5;0.75;1" );
+            return _animateTransform( "scale", duration, "1 1;1.5 1.5;1 1;.5 .5;1 1", "0;.25;.5;.75;1" );
         } else if (animation == 15) {
             // squash n stretch
             uint256 div = 7;
@@ -303,7 +303,7 @@ library Animation {
             // Phased Fade
             uint256 fadeOut = uint256(box.shapes).sub(shapeIndex).mul(uint256(400).div(uint256(box.shapes)));
             uint256 fadeIn = uint256(900).sub(uint256(box.shapes).sub(shapeIndex).mul(uint256(400).div(uint256(box.shapes))));
-            string memory times = string(abi.encodePacked("0;0.", fadeOut.toString(), ";0.", fadeIn.toString(), ";1"));
+            string memory times = string(abi.encodePacked("0;.", fadeOut.toString(), ";.", fadeIn.toString(), ";1"));
             return _animate("opacity", duration, "1;0;0;1", times, generateSplines(3,0), attr );
         } else if (animation == 20) {
             // Skew X
