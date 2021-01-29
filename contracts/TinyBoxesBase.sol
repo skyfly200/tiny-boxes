@@ -42,11 +42,10 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     uint16 public constant phaseLen = TOKEN_LIMIT / SCHEME_COUNT; // token count per phase
     uint32 public constant phaseCountdownTime = 6 hours; // time to pause between phases
     
-    // TODO - look at a block timestamp based countdown
     // set dynamic contract config
     bool public paused = true;
     uint256 public blockStart; // next block that minting will start on, countdown end point
-    uint256 public phaseCountdown = uint256(phaseCountdownTime).div(avgBlockTime); // blocks to pause between phases
+    uint256 public phaseCountdown = uint256(phaseCountdownTime / avgBlockTime); // blocks to pause between phases
     string public contractURI = "https://tinybox.shop/TinyBoxes.json";
 
     // mapping to store all the boxes info
