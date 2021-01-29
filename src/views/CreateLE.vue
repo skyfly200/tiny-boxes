@@ -504,13 +504,13 @@ export default Vue.extend({
         .subscribe("logs", {
           address: this.$store.state.tinyboxesAddress,
           topics: [
-            "0xeaa4f184b7f3d10bde81fc2d884889a91fbadf176d0ecc02895ab30b5aba08ef",
+            "0xdb892859243d286eeda9a2909a7f8816962b8033f5cd715b816286dff70f9e3c",
             "0x000000000000000000000000" + this.currentAccount.slice(2),
           ],
         })
         .on("data", async (log: any) => {
           const t = this as any;
-          t.minted.id = parseInt(log.topics[3], 16).toString(10);
+          t.minted.id = BigInt(log.topics[3]).toString(10);
           t.minted.art = await t.$store.state.contracts.tinyboxes.methods.tokenArt(t.minted.id, 5, 0, 1, '').call();
           t.overlay = "ready";
         });
