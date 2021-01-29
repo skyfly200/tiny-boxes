@@ -186,7 +186,21 @@ exports.handler = async (event, context) => {
       "Random"
     ];
     const isLE = id > 2222;
-    const description = 'A scattering of tiny boxes, Arranged in patterns ranging from mundane to magnificent.';
+    const description = 
+      isLE ? "Limited Edition" : "" +
+      "TinyBox\n\n" +
+      trueID + 
+      isLE ?
+        numberInPhase + " of 202 in Phase " + phaseNumber :
+        numberInLEs + " of 100 Limited Editions Max"
+      +
+    ```
+
+    
+      TinyBoxes is to Autoglyphs as Avastars is to CryptoPunks. 
+      Tiny boxes are animated patterns of shapes and colors generated and rendered 100% on-chain. Innovative features of TinyBoxes include dynamic rendering settings, 24 animations, and 11 exclusive color schemes released in phases.
+      Our contract has been designed as efficiently as possible, with a minting fee of just 260k gas. TinyBoxes gives back to its community; giving back 50% of gas spent as referral rewards, prizes and giveaways.
+    ```;
     const metadata = {
       platform: "TinyBoxes",
       name: isLE ? 'LE TinyBox #' + id : 'TinyBox #' + id,

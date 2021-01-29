@@ -1,6 +1,11 @@
 {
     "name": "TinyBoxes",
-    "description": "A scattering of TinyBoxes, arranged in patterns ranging from mundane to magnificent.",
+    "description": "
+        TinyBoxes is to Autoglyphs as Avastars is to CryptoPunks. 
+        Tiny boxes are animated patterns of shapes and colors generated and rendered 100% on-chain. Innovative features of TinyBoxes include dynamic rendering settings,
+        24 animations, and 11 exclusive color schemes released in phases.
+        Our contract has been designed as efficiently as possible, with a minting fee of just 260k gas. TinyBoxes gives back to its community; giving back 50% of gas spent as referral rewards, prizes and giveaways.
+    ",
     "image": "/img/logo.svg",
     "external_link": "https://tinybox.shop/"
 }
