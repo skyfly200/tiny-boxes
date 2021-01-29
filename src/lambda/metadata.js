@@ -157,7 +157,7 @@ exports.handler = async (event, context) => {
       "Slow Mo",
       "Clockwork",
       "Spread",
-      "Staggered Spread",
+      "Unfurl",
       "Jitter",
       "Jiggle",
       "Jolt",
@@ -173,16 +173,17 @@ exports.handler = async (event, context) => {
       "Jello"
     ];
     const schemeTitles = [
+      "Analogous",
       "Triadic",
       "Complimentary",
       "Tetradic",
-      "Analogous",
       "Analogous and Complimentary",
       "Split Complimentary",
       "Complimentary and Analogous",
       "Series",
       "Square",
       "Mono",
+      "Random"
     ];
     const metadata = {
       platform:"TinyBoxes",
