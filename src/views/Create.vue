@@ -500,12 +500,13 @@ export default Vue.extend({
       const t = this as any;
       const v = {...t.values, ...t.assembleDials(), palette: t.assemblePalette()};
       t.price = await t.getPrice();
+      if (v.referal === null) v.referal = 10000;
       t.tx = {
         from: this.currentAccount,
         to: this.$store.state.tinyboxesAddress,
         value: t.price,
         data: this.$store.state.contracts.tinyboxes.methods
-          .create(v.seed.toString(), [v.shapes, v.hatching], v.palette, v.size, v.spacing, v.mirroring, t.recipient, 0)
+          .create(v.seed.toString(), [v.shapes, v.hatching], v.palette, v.size, v.spacing, v.mirroring, t.recipient, t.usersReferal)
           .encodeABI(),
       };
       t.minted = {};
