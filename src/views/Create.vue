@@ -72,7 +72,7 @@
                   h2 {{ priceInETH }}
                   v-icon(large) mdi-ethereum
                 v-spacer
-                h1(v-if="paused") Minting Paused
+                h3(v-if="paused") Minting Paused
                 vac(v-else-if="countdown" :end-time="pauseEndTime")
                   template(v-slot:process="{ timeObj }")
                     span {{ `${timeObj.m}:${timeObj.s}` }} to phase {{ Math.floor(id / phaseLen) }}
