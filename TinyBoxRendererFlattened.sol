@@ -2,7 +2,7 @@
 
 // File @openzeppelin/contracts/math/SafeMath.sol@v3.1.0
 
-//SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.0;
 
@@ -165,7 +165,7 @@ library SafeMath {
 
 // File @openzeppelin/contracts/math/SignedSafeMath.sol@v3.1.0
 
-
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.0;
 
@@ -261,7 +261,7 @@ library SignedSafeMath {
 
 // File @openzeppelin/contracts/utils/Strings.sol@v3.1.0
 
-
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.0;
 
@@ -299,7 +299,7 @@ library Strings {
 
 // File contracts/structs/Decimal.sol
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.4;
 
 struct Decimal {
@@ -310,7 +310,7 @@ struct Decimal {
 
 // File contracts/structs/HSL.sol
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.4;
 
 struct HSL {
@@ -322,7 +322,7 @@ struct HSL {
 
 // File contracts/structs/Shape.sol
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.4;
 struct Shape {
     int256[2] position;
@@ -333,7 +333,7 @@ struct Shape {
 
 // File contracts/structs/TinyBox.sol
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.4;
 
 struct TinyBox {
@@ -358,7 +358,7 @@ struct TinyBox {
 
 // File contracts/libraries/FixidityLib.sol
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.8;
 
 /**
@@ -805,7 +805,7 @@ pragma solidity ^0.6.8;
 
 // File contracts/libraries/Utils.sol
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.4;
 library Utils {
     using SignedSafeMath for int256;
@@ -845,7 +845,7 @@ library Utils {
 
 // File @openzeppelin/contracts/utils/SafeCast.sol@v3.1.0
 
-
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.0;
 
@@ -1060,7 +1060,7 @@ library SafeCast {
 
 // File contracts/libraries/Random.sol
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.4;
 library Random {
     using SafeMath for uint256;
@@ -1115,7 +1115,7 @@ library Random {
     function weighted(
         bytes32[] memory pool,
         uint8[7] memory thresholds,
-        uint8 total
+        uint16 total
     ) internal pure returns (uint8) {
         int256 p = uniform(pool, 1, total);
         int256 s = 0;
@@ -1131,7 +1131,7 @@ library Random {
     function weighted(
         bytes32[] memory pool,
         uint8[24] memory thresholds,
-        uint8 total
+        uint16 total
     ) internal pure returns (uint8) {
         int256 p = uniform(pool, 1, total);
         int256 s = 0;
@@ -1145,7 +1145,7 @@ library Random {
 
 // File contracts/libraries/Colors.sol
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.8;
 pragma experimental ABIEncoderV2;
 library Colors {
@@ -1164,10 +1164,10 @@ library Colors {
         uint8 index
     ) internal pure returns (uint16 hue) {
         uint16[3][10] memory schemes = [
+            [uint16(30), uint16(330), uint16(0)], // analogous
             [uint16(120), uint16(240), uint16(0)], // triadic
             [uint16(180), uint16(180), uint16(0)], // complimentary
             [uint16(60), uint16(180), uint16(240)], // tetradic
-            [uint16(30), uint16(330), uint16(0)], // analogous
             [uint16(30), uint16(180), uint16(330)], // analogous and complimentary
             [uint16(150), uint16(210), uint16(0)], // split complimentary
             [uint16(150), uint16(180), uint16(210)], // complimentary and analogous
@@ -1235,7 +1235,7 @@ library Colors {
 
 // File contracts/libraries/SVG.sol
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.4;
 library SVG {
     using Utils for *;
@@ -1314,7 +1314,7 @@ library SVG {
 
 // File contracts/libraries/Decimal.sol
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.4;
 library DecimalUtils {
     using SafeMath for uint256;
@@ -1353,8 +1353,9 @@ library DecimalUtils {
 
 // File contracts/libraries/Animation.sol
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.4;
+pragma experimental ABIEncoderV2;
 library Animation {
     using SafeMath for uint256;
     using SignedSafeMath for int256;
@@ -1443,7 +1444,7 @@ library Animation {
      */
     function generateSplines(uint8 transitions, uint8 curve) internal pure returns (string memory curves) {
         string[2] memory bezierCurves = [
-            "0.5 0 0.75 1", // ease in and out fast
+            ".5 0 .75 1", // ease in and out fast
             ".4 0 .6 1" // ease in fast + soft
         ];
         for (uint8 i=0; i < transitions; i++)
@@ -1496,34 +1497,34 @@ library Animation {
         if (animation == 0) {
             // snap spin 90
             return _animateTransform(
-                "rotate", duration, "0;90;90;360;360", "0;0.2;0.3;0.9;1", generateSplines(4,0), attr
+                "rotate", duration, "0;90;90;360;360", "0;.2;.3;.9;1", generateSplines(4,0), attr
             );
         } else if (animation == 1) {
             // snap spin 180
             return _animateTransform(
-                "rotate", duration, "0;180;180;360;360", "0;0.4;0.5;0.9;1", generateSplines(4,0), attr
+                "rotate", duration, "0;180;180;360;360", "0;.4;.5;.9;1", generateSplines(4,0), attr
             );
         } else if (animation == 2) {
             // snap spin 270
             return _animateTransform(
-                "rotate", duration, "0;270;270;360;360", "0;0.6;0.7;0.9;1", generateSplines(4,0), attr
+                "rotate", duration, "0;270;270;360;360", "0;.6;.7;.9;1", generateSplines(4,0), attr
             );
         } else if (animation == 3) {
             // snap spin tri
             return _animateTransform(
-                "rotate", duration, "0;120;120;240;240;360;360", "0;0.166;0.333;0.5;0.666;0.833;1",
+                "rotate", duration, "0;120;120;240;240;360;360", "0;.166;.333;.5;.666;.833;1",
                 generateSplines(6,0), attr
             );
         } else if (animation == 4) {
             // snap spin quad
             return _animateTransform(
-                "rotate", duration, "0;90;90;180;180;270;270;360;360", "0;0.125;0.25;0.375;0.5;0.625;0.8;0.925;1",
+                "rotate", duration, "0;90;90;180;180;270;270;360;360", "0;.125;.25;.375;.5;.625;.8;.925;1",
                 generateSplines(8,0), attr
             );
         } else if (animation == 5) {
             // snap spin tetra
             return _animateTransform(
-                "rotate", duration, "0;72;72;144;144;216;216;278;278;360;360", "0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1",
+                "rotate", duration, "0;72;72;144;144;216;216;278;278;360;360", "0;.1;.2;.3;.4;.5;.6;.7;.8;.9;1",
                 generateSplines(10,0), attr
             );
         } else if (animation == 6) {
@@ -1531,7 +1532,7 @@ library Animation {
             return _animateTransform( "rotate", duration, "0;360", "0;1", attr );
         } else if (animation == 7) {
             // 2 Speed Spin
-            return _animateTransform( "rotate", duration, "0;90;270;360", "0;0.1;0.9;1", attr );
+            return _animateTransform( "rotate", duration, "0;90;270;360", "0;.1;.9;1", attr );
         } else if (animation == 8) {
             // indexed speed
             return _animateTransform(
@@ -1546,12 +1547,12 @@ library Animation {
             uint256 spread = uint256(300).div(uint256(box.shapes));
             string memory angle = shapeIndex.add(1).mul(spread).toString();
             string memory values = string(abi.encodePacked("0;",  angle, ";",  angle, ";360;360"));
-            return _animateTransform( "rotate", duration, values, "0;0.5;0.6;0.9;1", generateSplines(4,0), attr );
+            return _animateTransform( "rotate", duration, values, "0;.5;.6;.9;1", generateSplines(4,0), attr );
         } else if (animation == 10) {
             // spread w time
             string memory angle = shapeIndex.add(1).mul(uint256(300).div(uint256(box.shapes))).toString();
             uint256 timeShift = uint256(900).sub(uint256(box.shapes).sub(shapeIndex).mul(uint256(800).div(uint256(box.shapes))));
-            string memory times = string(abi.encodePacked("0;0.",timeShift.toString(),";0.9;1"));
+            string memory times = string(abi.encodePacked("0;.",timeShift.toString(),";.9;1"));
             return _animateTransform( "rotate", duration, string(abi.encodePacked("0;",angle,";",angle,";360")), times, generateSplines(3,0), attr );
         } else if (animation == 11) {
             // jitter
@@ -1603,7 +1604,7 @@ library Animation {
             ));
         } else if (animation == 14) {
             // grow n shrink
-            return _animateTransform( "scale", duration, "1 1;1.5 1.5;1 1;0.5 0.5;1 1", "0;0.25;0.5;0.75;1" );
+            return _animateTransform( "scale", duration, "1 1;1.5 1.5;1 1;.5 .5;1 1", "0;.25;.5;.75;1" );
         } else if (animation == 15) {
             // squash n stretch
             uint256 div = 7;
@@ -1645,7 +1646,7 @@ library Animation {
             // Phased Fade
             uint256 fadeOut = uint256(box.shapes).sub(shapeIndex).mul(uint256(400).div(uint256(box.shapes)));
             uint256 fadeIn = uint256(900).sub(uint256(box.shapes).sub(shapeIndex).mul(uint256(400).div(uint256(box.shapes))));
-            string memory times = string(abi.encodePacked("0;0.", fadeOut.toString(), ";0.", fadeIn.toString(), ";1"));
+            string memory times = string(abi.encodePacked("0;.", fadeOut.toString(), ";.", fadeIn.toString(), ";1"));
             return _animate("opacity", duration, "1;0;0;1", times, generateSplines(3,0), attr );
         } else if (animation == 20) {
             // Skew X
@@ -1670,7 +1671,7 @@ library Animation {
 
 // File @openzeppelin/contracts/math/Math.sol@v3.1.0
 
-
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.0;
 
@@ -1705,7 +1706,7 @@ library Math {
 
 // File contracts/libraries/Metadata.sol
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.4;
 library Metadata {
     using Math for uint256;
@@ -1866,8 +1867,10 @@ library Metadata {
 
 // File contracts/TinyBoxRenderer.sol
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.8;
+pragma experimental ABIEncoderV2;
+//import "hardhat/console.sol";
 
 contract TinyBoxRenderer {
     using SafeMath for uint256;

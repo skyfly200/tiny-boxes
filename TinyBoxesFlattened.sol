@@ -98,7 +98,7 @@ library SignedSafeMath {
 
 // File @openzeppelin/contracts/utils/EnumerableMap.sol@v3.1.0
 
-
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.0;
 
@@ -339,7 +339,7 @@ library EnumerableMap {
 
 // File @openzeppelin/contracts/GSN/Context.sol@v3.1.0
 
-
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.0;
 
@@ -367,7 +367,7 @@ abstract contract Context {
 
 // File @openzeppelin/contracts/introspection/IERC165.sol@v3.1.0
 
-
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.0;
 
@@ -395,7 +395,7 @@ interface IERC165 {
 
 // File @openzeppelin/contracts/token/ERC721/IERC721.sol@v3.1.0
 
-
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.2;
 
@@ -526,7 +526,7 @@ interface IERC721 is IERC165 {
 
 // File @openzeppelin/contracts/token/ERC721/IERC721Metadata.sol@v3.1.0
 
-
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.2;
 
@@ -555,7 +555,7 @@ interface IERC721Metadata is IERC721 {
 
 // File @openzeppelin/contracts/token/ERC721/IERC721Enumerable.sol@v3.1.0
 
-
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.2;
 
@@ -586,7 +586,7 @@ interface IERC721Enumerable is IERC721 {
 
 // File @openzeppelin/contracts/token/ERC721/IERC721Receiver.sol@v3.1.0
 
-
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.0;
 
@@ -612,7 +612,7 @@ interface IERC721Receiver {
 
 // File @openzeppelin/contracts/introspection/ERC165.sol@v3.1.0
 
-
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.0;
 
@@ -668,7 +668,7 @@ contract ERC165 is IERC165 {
 
 // File @openzeppelin/contracts/math/SafeMath.sol@v3.1.0
 
-
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.0;
 
@@ -831,7 +831,7 @@ library SafeMath {
 
 // File @openzeppelin/contracts/utils/Address.sol@v3.1.0
 
-
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.2;
 
@@ -976,7 +976,7 @@ library Address {
 
 // File @openzeppelin/contracts/utils/EnumerableSet.sol@v3.1.0
 
-
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.0;
 
@@ -1223,7 +1223,7 @@ library EnumerableSet {
 
 // File @openzeppelin/contracts/utils/Strings.sol@v3.1.0
 
-
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.0;
 
@@ -1261,7 +1261,7 @@ library Strings {
 
 // File @openzeppelin/contracts/token/ERC721/ERC721.sol@v3.1.0
 
-
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.0;
 
@@ -1736,7 +1736,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata, IERC721Enumerable 
 
 // File @openzeppelin/contracts/access/AccessControl.sol@v3.1.0
 
-
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.0;
 
@@ -1955,7 +1955,7 @@ abstract contract AccessControl is Context {
 
 // File @openzeppelin/contracts/utils/Counters.sol@v3.1.0
 
-
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.6.0;
 
@@ -1997,7 +1997,7 @@ library Counters {
 
 // File contracts/structs/TinyBox.sol
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.4;
 
 struct TinyBox {
@@ -2022,7 +2022,7 @@ struct TinyBox {
 
 // File contracts/libraries/FixidityLib.sol
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.8;
 
 /**
@@ -2469,7 +2469,7 @@ pragma solidity ^0.6.8;
 
 // File contracts/libraries/Utils.sol
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.4;
 library Utils {
     using SignedSafeMath for int256;
@@ -2509,7 +2509,7 @@ library Utils {
 
 // File contracts/libraries/Random.sol
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.4;
 library Random {
     using SafeMath for uint256;
@@ -2564,7 +2564,7 @@ library Random {
     function weighted(
         bytes32[] memory pool,
         uint8[7] memory thresholds,
-        uint8 total
+        uint16 total
     ) internal pure returns (uint8) {
         int256 p = uniform(pool, 1, total);
         int256 s = 0;
@@ -2580,7 +2580,7 @@ library Random {
     function weighted(
         bytes32[] memory pool,
         uint8[24] memory thresholds,
-        uint8 total
+        uint16 total
     ) internal pure returns (uint8) {
         int256 p = uniform(pool, 1, total);
         int256 s = 0;
@@ -2594,10 +2594,9 @@ library Random {
 
 // File contracts/TinyBoxesBase.sol
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.8;
 pragma experimental ABIEncoderV2;
-
 interface RandomizerInt {
     function returnValue() external view returns (bytes32);
 }
@@ -2616,8 +2615,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     address payable skyfly = 0x7A832c86002323a5de3a317b3281Eb88EC3b2C00;
     address payable natealex = 0x63a9dbCe75413036B2B778E670aaBd4493aAF9F3;
 
-    //uint256 public constant price = 100000000000000000; // in wei - 0.1 ETH
-    uint256 public constant price = 10000; // lowered for test runs
+    uint256 public constant price = 100000000000000000; // in wei - 0.1 ETH
     uint256 public constant referalPercent = 10;
     uint256 public constant referalNewPercent = 15;
     uint256 UINT_MAX = uint256(-1);
@@ -2627,16 +2625,15 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     uint16 public constant TOKEN_LIMIT = 2222;
     uint8 public constant ANIMATION_COUNT = 24;
     uint8 public constant SCHEME_COUNT = 11;
-    uint8 public constant avgBlockTime = 15; // avg time per block mined in seconds
+    uint8 public constant avgBlockTime = 14; // avg time per block mined in seconds
     uint16 public constant phaseLen = TOKEN_LIMIT / SCHEME_COUNT; // token count per phase
-    uint32 public constant phaseCountdownTime = 2 minutes; // time to pause between phases
+    uint32 public constant phaseCountdownTime = 6 hours; // time to pause between phases
     
-    // TODO - look at a block timestamp based countdown
     // set dynamic contract config
     bool public paused = true;
     uint256 public blockStart; // next block that minting will start on, countdown end point
-    uint256 public phaseCountdown = uint256(phaseCountdownTime).div(avgBlockTime); // blocks to pause between phases
-    string public contractURI = "https://rinkeby.tinybox.shop/TinyBoxes.json";
+    uint256 public phaseCountdown = uint256(phaseCountdownTime / avgBlockTime); // blocks to pause between phases
+    string public contractURI = "https://tinybox.shop/TinyBoxes.json";
 
     // mapping to store all the boxes info
     mapping(uint256 => TinyBox) internal boxes;
@@ -2875,12 +2872,37 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     {
         if (id < TOKEN_LIMIT) { // Normal Tokens
             bytes32[] memory pool = Random.init(box.randomness);
-            uint8[7] memory shadesBins = [1,2,5,9,5,2,1];
-            uint8[24] memory animationBins = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+            uint8[7] memory shadesBins = [4,6,9,6,4,2,1];
+            uint8[24] memory animationBins = [
+                175, // Snap Spin 90
+                200, // Snap Spin 180
+                175, // Snap Spin 270
+                160, // Snap Spin Tri
+                150, // Snap Spin Quad
+                140, // Snap Spin Tetra
+                95, // Spin
+                100, // Slow Mo
+                90, // Clockwork
+                20, // Spread
+                10, // Staggered Spread
+                80, // Jitter
+                75, // Giggle
+                85, // Jolt
+                110, // Grow n Shrink
+                105, // Squash n Stretch
+                50, // Round
+                90, // Glide
+                70, // Wave
+                40, // Fade
+                140, // Skew X
+                130, // Skew Y
+                100, // Stretch
+                110 // Jello
+            ];
             // Generate Random parts from the tokens randomness
-            parts[0] = uint8(pool.weighted(animationBins, 24)); // animation
+            parts[0] = uint8(pool.weighted(animationBins, 2500)); // animation
             parts[1] = uint8(id.div(phaseLen)); // scheme
-            parts[2] = uint8(uint256(pool.weighted(shadesBins, 25)).add(1)); //, shades
+            parts[2] = uint8(uint256(pool.weighted(shadesBins, 32)).add(1)); //, shades
             parts[3] = uint8(pool.uniform(0, box.lightness)); // contrast
         } else { // Limited Editions
             // Set the parts directly from packed values in the randomness
@@ -2892,6 +2914,9 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         }
     }
 
+    /**
+     * @dev Validate the parameters for the docs
+     */
     function validateParams(uint8 shapes, uint8 hatching, uint16[3] memory color, uint8[4] memory size, uint8[2] memory position, bool exclusive) public pure {
         require(shapes > 0 && shapes < 31, "invalid shape count");
         require(hatching <= shapes, "invalid hatching");
@@ -2908,9 +2933,9 @@ contract TinyBoxesBase is ERC721, AccessControl  {
 
 // File contracts/TinyBoxesStore.sol
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.8;
-
+pragma experimental ABIEncoderV2;
 contract TinyBoxesStore is TinyBoxesBase {
     using SafeMath for uint256;
     using SignedSafeMath for int256;
@@ -2924,10 +2949,7 @@ contract TinyBoxesStore is TinyBoxesBase {
     constructor(address entropySourceAddress)
         public
         TinyBoxesBase(entropySourceAddress)
-    {
-        // promos.set(UINT_MAX - 0, skyfly);
-        // promos.set(UINT_MAX - 1, natealex);
-    }
+    {}
 
     // Payment Functions
 
@@ -2937,6 +2959,14 @@ contract TinyBoxesStore is TinyBoxesBase {
      */
     receive() external payable {
         _splitFunds(msg.value); 
+    }
+
+    /**
+     * @dev withdraw any funds leftover in contract
+     */
+    function withdraw() external {
+        onlyRole(ADMIN_ROLE);
+        msg.sender.transfer(address(this).balance);
     }
 
     /**
@@ -3105,9 +3135,9 @@ contract TinyBoxesStore is TinyBoxesBase {
 
 // File contracts/TinyBoxes.sol
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.8;
-
+pragma experimental ABIEncoderV2;
 interface Renderer {
     function perpetualRenderer(
         TinyBox calldata box,
