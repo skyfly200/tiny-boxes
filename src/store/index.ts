@@ -1512,7 +1512,7 @@ const store = new Vuex.Store({
       "Random"
     ],
     tinyboxesAddress: '0xcd5226c8d441b17ac5848af2b4d51b51830a2237',
-    openseaStoreURL: 'https://testnets.opensea.io/assets/tinyboxes-lvupeos4gn',
+    openseaStoreURL: 'https://testnets.opensea.io/assets/tinyboxes-fag92ssqro',
     openseaTokenURL: 'https://testnets.opensea.io/assets/0xcd5226c8d441b17ac5848af2b4d51b51830a2237/',
     currentAccount: "",
     web3Status: "loading",
