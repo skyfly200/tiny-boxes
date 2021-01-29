@@ -98,7 +98,7 @@ library SignedSafeMath {
 
 // File @openzeppelin/contracts/utils/EnumerableMap.sol@v3.1.0
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity ^0.6.0;
 
@@ -339,7 +339,7 @@ library EnumerableMap {
 
 // File @openzeppelin/contracts/GSN/Context.sol@v3.1.0
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity ^0.6.0;
 
@@ -367,7 +367,7 @@ abstract contract Context {
 
 // File @openzeppelin/contracts/introspection/IERC165.sol@v3.1.0
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity ^0.6.0;
 
@@ -395,7 +395,7 @@ interface IERC165 {
 
 // File @openzeppelin/contracts/token/ERC721/IERC721.sol@v3.1.0
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity ^0.6.2;
 
@@ -526,7 +526,7 @@ interface IERC721 is IERC165 {
 
 // File @openzeppelin/contracts/token/ERC721/IERC721Metadata.sol@v3.1.0
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity ^0.6.2;
 
@@ -555,7 +555,7 @@ interface IERC721Metadata is IERC721 {
 
 // File @openzeppelin/contracts/token/ERC721/IERC721Enumerable.sol@v3.1.0
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity ^0.6.2;
 
@@ -586,7 +586,7 @@ interface IERC721Enumerable is IERC721 {
 
 // File @openzeppelin/contracts/token/ERC721/IERC721Receiver.sol@v3.1.0
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity ^0.6.0;
 
@@ -612,7 +612,7 @@ interface IERC721Receiver {
 
 // File @openzeppelin/contracts/introspection/ERC165.sol@v3.1.0
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity ^0.6.0;
 
@@ -668,7 +668,7 @@ contract ERC165 is IERC165 {
 
 // File @openzeppelin/contracts/math/SafeMath.sol@v3.1.0
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity ^0.6.0;
 
@@ -831,7 +831,7 @@ library SafeMath {
 
 // File @openzeppelin/contracts/utils/Address.sol@v3.1.0
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity ^0.6.2;
 
@@ -976,7 +976,7 @@ library Address {
 
 // File @openzeppelin/contracts/utils/EnumerableSet.sol@v3.1.0
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity ^0.6.0;
 
@@ -1223,7 +1223,7 @@ library EnumerableSet {
 
 // File @openzeppelin/contracts/utils/Strings.sol@v3.1.0
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity ^0.6.0;
 
@@ -1261,7 +1261,7 @@ library Strings {
 
 // File @openzeppelin/contracts/token/ERC721/ERC721.sol@v3.1.0
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity ^0.6.0;
 
@@ -1736,7 +1736,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata, IERC721Enumerable 
 
 // File @openzeppelin/contracts/access/AccessControl.sol@v3.1.0
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity ^0.6.0;
 
@@ -1955,7 +1955,7 @@ abstract contract AccessControl is Context {
 
 // File @openzeppelin/contracts/utils/Counters.sol@v3.1.0
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity ^0.6.0;
 
@@ -1997,7 +1997,7 @@ library Counters {
 
 // File contracts/structs/TinyBox.sol
 
-// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.4;
 
 struct TinyBox {
@@ -2022,7 +2022,7 @@ struct TinyBox {
 
 // File contracts/libraries/FixidityLib.sol
 
-// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.8;
 
 /**
@@ -2469,7 +2469,7 @@ pragma solidity ^0.6.8;
 
 // File contracts/libraries/Utils.sol
 
-// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.4;
 library Utils {
     using SignedSafeMath for int256;
@@ -2509,7 +2509,7 @@ library Utils {
 
 // File contracts/libraries/Random.sol
 
-// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.4;
 library Random {
     using SafeMath for uint256;
@@ -2594,7 +2594,7 @@ library Random {
 
 // File contracts/TinyBoxesBase.sol
 
-// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.8;
 pragma experimental ABIEncoderV2;
 interface RandomizerInt {
@@ -2933,9 +2933,9 @@ contract TinyBoxesBase is ERC721, AccessControl  {
 
 // File contracts/TinyBoxesStore.sol
 
-// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.8;
-pragma experimental ABIEncoderV2;
+
 contract TinyBoxesStore is TinyBoxesBase {
     using SafeMath for uint256;
     using SignedSafeMath for int256;
@@ -3135,9 +3135,9 @@ contract TinyBoxesStore is TinyBoxesBase {
 
 // File contracts/TinyBoxes.sol
 
-// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.8;
-pragma experimental ABIEncoderV2;
+
 interface Renderer {
     function perpetualRenderer(
         TinyBox calldata box,
