@@ -21,9 +21,9 @@ export class Ownable extends Contract {
   );
   clone(): Ownable;
   methods: {
-    isOwner(): TransactionObject<boolean>;
-
     owner(): TransactionObject<string>;
+
+    renounceOwnership(): TransactionObject<void>;
 
     transferOwnership(newOwner: string): TransactionObject<void>;
   };

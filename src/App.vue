@@ -6,6 +6,13 @@
 
 <script>
 import Vue from "vue";
+<<<<<<< HEAD
+import Nav from "@/components/Nav.vue";
+import Axios from 'axios'
+
+Vue.prototype.$http = Axios;
+=======
+>>>>>>> master
 
 export default Vue.extend({
   name: "App",

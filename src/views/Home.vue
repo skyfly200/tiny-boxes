@@ -19,6 +19,14 @@
               v-icon mdi-typewriter
             v-btn(icon large href="#mc_embed_signup")
               v-icon mdi-email
+<<<<<<< HEAD
+          br
+          .action-btns.pt-7
+            v-btn.action-btn.ma-2(to="/create" x-large color="secondary") Create
+            span.ma-4 or
+            v-btn.action-btn.ma-2(href="/docs" target="_blank" x-large color="primary") Learn
+=======
+>>>>>>> master
       v-row
         v-col(md=8 sm=10 xs=12 offset-md=2 offset-sm=1)
           v-container(fluid)
@@ -37,12 +45,20 @@
               v-card-title.font-weight-medium.subscribe-title Subscribe to our mailing list!
               v-card-subtitle Be the first to know when we launch
               #mc_embed_signup_scroll
+<<<<<<< HEAD
+                v-text-field#mce-EMAIL.email(type='email' value='' name='EMAIL' placeholder='email' required='')
+=======
                 v-text-field#mce-EMAIL.email(type='email' value='' name='EMAIL' placeholder='email address' required='')
+>>>>>>> master
                 // real people should not fill this in and expect good things - do not remove this or risk form bot signups
                 div(style='position: absolute; left: -5000px;' aria-hidden='true')
                   input(type='text' name='b_81d0c7a7aabdc5c89bc737456_e8ca8b83a1' tabindex='-1' value='')
                 .clear
+<<<<<<< HEAD
+                  v-btn(type='submit' large name='subscribe' color="secondary") Subscribe
+=======
                   v-btn(type='submit' name='subscribe' color="green") Subscribe
+>>>>>>> master
     v-footer
       v-container.pa-0
         v-row
@@ -106,6 +122,12 @@ export default {
   padding-bottom: 8px
 .landing-text
   margin: 20vh 0
+<<<<<<< HEAD
+.action-btn
+  width: 7em
+  font-size: 1.2rem
+=======
+>>>>>>> master
 #mc_embed_signup
   margin: 20vh 0
   .subscribe-title

@@ -21,26 +21,29 @@ export class TinyBoxesRenderer extends Contract {
   );
   clone(): TinyBoxesRenderer;
   methods: {
-    ANIMATION_FRAMES(): TransactionObject<string>;
-
-    ANIMATION_FRAME_RATE(): TransactionObject<string>;
-
-    ANIMATION_SECONDS(): TransactionObject<string>;
-
     perpetualRenderer(
       box: {
         randomness: number | string;
-        animation: number | string;
+        hue: number | string;
+        saturation: number | string;
+        lightness: number | string;
         shapes: number | string;
-        colors: number | string;
         hatching: number | string;
-        scale: number | string;
-        mirrorPositions: (number | string)[];
-        size: (number | string)[];
-        spacing: (number | string)[];
-        mirrors: boolean[];
+        widthMin: number | string;
+        widthMax: number | string;
+        heightMin: number | string;
+        heightMax: number | string;
+        spread: number | string;
+        grid: number | string;
+        mirroring: number | string;
+        bkg: number | string;
+        duration: number | string;
+        options: number | string;
       },
-      frame: number | string
+      id: number | string,
+      owner: string,
+      dVals: (number | string)[],
+      _slot: string
     ): TransactionObject<string>;
   };
   events: {

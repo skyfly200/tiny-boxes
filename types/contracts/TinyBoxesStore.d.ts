@@ -25,50 +25,45 @@ export class TinyBoxesStore extends Contract {
 
     ANIMATION_COUNT(): TransactionObject<string>;
 
-    ANIMATOR_ROLE(): TransactionObject<string>;
-
-    ARTIST_PRINTS(): TransactionObject<string>;
-
-    ARTIST_ROLE(): TransactionObject<string>;
-
-    BETA_SALE(): TransactionObject<string>;
-
     DEFAULT_ADMIN_ROLE(): TransactionObject<string>;
 
-    LINK_ROLE(): TransactionObject<string>;
+    SCHEME_COUNT(): TransactionObject<string>;
 
     TOKEN_LIMIT(): TransactionObject<string>;
 
-    TREASURER_ROLE(): TransactionObject<string>;
+    _tokenIds(): TransactionObject<string>;
+
+    _tokenPromoIds(): TransactionObject<string>;
 
     approve(to: string, tokenId: number | string): TransactionObject<void>;
+
+    avgBlockTime(): TransactionObject<string>;
 
     balanceOf(owner: string): TransactionObject<string>;
 
     baseURI(): TransactionObject<string>;
 
-    buy(
-      _seed: string,
-      counts: (number | string)[],
-      dials: (number | string)[],
-      mirrors: boolean[]
-    ): TransactionObject<string>;
+    blockStart(): TransactionObject<string>;
 
-    currentLinkPrice(): TransactionObject<string>;
-
-    currentPrice(): TransactionObject<string>;
-
-    dataForLINKPay(
-      _seed: string,
-      counts: (number | string)[],
-      dials: (number | string)[],
-      mirrors: boolean[]
-    ): TransactionObject<string>;
-
-    fulfillRandomness(
-      requestId: string | number[],
-      randomness: number | string
+    changeSettings(
+      id: number | string,
+      settings: (number | string)[]
     ): TransactionObject<void>;
+
+    contractURI(): TransactionObject<string>;
+
+    create(
+      _seed: string,
+      shapes: (number | string)[],
+      color: (number | string)[],
+      size: (number | string)[],
+      spacing: (number | string)[],
+      mirroring: number | string,
+      recipient: string,
+      referalID: number | string
+    ): TransactionObject<string>;
+
+    currentPhase(): TransactionObject<string>;
 
     getApproved(tokenId: number | string): TransactionObject<string>;
 
@@ -96,36 +91,53 @@ export class TinyBoxesStore extends Contract {
       operator: string
     ): TransactionObject<boolean>;
 
-    linkPremium(): TransactionObject<string>;
+    isTokenLE(id: number | string): TransactionObject<boolean>;
 
-    linkPriceAt(_id: number | string): TransactionObject<string>;
+    mintLE(recipient: string): TransactionObject<void>;
 
     name(): TransactionObject<string>;
 
-    nonces(arg0: string | number[]): TransactionObject<string>;
-
-    onTokenTransfer(
-      from: string,
-      amount: number | string,
-      data: string | number[]
-    ): TransactionObject<boolean>;
-
     ownerOf(tokenId: number | string): TransactionObject<string>;
 
-    priceAt(_id: number | string): TransactionObject<string>;
+    paused(): TransactionObject<boolean>;
 
-    priceIncrease(): TransactionObject<string>;
+    phaseCountdown(): TransactionObject<string>;
+
+    phaseCountdownTime(): TransactionObject<string>;
+
+    phaseLen(): TransactionObject<string>;
+
+    price(): TransactionObject<string>;
+
+    readSettings(
+      id: number | string
+    ): TransactionObject<{
+      bkg: string;
+      duration: string;
+      options: string;
+      0: string;
+      1: string;
+      2: string;
+    }>;
+
+    redeemLE(
+      seed: number | string,
+      shapes: (number | string)[],
+      color: (number | string)[],
+      size: (number | string)[],
+      spacing: (number | string)[],
+      mirroring: number | string,
+      id: number | string
+    ): TransactionObject<void>;
+
+    referalNewPercent(): TransactionObject<string>;
+
+    referalPercent(): TransactionObject<string>;
 
     renounceRole(
       role: string | number[],
       account: string
     ): TransactionObject<void>;
-
-    requestRandomness(
-      _keyHash: string | number[],
-      _fee: number | string,
-      _seed: number | string
-    ): TransactionObject<string>;
 
     revokeRole(
       role: string | number[],
@@ -143,13 +155,25 @@ export class TinyBoxesStore extends Contract {
       approved: boolean
     ): TransactionObject<void>;
 
-    startPrice(): TransactionObject<string>;
+    setBaseURI(_uri: string): TransactionObject<void>;
+
+    setContractURI(_uri: string): TransactionObject<void>;
+
+    setPause(state: boolean): TransactionObject<void>;
+
+    setRandom(rand: string): TransactionObject<void>;
+
+    setTokenURI(_id: number | string, _uri: string): TransactionObject<void>;
+
+    startCountdown(startBlock: number | string): TransactionObject<void>;
 
     supportsInterface(
       interfaceId: string | number[]
     ): TransactionObject<boolean>;
 
     symbol(): TransactionObject<string>;
+
+    testRandom(): TransactionObject<string>;
 
     tokenByIndex(index: number | string): TransactionObject<string>;
 
@@ -158,24 +182,26 @@ export class TinyBoxesStore extends Contract {
     ): TransactionObject<{
       randomness: string;
       animation: string;
-      colors: string;
       shapes: string;
       hatching: string;
       size: string[];
       spacing: string[];
-      mirrorPositions: string[];
-      mirrors: boolean[];
-      scale: string;
+      mirroring: string;
+      color: string[];
+      contrast: string;
+      shades: string;
+      scheme: string;
       0: string;
       1: string;
       2: string;
       3: string;
-      4: string;
+      4: string[];
       5: string[];
-      6: string[];
+      6: string;
       7: string[];
-      8: boolean[];
+      8: string;
       9: string;
+      10: string;
     }>;
 
     tokenOfOwnerByIndex(
@@ -193,7 +219,20 @@ export class TinyBoxesStore extends Contract {
       tokenId: number | string
     ): TransactionObject<void>;
 
-    withdrawLINK(amount: number | string): TransactionObject<boolean>;
+    trueID(id: number | string): TransactionObject<string>;
+
+    unredeemed(id: number | string): TransactionObject<boolean>;
+
+    validateParams(
+      shapes: number | string,
+      hatching: number | string,
+      color: (number | string)[],
+      size: (number | string)[],
+      position: (number | string)[],
+      exclusive: boolean
+    ): TransactionObject<void>;
+
+    withdraw(): TransactionObject<void>;
   };
   events: {
     Approval: ContractEvent<{
@@ -212,14 +251,19 @@ export class TinyBoxesStore extends Contract {
       1: string;
       2: boolean;
     }>;
-    ChainlinkCancelled: ContractEvent<string>;
-    ChainlinkFulfilled: ContractEvent<string>;
-    ChainlinkRequested: ContractEvent<string>;
-    LowLINK: ContractEvent<{
-      _balance: string;
-      _remaining: string;
+    RedeemedLE: ContractEvent<{
+      by: string;
+      id: string;
       0: string;
       1: string;
+    }>;
+    RoleAdminChanged: ContractEvent<{
+      role: string;
+      previousAdminRole: string;
+      newAdminRole: string;
+      0: string;
+      1: string;
+      2: string;
     }>;
     RoleGranted: ContractEvent<{
       role: string;
@@ -237,6 +281,7 @@ export class TinyBoxesStore extends Contract {
       1: string;
       2: string;
     }>;
+    SettingsChanged: ContractEvent<string[]>;
     Transfer: ContractEvent<{
       from: string;
       to: string;

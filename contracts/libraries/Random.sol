@@ -1,5 +1,4 @@
-//SPDX-License-Identifier: Unlicensed
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.4;
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
@@ -50,5 +49,37 @@ library Random {
     ) internal pure returns (int256) {
         require(a <= b, "Random.uniform: invalid interval");
         return int256(next(pool) % uint256(b - a + 1)) + a;
+    }
+
+    /**
+     * Produces random integer values, with weighted distributions for values in a set
+     */
+    function weighted(
+        bytes32[] memory pool,
+        uint8[7] memory thresholds,
+        uint16 total
+    ) internal pure returns (uint8) {
+        int256 p = uniform(pool, 1, total);
+        int256 s = 0;
+        for (uint8 i=0; i<7; i++) {
+            s = s.add(thresholds[i]);
+            if (p <= s) return i;
+        }
+    }
+
+    /**
+     * Produces random integer values, with weighted distributions for values in a set
+     */
+    function weighted(
+        bytes32[] memory pool,
+        uint8[24] memory thresholds,
+        uint16 total
+    ) internal pure returns (uint8) {
+        int256 p = uniform(pool, 1, total);
+        int256 s = 0;
+        for (uint8 i=0; i<24; i++) {
+            s = s.add(thresholds[i]);
+            if (p <= s) return i;
+        }
     }
 }

@@ -1,0 +1,1401 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/structs/Decimal.sol": {
+      "lastModificationDate": 1611371812857,
+      "contentHash": "64d357d1a55b3df2b1e2385a1f6b8818",
+      "sourceName": "contracts/structs/Decimal.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.4"
+      ],
+      "artifacts": []
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/structs/Shape.sol": {
+      "lastModificationDate": 1611371825757,
+      "contentHash": "acf9216655e0801c0adc0a835611fdf1",
+      "sourceName": "contracts/structs/Shape.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Decimal.sol",
+        "./HSL.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.4"
+      ],
+      "artifacts": []
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/structs/TinyBox.sol": {
+      "lastModificationDate": 1611497808727,
+      "contentHash": "0802da514a8eed982be23d3b27ebfcf5",
+      "sourceName": "contracts/structs/TinyBox.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.4"
+      ],
+      "artifacts": []
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/structs/HSL.sol": {
+      "lastModificationDate": 1611371816345,
+      "contentHash": "82c87772cfebbe138766b2a577476933",
+      "sourceName": "contracts/structs/HSL.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.4"
+      ],
+      "artifacts": []
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
+      "lastModificationDate": 1608685665941,
+      "contentHash": "140e80ebd07ed05e7fe907c531e6746f",
+      "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../GSN/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.0"
+      ],
+      "artifacts": [
+        "Ownable"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/math/SafeMath.sol": {
+      "lastModificationDate": 1608685667199,
+      "contentHash": "168f50d923a8f64094d8e761ca2e5fe6",
+      "sourceName": "@openzeppelin/contracts/math/SafeMath.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.0"
+      ],
+      "artifacts": [
+        "SafeMath"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/math/SignedSafeMath.sol": {
+      "lastModificationDate": 1608685667539,
+      "contentHash": "b89f896065342db5c60b9288674254b9",
+      "sourceName": "@openzeppelin/contracts/math/SignedSafeMath.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.0"
+      ],
+      "artifacts": [
+        "SignedSafeMath"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/utils/Strings.sol": {
+      "lastModificationDate": 1608685667700,
+      "contentHash": "35959f8ce36e9188c1d9b4348e125e48",
+      "sourceName": "@openzeppelin/contracts/utils/Strings.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.0"
+      ],
+      "artifacts": [
+        "Strings"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/Utils.sol": {
+      "lastModificationDate": 1611371968681,
+      "contentHash": "3e49559dc1fd0b824610f01765d80c6c",
+      "sourceName": "contracts/libraries/Utils.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/math/SignedSafeMath.sol",
+        "@openzeppelin/contracts/utils/Strings.sol",
+        "./FixidityLib.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.4"
+      ],
+      "artifacts": [
+        "Utils"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/Decimal.sol": {
+      "lastModificationDate": 1611371842835,
+      "contentHash": "7a1a3010272464194617bf2d1ae76922",
+      "sourceName": "contracts/libraries/Decimal.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/math/SafeMath.sol",
+        "@openzeppelin/contracts/math/SignedSafeMath.sol",
+        "@openzeppelin/contracts/utils/Strings.sol",
+        "@openzeppelin/contracts/utils/SafeCast.sol",
+        "./Utils.sol",
+        "./FixidityLib.sol",
+        "../structs/Decimal.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.4"
+      ],
+      "artifacts": [
+        "DecimalUtils"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/FixidityLib.sol": {
+      "lastModificationDate": 1611371850017,
+      "contentHash": "cdbb0aa45734e6d8dd60386831987fac",
+      "sourceName": "contracts/libraries/FixidityLib.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "FixidityLib"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/utils/SafeCast.sol": {
+      "lastModificationDate": 1608685666701,
+      "contentHash": "135c97adf8509d5a256174357b73d472",
+      "sourceName": "@openzeppelin/contracts/utils/SafeCast.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.0"
+      ],
+      "artifacts": [
+        "SafeCast"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/Metadata.sol": {
+      "lastModificationDate": 1611497874689,
+      "contentHash": "1f7ca5253d1416445cedb1edae864eb9",
+      "sourceName": "contracts/libraries/Metadata.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/math/Math.sol",
+        "@openzeppelin/contracts/math/SafeMath.sol",
+        "@openzeppelin/contracts/math/SignedSafeMath.sol",
+        "@openzeppelin/contracts/utils/Strings.sol",
+        "../structs/Decimal.sol",
+        "../structs/Shape.sol",
+        "../structs/TinyBox.sol",
+        "./Random.sol",
+        "./Utils.sol",
+        "./Decimal.sol",
+        "./Colors.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.4"
+      ],
+      "artifacts": [
+        "Metadata"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/math/Math.sol": {
+      "lastModificationDate": 1608685665556,
+      "contentHash": "d9d26ff981b836b0e3bb45940cd56321",
+      "sourceName": "@openzeppelin/contracts/math/Math.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.0"
+      ],
+      "artifacts": [
+        "Math"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/Random.sol": {
+      "lastModificationDate": 1611371864458,
+      "contentHash": "b95442ef2c544aa4654954937410deec",
+      "sourceName": "contracts/libraries/Random.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/math/SafeMath.sol",
+        "@openzeppelin/contracts/math/SignedSafeMath.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.4"
+      ],
+      "artifacts": [
+        "Random"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxesRenderer.sol": {
+      "lastModificationDate": 1611497571990,
+      "contentHash": "c6810fbcb9113e43b373107e6cacae31",
+      "sourceName": "contracts/TinyBoxesRenderer.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/math/SafeMath.sol",
+        "@openzeppelin/contracts/math/SignedSafeMath.sol",
+        "@openzeppelin/contracts/utils/Strings.sol",
+        "./structs/Decimal.sol",
+        "./structs/Shape.sol",
+        "./structs/TinyBox.sol",
+        "./structs/HSL.sol",
+        "./libraries/SVG.sol",
+        "./libraries/Utils.sol",
+        "./libraries/Animation.sol",
+        "./libraries/Metadata.sol",
+        "./libraries/Random.sol",
+        "./libraries/Colors.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "TinyBoxesRenderer"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/SVG.sol": {
+      "lastModificationDate": 1611497571995,
+      "contentHash": "69c3adacafa5d0db4c2dc9e7e71a2cd3",
+      "sourceName": "contracts/libraries/SVG.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/utils/Strings.sol",
+        "../structs/Shape.sol",
+        "./Utils.sol",
+        "./Colors.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.4"
+      ],
+      "artifacts": [
+        "SVG"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/hardhat/console.sol": {
+      "lastModificationDate": 1611248564197,
+      "contentHash": "cc4777addd464ea56fa35b1c45df0591",
+      "sourceName": "hardhat/console.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.22 <0.9.0"
+      ],
+      "artifacts": [
+        "console"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxesBase.sol": {
+      "lastModificationDate": 1611430002854,
+      "contentHash": "94a88627e9631c8499695c0123bf4468",
+      "sourceName": "contracts/TinyBoxesBase.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+        "@openzeppelin/contracts/access/AccessControl.sol",
+        "@openzeppelin/contracts/utils/Counters.sol",
+        "./structs/TinyBox.sol",
+        "./libraries/Utils.sol",
+        "./libraries/Random.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "RandomizerInt",
+        "TinyBoxesBase"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol": {
+      "lastModificationDate": 1608685662261,
+      "contentHash": "449aafedea7ae428f27c303b54a38647",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../GSN/Context.sol",
+        "./IERC721.sol",
+        "./IERC721Metadata.sol",
+        "./IERC721Enumerable.sol",
+        "./IERC721Receiver.sol",
+        "../../introspection/ERC165.sol",
+        "../../math/SafeMath.sol",
+        "../../utils/Address.sol",
+        "../../utils/EnumerableSet.sol",
+        "../../utils/EnumerableMap.sol",
+        "../../utils/Strings.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.0"
+      ],
+      "artifacts": [
+        "ERC721"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/access/AccessControl.sol": {
+      "lastModificationDate": 1608685657839,
+      "contentHash": "f60e3ddea9dc23bc52984afdb18d59ec",
+      "sourceName": "@openzeppelin/contracts/access/AccessControl.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/EnumerableSet.sol",
+        "../utils/Address.sol",
+        "../GSN/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.0"
+      ],
+      "artifacts": [
+        "AccessControl"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/utils/Counters.sol": {
+      "lastModificationDate": 1608685659195,
+      "contentHash": "5414dbd62bbfba220645349dad9685ea",
+      "sourceName": "@openzeppelin/contracts/utils/Counters.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../math/SafeMath.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.0"
+      ],
+      "artifacts": [
+        "Counters"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/GSN/Context.sol": {
+      "lastModificationDate": 1608685659017,
+      "contentHash": "af1b36323856d0d1550abc7f878a8208",
+      "sourceName": "@openzeppelin/contracts/GSN/Context.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.0"
+      ],
+      "artifacts": [
+        "Context"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
+      "lastModificationDate": 1608685664288,
+      "contentHash": "c859be45d4e9a8e9234c730c5da2c123",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../introspection/IERC165.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.2"
+      ],
+      "artifacts": [
+        "IERC721"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/token/ERC721/IERC721Metadata.sol": {
+      "lastModificationDate": 1608685664527,
+      "contentHash": "c747635b7aafc7aaef8ff5783ed25e6b",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721Metadata.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IERC721.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.2"
+      ],
+      "artifacts": [
+        "IERC721Metadata"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/token/ERC721/IERC721Enumerable.sol": {
+      "lastModificationDate": 1608685664410,
+      "contentHash": "e282e7d4aa6b40bfc9ee622b0f006ed5",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721Enumerable.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IERC721.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.2"
+      ],
+      "artifacts": [
+        "IERC721Enumerable"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
+      "lastModificationDate": 1608685664616,
+      "contentHash": "2d2dcc9d59c7447cc1cfbc446137b700",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.0"
+      ],
+      "artifacts": [
+        "IERC721Receiver"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/introspection/ERC165.sol": {
+      "lastModificationDate": 1608685660905,
+      "contentHash": "cd8a4a4c1e298943d96dd5ed09ad27f3",
+      "sourceName": "@openzeppelin/contracts/introspection/ERC165.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IERC165.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.0"
+      ],
+      "artifacts": [
+        "ERC165"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/utils/Address.sol": {
+      "lastModificationDate": 1608685658211,
+      "contentHash": "123f93732b38fa4a14febeab42234999",
+      "sourceName": "@openzeppelin/contracts/utils/Address.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.2"
+      ],
+      "artifacts": [
+        "Address"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/utils/EnumerableSet.sol": {
+      "lastModificationDate": 1608685659717,
+      "contentHash": "335c4591d8f63429138e843e91156f03",
+      "sourceName": "@openzeppelin/contracts/utils/EnumerableSet.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.0"
+      ],
+      "artifacts": [
+        "EnumerableSet"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/utils/EnumerableMap.sol": {
+      "lastModificationDate": 1608685659537,
+      "contentHash": "587bbaf85d8405a72ea86e19e796d18d",
+      "sourceName": "@openzeppelin/contracts/utils/EnumerableMap.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.0"
+      ],
+      "artifacts": [
+        "EnumerableMap"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/node_modules/@openzeppelin/contracts/introspection/IERC165.sol": {
+      "lastModificationDate": 1608685663738,
+      "contentHash": "39dfa4b6cbda90995ba59378dd6d9969",
+      "sourceName": "@openzeppelin/contracts/introspection/IERC165.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.0"
+      ],
+      "artifacts": [
+        "IERC165"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxesStore.sol": {
+      "lastModificationDate": 1611371778869,
+      "contentHash": "158d2b455f7baef8ea2fc51bc61d15e5",
+      "sourceName": "contracts/TinyBoxesStore.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/math/SignedSafeMath.sol",
+        "@openzeppelin/contracts/utils/EnumerableMap.sol",
+        "./TinyBoxesBase.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "TinyBoxesStore"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/TinyBoxes.sol": {
+      "lastModificationDate": 1611437037491,
+      "contentHash": "d4ad0d16e03a45051ce32b5ab1f81f22",
+      "sourceName": "contracts/TinyBoxes.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./TinyBoxesStore.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "TinyBoxes"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/Randomizer.sol": {
+      "lastModificationDate": 1611371750418,
+      "contentHash": "458c30e9f243373333df1366e43548fb",
+      "sourceName": "contracts/Randomizer.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/utils/Counters.sol",
+        "@openzeppelin/contracts/utils/EnumerableSet.sol",
+        "@openzeppelin/contracts/access/AccessControl.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.0"
+      ],
+      "artifacts": [
+        "Entropy",
+        "Randomizer"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/RandomStub.sol": {
+      "lastModificationDate": 1611371754769,
+      "contentHash": "f56d779e9de6aa7cbe670c944c1edda6",
+      "sourceName": "contracts/RandomStub.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.0"
+      ],
+      "artifacts": [
+        "RandomStub"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/Animation.sol": {
+      "lastModificationDate": 1611433234035,
+      "contentHash": "8f984ab1f2f76a04123beaee5e5402dc",
+      "sourceName": "contracts/libraries/Animation.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/math/SafeMath.sol",
+        "@openzeppelin/contracts/math/SignedSafeMath.sol",
+        "@openzeppelin/contracts/utils/Strings.sol",
+        "../structs/Decimal.sol",
+        "../structs/Shape.sol",
+        "../structs/TinyBox.sol",
+        "./Utils.sol",
+        "./Decimal.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.4"
+      ],
+      "artifacts": [
+        "Animation"
+      ]
+    },
+    "/mnt/c/Users/skyfl/Documents/GitHub/tiny-boxes/contracts/libraries/Colors.sol": {
+      "lastModificationDate": 1611497571992,
+      "contentHash": "5cfda465951255c45a2e7c49abc3701d",
+      "sourceName": "contracts/libraries/Colors.sol",
+      "solcConfig": {
+        "version": "0.6.8",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/utils/Strings.sol",
+        "@openzeppelin/contracts/utils/SafeCast.sol",
+        "@openzeppelin/contracts/math/SafeMath.sol",
+        "./Utils.sol",
+        "./Random.sol",
+        "../structs/HSL.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.8"
+      ],
+      "artifacts": [
+        "Colors"
+      ]
+    }
+  }
+}

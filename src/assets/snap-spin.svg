@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 2400 2400" style="stroke-width:0;background-color:#121212">
+  <frame>3</frame>
+  <symbol id="quad3">
+    <symbol id="quad2">
+      <symbol id="quad1">
+        <symbol id="quad0">
+          <rect x="5" y="5" width="734" height="22" rx="0" transform-origin="0 0" style="fill:hsl(305,100%,80%);fill-opacity:1" transform="rotate(0)translate(0 0)skewX(3)skewY(0)scale(1 1)">
+            <animateTransform attributeName="transform" attributeType="XML" type="rotate" calcMode="spline" values="0 60 70 ; 90 60 70 ; 90 60 70 ; 360 60 70 ; 360 60 70" keyTimes="0 ; 0.1 ; 0.75 ; 0.9 ; 1"
+        keySplines="0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1" dur="10s" repeatCount="indefinite" />
+          </rect>
+          <rect x="-16" y="319" width="133" height="355" rx="0" transform-origin="0 0" style="fill:hsl(305,100%,90%);fill-opacity:1" transform="rotate(0)translate(0 0)skewX(3)skewY(0)scale(1 1)">
+            <animateTransform attributeName="transform" attributeType="XML" type="rotate" calcMode="spline" values="0 60 70 ; 110 60 70 ; 110 60 70 ; 360 60 70 ; 360 60 70" keyTimes="0 ; 0.15 ; 0.75 ; 0.9 ; 1"
+        keySplines="0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1" dur="10s" repeatCount="indefinite" />
+          </rect>
+          <rect x="89" y="17" width="736" height="25" rx="0" transform-origin="0 0" style="fill:hsl(545,100%,75%);fill-opacity:1" transform="rotate(0)translate(0 0)skewX(3)skewY(0)scale(1 1)">
+            <animateTransform attributeName="transform" attributeType="XML" type="rotate" calcMode="spline" values="0 60 70 ; 130 60 70 ; 130 60 70 ; 360 60 70 ; 360 60 70" keyTimes="0 ; 0.2 ; 0.75 ; 0.9 ; 1"
+        keySplines="0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1" dur="10s" repeatCount="indefinite" />
+          </rect>
+          <rect x="52" y="310" width="132" height="427" rx="0" transform-origin="0 0" style="fill:hsl(305,100%,75%);fill-opacity:1" transform="rotate(0)translate(0 0)skewX(3)skewY(0)scale(1 1)">
+            <animateTransform attributeName="transform" attributeType="XML" type="rotate" calcMode="spline" values="0 60 70 ; 150 60 70 ; 150 60 70 ; 360 60 70 ; 360 60 70" keyTimes="0 ; 0.25 ; 0.75 ; 0.9 ; 1"
+        keySplines="0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1" dur="10s" repeatCount="indefinite" />
+          </rect>
+          <rect x="470" y="-15" width="25" height="731" rx="0" transform-origin="0 0" style="fill:hsl(305,100%,80%);fill-opacity:1" transform="rotate(0)translate(0 0)skewX(3)skewY(0)scale(1 1)">
+            <animateTransform attributeName="transform" attributeType="XML" type="rotate" calcMode="spline" values="0 60 70 ; 170 60 70 ; 170 60 70 ; 360 60 70 ; 360 60 70" keyTimes="0 ; 0.3 ; 0.75 ; 0.9 ; 1"
+        keySplines="0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1" dur="10s" repeatCount="indefinite" />
+          </rect>
+          <rect x="69" y="491" width="221" height="443" rx="0" transform-origin="0 0" style="fill:hsl(305,100%,85%);fill-opacity:1" transform="rotate(0)translate(0 0)skewX(3)skewY(0)scale(1 1)">
+            <animateTransform attributeName="transform" attributeType="XML" type="rotate" calcMode="spline" values="0 60 70 ; 190 60 70 ; 190 60 70 ; 360 60 70 ; 360 60 70" keyTimes="0 ; 0.35 ; 0.75 ; 0.9 ; 1"
+        keySplines="0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1" dur="10s" repeatCount="indefinite" />
+          </rect>
+          <rect x="452" y="473" width="28" height="725" rx="0" transform-origin="0 0" style="fill:hsl(305,100%,85%);fill-opacity:1" transform="rotate(0)translate(0 0)skewX(3)skewY(0)scale(1 1)">
+            <animateTransform attributeName="transform" attributeType="XML" type="rotate" calcMode="spline" values="0 60 70 ; 210 60 70 ; 210 60 70 ; 360 60 70 ; 360 60 70" keyTimes="0 ; 0.4 ; 0.75 ; 0.9 ; 1"
+        keySplines="0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1" dur="10s" repeatCount="indefinite" />
+          </rect>
+          <rect x="310" y="48" width="124" height="341" rx="0" transform-origin="0 0" style="fill:hsl(545,100%,80%);fill-opacity:1" transform="rotate(0)translate(0 0)skewX(3)skewY(0)scale(1 1)">
+            <animateTransform attributeName="transform" attributeType="XML" type="rotate" calcMode="spline" values="0 60 70 ; 230 60 70 ; 230 60 70 ; 360 60 70 ; 360 60 70" keyTimes="0 ; 0.45 ; 0.75 ; 0.9 ; 1"
+        keySplines="0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1" dur="10s" repeatCount="indefinite" />
+          </rect>
+          <rect x="8" y="-48" width="35" height="730" rx="0" transform-origin="0 0" style="fill:hsl(545,100%,80%);fill-opacity:1" transform="rotate(0)translate(0 0)skewX(3)skewY(0)scale(1 1)">
+            <animateTransform attributeName="transform" attributeType="XML" type="rotate" calcMode="spline" values="0 60 70 ; 250 60 70 ; 250 60 70 ; 360 60 70 ; 360 60 70" keyTimes="0 ; 0.5 ; 0.75 ; 0.9 ; 1"
+        keySplines="0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1" dur="10s" repeatCount="indefinite" />
+          </rect>
+          <rect id="rect" x="-82" y="97" width="163" height="385" rx="0" transform-origin="0 0" style="fill:hsl(305,100%,90%);fill-opacity:1" transform="rotate(0)translate(0 0)skewX(3)skewY(0)scale(1 1)">
+            <animateTransform attributeName="transform" attributeType="XML" type="rotate" calcMode="spline" values="0 60 70 ; 270 60 70 ; 270 60 70 ; 360 60 70 ; 360 60 70" keyTimes="0 ; 0.55 ; 0.75 ; 0.9 ; 1"
+        keySplines="0.5 0 0.75 1 ; 0.5 0 0.5 1 ; 0.5 0 0.75 1 ; 0.5 0 0.5 1" dur="10s" repeatCount="indefinite" />
+          </rect>
+        </symbol>
+        <g>
+          <use xlink:href="#quad0" />
+        </g>
+        <g transform="scale(-1 1) translate(-750 0)">
+          <use xlink:href="#quad0" />
+        </g>
+        <g transform="scale(-1 -1) translate(-750 -750)">
+          <use xlink:href="#quad0" />
+        </g>
+        <g transform="scale(1 -1) translate(0 -750)">
+          <use xlink:href="#quad0" />
+        </g>
+      </symbol>
+      <g>
+        <use xlink:href="#quad1" />
+      </g>
+      <g transform="scale(-1 1) translate(-1200 0)">
+        <use xlink:href="#quad1" />
+      </g>
+      <g transform="scale(-1 -1) translate(-1200 -1200)">
+        <use xlink:href="#quad1" />
+      </g>
+      <g transform="scale(1 -1) translate(0 -1200)">
+        <use xlink:href="#quad1" />
+      </g>
+    </symbol>
+    <g>
+      <use xlink:href="#quad2" />
+    </g>
+    <g transform="scale(-1 1) translate(-2400 0)">
+      <use xlink:href="#quad2" />
+    </g>
+    <g transform="scale(-1 -1) translate(-2400 -2400)">
+      <use xlink:href="#quad2" />
+    </g>
+    <g transform="scale(1 -1) translate(0 -2400)">
+      <use xlink:href="#quad2" />
+    </g>
+  </symbol>
+  <g transform="scale(1 1)">
+    <use xlink:href="#quad3" />
+  </g>
+</svg>

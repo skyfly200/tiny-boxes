@@ -3,7 +3,11 @@ node_modules
 /dist
 /build
 /lambda
+<<<<<<< HEAD
+/artifacts
+=======
 /frames
+>>>>>>> master
 
 /tests/e2e/videos/
 /tests/e2e/screenshots/
@@ -12,6 +16,10 @@ node_modules
 .env
 .env.local
 .env.*.local
+
+# images
+/src/*.png
+/src/*.gif
 
 # Secrets
 secrets.json
