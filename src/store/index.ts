@@ -1511,9 +1511,9 @@ const store = new Vuex.Store({
       "Mono",
       "Random"
     ],
-    tinyboxesAddress: '0xdEcC31D9EcD1C0c8360e81f5511C9E28a4414550',
+    tinyboxesAddress: '0x1761A6AF4B58145AEfcf16db9516246F6Ad78Ef6',
     openseaStoreURL: 'https://testnets.opensea.io/assets/tinyboxes-lvupeos4gn',
-    openseaTokenURL: 'https://testnets.opensea.io/assets/0xdEcC31D9EcD1C0c8360e81f5511C9E28a4414550/',
+    openseaTokenURL: 'https://testnets.opensea.io/assets/0x1761A6AF4B58145AEfcf16db9516246F6Ad78Ef6/',
     currentAccount: "",
     web3Status: "loading",
     web3: null,
