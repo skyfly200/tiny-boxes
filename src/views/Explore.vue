@@ -93,7 +93,7 @@ export default Vue.extend({
       return randomSettings;
     },
     gotoMint(values: any) {
-      this.$router.push({ path: "/create", query: this.buildQuery(values) });
+      this.$router.push({ path: "/create", query: (this as any).buildQuery(values) });
     },
     buildQuery(values: any) {
       const t = this as any;
@@ -121,31 +121,33 @@ export default Vue.extend({
       );
     },
     more: async function() {
-      this.loading = true;
-      const start = this.tokens.length;
-      for (let t=start;t<(this.count+start);t++) {
-        this.randomize();
-        this.loadToken().then( result => {
-          this.$set(this.tokens, t, {
+      const t = this as any;
+      t.loading = true;
+      const start = t.tokens.length;
+      for (let t=start;t<(t.count+start);t++) {
+        t.randomize();
+        t.loadToken().then( (result: any) => {
+          t.$set(t.tokens, t, {
             art: result,
-            values: JSON.parse(JSON.stringify(this.values)),
+            values: JSON.parse(JSON.stringify(t.values)),
           });
         });
       }
-      this.itemsPerPage = this.itemsPerPage * 2;
-      this.loading = false;
+      t.itemsPerPage = t.itemsPerPage * 2;
+      t.loading = false;
     },
     loadTokens: async function() {
-      this.loading = true;
-      await this.loadStatus();
-      for (let t=0;t<this.count;t++) {
-        this.randomize();
-        this.$set(this.tokens, t, {
-          art: await this.loadToken(),
-          values: JSON.parse(JSON.stringify(this.values)),
+      const t = this as any;
+      t.loading = true;
+      await t.loadStatus();
+      for (let c=0;c<t.count;c++) {
+        t.randomize();
+        t.$set(t.tokens, c, {
+          art: await t.loadToken(),
+          values: JSON.parse(JSON.stringify(t.values)),
         });
       }
-      this.loading = false;
+      t.loading = false;
     },
     assemblePalette: function() {
       const v = (this as any).values;

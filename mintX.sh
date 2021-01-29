@@ -11,8 +11,8 @@ while getopts "c:f:t:" arg; do
     esac
 done
 
-#VALUE=100000000000000000
-VALUE=1
+VALUE=100000000000000000
+#VALUE=1
 
 ## if deploy or render
 ## delete oz lock file ./.openzeppelin/.lock
