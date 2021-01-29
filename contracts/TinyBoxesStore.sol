@@ -20,10 +20,7 @@ contract TinyBoxesStore is TinyBoxesBase {
     constructor(address entropySourceAddress)
         public
         TinyBoxesBase(entropySourceAddress)
-    {
-        // promos.set(UINT_MAX - 0, skyfly);
-        // promos.set(UINT_MAX - 1, natealex);
-    }
+    {}
 
     // Payment Functions
 
