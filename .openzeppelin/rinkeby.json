@@ -1,24 +1,90 @@
 {
   "contracts": {},
-  "solidityLibs": {},
+  "solidityLibs": {
+    "FixidityLib": {
+      "address": "0x34cFa7d44a6698E68FB067e3C48ebB831873E534",
+      "constructorCode": "610940610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "f163dbe5f88fb50c53eaac201b38227e6dd850973f1908ee681772881bf9c048",
+      "localBytecodeHash": "b644467ae0ea23c2bb20aa3e6134746b91a7c10213f66697ece00ba564ea5cb2",
+      "deployedBytecodeHash": "b644467ae0ea23c2bb20aa3e6134746b91a7c10213f66697ece00ba564ea5cb2"
+    },
+    "Utils": {
+      "address": "0xA87158c03e304d88C93D2a9B8AE2046e8EaB29b9",
+      "constructorCode": "610361610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "02697ae9fb9ea855a2bb87039ed3c137812e52c91b03c656bb22ad219cd30108",
+      "localBytecodeHash": "6b468d8cde1d4f9855cbbf0f24baff56878878e55476f98038753eeb9dc87d7b",
+      "deployedBytecodeHash": "6b468d8cde1d4f9855cbbf0f24baff56878878e55476f98038753eeb9dc87d7b"
+    },
+    "Colors": {
+      "address": "0x634857ed95D03F8D10FeE5cbc9bd0C2AB1Bb0AAB",
+      "constructorCode": "610c0a610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "2345799b9254d84d2f704a9d5ff20ea5093124875a55c506dae14f60de97c144",
+      "localBytecodeHash": "4f343edcef642a70fd10e6b3a83019e33432ac79e240ffe5c5b01df45b09baec",
+      "deployedBytecodeHash": "4f343edcef642a70fd10e6b3a83019e33432ac79e240ffe5c5b01df45b09baec"
+    },
+    "Animation": {
+      "address": "0xA331557820CcfBA26d0A268B895BA40E738eF8f7",
+      "constructorCode": "6135bf610026600b82828239805160001a60731461001957fe5b30600052607381538281f3fe",
+      "bodyBytecodeHash": "ae938a97a80af430da55ba22c1ade413142638cefd51188a79ccde5cc77a89bf",
+      "localBytecodeHash": "abbcaee64b8fa1da19c91d3d085f1716d17831acb745b137b0dc29a9bc497280",
+      "deployedBytecodeHash": "9b708b17ebb1292969e5546373c63f43a3b3dcce435ed0040606a2393ecab7db"
+    }
+  },
   "proxies": {
-    "tiny-boxes/TinyBoxes": [
+    "tinyboxes/TinyBoxes": [
       {
-        "address": "0x7050789c5e51E3D0c6c5528b396A3F8318be5B58",
+        "address": "0x81674c89abf2A9b7e5044Fca232c63B91ADCf9D7",
         "kind": "NonProxy",
-        "bytecodeHash": "037690a3703310fb1738395f57e2e555fbcb422dd091d15b8ff29620ee3e928a"
+        "bytecodeHash": "5c6f24a35b5e2eedd37fa9a4c02ed60e9259f1e13f3d4964ad0f5950275e9c1a"
       },
       {
-        "address": "0xA9Ab579520B084e368821318339294c883eA460c",
+        "address": "0x3cAEAF0c7e0D373d3eF754a87486373dE99875b5",
         "kind": "NonProxy",
-        "bytecodeHash": "45f1b1fb10e594b4b74695e3b10482cad3e8f6b63380cb008cf315357b53214b"
+        "bytecodeHash": "cebe4e1d3e7433ff66d124847e51d06c36ac72d7f786d3fb839e37a6260a2aae"
       },
       {
-        "address": "0xC1713542e35e7b086f21Bdf906436f6FF483fEAF",
+        "address": "0xC02fe6ee8eD0AFe06C9Ff134299DB179A9D2DfEB",
         "kind": "NonProxy",
-        "bytecodeHash": "eef15c6154f5890ca97c484e5bb2f2c69d1e5e87ddbe6a7bf52c15303b904ed9"
+        "bytecodeHash": "ab7ccb0600145451978d75aaf71547dd7855f449849610bdf0ec3a3f611bddcf"
+      },
+      {
+        "address": "0x7A832c86002323a5de3a317b3281Eb88EC3b2C00",
+        "kind": "NonProxy",
+        "bytecodeHash": "ab7ccb0600145451978d75aaf71547dd7855f449849610bdf0ec3a3f611bddcf"
+      }
+    ],
+    "tinyboxes/Randomizer": [
+      {
+        "address": "0x02F597BFdB0291FE0789CA123D0dD9A2babfE845",
+        "kind": "NonProxy",
+        "bytecodeHash": "d0390988073446a891d1705c16a904e62ba68c49933cbbc9e77657983cbe9fb7"
+      }
+    ],
+    "tinyboxes/TinyBoxesRenderer": [
+      {
+        "address": "0xeEc27EdF30915830dEC14a3cF3aA0Eda58C91C7c",
+        "kind": "NonProxy",
+        "bytecodeHash": "cb6fcc58b3a649287a17c4a503d1edc7a3c165ec5efe9d99a5fc2988307fa3e3"
+      },
+      {
+        "address": "0x05a3118378E13377dE377FE92EaFC34B3b851355",
+        "kind": "NonProxy",
+        "bytecodeHash": "6697214540ddd3817f81cd215148d58327b6c75693263e400ae4c99c4a7cf58f"
+      },
+      {
+        "address": "0xd3a1276898b78c8F3934CF396555B23b7215D27E",
+        "kind": "NonProxy",
+        "bytecodeHash": "6697214540ddd3817f81cd215148d58327b6c75693263e400ae4c99c4a7cf58f"
+      }
+    ],
+    "tinyboxes/TinyBoxRenderer": [
+      {
+        "address": "0x62a08Aaba0D521dA8E310A47Db467a920F5Dea31",
+        "kind": "NonProxy",
+        "bytecodeHash": "cb6fcc58b3a649287a17c4a503d1edc7a3c165ec5efe9d99a5fc2988307fa3e3"
       }
     ]
   },
-  "manifestVersion": "2.2"
+  "manifestVersion": "2.2",
+  "version": "0.1.0"
 }

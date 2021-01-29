@@ -1,16 +1,21 @@
 import Vue from "vue";
 import Vuetify from "vuetify/lib";
 import "./overrides.sass";
+<<<<<<< HEAD
+import { preset } from 'vue-cli-plugin-vuetify-preset-shrine/preset'
+=======
+>>>>>>> master
 
 Vue.use(Vuetify);
 
 export default new Vuetify({
+  preset,
   theme: {
     dark: true,
     themes: {
       dark: {
-        primary: "#009688",
-        secondary: "#795548",
+        primary: "#5F51B5",
+        secondary: "#009688",
         accent: "#cddc39",
         error: "#ff5722",
         warning: "#ff9800",

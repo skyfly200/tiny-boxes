@@ -27,17 +27,13 @@ export class TinyBoxesPricing extends Contract {
 
     ANIMATOR_ROLE(): TransactionObject<string>;
 
-    ARTIST_PRINTS(): TransactionObject<string>;
-
     ARTIST_ROLE(): TransactionObject<string>;
-
-    BETA_SALE(): TransactionObject<string>;
 
     DEFAULT_ADMIN_ROLE(): TransactionObject<string>;
 
-    TOKEN_LIMIT(): TransactionObject<string>;
+    SCHEME_COUNT(): TransactionObject<string>;
 
-    TREASURER_ROLE(): TransactionObject<string>;
+    TOKEN_LIMIT(): TransactionObject<string>;
 
     approve(to: string, tokenId: number | string): TransactionObject<void>;
 
@@ -45,7 +41,12 @@ export class TinyBoxesPricing extends Contract {
 
     baseURI(): TransactionObject<string>;
 
-    currentLinkPrice(): TransactionObject<string>;
+    blockStart(): TransactionObject<string>;
+
+    changeSettings(
+      id: number | string,
+      settings: (number | string)[]
+    ): TransactionObject<void>;
 
     currentPrice(): TransactionObject<string>;
 
@@ -75,17 +76,32 @@ export class TinyBoxesPricing extends Contract {
       operator: string
     ): TransactionObject<boolean>;
 
-    linkPremium(): TransactionObject<string>;
-
-    linkPriceAt(_id: number | string): TransactionObject<string>;
-
     name(): TransactionObject<string>;
 
     ownerOf(tokenId: number | string): TransactionObject<string>;
 
+    paused(): TransactionObject<boolean>;
+
+    phaseCountdown(): TransactionObject<string>;
+
+    phaseCountdownTime(): TransactionObject<string>;
+
+    phaseLen(): TransactionObject<string>;
+
     priceAt(_id: number | string): TransactionObject<string>;
 
     priceIncrease(): TransactionObject<string>;
+
+    readSettings(
+      id: number | string
+    ): TransactionObject<{
+      bkg: string;
+      duration: string;
+      options: string;
+      0: string;
+      1: string;
+      2: string;
+    }>;
 
     renounceRole(
       role: string | number[],
@@ -121,25 +137,25 @@ export class TinyBoxesPricing extends Contract {
     tokenData(
       _id: number | string
     ): TransactionObject<{
-      randomness: string;
       animation: string;
-      colors: string;
       shapes: string;
       hatching: string;
       size: string[];
       spacing: string[];
-      mirrorPositions: string[];
-      mirrors: boolean[];
-      scale: string;
+      mirroring: string;
+      color: string[];
+      contrast: string;
+      shades: string;
+      scheme: string;
       0: string;
       1: string;
       2: string;
-      3: string;
-      4: string;
-      5: string[];
+      3: string[];
+      4: string[];
+      5: string;
       6: string[];
-      7: string[];
-      8: boolean[];
+      7: string;
+      8: string;
       9: string;
     }>;
 
@@ -175,9 +191,14 @@ export class TinyBoxesPricing extends Contract {
       1: string;
       2: boolean;
     }>;
-    ChainlinkCancelled: ContractEvent<string>;
-    ChainlinkFulfilled: ContractEvent<string>;
-    ChainlinkRequested: ContractEvent<string>;
+    RoleAdminChanged: ContractEvent<{
+      role: string;
+      previousAdminRole: string;
+      newAdminRole: string;
+      0: string;
+      1: string;
+      2: string;
+    }>;
     RoleGranted: ContractEvent<{
       role: string;
       account: string;
