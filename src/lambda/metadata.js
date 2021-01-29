@@ -303,6 +303,11 @@ exports.handler = async (event, context) => {
       ],
     }
 
+    if (isLE)
+      metadata.attributes.push({
+          value:  'Limited Edition',
+      });
+
     // log metadata to console
     console.log('Metadata of token ' + id)
     console.log(metadata)
