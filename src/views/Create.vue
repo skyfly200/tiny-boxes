@@ -306,9 +306,6 @@ export default Vue.extend({
       if (t.countdown) {
         const timeLeft = (t.blockStart - t.currentBlock) * 13350;
         t.pauseEndTime = new Date().getTime() + timeLeft; //t.currentBlockTimestamp
-        console.log(t.currentBlockTimestamp, t.pauseEndTime, timeLeft);
-        console.log("mined at ", new Date(t.currentBlockTimestamp))
-        console.log("starts at ", new Date(t.pauseEndTime))
       }
       return t.countdown;
     },
