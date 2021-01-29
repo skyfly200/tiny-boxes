@@ -47,7 +47,7 @@ contract TinyBoxesBase is ERC721, AccessControl  {
     bool public paused = true;
     uint256 public blockStart; // next block that minting will start on, countdown end point
     uint256 public phaseCountdown = uint256(phaseCountdownTime).div(avgBlockTime); // blocks to pause between phases
-    string public contractURI = "https://rinkeby.tinybox.shop/TinyBoxes.json";
+    string public contractURI = "https://tinybox.shop/TinyBoxes.json";
 
     // mapping to store all the boxes info
     mapping(uint256 => TinyBox) internal boxes;
