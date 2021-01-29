@@ -288,30 +288,30 @@ contract TinyBoxesBase is ERC721, AccessControl  {
             bytes32[] memory pool = Random.init(box.randomness);
             uint8[7] memory shadesBins = [4,6,9,6,4,2,1];
             uint8[24] memory animationBins = [
-                175,
-                200,
-                175,
-                160,
-                150,
-                140,
-                95,
-                100,
-                90,
-                20,
-                10,
-                80,
-                75,
-                85,
-                110,
-                105,
-                50,
-                90,
-                70,
-                40,
-                140,
-                130,
-                100,
-                110
+                175, // Snap Spin 90
+                200, // Snap Spin 180
+                175, // Snap Spin 270
+                160, // Snap Spin Tri
+                150, // Snap Spin Quad
+                140, // Snap Spin Tetra
+                95, // Spin
+                100, // Slow Mo
+                90, // Clockwork
+                20, // Spread
+                10, // Staggered Spread
+                80, // Jitter
+                75, // Giggle
+                85, // Jolt
+                110, // Grow n Shrink
+                105, // Squash n Stretch
+                50, // Round
+                90, // Glide
+                70, // Wave
+                40, // Fade
+                140, // Skew X
+                130, // Skew Y
+                100, // Stretch
+                110 // Jello
             ];
             // Generate Random parts from the tokens randomness
             parts[0] = uint8(pool.weighted(animationBins, 2500)); // animation
