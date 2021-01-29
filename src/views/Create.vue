@@ -27,7 +27,7 @@
               v-spacer
               v-tooltip(top)
                 template(v-slot:activator='{ on }')
-                  a(:href="'https://rinkeby.etherscan.io/tx/' + minted.txHash" v-on='on' target="new")
+                  a(:href="'https://etherscan.io/tx/' + minted.txHash" v-on='on' target="new")
                     v-icon mdi-open-in-new
                 span View on Etherscan
             h3 Pending
