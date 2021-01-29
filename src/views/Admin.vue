@@ -217,7 +217,7 @@ export default Vue.extend({
     },
     loadCountdown() {
       const t = this as any;
-      t.timeLeft = (t.blockStart - t.currentBlock) * 15000;
+      t.timeLeft = (t.blockStart - t.currentBlock) * 13350;
       t.pauseEndTimestamp = new Date(t.currentBlockTimestamp).getTime() + t.timeLeft;
       t.pauseEndTime = dayjs(t.currentBlockTimestamp).add(t.timeLeft, 'ms');
       t.pauseEndTimeUTC = dayjs(t.currentBlockTimestamp).add(t.timeLeft, 'ms');
