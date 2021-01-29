@@ -75,7 +75,7 @@
                 h3(v-if="paused") Minting Paused
                 vac(v-else-if="countdown" :end-time="pauseEndTime")
                   template(v-slot:process="{ timeObj }")
-                    span {{ `${timeObj.m}:${timeObj.s}` }} to phase {{ Math.floor(id / phaseLen) }}
+                    span {{ `${timeObj.h}:${timeObj.m}:${timeObj.s}` }} to phase {{ Math.floor(id / phaseLen) }}
                 template(v-else)
                   TooltipIconBtn(icon="mdi-forward" tip="Forward Mint" @click="overlay='recipient'" bottom).forward-btn
                   v-btn(@click="mintToken" :disabled="!form.valid || soldOut || loading" large color="primary")
@@ -158,6 +158,7 @@ export default Vue.extend({
       paused: false,
       countdown: false,
       pauseEndTime: null,
+      currentBlock: null,
       blockStart: new Date(),
       blockSubscription: null,
       overlay: "",
@@ -281,6 +282,9 @@ export default Vue.extend({
     lookupBlockStart: async function() {
       return (this as any).blockStart = await this.$store.state.contracts.tinyboxes.methods.blockStart().call();
     },
+    async lookupCurrentBlock() {
+      (this as any).currentBlock =  await this.$store.state.web3.eth.getBlockNumber();
+    },
     loadStatus: async function() {
       const t = this as any;
       const idLookup = t.getSupply();
@@ -293,12 +297,13 @@ export default Vue.extend({
     },
     async checkForCountdown() {
       const t = this as any;
-      const currentBlock =  await this.$store.state.web3.eth.getBlockNumber();
+      await t.lookupCurrentBlock();
       await t.lookupBlockStart();
       await t.lookupPause();
-      t.countdown = currentBlock <= t.blockStart;
+      t.countdown = t.currentBlock <= t.blockStart;
       if (t.countdown) {
-        const timeLeft = (t.blockStart - currentBlock) * 15000;
+        const timeLeft = (t.blockStart - t.currentBlock) * 13350;
+        console.log(t.currentBlock, t.blockStart, timeLeft);
         t.pauseEndTime = new Date().getTime() + timeLeft;
       }
       return t.countdown;
