@@ -13,17 +13,17 @@ const {
   PINATA_API_KEY,
   PINATA_API_SECRET,
   WALLET_PRIVATE_KEY,
-  RINK_WEBSITE,
-  RINK_EXTERNAL_URL_BASE,
-  RINK_WEB3_PROVIDER_ENDPOINT,
-  RINK_CONTRACT_ADDRESS,
+  WEBSITE,
+  EXTERNAL_URL_BASE,
+  WEB3_PROVIDER_ENDPOINT,
+  CONTRACT_ADDRESS,
 } = process.env
 
 // init web3 provider and load contract
-var web3 = new Web3(RINK_WEB3_PROVIDER_ENDPOINT)
+var web3 = new Web3(WEB3_PROVIDER_ENDPOINT)
 const tinyboxesContract = new web3.eth.Contract(
   tinyboxesABI,
-  RINK_CONTRACT_ADDRESS,
+  CONTRACT_ADDRESS,
 )
 
 const generateResponse = (body, statusCode) => {
@@ -55,7 +55,7 @@ function lookupMintedBlock(id) {
   return new Promise((resolve, reject) => {
     web3.eth
       .subscribe('logs', {
-        address: RINK_CONTRACT_ADDRESS,
+        address: CONTRACT_ADDRESS,
         fromBlock: 0,
         topics: [
           '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
@@ -79,7 +79,7 @@ exports.handler = async (event, context) => {
   try {
     const id = parseInt(event.queryStringParameters.id, 10)
 
-    console.log(RINK_CONTRACT_ADDRESS);
+    console.log(CONTRACT_ADDRESS);
 
     if (event.httpMethod !== 'GET') {
       // Only GET requests allowed
@@ -191,14 +191,14 @@ exports.handler = async (event, context) => {
       tokenID: id,
       description:
         'A scattering of tiny boxes, Arranged in patterns ranging from mundane to magnificent.',
-      website: RINK_WEBSITE,
-      external_url: RINK_EXTERNAL_URL_BASE + id,
+      website: WEBSITE,
+      external_url: EXTERNAL_URL_BASE + id,
       image_data: art,
       background_color: '121212',
       artist: "NonFungibleTeam",
       license: "NFT License",
       royaltyInfo:{
-        artistAddress: RINK_CONTRACT_ADDRESS,
+        artistAddress: CONTRACT_ADDRESS,
         //additionalPayee: "0xffffffffff",
         //additionalPayeePercentage: 100,
         royaltyFeeByID: 5
