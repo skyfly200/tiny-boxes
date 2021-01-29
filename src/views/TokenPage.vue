@@ -85,12 +85,12 @@
                 .box-story(align="center")
                   p TinyBox number {{ formatedID }} was created at {{ (new Date(data.block.timestamp * 1000)).toLocaleTimeString() }} on {{ (new Date(data.block.timestamp * 1000)).toLocaleDateString() }}
                   p by&nbsp;
-                    a(:href="'https://rinkeby.etherscan.io/address/' + data.tx.from" target="_blank") {{ data.tx.from }}
+                    a(:href="'https://etherscan.io/address/' + data.tx.from" target="_blank") {{ data.tx.from }}
                   p &nbsp;in TX&nbsp;
-                    a(:href="'https://rinkeby.etherscan.io/tx/' + data.creation.transactionHash" target="_blank") {{ data.creation.transactionHash }}
+                    a(:href="'https://etherscan.io/tx/' + data.creation.transactionHash" target="_blank") {{ data.creation.transactionHash }}
                   p &nbsp;of block number {{ data.block.number }}
                   p Its current owner is&nbsp;
-                    a(:href="'https://rinkeby.etherscan.io/address/' + owner" target="_blank") {{ owner }}
+                    a(:href="'https://etherscan.io/address/' + owner" target="_blank") {{ owner }}
                   a(:href="openseaTokenURL + id" title="View on OpenSea" target="_blank")
                     img(style="width:160px; border-radius:0px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);" src="https://storage.googleapis.com/opensea-static/opensea-brand/listed-button-blue.png" alt="Listed on OpenSea badge")
         v-row(v-if="ownerOf")
