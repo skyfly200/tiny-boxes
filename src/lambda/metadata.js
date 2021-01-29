@@ -110,14 +110,17 @@ exports.handler = async (event, context) => {
     // await token data
     console.log("Awaiting requests...");
     let [data, art, block] = ['', '', '', '']
-    data = await dataPromise
-      .catch((err) => console.error(err))
-    art = await artPromise
-      .catch((err) => console.error(err))
-    block = await blockPromise
-      .catch((err) => console.error(err))
-
-    console.log(data, art, block)
+    try {
+      data = await dataPromise
+        .catch((err) => console.error(err))
+      console.log(data)
+      art = await artPromise
+        .catch((err) => console.error(err))
+      console.log(art)
+      block = await blockPromise
+        .catch((err) => console.error(err))
+      console.log(block)
+    } catch (err) { console.error(err) }
 
     if (data === undefined || art === undefined) return generateResponse('Server Error', 500)
     
