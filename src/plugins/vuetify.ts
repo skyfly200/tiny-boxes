@@ -17,8 +17,8 @@ export default new Vuetify({
         error: "#ff5722",
         warning: "#ff9800",
         info: "#2196f3",
-        success: "#4caf50",
-      },
-    },
-  },
+        success: "#4caf50"
+      }
+    }
+  }
 });

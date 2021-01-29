@@ -77,7 +77,6 @@
     "json-loader": "^0.5.7",
     "netlify-lambda": "^1.6.3",
     "nodemon": "^2.0.4",
-    "solidity-docgen": "^0.5.3",
     "prettier": "^1.19.1",
     "pug": "^2.0.4",
     "pug-plain-loader": "^1.0.0",
