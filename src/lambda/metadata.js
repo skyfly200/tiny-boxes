@@ -185,13 +185,13 @@ exports.handler = async (event, context) => {
       "Mono",
       "Random"
     ];
-    const isLE = false; // todo check from id
+    const isLE = id > 2222;
+    const description = 'A scattering of tiny boxes, Arranged in patterns ranging from mundane to magnificent.';
     const metadata = {
       platform: "TinyBoxes",
-      name: 'TinyBox #' + id,
+      name: isLE ? 'LE TinyBox #' + id : 'TinyBox #' + id,
       tokenID: id,
-      description:
-        'A scattering of tiny boxes, Arranged in patterns ranging from mundane to magnificent.',
+      description: description,
       website: WEBSITE,
       external_url: EXTERNAL_URL_BASE + id,
       image_data: art,
@@ -200,8 +200,6 @@ exports.handler = async (event, context) => {
       license: "NFT License",
       royaltyInfo:{
         artistAddress: CONTRACT_ADDRESS,
-        //additionalPayee: "0xffffffffff",
-        //additionalPayeePercentage: 100,
         royaltyFeeByID: 5
       },
       attributes: [
