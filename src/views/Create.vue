@@ -255,7 +255,7 @@ export default Vue.extend({
       t.currentBlockTimestamp = new Date().getTime() * 1000;
       const balance = await t.lookupBalance();
       if (balance > 0) t.usersReferal = await t.lookupUsersToken(0);
-      else t.referal = -1;
+      else t.referal = 10000;
       t.lookupLimit();
       if (t.paramsSet) t.loadParams();
       else t.updateParams();
@@ -500,7 +500,6 @@ export default Vue.extend({
       const t = this as any;
       const v = {...t.values, ...t.assembleDials(), palette: t.assemblePalette()};
       t.price = await t.getPrice();
-      if (v.referal === null) v.referal = 10000;
       t.tx = {
         from: this.currentAccount,
         to: this.$store.state.tinyboxesAddress,
