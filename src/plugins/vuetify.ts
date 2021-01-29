@@ -1,10 +1,7 @@
 import Vue from "vue";
 import Vuetify from "vuetify/lib";
 import "./overrides.sass";
-<<<<<<< HEAD
 import { preset } from 'vue-cli-plugin-vuetify-preset-shrine/preset'
-=======
->>>>>>> master
 
 Vue.use(Vuetify);
 

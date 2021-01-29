@@ -14,7 +14,6 @@ const routes = [
     name: '404',
     component: () => import(/* webpackChunkName: "404" */ '../views/404.vue'),
   },
-<<<<<<< HEAD
   {
     path: "/render",
     name: "Render",
@@ -56,9 +55,6 @@ const routes = [
     component: () => import(/* webpackChunkName: "404" */ "../views/404.vue")
   }
 ];
-=======
-]
->>>>>>> master
 
 const router = new VueRouter({
   mode: 'history',

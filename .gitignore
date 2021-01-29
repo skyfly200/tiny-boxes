@@ -3,11 +3,7 @@ node_modules
 /dist
 /build
 /lambda
-<<<<<<< HEAD
 /artifacts
-=======
-/frames
->>>>>>> master
 
 /tests/e2e/videos/
 /tests/e2e/screenshots/
@@ -43,4 +39,3 @@ yarn-error.log*
 # Local Netlify folder
 .netlify
 .openzeppelin/.lock
-artifacts
