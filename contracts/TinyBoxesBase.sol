@@ -288,9 +288,34 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         if (id < TOKEN_LIMIT) { // Normal Tokens
             bytes32[] memory pool = Random.init(box.randomness);
             uint8[7] memory shadesBins = [4,6,9,6,4,2,1];
-            uint8[24] memory animationBins = [100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100];
+            uint8[24] memory animationBins = [
+                175,
+                200,
+                175,
+                160,
+                150,
+                140,
+                95,
+                100,
+                90,
+                20,
+                10,
+                80,
+                75,
+                85,
+                110,
+                105,
+                50,
+                90,
+                70,
+                40,
+                140,
+                130,
+                100,
+                110
+            ];
             // Generate Random parts from the tokens randomness
-            parts[0] = uint8(pool.weighted(animationBins, 2400)); // animation
+            parts[0] = uint8(pool.weighted(animationBins, 2500)); // animation
             parts[1] = uint8(id.div(phaseLen)); // scheme
             parts[2] = uint8(uint256(pool.weighted(shadesBins, 32)).add(1)); //, shades
             parts[3] = uint8(pool.uniform(0, box.lightness)); // contrast
