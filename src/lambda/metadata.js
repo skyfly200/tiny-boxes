@@ -61,7 +61,7 @@ function lookupMintedBlock(id) {
           '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
           '0x0000000000000000000000000000000000000000000000000000000000000000',
           null,
-          '0x' + id.padStart(64, '0'),
+          '0x' + BigInt(id).toString(16).padStart(64, '0'),
         ],
       })
       .on("data", async (log) => {
@@ -191,8 +191,8 @@ exports.handler = async (event, context) => {
       "TinyBox\n\n" +
       trueID + 
       isLE ?
-        numberInPhase + " of 202 in Phase " + phaseNumber :
-        numberInLEs + " of 100 Limited Editions Max"
+        numberInLEs + " of 100 Limited Editions Max" :
+        numberInPhase + " of 202 in Phase " + phaseNumber
       +
     ```
 
