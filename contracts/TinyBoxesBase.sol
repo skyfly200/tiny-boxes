@@ -327,6 +327,9 @@ contract TinyBoxesBase is ERC721, AccessControl  {
         }
     }
 
+    /**
+     * @dev Validate the parameters for the docs
+     */
     function validateParams(uint8 shapes, uint8 hatching, uint16[3] memory color, uint8[4] memory size, uint8[2] memory position, bool exclusive) public pure {
         require(shapes > 0 && shapes < 31, "invalid shape count");
         require(hatching <= shapes, "invalid hatching");
