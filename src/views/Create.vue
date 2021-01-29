@@ -159,6 +159,7 @@ export default Vue.extend({
       countdown: false,
       pauseEndTime: null,
       currentBlock: null,
+      currentBlockTimestamp: null,
       blockStart: new Date(),
       blockSubscription: null,
       overlay: "",
@@ -304,7 +305,7 @@ export default Vue.extend({
       if (t.countdown) {
         const timeLeft = (t.blockStart - t.currentBlock) * 13350;
         console.log(t.currentBlock, t.blockStart, timeLeft);
-        t.pauseEndTime = new Date().getTime() + timeLeft;
+        t.pauseEndTime = new Date(t.currentBlockTimestamp).getTime() + timeLeft;
       }
       return t.countdown;
     },
@@ -561,6 +562,7 @@ export default Vue.extend({
             console.error(error);
         })
         .on("data", async function(blockHeader: any){
+          t.currentBlockTimestamp = blockHeader.timestamp * 1000;
           t.checkForCountdown();
         })
         .on("error", console.error);
