@@ -52,8 +52,8 @@ class ReadableString extends Readable {
 }
 
 function lookupMintedBlock(id) {
+  console.log("Finding Token with id hash: ", '0x' + BigInt(id).toString(16).padStart(64, '0'));
   return new Promise((resolve, reject) => {
-    console.log("Finding Token with id hash: ", '0x' + BigInt(id).toString(16).padStart(64, '0'));
     web3.eth
       .subscribe('logs', {
         address: CONTRACT_ADDRESS,
