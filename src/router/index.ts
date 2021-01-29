@@ -1,20 +1,20 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
-    component: () => import(/* webpackChunkName: "home" */ "../views/Home.vue")
+    path: '/',
+    name: 'Home',
+    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
   },
   {
-    path: "/create",
-    name: "Create",
-    component: () =>
-      import(/* webpackChunkName: "create" */ "../views/Create.vue")
+    path: '/*',
+    name: '404',
+    component: () => import(/* webpackChunkName: "404" */ '../views/404.vue'),
   },
+<<<<<<< HEAD
   {
     path: "/render",
     name: "Render",
@@ -56,11 +56,14 @@ const routes = [
     component: () => import(/* webpackChunkName: "404" */ "../views/404.vue")
   }
 ];
+=======
+]
+>>>>>>> master
 
 const router = new VueRouter({
-  mode: "history",
+  mode: 'history',
   base: process.env.BASE_URL,
-  routes
-});
+  routes,
+})
 
-export default router;
+export default router

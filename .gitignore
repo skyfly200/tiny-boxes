@@ -3,7 +3,11 @@ node_modules
 /dist
 /build
 /lambda
+<<<<<<< HEAD
 /artifacts
+=======
+/frames
+>>>>>>> master
 
 /tests/e2e/videos/
 /tests/e2e/screenshots/
