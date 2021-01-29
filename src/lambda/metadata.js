@@ -77,7 +77,7 @@ function lookupMintedBlock(id) {
 exports.handler = async (event, context) => {
   // wrap things with error catching
   try {
-    const id = BigInt(event.queryStringParameters.id)
+    const id = event.queryStringParameters.id
 
     console.log(CONTRACT_ADDRESS);
 
@@ -101,12 +101,9 @@ exports.handler = async (event, context) => {
     }
 
     // concurently lookup token data, palette, art & timestamp
-    console.log('Looking Up Token...')
-    console.log('...Data...')
+    console.log('Looking Up Token Data...')
     const dataPromise = tinyboxesContract.methods.tokenData(id).call()
-    console.log('...Art...')
     const artPromise = tinyboxesContract.methods.tokenArt(id).call()
-    console.log('...Mined Block Number...')
     const blockPromise = lookupMintedBlock(id);
     
 
@@ -119,6 +116,8 @@ exports.handler = async (event, context) => {
       .catch((err) => console.error(err))
     block = await blockPromise
       .catch((err) => console.error(err))
+
+    console.log(data, art, block)
 
     if (data === undefined || art === undefined) return generateResponse('Server Error', 500)
     
