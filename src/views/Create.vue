@@ -255,6 +255,7 @@ export default Vue.extend({
       t.currentBlockTimestamp = new Date().getTime() * 1000;
       const balance = await t.lookupBalance();
       if (balance > 0) t.usersReferal = await t.lookupUsersToken(0);
+      else t.referal = -1;
       t.lookupLimit();
       if (t.paramsSet) t.loadParams();
       else t.updateParams();
