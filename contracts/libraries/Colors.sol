@@ -28,10 +28,10 @@ library Colors {
         uint8 index
     ) internal pure returns (uint16 hue) {
         uint16[3][10] memory schemes = [
+            [uint16(30), uint16(330), uint16(0)], // analogous
             [uint16(120), uint16(240), uint16(0)], // triadic
             [uint16(180), uint16(180), uint16(0)], // complimentary
             [uint16(60), uint16(180), uint16(240)], // tetradic
-            [uint16(30), uint16(330), uint16(0)], // analogous
             [uint16(30), uint16(180), uint16(330)], // analogous and complimentary
             [uint16(150), uint16(210), uint16(0)], // split complimentary
             [uint16(150), uint16(180), uint16(210)], // complimentary and analogous

@@ -1499,10 +1499,10 @@ const store = new Vuex.Store({
       "Jello"
     ],
     schemeTitles: [
+      "Analogous",
       "Triadic",
       "Complimentary",
       "Tetradic",
-      "Analogous",
       "Analogous and Complimentary",
       "Split Complimentary",
       "Complimentary and Analogous",
