@@ -1518,7 +1518,7 @@ const store = new Vuex.Store({
     web3Status: "loading",
     web3: null,
     network: null,
-    targetNetwork: "rinkeby",
+    targetNetwork: "mainnet",
     count: null,
     itemsPerPage: 12,
     tokenIDs: { null: null },
