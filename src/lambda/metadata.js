@@ -77,7 +77,7 @@ function lookupMintedBlock(id) {
 exports.handler = async (event, context) => {
   // wrap things with error catching
   try {
-    const id = parseInt(event.queryStringParameters.id, 10)
+    const id = BigInt(event.queryStringParameters.id)
 
     console.log(CONTRACT_ADDRESS);
 
@@ -185,8 +185,9 @@ exports.handler = async (event, context) => {
       "Mono",
       "Random"
     ];
+    const isLE = false; // todo check from id
     const metadata = {
-      platform:"TinyBoxes",
+      platform: "TinyBoxes",
       name: 'TinyBox #' + id,
       tokenID: id,
       description:
