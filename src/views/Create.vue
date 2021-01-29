@@ -251,6 +251,8 @@ export default Vue.extend({
     await this.$store.dispatch("initialize");
     if (!this.wrongNetwork) {
       t.recipient = t.currentAccount;
+      await t.lookupCurrentBlock();
+      t.currentBlockTimestamp = new Date().getTime() * 1000;
       const balance = await t.lookupBalance();
       if (balance > 0) t.usersReferal = await t.lookupUsersToken(0);
       t.lookupLimit();
@@ -298,14 +300,15 @@ export default Vue.extend({
     },
     async checkForCountdown() {
       const t = this as any;
-      await t.lookupCurrentBlock();
       await t.lookupBlockStart();
       await t.lookupPause();
       t.countdown = t.currentBlock <= t.blockStart;
       if (t.countdown) {
         const timeLeft = (t.blockStart - t.currentBlock) * 13350;
-        console.log(t.currentBlock, t.blockStart, timeLeft);
-        t.pauseEndTime = new Date(t.currentBlockTimestamp).getTime() + timeLeft;
+        t.pauseEndTime = new Date().getTime() + timeLeft; //t.currentBlockTimestamp
+        console.log(t.currentBlockTimestamp, t.pauseEndTime, timeLeft);
+        console.log("mined at ", new Date(t.currentBlockTimestamp))
+        console.log("starts at ", new Date(t.pauseEndTime))
       }
       return t.countdown;
     },
@@ -562,6 +565,7 @@ export default Vue.extend({
             console.error(error);
         })
         .on("data", async function(blockHeader: any){
+          t.currentBlock = blockHeader.number;
           t.currentBlockTimestamp = blockHeader.timestamp * 1000;
           t.checkForCountdown();
         })
