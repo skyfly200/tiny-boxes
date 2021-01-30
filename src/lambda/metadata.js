@@ -189,9 +189,9 @@ exports.handler = async (event, context) => {
     const isLE = id > 2222;
     const max256Int = 115792089237316195423570985008687907853269984665640564039457584007913129639936n;
     const description = (
-      isLE ? "Limited Edition" : "" +
+      (isLE ? "Limited Edition" : "") +
       "TinyBox\n\n" +
-      trueID + 
+      (isLE ? BigInt(id) - max256Int : id).toString(10) + 
       isLE ?
         (max256Int - BigInt(id)).toString(10) + " of 100 Limited Editions Max" :
         (id % 202) + " of 202 in Phase " + (parseInt(data.scheme) + 1).toString(10)
@@ -202,7 +202,7 @@ exports.handler = async (event, context) => {
     );
     const metadata = {
       platform: "TinyBoxes",
-      name: isLE ? 'LE TinyBox #' + (max256Int - BigInt(id)).toString(10) : 'TinyBox #' + id,
+      name: isLE ? 'LE TinyBox #-' + (max256Int - BigInt(id)).toString(10) : 'TinyBox #' + id,
       tokenID: id,
       description: description,
       website: WEBSITE,
