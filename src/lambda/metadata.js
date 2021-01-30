@@ -136,8 +136,8 @@ exports.handler = async (event, context) => {
     // const animationStream = new ReadableString(animation)
 
     // load Pinata SDK
-    console.log('Connecting to Pinata SDK...')
-    const pinata = pinataSDK(PINATA_API_KEY, PINATA_API_SECRET)
+    // console.log('Connecting to Pinata SDK...')
+    // const pinata = pinataSDK(PINATA_API_KEY, PINATA_API_SECRET)
 
     // const imageHash = (await pinata.pinFileToIPFS(artStream)).IpfsHash
     // const animationHash = (await pinata.pinFileToIPFS(animationStream)).IpfsHash
