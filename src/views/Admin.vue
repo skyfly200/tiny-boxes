@@ -71,14 +71,21 @@
               span
                 a(:href="baseURI") {{ baseURI }}
               v-text-field(label="Base URI")
+          v-card
+            v-card-title Token Metadata
+            v-card-text
               v-divider.my-3
-              p Token URI
-              v-text-field(label="Token ID")
+              p Token ID
+              v-text-field(v-model="tokenID" label="Token ID")
+              v-btn Check
               p URI: {{  }}
+              v-btn(@click="refreshTokenMetadata(tokenID)") Refresh
+              v-divider
+              p Set the Tokens URI
               v-text-field(label="Token URI")
             v-card-actions
-              v-btn Reset
               v-spacer
+              v-btn Reset
               v-btn Save
         v-col(cols="12" md="8")
           v-card
@@ -260,6 +267,10 @@ export default Vue.extend({
     lookupBlockStart: async function() {
       (this as any).blockStart = await this.$store.state.contracts.tinyboxes.methods.blockStart().call();
     },
+    async refreshTokenMetadata(id: string) {
+      const refeshEndpoint  = 'https://api.opensea.io/asset/' + this.$store.state.tinyboxesAddress + '/' + id + '/?force_update=true';
+      return await (this as any).$http.get(refeshEndpoint);
+    },
     async lookupSales() {
       const t = this as any;
       t.transfers = await t.$http.get(
@@ -360,6 +371,7 @@ export default Vue.extend({
     tokenCount: null as number | null,
     phase: null as number | null,
     phaseLen: null as number | null,
+    tokenID: "",
     baseURI: '',
     contractURI: '',
     leRecipient: '',
