@@ -3,7 +3,7 @@
     v-container(fluid)
       v-row
         v-col(align="center").token-title
-          h1.title TinyBoxes Admin Panel
+          h1.title Admin Panel
       v-row
         v-col(cols="12")
           h1 Minting
@@ -115,6 +115,7 @@ import Vue from "vue";
 import { mapGetters, mapState } from "vuex";
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc';
+import isBetween from 'dayjs/plugin/isBetween';
 
 export default Vue.extend({
   name: "Admin",
@@ -129,6 +130,7 @@ export default Vue.extend({
     await this.$store.dispatch("initialize");
     const t = this as any;
     dayjs.extend(utc)
+    dayjs.extend(isBetween)
     t.currentBlock = t.currentBlock = await t.$store.state.web3.eth.getBlockNumber();;
     t.currentBlockTimestamp = new Date().getTime() * 1000;
     t.loadStats();
@@ -136,6 +138,7 @@ export default Vue.extend({
     t.lookupContractURI();
     t.lookupBaseURI();
     t.listenForBlocks();
+    t.lookupSales();
   },
   beforeDestroy: function() {
     (this as any).unsubscribeBlocks();
@@ -257,6 +260,33 @@ export default Vue.extend({
     lookupBlockStart: async function() {
       (this as any).blockStart = await this.$store.state.contracts.tinyboxes.methods.blockStart().call();
     },
+    async lookupSales() {
+      const t = this as any;
+      t.transfers = await t.$http.get(
+        "https://api.opensea.io/api/v1/events?asset_contract_address=" +
+        t.$store.state.tinyboxesAddress +
+        "&event_type=transfer&only_opensea=false&offset=0&limit=250"
+      );
+      const mints = t.transfers.data.asset_events.filter( (e: any) => e.from_account.address === "0x0000000000000000000000000000000000000000");
+      const buys = mints.filter( (e: any) => {
+        console.log(e.asset.token_id, e.asset.token_id < 2222)
+        return e.asset.token_id < 2222
+      });
+      console.log(buys);
+      // bin by hour / date created from launch time
+      const hoursSinceLaunch = dayjs(t.saleStarted).diff(new Date(), 'hour');
+      console.log(hoursSinceLaunch)
+      for (let h=0; h < hoursSinceLaunch; h++) {
+        const range = [
+          dayjs(t.saleStarted).add(h, "hour"),
+          dayjs(t.saleStarted).add(h+1, "hour")
+        ];
+        const count = buys.filter( (e: any) => {
+          return dayjs(e.created_date).isBetween(range[0], range[1]);
+        }).length;
+        t.sales.push(count);
+      }
+    },
     listenForTokens: function() {
       const t = this as any;
       const tokenSubscription = t.$store.state.web3.eth
@@ -310,7 +340,9 @@ export default Vue.extend({
     avgBlockTime: 15000,
     datePicker: false,
     timePicker: false,
-    sales: [0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9, 0],
+    sales: [],
+    transfers: [],
+    saleStarted: new Date("2021-01-30T18:42:37.780772"),
     startBlock: null as number | null,
     startDate: null as number | null,
     startTime: null as number | null,
