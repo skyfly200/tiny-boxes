@@ -71,7 +71,7 @@ function lookupMintedBlock(id) {
           else resolve(response);
         })
       })
-      .on("error", function(log: any) {
+      .on("error", function(log) {
         console.error(log);
       });
   })
