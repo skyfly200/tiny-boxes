@@ -192,9 +192,9 @@ exports.handler = async (event, context) => {
       (isLE ? "Limited Edition" : "") +
       "TinyBox\n\n" +
       (isLE ? BigInt(id) - max256Int : id).toString(10) + 
-      isLE ?
+      (isLE ?
         (max256Int - BigInt(id)).toString(10) + " of 100 Limited Editions Max" :
-        (id % 202) + " of 202 in Phase " + (parseInt(data.scheme) + 1).toString(10)
+        (id % 202) + " of 202 in Phase " + (parseInt(data.scheme) + 1).toString(10))
       +
       "TinyBoxes is to Autoglyphs as Avastars is to CryptoPunks. \n" +
       "Tiny boxes are animated patterns of shapes and colors generated and rendered 100% on-chain. Innovative features of TinyBoxes include dynamic rendering settings, 24 animations, and 11 exclusive color schemes released in phases. \n" +
