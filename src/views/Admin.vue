@@ -13,6 +13,8 @@
             v-spacer
             span Created This Phase: {{ tokenCount === null ? '' : tokenCount % phaseLen }}
             v-spacer
+            span Percent Sold: {{ ((tokenCount % phaseLen) / phaseLen * 100).toFixed(1) + "%" }} | {{ (tokenCount / 2222 * 100).toFixed(1) + "%" }}
+            v-spacer
             span Total Created: {{ tokenCount }}
             v-spacer
           v-progress-linear(:indeterminate="false" :value="(tokenCount % phaseLen) / phaseLen * 100" striped height="1rem" color="secondary")
