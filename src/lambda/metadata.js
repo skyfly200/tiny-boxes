@@ -190,13 +190,12 @@ exports.handler = async (event, context) => {
     const max256Int = 115792089237316195423570985008687907853269984665640564039457584007913129639936n;
     const description = (
       (isLE ? "Limited Edition " : "") +
-      "TinyBox\n\n" +
-      (isLE ? BigInt(id) - max256Int : id).toString(10) + 
+      "TinyBox " + 
       (isLE ?
         (max256Int - BigInt(id)).toString(10) + " of 100 Limited Editions Max" :
-        (id % 202) + " of 202 in Phase " + (parseInt(data.scheme) + 1).toString(10))
-      +
-      "TinyBoxes is to Autoglyphs as Avastars is to CryptoPunks. \n" +
+        (id % 202) + " of 202 in Phase " + (parseInt(data.scheme) + 1).toString(10)) +
+      " " +
+      "TinyBoxes is to Autoglyphs as Avastars is to CryptoPunks. " +
       "Tiny boxes are animated patterns of shapes and colors generated and rendered 100% on-chain. Innovative features of TinyBoxes include dynamic rendering settings, 24 animations, and 11 exclusive color schemes released in phases. \n" +
       "Our contract has been designed as efficiently as possible, with a minting fee of just 260k gas. TinyBoxes gives back to its community; giving back 50% of gas spent as referral rewards, prizes and giveaways."
     );
