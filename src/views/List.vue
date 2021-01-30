@@ -17,12 +17,12 @@
               prepend-inner-icon="mdi-magnify"
               label="Search")
             v-spacer
-            v-tooltip(v-if="web3Status === 'active'" bottom)
+            v-tooltip(v-if="false || web3Status === 'active'" bottom)
                 template(v-slot:activator="{ on }")
                   v-btn(large icon v-on="on" @click="sortDesc = !sortDesc" :depressed="sortDesc" color="purple")
                     v-icon {{ sortDesc ? "mdi-sort-numeric-ascending" : "mdi-sort-numeric-descending"}}
                 span {{ sortDesc ? "Ascending" : "Descending" }}
-            v-tooltip(v-if="web3Status === 'active'" bottom)
+            v-tooltip(v-if="false || web3Status === 'active'" bottom)
                 template(v-slot:activator="{ on }")
                   v-btn(large icon v-on="on" @click="owned = !owned" :depressed="owned" color="purple")
                     v-icon {{ owned ? "mdi-arrow-all" : "mdi-treasure-chest"}}
