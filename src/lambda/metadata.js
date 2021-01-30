@@ -186,7 +186,7 @@ exports.handler = async (event, context) => {
       "Mono",
       "Random"
     ];
-    const isLE = id > 2222;
+    const isLE = BigInt(id) > 2222;
     const max256Int = 115792089237316195423570985008687907853269984665640564039457584007913129639936n;
     const description = (
       (isLE ? "Limited Edition" : "") +
