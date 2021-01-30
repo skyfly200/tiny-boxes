@@ -295,7 +295,7 @@ exports.handler = async (event, context) => {
         {
           display_type: "number",
           trait_type: 'Phase',
-          value:  parseInt(data.scheme) + 1,
+          value: isLE ? "Limited Edition" : parseInt(data.scheme) + 1,
         },
         {
           trait_type: 'Animation',
@@ -312,11 +312,6 @@ exports.handler = async (event, context) => {
         },
       ],
     }
-
-    if (isLE)
-      metadata.attributes.push({
-          value:  'Limited Edition',
-      });
 
     // log metadata to console
     console.log('Metadata of token ' + id)
