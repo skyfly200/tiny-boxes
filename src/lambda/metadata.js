@@ -108,21 +108,18 @@ exports.handler = async (event, context) => {
     console.log('Looking Up Token Data...')
     const dataPromise = tinyboxesContract.methods.tokenData(id).call()
     const artPromise = tinyboxesContract.methods.tokenArt(id).call()
-    const blockPromise = lookupMintedBlock(id);
+    //const blockPromise = lookupMintedBlock(id);
     
 
     // await token data
     console.log("Awaiting requests...");
-    let [data, art, block] = ['', '', '', '']
+    let [data, art, block] = ['', '', '']
     data = await dataPromise
       .catch((err) => console.error(err))
     console.log(data)
     art = await artPromise
       .catch((err) => console.error(err))
     console.log(art)
-    block = await blockPromise
-      .catch((err) => console.error(err))
-    console.log(block)
 
     if (data === undefined || art === undefined) return generateResponse('Server Error', 500)
     
@@ -307,11 +304,6 @@ exports.handler = async (event, context) => {
         {
           trait_type: 'Mirroring',
           value: data.mirroring % 4 + "," + Math.floor(data.mirroring / 4) % 4 + "," + Math.floor(data.mirroring / 16) % 4 
-        },
-        {
-          display_type: "date",
-          trait_type: 'Created',
-          value: block.timestamp,
         },
         {
           display_type: "date",
