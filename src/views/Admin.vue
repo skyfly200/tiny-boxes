@@ -6,6 +6,9 @@
           h1.title TinyBoxes Admin Panel
       v-row
         v-col(cols="12")
+          h1 Minting
+          v-sparkline( :value="sales" auto-line-width auto-draw)
+        v-col(cols="12")
           v-toolbar
             span Phase: {{ phase }} - {{ schemeTitles[phase] }}
             v-spacer
@@ -254,6 +257,27 @@ export default Vue.extend({
     lookupBlockStart: async function() {
       (this as any).blockStart = await this.$store.state.contracts.tinyboxes.methods.blockStart().call();
     },
+    listenForTokens: function() {
+      const t = this as any;
+      const tokenSubscription = t.$store.state.web3.eth
+        .subscribe("logs", {
+          address: t.$store.state.tinyboxesAddress,
+          topics: [
+            "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+            "0x0000000000000000000000000000000000000000000000000000000000000000"
+          ]
+        })
+        .on(
+          "data",
+          async function(log: any) {
+            const id = BigInt(log.topics[3]);
+            console.log(id);
+          }.bind(t)
+        )
+        .on("error", function(log: any) {
+          console.error(log)
+        });
+    },
     listenForBlocks: function() {
       const t = this as any;
       t.blockSubscription = t.$store.state.web3.eth
@@ -286,6 +310,7 @@ export default Vue.extend({
     avgBlockTime: 15000,
     datePicker: false,
     timePicker: false,
+    sales: [0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9, 0],
     startBlock: null as number | null,
     startDate: null as number | null,
     startTime: null as number | null,
