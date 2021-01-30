@@ -162,7 +162,7 @@ export default {
         .on(
           "data",
           async function(log: any) {
-            const id = parseInt(log.topics[3], 16);
+            const id = BigInt(log.topics[3]);
             // lookup new supply and check if sold out
             t.supply = await t.lookupSupply();
             t.soldOut = t.supply === t.limit;
