@@ -88,8 +88,8 @@ export default {
         path: "/explore"
       },
       {
-        type: "page",
-        bar: false,
+        type: "link",
+        bar: true,
         icon: "mdi-crystal-ball",
         text: "Limited Edition",
         path: "/le"
