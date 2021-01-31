@@ -27,6 +27,8 @@
       .link(v-for="l in barLinks")
         v-btn(v-if="l.type === 'page'" :to="l.path" text)
           span.mr-2 {{ l.text }}
+        v-btn(v-else-if="l.mobileIcon" :to="l.path" icon)
+          v-icon {{ l.icon }}
         v-btn(v-else-if="l.type === 'link'" :href="l.path" target="_blank" icon)
           v-icon {{ l.icon }}
       v-tooltip(v-if="web3Status === 'active'" bottom)
@@ -89,6 +91,7 @@ export default {
       },
       {
         type: "link",
+        mobileIcon: true,
         bar: true,
         icon: "mdi-crystal-ball",
         text: "Limited Edition",
