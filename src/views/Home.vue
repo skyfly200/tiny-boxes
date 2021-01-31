@@ -68,22 +68,8 @@ export default {
   mounted: async function() {
     await this.$store.dispatch("initialize");
     const t = this as any;
-    await t.loadSettings();
-    t.isLE = await t.checkLE();
-    const leID = (BigInt(t.id) - t.max256 ).toString();
-    t.formatedID = t.isLE ? leID : t.id;
-    t.$store.state.contracts.tinyboxes.methods.ownerOf(t.id).call()
-      .then( (owner: any) => {
-        t.owner = owner;
-        t.exists = owner > 0;
-        t.loadToken();
-      })
-      .catch( () => {
-        t.loading = false;
-      });
   },
   data: () => ({
-
     cards: [
       {
         title: "Vast Posibilities",
