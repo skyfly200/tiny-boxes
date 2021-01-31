@@ -88,6 +88,13 @@ export default {
         path: "/explore"
       },
       {
+        type: "page",
+        bar: false,
+        icon: "mdi-crystal-ball",
+        text: "Limited Edition",
+        path: "/le"
+      },
+      {
         type: "link",
         bar: true,
         icon: "mdi-book-open-page-variant",
