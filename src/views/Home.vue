@@ -7,7 +7,8 @@
       v-row.landing-text
         v-col(sm=6 xs=12 offset-sm=3 align="center")
           h1.font-weight-bold Boxes Upon Boxes
-          h3.text--secondary Animated On-Chain Generative Art NFTs
+          h2.text--secondary Animated On-Chain Generative Art NFTs
+          h3.text--secondary Create One of 2222 Unique Art Pieces
           br
           v-divider(width="50%")
           .social-links.ma-4
@@ -55,12 +56,34 @@
             .text-center.font-weight-thin.text--secondary &copy; NonFungibleTeam 2020
 </template>
 
-<script>
+<script lang="ts">
 import Vue from "vue";
+import { mapGetters, mapState } from "vuex";
+import Token from "@/components/Token.vue";
+import ColorsGrid from "@/components/ColorsGrid.vue";
 
 export default {
   name: "Home",
+  components: { Token, ColorsGrid },
+  mounted: async function() {
+    await this.$store.dispatch("initialize");
+    const t = this as any;
+    await t.loadSettings();
+    t.isLE = await t.checkLE();
+    const leID = (BigInt(t.id) - t.max256 ).toString();
+    t.formatedID = t.isLE ? leID : t.id;
+    t.$store.state.contracts.tinyboxes.methods.ownerOf(t.id).call()
+      .then( (owner: any) => {
+        t.owner = owner;
+        t.exists = owner > 0;
+        t.loadToken();
+      })
+      .catch( () => {
+        t.loading = false;
+      });
+  },
   data: () => ({
+
     cards: [
       {
         title: "Vast Posibilities",
@@ -89,7 +112,16 @@ export default {
         ]
       }
     ]
-  })
+  }),
+  computed: {
+    ...mapState({
+        animationTitles: 'animationTitles',
+        schemeTitles: 'schemeTitles',
+        openseaTokenURL: 'openseaTokenURL',
+    }),
+    ...mapGetters(["currentAccount"]),
+  },
+  methods: {}
 };
 </script>
 
