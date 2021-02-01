@@ -58,7 +58,7 @@
             v-card-subtitle
               v-skeleton-loader(v-if="id === null" type="card-heading" width="20vw")
               template(v-else)
-                span Phase: {{ phase }}
+                span Phase: {{ phase + 1 }}
                 v-spacer
                 span Color Scheme: {{ schemeTitles[phase] }}
             v-card-text.token-graphic
