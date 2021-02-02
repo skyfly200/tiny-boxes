@@ -222,27 +222,27 @@ exports.handler = async (event, context) => {
         },
         {
           trait_type: 'Hatching',
-          value: data.hatching,
+          value: parseInt(data.hatching),
           max_value: 30
         },
         {
           trait_type: 'Min Width',
-          value: data.size[0],
+          value: parseInt(data.size[0]),
           max_value: 255
         },
         {
           trait_type: 'Max Width',
-          value: data.size[1],
+          value: parseInt(data.size[1]),
           max_value: 255
         },
         {
           trait_type: 'Min Height',
-          value: data.size[2],
+          value: parseInt(data.size[2]),
           max_value: 255
         },
         {
           trait_type: 'Max Height',
-          value: data.size[3],
+          value: parseInt(data.size[3]),
           max_value: 255
         },
         {
@@ -277,12 +277,12 @@ exports.handler = async (event, context) => {
         },
         {
           trait_type: 'Contrast',
-          value: parseInt(data.contrast),
+          value: data.contrast,
           max_value: 100
         },
         {
           trait_type: 'Shades',
-          value: parseInt(data.shades),
+          value: data.shades,
           max_value: 7
         },
         {
