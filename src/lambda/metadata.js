@@ -116,10 +116,8 @@ exports.handler = async (event, context) => {
     let [data, art, block] = ['', '', '']
     data = await dataPromise
       .catch((err) => console.error(err))
-    console.log(data)
     art = await artPromise
       .catch((err) => console.error(err))
-    console.log(art)
 
     if (data === undefined || art === undefined) return generateResponse('Server Error', 500)
     
