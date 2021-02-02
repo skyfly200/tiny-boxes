@@ -1566,7 +1566,7 @@ const store = new Vuex.Store({
           try {
             // Request account access if needed
             (window as any).ethereum.enable().then(() => {
-              context.commit("setWeb3Status", "active");
+              context.commit("setWeb3Status", "active"); // TODO - add a connected state
               resolve(true);
             });
           } catch (error) {
