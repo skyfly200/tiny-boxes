@@ -145,7 +145,7 @@ export default Vue.extend({
     t.lookupContractURI();
     t.lookupBaseURI();
     t.listenForBlocks();
-    t.lookupSales();
+    //t.lookupSales();
   },
   beforeDestroy: function() {
     (this as any).unsubscribeBlocks();
