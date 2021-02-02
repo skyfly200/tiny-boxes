@@ -68,8 +68,8 @@ export default {
   name: "Home",
   components: { Token, ColorsGrid },
   mounted: async function() {
-    await this.$store.dispatch("initialize");
     const t = this as any;
+    await t.$store.dispatch("initialize");
   },
   data: () => ({
     cards: [
