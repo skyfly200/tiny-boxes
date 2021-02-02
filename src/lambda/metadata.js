@@ -116,9 +116,11 @@ exports.handler = async (event, context) => {
     let [data, art, block] = ['', '', '']
     data = await dataPromise
       .catch((err) => console.error(err))
-    art = await artPromise
+    if (data.animation == 14)
+      art = await tinyboxesContract.methods.tokenArt(id,0,10,0,'').call()
+        .catch((err) => console.error(err))
+    else art = await artPromise
       .catch((err) => console.error(err))
-
     if (data === undefined || art === undefined) return generateResponse('Server Error', 500)
     
     console.log('Lookup Complete!')
