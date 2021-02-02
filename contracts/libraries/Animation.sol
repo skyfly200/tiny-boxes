@@ -261,7 +261,7 @@ library Animation {
             ));
         } else if (animation == 14) {
             // grow n shrink
-            return _animateTransform( "scale", duration, "1 1;1.5 1.5;1 1;.5 .5;1 1", "0;.25;.5;.75;1" );
+            return _animateTransform( "scale", duration, "1 1;1.5 1.5;1 1;.5 .5;1 1", "0;.25;.5;.75;1", attr );
         } else if (animation == 15) {
             // squash n stretch
             uint256 div = 7;
