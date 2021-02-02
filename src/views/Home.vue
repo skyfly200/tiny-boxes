@@ -12,6 +12,8 @@
           br
           v-divider(width="50%")
           .social-links.ma-4
+            v-btn(icon large href="#mc_embed_signup")
+              v-icon $custom
             v-btn(icon large href="https://discord.gg/2wWANVfCuE" target="_blank")
               v-icon mdi-discord
             v-btn(icon large href="https://twitter.com/tinyboxeseth" target="_blank")
@@ -20,8 +22,6 @@
               v-icon mdi-typewriter
             v-btn(icon large href="#mc_embed_signup")
               v-icon mdi-email
-            v-btn(icon large href="#mc_embed_signup")
-              v-icon $custom
           br
           .action-btns.pt-7
             v-btn.action-btn.ma-2(to="/create" x-large color="secondary") Create
