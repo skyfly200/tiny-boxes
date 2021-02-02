@@ -277,7 +277,7 @@ exports.handler = async (event, context) => {
         },
         {
           trait_type: 'Contrast',
-          value: data.contrast,
+          value: data.contrast + '%',
           max_value: 100
         },
         {
