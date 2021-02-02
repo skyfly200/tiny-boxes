@@ -20,6 +20,8 @@
               v-icon mdi-typewriter
             v-btn(icon large href="#mc_embed_signup")
               v-icon mdi-email
+            v-btn(icon large href="#mc_embed_signup")
+              v-icon $custom
           br
           .action-btns.pt-7
             v-btn.action-btn.ma-2(to="/create" x-large color="secondary") Create

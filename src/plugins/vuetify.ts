@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuetify from "vuetify/lib";
 import "./overrides.sass";
 import { preset } from 'vue-cli-plugin-vuetify-preset-shrine/preset'
+import OpenSeaIcon from "@/components/OpenSeaIcon.vue";
 
 Vue.use(Vuetify);
 
@@ -20,5 +21,12 @@ export default new Vuetify({
         success: "#4caf50"
       }
     }
-  }
+  },
+  icons: {
+    values: {
+      custom: { // name of our custom icon
+        component: OpenSeaIcon, // our custom component
+      },
+    },
+  },
 });
