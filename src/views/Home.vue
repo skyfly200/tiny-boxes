@@ -3,7 +3,7 @@
     v-container(fluid)
       v-row.landing-logo
         v-col(align="center" cols=12)
-          v-img.logo(src="/img/logo.svg")
+          v-img.logo(src="/img/logo.svg" aspect-ratio="1/1")
       v-row.landing-text
         v-col(sm=6 xs=12 offset-sm=3 align="center")
           h1.font-weight-bold Boxes Upon Boxes
@@ -116,8 +116,9 @@ export default {
 <style lang="sass" scoped>
 .landing-logo
   margin: 10vh 0
-.logo
-  width: 80vh
+  .logo
+    width: 80vh
+    height: 80vh
 .v-card__text
   display: flex
   flex-direction: column
