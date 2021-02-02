@@ -12,7 +12,7 @@
           br
           v-divider(width="50%")
           .social-links.ma-4
-            v-btn(icon large href="#mc_embed_signup")
+            v-btn(icon large href="https://opensea.io/collection/tinyboxes" target="_blank")
               v-icon $custom
             v-btn(icon large href="https://discord.gg/2wWANVfCuE" target="_blank")
               v-icon mdi-discord
