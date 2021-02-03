@@ -24,19 +24,18 @@
               v-icon mdi-email
       v-row.mb-6.section
         v-col(sm=6 xs=12 style="background-color: #444").mb-5.pa-7
-          .d-flex.flex-column.justify-center.on-chain(align="center")
+          .d-flex.flex-column.justify-space-between.on-chain(align="center")
             h1 100% On-Chain
             br
             h1 Animated
             br
             h1 SVG Artwork
-            br
             .d-flex.justify-center.my-5
               v-btn(href="/docs" target="_blank" large color="secondary" width="8rem")
                 v-icon.mr-3 mdi-book-open-page-variant
                 span.mr-2 Learn
         v-col(sm=6 xs=12 style="background-color: #666").mb-5.pa-7
-          .d-flex.flex-column.justify-center.proto-gen(align="center")
+          .d-flex.flex-column.justify-space-between.proto-gen(align="center")
             h1 Proto-Generative
             h1 = 
             h1 Custom
@@ -69,12 +68,12 @@
             p Each
             h3 2222
             p Total
-            v-divider.mb-3
+            v-divider.mb-4
             h3 +100
             p Limited Editions
       v-row.mb-6.section
-        v-col(sm=4 xs=12 style="background-color: #444").mb-5.pa-7
-          .d-flex.flex-column.justify-center.referral(align="center")
+        v-col(sm=4 xs=12 style="background-color: #444").pa-7
+          .d-flex.flex-column.justify-space-between.referral(align="center")
             h1 Referrals
             h3 10-15% on each sale referred by your tokens
             h3 Earn by sharing or when someone copies one of your tokens options
@@ -83,8 +82,8 @@
               v-btn(href="/docs/dapp" target="_blank" large color="primary" width="8rem")
                 v-icon.mr-3 mdi-link-variant
                 span.mr-2 More
-        v-col(sm=4 xs=12 style="background-color: #666").mb-5.pa-7
-          .d-flex.flex-column.justify-center.le-tokens(align="center")
+        v-col(sm=4 xs=12 style="background-color: #666").pa-7
+          .d-flex.flex-column.justify-space-between.le-tokens(align="center")
             h1 Limited Editions
             h3 Design exactly what you want
             h3 Exclusive Distribution
@@ -92,8 +91,8 @@
               v-btn(to="/le" large color="secondary" width="8rem")
                 v-icon.mr-3 mdi-crystal-ball
                 span.mr-2 Redeem
-        v-col(sm=4 xs=12 style="background-color: #555").mb-5.pa-7
-          .d-flex.flex-column.justify-center.referral(align="center")
+        v-col(sm=4 xs=12 style="background-color: #555").pa-7
+          .d-flex.flex-column.justify-space-between.prizes(align="center")
             h1 Prizes
             h3 Giving back to our community is imporant
             h3 Join our Discord to hear about the latest promotions
@@ -192,8 +191,10 @@ export default {
   .logo
     width: 80vh
     height: 80vh
-.on-chain, .proto-gen, .sample-art
+.on-chain, .proto-gen, .sample-art, .referral, .le-tokens, .prizes
   height: 100%
+.sample-art svg, .logo svg
+  transform: translateZ(0)
 .dark-text
   color: #000
 .intro, .source
@@ -218,7 +219,7 @@ export default {
   width: 7em
   font-size: 1.2rem
 #mc_embed_signup
-  margin: 20vh 0
+  margin: 0 0 20vh 0
   .subscribe-title
     justify-content: center
   #mc_embed_signup_scroll
