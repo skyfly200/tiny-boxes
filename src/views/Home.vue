@@ -102,7 +102,7 @@
               v-btn(large href="https://discord.gg/2wWANVfCuE" target="_blank" color="primary" width="8rem")
                 v-icon.mr-3 mdi-discord
                 span.mr-2 Join
-      v-row.section
+      v-row.section.source.d-flex.flex-column.justify-center
         v-col(md=6 sm=8 xs=12 offset-md=3 offset-sm=2 align="center")
           h1 Contract + Source Code
           v-divider(width="350rem")
@@ -196,11 +196,9 @@ export default {
   height: 100%
 .dark-text
   color: #000
-.intro
+.intro, .source
   align: center
   min-height: 90vh
-.section
-  min-height: 50vh
 .nfteam
   min-height: 50vh
 .v-card__text
