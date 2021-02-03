@@ -101,14 +101,19 @@
               v-btn(large href="https://discord.gg/2wWANVfCuE" target="_blank" color="primary" width="8rem")
                 v-icon.mr-3 mdi-discord
                 span.mr-2 Join
-      v-row.section.source.d-flex.flex-column.justify-center
-        v-col(md=6 sm=8 xs=12 offset-md=3 offset-sm=2 align="center")
-          h1 Contract + Source Code
-          v-divider(width="350rem")
+      v-row.source
+        v-col(md=6 sm=12 align="center").d-flex.flex-column.justify-center
+          .section(align="center")
+            h1 Contract
+            v-divider(width="150rem")
           br
           a(href="https://etherscan.io/address/0x46f9a4522666d2476a5f5cd51ea3e0b5800e7f98" target="_blank")
             h3 {{ $store.state.tinyboxesAddress }}
           h3 Verified on Etherscan
+        v-col(md=6 sm=12 align="center").d-flex.flex-column.justify-center
+          .section(align="center")
+            h1 Source Code
+            v-divider(width="180rem")
           br
           v-icon(large) mdi-github
           a(href="https://github.com/skyfly200/tiny-boxes" target="_blank")
@@ -198,7 +203,6 @@ export default {
 .dark-text
   color: #000
 .intro, .source
-  align: center
   min-height: 90vh
 .nfteam
   min-height: 50vh
