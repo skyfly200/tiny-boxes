@@ -49,7 +49,7 @@
       v-row.py-7
         v-col.intro(md=3 sm=4 xs=12 offset-md=1)
           .sample-art.d-flex
-            v-img(src="/img/sample.svg" aspect-ratio="1/1")
+            v-img(contain src="/img/sample.svg" aspect-ratio="1/1")
         v-col.intro(md=4 sm=5 xs=12)
           .intro-text.d-flex.flex-column.justify-center
             h1 About Tinyboxes
@@ -116,7 +116,7 @@
           v-card#mc_embed_signup.pb-3
             v-form#mc-embedded-subscribe-form.validate(action='https://shop.us17.list-manage.com/subscribe/post?u=81d0c7a7aabdc5c89bc737456&id=e8ca8b83a1' method='post' name='mc-embedded-subscribe-form' target='_blank' novalidate='')
               v-card-title.font-weight-medium.subscribe-title Subscribe to our mailing list!
-              v-card-subtitle Be the first to know when we launch
+              v-card-subtitle Stay up to the date on the latest happenings with TinyBoxes
               #mc_embed_signup_scroll
                 v-text-field#mce-EMAIL.email(type='email' value='' name='EMAIL' placeholder='email' required='')
                 // real people should not fill this in and expect good things - do not remove this or risk form bot signups
