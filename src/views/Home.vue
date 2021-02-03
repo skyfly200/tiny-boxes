@@ -26,10 +26,15 @@
         v-col(sm=6 xs=12 style="background-color: #5F51B5").mb-5.pa-7
           .d-flex.flex-column.justify-center.on-chain(align="center")
             h1 100% On-Chain
-            h1 Animated SVG 
+            br
+            h1 Animated
+            br
+            h1 SVG Artwork
             br
             .d-flex.justify-center.my-5
-              v-btn(href="/docs" target="_blank" large color="secondary" width="8rem") Learn
+              v-btn(href="/docs" target="_blank" large color="secondary" width="8rem")
+                v-icon.mr-3 mdi-book-open-page-variant
+                span.mr-2 Learn
         v-col(sm=6 xs=12 style="background-color: #009688").mb-5.pa-7
           .d-flex.flex-column.justify-center.proto-gen(align="center")
             h1 Proto-Generative
@@ -38,52 +43,74 @@
             h1 +
             h1 Random
             .d-flex.justify-center.my-5
-              v-btn(to="/create" large color="primary" width="8rem") Create
+              v-btn(to="/create" large color="primary" width="8rem")
+                v-icon.mr-3 mdi-creation
+                span.mr-2 Create
       v-row.py-7
-        v-col.intro(md=3 sm=4 xs=12 offset-md=2 offset-sm=1)
+        v-col.intro(md=3 sm=4 xs=12 offset-md=1)
           .sample-art.d-flex
-            v-img(src="/img/sample.svg")
+            v-img(src="/img/sample.svg" aspect-ratio="1/1")
         v-col.intro(md=4 sm=5 xs=12)
           .intro-text.d-flex.flex-column.justify-center
             h1 About Tinyboxes
             v-divider
             p A scattering of randomized rectangles brought to life through color, mirroring and animation.
             p TinyBoxes is a first of its kind Animated Proto-Generative NFT, rendered down to SVG art 100% on-chain. With customizable options, randomized traits and dynamic render settings, TinyBoxes pushes the bounds of whats possible with NFTs. Our contract has been meticulously optimized to save you gas. We used bit packing to squeeze each tokens data into just 256 bits.
+            p TinyBoxes will be released in 11 phases. Phases will be differentiated by there own unique color schemes. As one phase ends, minting is paused, and a countdown to the next phase begins. The countdown length increases by 6 hours each phase.
         v-col.project-stats(sm=1 xs=12 offset-sm=1)
           .stats.d-flex.flex-column.justify-center
             br
-            br
-            h3 2222
-            p Standard Tokens
             h3 0.1
               v-icon mdi-ethereum
             p Per
+            h3 11
+            p Phases
+            h3 202
+            p Each
+            h3 2222
+            p Total
             v-divider
             br
-            h3 100
+            h3 +100
             p Limited Editions
       v-row.mb-6
         v-col(sm=4 xs=12 style="background-color: #009688").mb-5.pa-7
           .d-flex.flex-column.justify-center.referral(align="center")
             h1 Referrals
-            h3 Earn 10-15% on each sale
+            h3 10-15% on each sale referred by your tokens
+            h3 Earn by sharing or when someone copies one of your tokens options
             br
             .d-flex.justify-center.my-5
-              v-btn(href="/docs/dapp" target="_blank" large color="primary" width="8rem") Share
+              v-btn(href="/docs/dapp" target="_blank" large color="primary" width="8rem")
+                v-icon.mr-3 mdi-link-variant
+                span.mr-2 More
         v-col(sm=4 xs=12 style="background-color: #5F51B5").mb-5.pa-7
           .d-flex.flex-column.justify-center.le-tokens(align="center")
             h1 Limited Editions
+            h3 Design exactly what you want
+            h3 Exclusive Distribution
             .d-flex.justify-center.my-5
-              v-btn(to="/create" large color="secondary" width="8rem") Create
+              v-btn(to="/le" large color="secondary" width="8rem")
+                v-icon.mr-3 mdi-crystal-ball
+                span.mr-2 Redeem
         v-col(sm=4 xs=12 style="background-color: #009688").mb-5.pa-7
           .d-flex.flex-column.justify-center.referral(align="center")
             h1 Prizes
-            p Join our Discord to hear about the latest promotions
+            h3 Giving back to our community is imporant
+            h3 Join our Discord to hear about the latest promotions
             br
             .d-flex.justify-center.my-5
               v-btn(large href="https://discord.gg/2wWANVfCuE" target="_blank" color="primary" width="8rem")
                 v-icon.mr-3 mdi-discord
                 span.mr-2 Join
+      v-row
+        v-col(md=6 sm=8 xs=12 offset-md=3 offset-sm=2 align="center")
+          h1 Contract
+          a(href="https://etherscan.io/token/0x46f9a4522666d2476a5f5cd51ea3e0b5800e7f98" target="_blank")
+            h3 {{ $store.state.tinyboxesAddress }}
+          h3 Verified on Etherscan
+          a(href="https://etherscan.io/address/0x46f9a4522666d2476a5f5cd51ea3e0b5800e7f98#code" target="_blank")
+            h3 Read the Source
       v-row
         v-col(md=6 sm=8 xs=12 offset-md=3 offset-sm=2)
           v-card#mc_embed_signup.pb-3
@@ -97,6 +124,14 @@
                   input(type='text' name='b_81d0c7a7aabdc5c89bc737456_e8ca8b83a1' tabindex='-1' value='')
                 .clear
                   v-btn(type='submit' large name='subscribe' color="secondary") Subscribe
+      v-row.pb-8.pt-5.mb-8
+        v-col(md=6 sm=8 xs=12 offset-md=3 offset-sm=2 align="center")
+          h1 NonFungibleTeam
+          h3 Striving to push the boundaries of NFTs
+          br
+          v-divider(width="350rem")
+          br
+          v-btn(href="https://nonfungible.team/" target="_blank") Projects
     v-footer
       v-container.pa-0
         v-row
