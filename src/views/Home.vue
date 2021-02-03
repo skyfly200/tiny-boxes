@@ -22,8 +22,8 @@
               v-icon mdi-typewriter
             v-btn(icon large href="#mc_embed_signup")
               v-icon mdi-email
-      v-row.mb-6.section
-        v-col(sm=6 xs=12 style="background-color: #444").mb-5.pa-7
+      v-row.pb-6.section
+        v-col(sm=6 xs=12 style="background-color: #444").pa-7
           .d-flex.flex-column.justify-space-between.on-chain(align="center")
             h1 100% On-Chain
             br
@@ -34,7 +34,7 @@
               v-btn(href="/docs" target="_blank" large color="secondary" width="8rem")
                 v-icon.mr-3 mdi-book-open-page-variant
                 span.mr-2 Learn
-        v-col(sm=6 xs=12 style="background-color: #666").mb-5.pa-7
+        v-col(sm=6 xs=12 style="background-color: #666").pa-7
           .d-flex.flex-column.justify-space-between.proto-gen(align="center")
             h1 Proto-Generative
             h1 = 
@@ -46,7 +46,7 @@
                 v-icon.mr-3 mdi-creation
                 span.mr-2 Create
       v-row.py-7.section.intro
-        v-col.intro-image(md=3 sm=4 xs=12 offset-md=1)
+        v-col.intro-image(lg=3 md=4 xs=12 offset-md=1)
           .sample-art.d-flex
             v-img(contain src="/img/sample.svg" aspect-ratio="1/1")
         v-col.intro-blurb.d-flex(md=4 sm=5 xs=12)
@@ -56,7 +56,7 @@
             p A scattering of randomized rectangles brought to life through color, mirroring and animation.
             p TinyBoxes is a first of its kind Animated Proto-Generative NFT, rendered down to SVG art 100% on-chain. With customizable options, randomized traits and dynamic render settings, TinyBoxes pushes the bounds of whats possible with NFTs. Our contract has been meticulously optimized to save you gas. We used bit packing to squeeze each tokens data into just 256 bits.
             p TinyBoxes will be released in 11 phases. Phases will be differentiated by there own unique color schemes. As one phase ends, minting is paused, and a countdown to the next phase begins. The countdown length increases by 6 hours each phase.
-        v-col.project-stats.d-flex(sm=1 xs=12 offset-sm=1)
+        v-col.project-stats.d-flex(md=1 sm=4 offset-md=1 offset-sm=4)
           .stats.d-flex.flex-column.justify-center
             br
             h3 0.1
@@ -71,8 +71,8 @@
             v-divider.mb-4
             h3 +100
             p Limited Editions
-      v-row.mb-6.section
-        v-col(sm=4 xs=12 style="background-color: #444").pa-7
+      v-row.pb-6.section
+        v-col(lg=4 md=6 sm=12 style="background-color: #444").pa-7
           .d-flex.flex-column.justify-space-between.referral(align="center")
             h1 Referrals
             h3 10-15% on each sale referred by your tokens
@@ -82,7 +82,7 @@
               v-btn(href="/docs/dapp" target="_blank" large color="primary" width="8rem")
                 v-icon.mr-3 mdi-link-variant
                 span.mr-2 More
-        v-col(sm=4 xs=12 style="background-color: #666").pa-7
+        v-col(lg=4 md=6 sm=12 style="background-color: #666").pa-7
           .d-flex.flex-column.justify-space-between.le-tokens(align="center")
             h1 Limited Editions
             h3 Design exactly what you want
@@ -91,7 +91,7 @@
               v-btn(to="/le" large color="secondary" width="8rem")
                 v-icon.mr-3 mdi-crystal-ball
                 span.mr-2 Redeem
-        v-col(sm=4 xs=12 style="background-color: #555").pa-7
+        v-col(lg=4 md=12 style="background-color: #555").pa-7
           .d-flex.flex-column.justify-space-between.prizes(align="center")
             h1 Prizes
             h3 Giving back to our community is imporant
@@ -103,7 +103,7 @@
                 span.mr-2 Join
       v-row.source
         v-col(md=6 sm=12 align="center").d-flex.flex-column.justify-center
-          .section(align="center")
+          .fancy-header(align="center")
             h1 Contract
             v-divider(width="150rem")
           br
@@ -111,7 +111,7 @@
             h3 {{ $store.state.tinyboxesAddress }}
           h3 Verified on Etherscan
         v-col(md=6 sm=12 align="center").d-flex.flex-column.justify-center
-          .section(align="center")
+          .fancy-header(align="center")
             h1 Source Code
             v-divider(width="180rem")
           br
@@ -196,6 +196,9 @@ export default {
   .logo
     width: 80vh
     height: 80vh
+    @media (max-width: 600px)
+      width: 90vw
+      height: 90vw
 .on-chain, .proto-gen, .sample-art, .referral, .le-tokens, .prizes
   height: 100%
 .sample-art svg, .logo svg
