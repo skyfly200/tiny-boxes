@@ -23,7 +23,7 @@
             v-btn(icon large href="#mc_embed_signup")
               v-icon mdi-email
       v-row.mb-6
-        v-col(sm=6 xs=12 style="background-color: #5F51B5").mb-5.pa-7
+        v-col(sm=6 xs=12 style="background-color: #444").mb-5.pa-7
           .d-flex.flex-column.justify-center.on-chain(align="center")
             h1 100% On-Chain
             br
@@ -35,7 +35,7 @@
               v-btn(href="/docs" target="_blank" large color="secondary" width="8rem")
                 v-icon.mr-3 mdi-book-open-page-variant
                 span.mr-2 Learn
-        v-col(sm=6 xs=12 style="background-color: #009688").mb-5.pa-7
+        v-col(sm=6 xs=12 style="background-color: #666").mb-5.pa-7
           .d-flex.flex-column.justify-center.proto-gen(align="center")
             h1 Proto-Generative
             h1 = 
@@ -74,7 +74,7 @@
             h3 +100
             p Limited Editions
       v-row.mb-6
-        v-col(sm=4 xs=12 style="background-color: #009688").mb-5.pa-7
+        v-col(sm=4 xs=12 style="background-color: #444").mb-5.pa-7
           .d-flex.flex-column.justify-center.referral(align="center")
             h1 Referrals
             h3 10-15% on each sale referred by your tokens
@@ -84,7 +84,7 @@
               v-btn(href="/docs/dapp" target="_blank" large color="primary" width="8rem")
                 v-icon.mr-3 mdi-link-variant
                 span.mr-2 More
-        v-col(sm=4 xs=12 style="background-color: #5F51B5").mb-5.pa-7
+        v-col(sm=4 xs=12 style="background-color: #666").mb-5.pa-7
           .d-flex.flex-column.justify-center.le-tokens(align="center")
             h1 Limited Editions
             h3 Design exactly what you want
@@ -93,7 +93,7 @@
               v-btn(to="/le" large color="secondary" width="8rem")
                 v-icon.mr-3 mdi-crystal-ball
                 span.mr-2 Redeem
-        v-col(sm=4 xs=12 style="background-color: #009688").mb-5.pa-7
+        v-col(sm=4 xs=12 style="background-color: #555").mb-5.pa-7
           .d-flex.flex-column.justify-center.referral(align="center")
             h1 Prizes
             h3 Giving back to our community is imporant
@@ -105,12 +105,16 @@
                 span.mr-2 Join
       v-row
         v-col(md=6 sm=8 xs=12 offset-md=3 offset-sm=2 align="center")
-          h1 Contract
-          a(href="https://etherscan.io/token/0x46f9a4522666d2476a5f5cd51ea3e0b5800e7f98" target="_blank")
+          h1 Contract + Source Code
+          v-divider(width="350rem")
+          br
+          a(href="https://etherscan.io/address/0x46f9a4522666d2476a5f5cd51ea3e0b5800e7f98" target="_blank")
             h3 {{ $store.state.tinyboxesAddress }}
           h3 Verified on Etherscan
-          a(href="https://etherscan.io/address/0x46f9a4522666d2476a5f5cd51ea3e0b5800e7f98#code" target="_blank")
-            h3 Read the Source
+          br
+          v-icon(large) mdi-github
+          a(href="https://github.com/skyfly200/tiny-boxes" target="_blank")
+            h3 MIT Licensed on GitHub
       v-row
         v-col(md=6 sm=8 xs=12 offset-md=3 offset-sm=2)
           v-card#mc_embed_signup.pb-3
@@ -127,16 +131,15 @@
       v-row.pb-8.pt-5.mb-8
         v-col(md=6 sm=8 xs=12 offset-md=3 offset-sm=2 align="center")
           h1 NonFungibleTeam
+          v-divider(width="330rem")
           h3 Striving to push the boundaries of NFTs
           br
-          v-divider(width="350rem")
-          br
-          v-btn(href="https://nonfungible.team/" target="_blank") Projects
+          v-btn(href="https://nonfungible.team/" target="_blank") More Projects
     v-footer
       v-container.pa-0
         v-row
           v-col.pa-0(align="center")
-            .text-center.font-weight-thin.text--secondary &copy; NonFungibleTeam 2020
+            .text-center.font-weight-thin.text--secondary &copy; NonFungibleTeam 2021
 </template>
 
 <script lang="ts">
