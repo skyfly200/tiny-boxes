@@ -46,33 +46,38 @@
                 v-icon.mr-3 mdi-creation
                 span.mr-2 Create
       v-row.py-7.section.intro
-        v-col.intro-image(lg=3 md=4 xs=12 offset-md=1)
+        v-col.intro-image(md=3 sm=4 cols=12 offset-sm=1)
           .sample-art.d-flex
-            v-img(contain src="/img/sample.svg" aspect-ratio="1/1")
-        v-col.intro-blurb.d-flex(md=4 sm=5 xs=12)
+            v-img(contain src="/img/sample.svg" aspect-ratio="1/1" min-height="280px")
+        v-col.intro-blurb.d-flex(md=6 sm=6 cols=12)
           .intro-text.d-flex.flex-column.justify-center
             h1 About Tinyboxes
             v-divider
             p A scattering of randomized rectangles brought to life through color, mirroring and animation.
             p TinyBoxes is a first of its kind Animated Proto-Generative NFT, rendered down to SVG art 100% on-chain. With customizable options, randomized traits and dynamic render settings, TinyBoxes pushes the bounds of whats possible with NFTs. Our contract has been meticulously optimized to save you gas. We used bit packing to squeeze each tokens data into just 256 bits.
             p TinyBoxes will be released in 11 phases. Phases will be differentiated by there own unique color schemes. As one phase ends, minting is paused, and a countdown to the next phase begins. The countdown length increases by 6 hours each phase.
-        v-col.project-stats.d-flex(md=1 sm=4 offset-md=1 offset-sm=4)
-          .stats.d-flex.flex-column.justify-center
+        v-col.project-stats.d-flex(md=1 cols=12)
+          .stats.d-flex
             br
-            h3 0.1
-              v-icon mdi-ethereum
-            p Per
-            h3 11
-            p Phases
-            h3 202
-            p Each
-            h3 2222
-            p Total
-            v-divider.mb-4
-            h3 +100
-            p Limited Editions
+            .stat
+              h3 0.1
+                v-icon mdi-ethereum
+              p Per
+            .stat
+              h3 11
+              p Phases
+            .stat
+              h3 202
+              p Each
+            .stat
+              h3 2222
+              p Total
+            v-divider(:vertical="!$vuetify.breakpoint.md && !$vuetify.breakpoint.lg").mb-4
+            .stat
+              h3 +100
+              p Limited Editions
       v-row.pb-6.section
-        v-col(lg=4 md=6 sm=12 style="background-color: #444").pa-7
+        v-col(lg=4 md=6 cols=12 style="background-color: #444").pa-7
           .d-flex.flex-column.justify-space-between.referral(align="center")
             h1 Referrals
             h3 10-15% on each sale referred by your tokens
@@ -82,7 +87,7 @@
               v-btn(href="/docs/dapp" target="_blank" large color="primary" width="8rem")
                 v-icon.mr-3 mdi-link-variant
                 span.mr-2 More
-        v-col(lg=4 md=6 sm=12 style="background-color: #666").pa-7
+        v-col(lg=4 md=6 cols=12 style="background-color: #666").pa-7
           .d-flex.flex-column.justify-space-between.le-tokens(align="center")
             h1 Limited Editions
             h3 Design exactly what you want
@@ -91,7 +96,7 @@
               v-btn(to="/le" large color="secondary" width="8rem")
                 v-icon.mr-3 mdi-crystal-ball
                 span.mr-2 Redeem
-        v-col(lg=4 md=12 style="background-color: #555").pa-7
+        v-col(lg=4 cols=12 style="background-color: #555").pa-7
           .d-flex.flex-column.justify-space-between.prizes(align="center")
             h1 Prizes
             h3 Giving back to our community is imporant
@@ -207,6 +212,20 @@ export default {
   color: #000
 .intro, .source
   min-height: 90vh
+.stats
+  flex-direction: column
+  justify-content: center
+  @media (max-width: 900px)
+    flex-direction: row
+    justify-content: space-between
+    width: 100%
+    align-items: center
+.stat
+  Text-align: center
+.intro-text
+  @media (max-width: 600px)
+    width: 100%
+    align-items: center
 .nfteam
   min-height: 50vh
 .v-card__text
