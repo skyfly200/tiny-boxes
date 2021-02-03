@@ -22,22 +22,68 @@
               v-icon mdi-typewriter
             v-btn(icon large href="#mc_embed_signup")
               v-icon mdi-email
-          br
-          .action-btns.pt-7
-            v-btn.action-btn.ma-2(to="/create" x-large color="secondary") Create
-            span.ma-4 or
-            v-btn.action-btn.ma-2(href="/docs" target="_blank" x-large color="primary") Learn
-      v-row
-        v-col(md=8 sm=10 xs=12 offset-md=2 offset-sm=1)
-          v-container(fluid)
-            v-row
-              v-col(v-for="c of cards" align="center" md=6 cols=12)
-                v-card.ma-2.card
-                  v-card-title.card-title {{ c.title }}
-                  v-divider(width="50%")
-                  v-card-text
-                    h3.font-weight-thin {{ c.lines[0] }}
-                    h3.font-weight-thin {{ c.lines[1] }}
+      v-row.mb-6
+        v-col(sm=6 xs=12 style="background-color: #5F51B5").mb-5.pa-7
+          .d-flex.flex-column.justify-center.on-chain(align="center")
+            h1 100% On-Chain
+            h1 Animated SVG 
+            br
+            .d-flex.justify-center.my-5
+              v-btn(href="/docs" target="_blank" large color="secondary" width="8rem") Learn
+        v-col(sm=6 xs=12 style="background-color: #009688").mb-5.pa-7
+          .d-flex.flex-column.justify-center.proto-gen(align="center")
+            h1 Proto-Generative
+            h1 = 
+            h1 Custom
+            h1 +
+            h1 Random
+            .d-flex.justify-center.my-5
+              v-btn(to="/create" large color="primary" width="8rem") Create
+      v-row.py-7
+        v-col.intro(md=3 sm=4 xs=12 offset-md=2 offset-sm=1)
+          .sample-art.d-flex
+            v-img(src="/img/sample.svg")
+        v-col.intro(md=4 sm=5 xs=12)
+          .intro-text.d-flex.flex-column.justify-center
+            h1 About Tinyboxes
+            v-divider
+            p A scattering of randomized rectangles brought to life through color, mirroring and animation.
+            p TinyBoxes is a first of its kind Animated Proto-Generative NFT, rendered down to SVG art 100% on-chain. With customizable options, randomized traits and dynamic render settings, TinyBoxes pushes the bounds of whats possible with NFTs. Our contract has been meticulously optimized to save you gas. We used bit packing to squeeze each tokens data into just 256 bits.
+        v-col.project-stats(sm=1 xs=12 offset-sm=1)
+          .stats.d-flex.flex-column.justify-center
+            br
+            br
+            h3 2222
+            p Standard Tokens
+            h3 0.1
+              v-icon mdi-ethereum
+            p Per
+            v-divider
+            br
+            h3 100
+            p Limited Editions
+      v-row.mb-6
+        v-col(sm=4 xs=12 style="background-color: #009688").mb-5.pa-7
+          .d-flex.flex-column.justify-center.referral(align="center")
+            h1 Referrals
+            h3 Earn 10-15% on each sale
+            br
+            .d-flex.justify-center.my-5
+              v-btn(href="/docs/dapp" target="_blank" large color="primary" width="8rem") Share
+        v-col(sm=4 xs=12 style="background-color: #5F51B5").mb-5.pa-7
+          .d-flex.flex-column.justify-center.le-tokens(align="center")
+            h1 Limited Editions
+            .d-flex.justify-center.my-5
+              v-btn(to="/create" large color="secondary" width="8rem") Create
+        v-col(sm=4 xs=12 style="background-color: #009688").mb-5.pa-7
+          .d-flex.flex-column.justify-center.referral(align="center")
+            h1 Prizes
+            p Join our Discord to hear about the latest promotions
+            br
+            .d-flex.justify-center.my-5
+              v-btn(large href="https://discord.gg/2wWANVfCuE" target="_blank" color="primary" width="8rem")
+                v-icon.mr-3 mdi-discord
+                span.mr-2 Join
       v-row
         v-col(md=6 sm=8 xs=12 offset-md=3 offset-sm=2)
           v-card#mc_embed_signup.pb-3
@@ -74,27 +120,17 @@ export default {
   data: () => ({
     cards: [
       {
-        title: "Vast Posibilities",
         lines: [
+          "Vast Posibilities",
           "A State of the Art Collaborative On-Chain Generative Algorithm",
-          "Choose from hundreds of googols of possible outcomes"
-        ]
-      },
-      {
-        title: "Art Thats Forever",
-        lines: [
+          "Choose from hundreds of googols of possible outcomes",
+          "Art Thats Forever",
           "The Immutible & Decentralized Perpetual Renderer",
-          "That means art thats accesible forever and fully owned by you"
-        ]
-      },{
-        title: "Animations",
-        lines: [
+          "That means art thats accesible forever and fully owned by you",
+          "Animations",
           "Animation straight from the on chain renderer",
-          "Static and animated versions of each token art"
-        ]
-      },{
-        title: "Creativity + Suprise",
-        lines: [
+          "Static and animated versions of each token art",
+          "Creativity + Suprise",
           "Tweak the sliders, explore the posibilities",
           "You never know what you will get, thanks to a dash of RNG on minting"
         ]
@@ -119,6 +155,12 @@ export default {
   .logo
     width: 80vh
     height: 80vh
+.on-chain, .proto-gen, .sample-art
+  height: 100%
+.dark-text
+  color: #000
+.intro
+  align: center
 .v-card__text
   display: flex
   flex-direction: column
