@@ -4,7 +4,7 @@
       v-row.landing-logo
         v-col(align="center" cols=12)
           v-img.logo(src="/img/logo.svg" aspect-ratio="1/1")
-      v-row.landing-text
+      v-row.landing-text.section
         v-col(sm=6 xs=12 offset-sm=3 align="center")
           h1.font-weight-bold Boxes Upon Boxes
           h2.text--secondary Animated On-Chain Generative Art NFTs
@@ -22,7 +22,7 @@
               v-icon mdi-typewriter
             v-btn(icon large href="#mc_embed_signup")
               v-icon mdi-email
-      v-row.mb-6
+      v-row.mb-6.section
         v-col(sm=6 xs=12 style="background-color: #444").mb-5.pa-7
           .d-flex.flex-column.justify-center.on-chain(align="center")
             h1 100% On-Chain
@@ -46,18 +46,18 @@
               v-btn(to="/create" large color="primary" width="8rem")
                 v-icon.mr-3 mdi-creation
                 span.mr-2 Create
-      v-row.py-7
-        v-col.intro(md=3 sm=4 xs=12 offset-md=1)
+      v-row.py-7.section.intro
+        v-col.intro-image(md=3 sm=4 xs=12 offset-md=1)
           .sample-art.d-flex
             v-img(contain src="/img/sample.svg" aspect-ratio="1/1")
-        v-col.intro(md=4 sm=5 xs=12)
+        v-col.intro-blurb.d-flex(md=4 sm=5 xs=12)
           .intro-text.d-flex.flex-column.justify-center
             h1 About Tinyboxes
             v-divider
             p A scattering of randomized rectangles brought to life through color, mirroring and animation.
             p TinyBoxes is a first of its kind Animated Proto-Generative NFT, rendered down to SVG art 100% on-chain. With customizable options, randomized traits and dynamic render settings, TinyBoxes pushes the bounds of whats possible with NFTs. Our contract has been meticulously optimized to save you gas. We used bit packing to squeeze each tokens data into just 256 bits.
             p TinyBoxes will be released in 11 phases. Phases will be differentiated by there own unique color schemes. As one phase ends, minting is paused, and a countdown to the next phase begins. The countdown length increases by 6 hours each phase.
-        v-col.project-stats(sm=1 xs=12 offset-sm=1)
+        v-col.project-stats.d-flex(sm=1 xs=12 offset-sm=1)
           .stats.d-flex.flex-column.justify-center
             br
             h3 0.1
@@ -69,11 +69,10 @@
             p Each
             h3 2222
             p Total
-            v-divider
-            br
+            v-divider.mb-3
             h3 +100
             p Limited Editions
-      v-row.mb-6
+      v-row.mb-6.section
         v-col(sm=4 xs=12 style="background-color: #444").mb-5.pa-7
           .d-flex.flex-column.justify-center.referral(align="center")
             h1 Referrals
@@ -103,7 +102,7 @@
               v-btn(large href="https://discord.gg/2wWANVfCuE" target="_blank" color="primary" width="8rem")
                 v-icon.mr-3 mdi-discord
                 span.mr-2 Join
-      v-row
+      v-row.section
         v-col(md=6 sm=8 xs=12 offset-md=3 offset-sm=2 align="center")
           h1 Contract + Source Code
           v-divider(width="350rem")
@@ -115,7 +114,7 @@
           v-icon(large) mdi-github
           a(href="https://github.com/skyfly200/tiny-boxes" target="_blank")
             h3 MIT Licensed on GitHub
-      v-row
+      v-row.section
         v-col(md=6 sm=8 xs=12 offset-md=3 offset-sm=2)
           v-card#mc_embed_signup.pb-3
             v-form#mc-embedded-subscribe-form.validate(action='https://shop.us17.list-manage.com/subscribe/post?u=81d0c7a7aabdc5c89bc737456&id=e8ca8b83a1' method='post' name='mc-embedded-subscribe-form' target='_blank' novalidate='')
@@ -128,7 +127,7 @@
                   input(type='text' name='b_81d0c7a7aabdc5c89bc737456_e8ca8b83a1' tabindex='-1' value='')
                 .clear
                   v-btn(type='submit' large name='subscribe' color="secondary") Subscribe
-      v-row.pb-8.pt-5.mb-8
+      v-row.pb-8.pt-5.mb-8.nfteam.section
         v-col(md=6 sm=8 xs=12 offset-md=3 offset-sm=2 align="center")
           h1 NonFungibleTeam
           v-divider(width="330rem")
@@ -199,6 +198,11 @@ export default {
   color: #000
 .intro
   align: center
+  min-height: 90vh
+.section
+  min-height: 50vh
+.nfteam
+  min-height: 50vh
 .v-card__text
   display: flex
   flex-direction: column
