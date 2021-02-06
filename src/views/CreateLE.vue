@@ -33,8 +33,9 @@
       v-card.dialog-ready(v-else-if="overlay === 'ready'" key="ready")
         v-skeleton-loader(:value="!minted.art" type="image")
           Token(:id="minted.id+'-preview'" :data="minted.art")
-        v-card-title.text-center You Redeemed Token {{ "#" + minted.id }}
+        v-card-title.text-center You Redeemed Token {{ "#" + (BigInt(minted.id) - t.max256 ).toString() }}
         v-card-actions
+          v-spacer
           v-btn(:to="'/token/' + minted.id" color="primary") View Token
       v-card.dialog-error(v-else-if="overlay === 'error'" key="error")
         v-card-title Transaction Error
@@ -510,13 +511,15 @@ export default Vue.extend({
         })
         .on("data", async (log: any) => {
           const t = this as any;
-          console.log(log.topics);
-          const id = BigInt(log.topics[3]).toString(10);
-          t.minted.id = id;
-          t.minted.art = await t.$store.state.contracts.tinyboxes.methods.tokenArt(id, 0, 10, 1, '').call();
-          t.overlay = "ready";
-          const refeshEndpoint  = 'https://api.opensea.io/asset/' + this.$store.state.tinyboxesAddress + '/' + id + '/?force_update=true';
-          await t.$http.get(refeshEndpoint);
+          if (t.currentAccount.toLowerCase() === "0x" + log.data.slice(26,66)) {
+            const idString = "0x" + log.data.slice(66);
+            const id = BigInt(idString).toString(10);
+            t.minted.id = id;
+            t.minted.art = await t.$store.state.contracts.tinyboxes.methods.tokenArt(id, 0, 10, 1, '').call();
+            t.overlay = "ready";
+            const refeshEndpoint  = 'https://api.opensea.io/asset/' + this.$store.state.tinyboxesAddress + '/' + id + '/?force_update=true';
+            await t.$http.get(refeshEndpoint);
+          }
         });
     },
     deepEqual(object1: any, object2: any) {
