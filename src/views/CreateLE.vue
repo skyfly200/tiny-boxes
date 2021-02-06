@@ -513,7 +513,7 @@ export default Vue.extend({
           console.log(log.topics);
           const id = BigInt(log.topics[3]).toString(10);
           t.minted.id = id;
-          t.minted.art = await t.$store.state.contracts.tinyboxes.methods.tokenArt(id, 5, 0, 1, '').call();
+          t.minted.art = await t.$store.state.contracts.tinyboxes.methods.tokenArt(id, 0, 10, 1, '').call();
           t.overlay = "ready";
           const refeshEndpoint  = 'https://api.opensea.io/asset/' + this.$store.state.tinyboxesAddress + '/' + id + '/?force_update=true';
           await t.$http.get(refeshEndpoint);
