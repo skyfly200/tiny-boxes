@@ -7,7 +7,8 @@
       v-row.landing-text.section
         v-col(sm=6 xs=12 offset-sm=3 align="center")
           h1.font-weight-bold Boxes Upon Boxes
-          h2.text--secondary Animated On-Chain Generative Art NFTs
+          h2.text--secondary Animated Generative Art NFTs
+          h2.text--secondary On-Chain Artwork & Metadata
           h3.text--secondary Create One of 2222 Unique Art Pieces
           br
           v-divider(width="50%")
@@ -197,10 +198,10 @@ export default {
 
 <style lang="sass" scoped>
 .landing-logo
-  margin: 10vh 0
+  margin: 2vh 0 0 0
   .logo
-    width: 80vh
-    height: 80vh
+    width: 50vh
+    height: 50vh
     @media (max-width: 600px)
       width: 90vw
       height: 90vw
@@ -240,7 +241,7 @@ export default {
   justify-content: center
   padding-bottom: 8px
 .landing-text
-  margin: 20vh 0
+  margin: 0 0 2vh 0
 .action-btn
   width: 7em
   font-size: 1.2rem
