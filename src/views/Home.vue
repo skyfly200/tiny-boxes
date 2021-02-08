@@ -4,7 +4,7 @@
       v-row.landing-logo
         v-col(align="center" cols=12)
           v-img.logo(src="/img/logo.svg" aspect-ratio="1/1")
-      v-row.landing-text.section
+      v-row.landing-text.section(min-height="30vh")
         v-col(sm=6 xs=12 offset-sm=3 align="center")
           h1.font-weight-bold Boxes Upon Boxes
           h2.text--secondary Animated Generative Art NFTs
@@ -23,7 +23,7 @@
               v-icon mdi-typewriter
             v-btn(icon large href="#mc_embed_signup")
               v-icon mdi-email
-      v-row.pb-6.section
+      v-row.section
         v-col(sm=6 xs=12 style="background-color: #444").pa-7
           .d-flex.flex-column.justify-space-between.on-chain(align="center")
             h1 100% On-Chain
@@ -46,7 +46,7 @@
               v-btn(to="/create" large color="primary" width="8rem")
                 v-icon.mr-3 mdi-creation
                 span.mr-2 Create
-      v-row.py-7.section.intro
+      v-row.section.intro
         v-col.intro-image(md=3 sm=4 cols=12 offset-sm=1)
           .sample-art.d-flex
             v-img(contain src="/img/sample.svg" aspect-ratio="1/1" min-height="280px")
@@ -73,7 +73,7 @@
             .stat
               h3 2222
               p Total
-            v-divider(:vertical="!$vuetify.breakpoint.md && !$vuetify.breakpoint.lg").mb-4
+            v-divider(:vertical="!$vuetify.breakpoint.md && !$vuetify.breakpoint.lg  && !$vuetify.breakpoint.xl").mb-4
             .stat
               h3 +100
               p Limited Editions
@@ -92,7 +92,8 @@
           .d-flex.flex-column.justify-space-between.le-tokens(align="center")
             h1 Limited Editions
             h3 Design exactly what you want
-            h3 Exclusive Distribution
+            h3 Exclusive Distribution of 100 Max
+            H3 Redeem Whenever
             .d-flex.justify-center.my-5
               v-btn(to="/le" large color="secondary" width="8rem")
                 v-icon.mr-3 mdi-crystal-ball
@@ -125,8 +126,8 @@
           a(href="https://github.com/skyfly200/tiny-boxes" target="_blank")
             h3 MIT Licensed on GitHub
       v-row.section
-        v-col(md=6 sm=8 xs=12 offset-md=3 offset-sm=2)
-          v-card#mc_embed_signup.pb-3
+        v-col(md=6 sm=8 xs=12 offset-md=3 offset-sm=2).d-flex.justify-center
+          v-card#mc_embed_signup.pb-3(max-width="1440px")
             v-form#mc-embedded-subscribe-form.validate(action='https://shop.us17.list-manage.com/subscribe/post?u=81d0c7a7aabdc5c89bc737456&id=e8ca8b83a1' method='post' name='mc-embedded-subscribe-form' target='_blank' novalidate='')
               v-card-title.font-weight-medium.subscribe-title Subscribe to our mailing list!
               v-card-subtitle Stay up to the date on the latest happenings with TinyBoxes
