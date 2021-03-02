@@ -75,7 +75,7 @@
                 h3(v-if="paused") Minting Paused
                 vac(v-else-if="countdown" :end-time="pauseEndTime")
                   template(v-slot:process="{ timeObj }")
-                    span {{ `${timeObj.h}:${timeObj.m}:${timeObj.s}` }} to phase {{ Math.floor(id / phaseLen) }}
+                    span {{ `${timeObj.h}:${timeObj.m}:${timeObj.s}` }} to phase {{ Math.floor(id / phaseLen) + 1 }}
                 template(v-else)
                   TooltipIconBtn(icon="mdi-forward" tip="Forward Mint" @click="overlay='recipient'" bottom).forward-btn
                   v-btn(@click="mintToken" :disabled="!form.valid || soldOut || loading" large color="primary")
@@ -153,6 +153,7 @@ export default Vue.extend({
   data: function() {
     return {
       usersReferal: null as number | null,
+      max256: 115792089237316195423570985008687907853269984665640564039457584007913129639936n,
       id: null as number | null,
       loading: true,
       paused: false,
@@ -254,8 +255,10 @@ export default Vue.extend({
       await t.lookupCurrentBlock();
       t.currentBlockTimestamp = new Date().getTime() * 1000;
       const balance = await t.lookupBalance();
-      if (balance > 0) t.usersReferal = await t.lookupUsersToken(0);
-      else t.usersReferal = "10000";
+      if (balance > 0) {
+        t.usersReferal = await t.lookupUsersToken(0);
+        t.usersReferal = t.usersReferal < 2222 ? t.usersReferal : (BigInt(t.usersReferal) - t.max256).toString(10);
+      } else t.usersReferal = "10000";
       t.lookupLimit();
       if (t.paramsSet) t.loadParams();
       else t.updateParams();

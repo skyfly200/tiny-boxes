@@ -39,3 +39,4 @@ yarn-error.log*
 # Local Netlify folder
 .netlify
 .openzeppelin/.lock
+bot/secrets.txt
