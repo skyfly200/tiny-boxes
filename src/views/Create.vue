@@ -486,7 +486,7 @@ export default Vue.extend({
       t.loading = true;
       await t.loadStatus()
       const v = {...t.values, ...t.assembleDials(), palette: t.assemblePalette(), settings: [0, 10, 0]};
-      const traits = [ 0, t.phase, 7, v.color.luminosity ];
+      const traits = [ 0, t.phase, 7, 0 ]; // v.color.luminosity
       this.$store.state.contracts.tinyboxes.methods
         .renderPreview(v.seed.toString(), v.palette, [v.shapes, v.hatching], v.size, v.spacing, v.mirroring, v.settings, traits, '')
         .call()
