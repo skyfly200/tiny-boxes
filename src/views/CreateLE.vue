@@ -165,7 +165,7 @@ export default Vue.extend({
           luminosity: 70
         },
         hueSeed: 0,
-        contrast: 50,
+        contrast: 0,
         shades: 1,
         animation: 0,
         animate: false,
