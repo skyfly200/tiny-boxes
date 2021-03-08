@@ -294,7 +294,7 @@ exports.handler = async (event, context) => {
         {
           display_type: "number",
           trait_type: 'Phase',
-          value: isLE ? "Limited Edition" : parseInt(data.scheme) + 1,
+          value: isLE ? -1 : parseInt(data.scheme) + 1,
           max_value: 11
         },
         {
