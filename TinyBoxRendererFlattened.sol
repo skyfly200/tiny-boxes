@@ -165,7 +165,7 @@ library SafeMath {
 
 // File @openzeppelin/contracts/math/SignedSafeMath.sol@v3.1.0
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity ^0.6.0;
 
@@ -261,7 +261,7 @@ library SignedSafeMath {
 
 // File @openzeppelin/contracts/utils/Strings.sol@v3.1.0
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity ^0.6.0;
 
@@ -299,7 +299,7 @@ library Strings {
 
 // File contracts/structs/Decimal.sol
 
-// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.4;
 
 struct Decimal {
@@ -310,7 +310,7 @@ struct Decimal {
 
 // File contracts/structs/HSL.sol
 
-// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.4;
 
 struct HSL {
@@ -322,7 +322,7 @@ struct HSL {
 
 // File contracts/structs/Shape.sol
 
-// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.4;
 
 
@@ -335,7 +335,7 @@ struct Shape {
 
 // File contracts/structs/TinyBox.sol
 
-// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.4;
 
 struct TinyBox {
@@ -360,7 +360,7 @@ struct TinyBox {
 
 // File contracts/libraries/FixidityLib.sol
 
-// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.8;
 
 /**
@@ -807,7 +807,7 @@ pragma solidity ^0.6.8;
 
 // File contracts/libraries/Utils.sol
 
-// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.4;
 
 
@@ -849,7 +849,7 @@ library Utils {
 
 // File @openzeppelin/contracts/utils/SafeCast.sol@v3.1.0
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity ^0.6.0;
 
@@ -1064,7 +1064,7 @@ library SafeCast {
 
 // File contracts/libraries/Random.sol
 
-// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.4;
 
 
@@ -1151,7 +1151,7 @@ library Random {
 
 // File contracts/libraries/Colors.sol
 
-// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.8;
 pragma experimental ABIEncoderV2;
 library Colors {
@@ -1241,7 +1241,7 @@ library Colors {
 
 // File contracts/libraries/SVG.sol
 
-// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.4;
 
 
@@ -1322,7 +1322,7 @@ library SVG {
 
 // File contracts/libraries/Decimal.sol
 
-// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.4;
 library DecimalUtils {
     using SafeMath for uint256;
@@ -1361,9 +1361,9 @@ library DecimalUtils {
 
 // File contracts/libraries/Animation.sol
 
-// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.4;
 pragma experimental ABIEncoderV2;
+
 library Animation {
     using SafeMath for uint256;
     using SignedSafeMath for int256;
@@ -1679,7 +1679,7 @@ library Animation {
 
 // File @openzeppelin/contracts/math/Math.sol@v3.1.0
 
-// SPDX-License-Identifier: MIT
+
 
 pragma solidity ^0.6.0;
 
@@ -1714,7 +1714,7 @@ library Math {
 
 // File contracts/libraries/Metadata.sol
 
-// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.4;
 
 
@@ -1884,19 +1884,7 @@ library Metadata {
 
 // File contracts/TinyBoxRenderer.sol
 
-// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.8;
-pragma experimental ABIEncoderV2;
-
-
-
-
-
-
-
-
-
-
 
 //import "hardhat/console.sol";
 
