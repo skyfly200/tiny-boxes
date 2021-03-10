@@ -10,7 +10,7 @@
           v-sparkline( :value="sales" auto-line-width auto-draw)
         v-col(cols="12")
           v-toolbar
-            span Phase: {{ phase }} - {{ schemeTitles[phase] }}
+            span Phase: {{ phase + 1 }} - {{ schemeTitles[phase] }}
             v-spacer
             span Phase Length: {{ phaseLen }}
             v-spacer
