@@ -114,7 +114,7 @@
                         v-row
                           v-col(cols="12")
                             .d-flex
-                              v-btn.mr-5(v-if="false") Preview
+                              v-btn.mr-5(@click="") Preview
                               v-btn(v-if="false") Download
                               v-spacer
                               template(v-if="changedSettings")
