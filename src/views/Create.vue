@@ -257,8 +257,10 @@ export default Vue.extend({
       const balance = await t.lookupBalance();
       if (balance > 0) {
         t.usersReferal = await t.lookupUsersToken(0);
-        t.usersReferal = t.usersReferal < 2222 ? t.usersReferal : (BigInt(t.usersReferal) - t.max256).toString(10);
+        console.log(t.usersReferal);
+        t.usersReferal = t.usersReferal < 2222 ? t.usersReferal :  BigInt(t.usersReferal).toString(10);
       } else t.usersReferal = "10000";
+      console.log(t.usersReferal);
       t.lookupLimit();
       if (t.paramsSet) t.loadParams();
       else t.updateParams();
