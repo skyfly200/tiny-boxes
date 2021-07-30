@@ -215,6 +215,10 @@ exports.handler = async (event, context) => {
       },
       attributes: [
         {
+          trait_type: 'Type',
+          value: isLE ? 'LE' : 'Standard',
+        },
+        {
           trait_type: 'Shapes',
           value: parseInt(data.shapes),
           max_value: 30
