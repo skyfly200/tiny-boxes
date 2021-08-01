@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="100%"
+  height="100%"
+  viewBox="0 0 2400 2400"
+  style="stroke-width:0;background-color:hsl(0,0%,0%);margin: auto;height: -webkit-fill-available"
+><metadata><contract
+    >0x5CAFAACD1DE8F3861EA978886D2C66EC386D2FD7</contract><rendered-at
+    >1627779121</rendered-at><token><id>1017</id><owner
+      >0xF4A1C1948AB9FB6BB12E2B4163CEBC77CF26FBBE</owner></token><settings><bkg
+      >0</bkg><duration>0</duration><options>0</options></settings><animated
+    >false</animated><animation>2</animation><color><hue>53</hue><saturation
+      >89</saturation><lightness>73</lightness><scheme>5</scheme><shades
+      >2</shades><contrast>24</contrast></color><shapes><count
+      >20</count><hatching>1</hatching><size><width>7-120</width><height
+        >12-64</height></size></shapes><placement><rows>5</rows><columns
+      >1</columns><spread>75</spread></placement><mirror><mirror-mode
+      >48</mirror-mode></mirror></metadata><image
+    x="0"
+    y="-200"
+    width="2600"
+    height="2600"
+    href="https://larvalabs.com/public/images/cryptopunks/punk3114.png"
+    style="image-rendering: pixelated;"
+  /><defs><rect
+      id="cover"
+      width="100%"
+      height="100%"
+      fill="hsl(0,0%,0%,0%)"
+    /><clipPath id="clip"><use xlink:href="#cover" /></clipPath><symbol
+      id="shapes"
+    ><rect
+        x="255"
+        y="475"
+        width="29"
+        height="522"
+        transform-origin="300 300"
+        style="fill:hsl(203,89%,73%)"
+      /><rect
+        x="170"
+        y="471"
+        width="535"
+        height="25"
+        transform-origin="300 300"
+        style="fill:hsl(53,89%,73%)"
+      /><rect
+        x="425"
+        y="234"
+        width="538"
+        height="23"
+        transform-origin="300 300"
+        style="fill:hsl(53,89%,61%)"
+      /><rect
+        x="170"
+        y="163"
+        width="36"
+        height="525"
+        transform-origin="300 300"
+        style="fill:hsl(203,89%,61%)"
+      /><rect
+        x="425"
+        y="191"
+        width="534"
+        height="20"
+        transform-origin="300 300"
+        style="fill:hsl(53,89%,73%)"
+      /><rect
+        x="425"
+        y="399"
+        width="33"
+        height="525"
+        transform-origin="300 300"
+        style="fill:hsl(53,89%,61%)"
+      /><rect
+        x="340"
+        y="-27"
+        width="29"
+        height="525"
+        transform-origin="300 300"
+        style="fill:hsl(53,89%,61%)"
+      /><rect
+        x="170"
+        y="223"
+        width="537"
+        height="25"
+        transform-origin="300 300"
+        style="fill:hsl(53,89%,61%)"
+      /><rect
+        x="0"
+        y="205"
+        width="29"
+        height="530"
+        transform-origin="300 300"
+        style="fill:hsl(203,89%,61%)"
+      /><rect
+        x="0"
+        y="-20"
+        width="40"
+        height="525"
+        transform-origin="300 300"
+        style="fill:hsl(263,89%,73%)"
+      /><rect
+        x="0"
+        y="62"
+        width="25"
+        height="528"
+        transform-origin="300 300"
+        style="fill:hsl(53,89%,61%)"
+      /><rect
+        x="510"
+        y="221"
+        width="34"
+        height="525"
+        transform-origin="300 300"
+        style="fill:hsl(53,89%,61%)"
+      /><rect
+        x="510"
+        y="336"
+        width="39"
+        height="515"
+        transform-origin="300 300"
+        style="fill:hsl(53,89%,73%)"
+      /><rect
+        x="425"
+        y="355"
+        width="528"
+        height="25"
+        transform-origin="300 300"
+        style="fill:hsl(53,89%,61%)"
+      /><rect
+        x="255"
+        y="440"
+        width="536"
+        height="26"
+        transform-origin="300 300"
+        style="fill:hsl(53,89%,61%)"
+      /><rect
+        x="170"
+        y="443"
+        width="30"
+        height="525"
+        transform-origin="300 300"
+        style="fill:hsl(53,89%,73%)"
+      /><rect
+        x="340"
+        y="183"
+        width="534"
+        height="25"
+        transform-origin="300 300"
+        style="fill:hsl(203,89%,73%)"
+      /><rect
+        x="85"
+        y="184"
+        width="529"
+        height="25"
+        transform-origin="300 300"
+        style="fill:hsl(53,89%,73%)"
+      /><rect
+        x="170"
+        y="350"
+        width="534"
+        height="19"
+        transform-origin="300 300"
+        style="fill:hsl(53,89%,61%)"
+      /><rect
+        x="425"
+        y="37"
+        width="27"
+        height="525"
+        transform-origin="300 300"
+        style="fill:hsl(203,89%,61%)"
+      /></symbol></defs><symbol id="quad3"><symbol id="quad2"><symbol
+        id="quad1"
+      ><symbol id="quad0"><g><use xlink:href="#shapes" /></g></symbol><g
+          transform="scale(1 1) translate(0 0)"
+        ><use xlink:href="#quad0" /></g></symbol><g
+        transform="scale(1 1) translate(0 0)"
+      ><use xlink:href="#quad1" /></g></symbol><g
+      transform="scale(1 1) translate(0 0)"
+    ><use xlink:href="#quad2" /></g><g
+      transform="scale(-1 1) translate(-2400 0)"
+    ><use xlink:href="#quad2" /></g><g
+      transform="scale(1 -1) translate(0 -2400)"
+    ><use xlink:href="#quad2" /></g><g
+      transform="scale(-1 -1) translate(-2400 -2400)"
+    ><use xlink:href="#quad2" /></g></symbol><g
+    transform="scale(1 1)"
+    clip-path="url(#clip)"
+  ><use xlink:href="#quad3" /></g><use id="target" xlink:href="#cover" /></svg>
