@@ -6,9 +6,8 @@
           .mobile-link
             v-list-item(two-line)
               Gravatar.gravatar.gravatar-mobile(:size="50" :email="currentAccount")
-              v-list-item-content 
-                h4.account-label Active Account
-                span.address {{ currentAccount !== '' ? formatAccount(currentAccount) : "loading" }}
+              h4.account-label Active Account
+              span.address {{ currentAccount !== '' ? formatAccount(currentAccount) : "loading" }}
           v-divider
         .mobile-link(v-for="l,i in links" :key="i")
           v-list-item(v-if="l.type === 'page'" :to="l.path" link)
@@ -32,6 +31,7 @@
       v-tooltip(v-if="web3Status === 'active'" bottom)
         template(v-slot:activator="{ on }")
           Gravatar.gravatar.gravatar-desktop(v-on="on" :size="40" :email="currentAccount")
+        v-list
         h4.account-label Active Account
         span.address.address-tooltip {{ currentAccount !== '' ? formatAccount(currentAccount) : "loading" }}
       v-btn(@click="drawer = !drawer" text).mobile-menu-btn
@@ -100,6 +100,13 @@ export default {
         icon: "mdi-discord",
         text: "Discord",
         path: "https://discord.gg/2wWANVfCuE"
+      },
+      {
+        type: "link",
+        bar: true,
+        icon: "mdi-cart",  
+        text: "Cart",
+        path: "/cart"
       },
       {
         type: "link",

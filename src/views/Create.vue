@@ -9,6 +9,15 @@
             h3 Mint for {{ priceInETH }}
               v-icon mdi-ethereum
             h3 To {{ recipient }}
+      v-card.dialog-addtokentoCart(v-else-if="overlay === 'addtokentoCart'" key="addtokentoCart")
+        v-card-title Token added to Cart
+        v-card-text
+          .message                      
+            v-text-field(v-model="recipient")
+        v-card-actions
+          v-btn(@click="cart") Go to cart
+          v-spacer
+          v-btn(@click="mintToken") Mint your tokens
       v-card.dialog-recipient(v-else-if="overlay === 'recipient'" key="recipient")
         v-card-title Set Token Recipient
         v-card-text
@@ -70,6 +79,7 @@
                   v-icon(large) mdi-ethereum
                 v-spacer
                 TooltipIconBtn(icon="mdi-forward" tip="Forward Mint" @click="overlay='recipient'" bottom).forward-btn
+                TooltipIconBtn(icon="mdi-cart-plus" tip="Add to Cart" @click="overlay='addtokentoCart'" bottom).cart-btn
                 vac(v-if="paused" :end-time="pauseEndTime")
                   template(v-slot:process="{ timeObj }")
                     span {{ `${timeObj.m}:${timeObj.s}` }} to phase {{ Math.floor(id / phaseLen) }}
@@ -181,7 +191,7 @@ export default Vue.extend({
           saturation: 80,
           luminosity: 70
         },
-        animate: false,
+        animate: true,
         m1: 3,
         m2: 3,
         m3: 3,
@@ -252,6 +262,9 @@ export default Vue.extend({
     }
   },
   methods: {
+    addtokentoCart: function() {
+      return this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
+    },
     getSupply: function() {
       return this.$store.state.contracts.tinyboxes.methods.totalSupply().call();
     },

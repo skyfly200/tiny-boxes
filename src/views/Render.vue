@@ -108,7 +108,7 @@ export default Vue.extend({
         lightness: [30,70],
         shades: 3,
         scheme: 0,
-        animate: false,
+        animate: true,
         animation: 9,
       },
       sections: sections,

@@ -12,6 +12,7 @@ export default Vue.extend({
   data: () => ({
     src: ""
   }),
+  
   async mounted() {
     this.load();
   },

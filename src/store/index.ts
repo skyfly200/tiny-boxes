@@ -1131,6 +1131,20 @@ const tinyboxesABI = [
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "adtokentoCart",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },  
+
+    {
       "inputs": [
         {
           "internalType": "address",
@@ -1162,6 +1176,7 @@ const vuexLocalStorage = new VuexPersist({
   storage: window.localStorage,
   reducer: (state: any) => ({
     count: state.count,
+    cart: state.cart,
     itemsPerPage: state.itemsPerPage,
     tokenIDs: state.tokenIDs,
     cachedTokens: state.cachedCells,
@@ -1218,6 +1233,7 @@ const store = new Vuex.Store({
     network: null,
     targetNetwork: "rinkeby",
     count: null,
+    cart: null,
     itemsPerPage: 12,
     tokenIDs: { null: null },
     cachedTokens: { null: null },
@@ -1226,6 +1242,9 @@ const store = new Vuex.Store({
   mutations: {
     setCount(state, count) {
       state.count = count;
+    },
+    setCart(state, cart) {
+      state.cart = cart;
     },
     setItemsPerPage(state, n) {
       state.itemsPerPage = n;
