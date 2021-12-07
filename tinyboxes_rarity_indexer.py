@@ -2,7 +2,7 @@ import json
 import pymongo
 import numpy as np
 
-# dev notesq   
+# dev notes   
 
 # shades is missing 6 and 7 data for some reason, reworking that
 # contrast is fixed. 
