@@ -2,6 +2,11 @@ import json
 import pymongo
 import numpy as np
 
+# dev notes
+
+# shades is missing 6 and 7 data for some reason
+# contrast is showing very wierd low numbers
+
 client = pymongo.MongoClient("localhost", 27017)
 mydb = client["tinybox_attributes"]
 myrec = mydb["minted_boxes"]
@@ -42,9 +47,34 @@ rowval13=0
 rowval14=0
 rowval15=0
 rowval16=0
-scheme = np.zeros(shape=16)
-mirroringcount = np.zeros(shape=23)
+
+mirroring = np.array([(0,1,2),(0,1,3),(0,2,1),(0,2,3),(0,3,1),(0,3,2),(1,0,2),(1,0,3),(1,2,0),(1,2,3),(1,3,0),(1,3,2),(2,0,1),(2,0,3),(2,1,0),(2,1,3),(2,3,0),(2,3,1),(3,0,1),(3,0,2),(3,1,0),(3,1,2),(3,2,0),(3,2,1)])
+shapes = np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30])
+
+mirroringcount = np.zeros(shape=24)
 mirroringcount = mirroringcount.astype(int)
+#shapes = np.zeros(shape=30)
+shapescount = np.zeros(shape=30)
+shapescount = shapescount.astype(int)
+spread = np.linspace(0,100,101)
+spread = spread.astype(int)
+spreadcount = np.zeros(shape=101)
+spreadcount = spreadcount.astype(int)
+hues = np.linspace(0,359,360)
+huescount = np.zeros(shape=360)
+lightness = np.linspace(1,100,100)
+lightnesscount = np.zeros(shape=100)
+animation = np.array(["Snap Spin 90","Snap Spin 180","Snap Spin 270","Snap Spin Tri","Snap Spin Quad","Snap Spin Tetra","Spin","Slow Mo","Clockwork","Spread","Staggered Spread","Jitter","Jiggle","Jolt","Grow n Shrink","Squash n Stretch","Round","Glide","Wave","Fade","Skew X","Skew Y","Stretch","Jello"])
+animationcount = np.zeros(shape=24)
+shades = np.linspace(1,7,7)
+shadescount = np.zeros(shape=7)
+hatching = np.linspace(1,31,31)
+hatchingcount = np.zeros(shape=31)
+contrast = np.linspace(0,100,101)
+contrast=contrast.astype(int)
+contrastcount = np.zeros(shape=101)
+contrastcount = contrastcount.astype(int)
+
 
 for j in range(1,1409):
     colval = (dict[j]["trait_columns"])
@@ -113,90 +143,73 @@ for j in range(1,1409):
         rowval15 = rowval15 +1
     if rowval == 16:
         rowval16 = rowval16 +1
-    schemeval = (dict[j]["trait_scheme"])
-    if schemeval == 1:
-        scheme[1] = scheme[1] +1
-    if schemeval == 2:
-        scheme[2] = scheme[2] +1
-    if schemeval == 3:
-        scheme[3] = scheme[3] +1
-    if schemeval == 4:
-        scheme[4] = scheme[4] +1
-    if schemeval == 5:
-        scheme[5] = scheme[5] +1
-    if schemeval == 6:
-        scheme[6] = scheme[6] +1
-    if schemeval == 7:
-        scheme[7]= scheme[7] +1
-    if schemeval == 8:
-        scheme[8] = scheme[8] +1
-    if schemeval == 9:
-        scheme[9] = scheme[9] +1
-    if schemeval == 10:
-        scheme[10] = scheme[10] +1
-    if schemeval == 11:
-        scheme[11] = scheme[11] +1
-    if schemeval == 12:
-        scheme[12] = scheme[12] +1
-    if schemeval == 13:
-        scheme[13] = scheme[13] +1
-    if schemeval == 14:
-        scheme[14] = scheme[14] +1
-    if schemeval == 15:
-        scheme[15] = scheme[15] +1
-    if schemeval == 16:
-        scheme[16] = scheme[16] +1
     mirroringval = (dict[j]["trait_mirroring"])
-    mirroring = np.array([(0,1,2),(0,1,3),(0,2,1),(0,2,3),(0,3,1),(0,3,2),(1,0,2),(1,0,3),(1,2,0),(1,2,3),(1,3,0),(1,3,2),(2,0,1),(2,0,3),(2,1,0),(2,1,3),(2,3,0),(2,3,1),(3,0,1),(3,0,2),(3,1,0),(3,1,2),(3,2,0),(3,2,1)])
-    print("mirroring: ")
-    print (mirroring[0])
-    #print(mirroring[0]).replace(" ",",")
-    #print(mirroring[1]).replace(" ",",")
-    print("endmirroring")
-    if mirroringval == "1,1,1":
-        mirroringcount[1] = mirroringcount[1] +1
-    if mirroringval == "1,1,2":
-        mirroringcount[2] = mirroringcount[2] +1
-    if mirroringval == "1,1,3":
-        mirroringcount[3] = mirroringcount[3] +1
-    if mirroringval == "1,2,1":
-        mirroringcount[4] = mirroringcount[4] +1
-    if mirroringval == "1,3,1":
-        mirroringcount[5] = mirroringcount[5] +1
-    if mirroringval == "2,1,1":
-        mirroringcount[6] = mirroringcount[6] +1
-    if mirroringval == "3,1,1":
-        mirroringcount[7]= mirroringcount[7] +1
-    if mirroringval == "1,2,1":
-        mirroringcount[8] = mirroringcount[8] +1
-    if mirroringval == "1,3,1":
-        mirroringcount[9] = mirroringcount[9] +1
-    if mirroringval == "2,2,1":
-        mirroringcount[10] = mirroringcount[10] +1
-    if mirroringval == "2,3,1":
-        mirroringcount[11] = mirroringcount[11] +1
-    if mirroringval == "3,3,1":
-        mirroringcount[12] = mirroringcount[12] +1
-    if mirroringval == "3,3,2":
-        mirroringcount[13] = mirroringcount[13] +1
-    if mirroringval == "3,3,3":
-        mirroringcount[14] = mirroringcount[14] +1
-    if mirroringval == "1,2,2":
-        mirroringcount[15] = mirroringcount[15] +1
-    if mirroringval == "2,1,2":
-        mirroringcount[16] = mirroringcount[16] +1
-    if mirroringval == "2,1,3":
-        mirroringcount[17] = mirroringcount[17] +1
-    if mirroringval == "2,3,2":
-        mirroringcount[18] = mirroringcount[18] +1
-    if mirroringval == "0,0,0":
-        mirroringcount[19] = mirroringcount[19] +1
-    if mirroringval == "0,0,1":
-        mirroringcount[20] = mirroringcount[20] +1
-    if mirroringval == "0,1,0":
-        mirroringcount[21] = mirroringcount[21] +1
-    if mirroringval == "1,0,0":
-        mirroringcount[22] = mirroringcount[22] +1
+    shapesval = (dict[j]["trait_shapes"])
+    spreadval = (dict[j]["trait_spread"])
+    spreadval = spreadval.rstrip(spreadval[-1])
+    huesval = (dict[j]["trait_hue"])
+    lightnessval = (dict[j]["trait_lightness"])
+    animationval = (dict[j]["trait_animation"])
+    shadesval = (dict[j]["trait_shades"])
+    hatchingval = (dict[j]["trait_hatching"])
+    contrastval = (dict[j]["trait_contrast"])
+#    contrastval = contrastval.rstrip(contrastval[-1])
+
+    for k in range(0,len(mirroring)):   
+        flag1 =  "[" + mirroringval.replace(","," ") + "]"
+        flag2 = str(mirroring[k])
+        if flag1 == flag2:
+            mirroringcount[k] = mirroringcount[k] +1
+
+    for k in range(0,len(shapes)):
+        flag2 = shapes[k]
+        if shapesval == flag2:
+            shapescount[k] = shapescount[k] +1
+
+    for k in range(0,len(spread)):
+        spreadval=int(spreadval)
+        flag2 = int(spread[k])
+        if spreadval == flag2:
+            spreadcount[k] = spreadcount[k] +1
+
+    for k in range(0,len(hues)):
+        huesval=int(huesval)
+        flag2 = int(hues[k])
+        if huesval == flag2:
+            huescount[k] = huescount[k] +1
+
+    for k in range(0,len(lightness)):
+        lightnessval=int(lightnessval)
+        flag2 = int(lightness[k])
+        if lightnessval == flag2:
+            lightnesscount[k] = lightnesscount[k] +1
+
+    for k in range(0,len(animation)):
+        flag2 = animation[k]
+        if animationval == flag2:
+            animationcount[k] = animationcount[k] +1
+
+    for k in range(0,len(shades)):
+        flag2 = shades[k]
+        if shadesval == flag2:
+            shadescount[k] = shadescount[k] +1
+
+    for k in range(0,len(hatching)):
+        flag2 = hatching[k]
+        if hatchingval == flag2:
+            hatchingcount[k] = hatchingcount[k] +1
+
+    for k in range(0,len(contrast)):
+        print ("contrast")
+        print (contrastval)
+        print ( contrast[k] )
+        flag2 = int(contrast[k])
+        if contrastval == flag2:
+            contrastcount[k] = contrastcount[k] +1
+
+
+
+
 
 
 
@@ -234,20 +247,80 @@ print( "column:  16 count" )
 print( colval16 )                                       
 print( "row:  1 count" )
 print( rowval1 )        
-print( "scheme:  1 count" )
-print( scheme[1] )        
-print( "mirroring:  1 count" )
-print( mirroringcount[1] )        
-print( "mirroring:  2 count" )
-print( mirroringcount[2] )        
-print( "mirroring:  3 count" )
-print( mirroringcount[3] )        
-print( "mirroring:  4 count" )
-print( mirroringcount[4] )        
-print( "mirroring:  5 count" )
-print( mirroringcount[5] )        
-print( "mirroring:  6 count" )
-print( mirroringcount[6] )        
+print( "row:  2 count" )
+print( rowval2 )        
+print( "row:  3 count" )
+print( rowval3 )        
+print( "row:  4 count" )
+print( rowval4 )        
+print( "row:  5 count" )
+print( rowval5 )        
+print( "row:  6 count" )
+print( rowval6 )        
+print( "row:  7 count" )
+print( rowval7 )        
+print( "row:  8 count" )
+print( rowval8 )        
+print( "row:  9 count" )
+print( rowval9 )        
+print( "row:  10 count" )
+print( rowval10 )        
+print( "row:  11 count" )
+print( rowval11 )        
+print( "row:  12 count" )
+print( rowval12 )        
+print( "row:  13 count" )
+print( rowval13 )        
+print( "row:  14 count" )
+print( rowval14 )        
+print( "row:  15 count" )
+print( rowval15 )        
+print( "row:  16 count" )
+print( rowval16 )        
 
+       
 
+for k in range(0,len(mirroring)):
+    print ( "mirroring: " )
+    print ( mirroring[k] )
+    print ( mirroringcount[k] )
+  
+for k in range(0,len(shapes)):
+    print ( "shapes: " )
+    print ( shapes[k] )
+    print ( shapescount[k] )
+  
+for k in range(0,len(spread)):
+    print ( "spread: " )
+    print ( spread[k] )
+    print ( spreadcount[k] )
+  
+for k in range(0,len(hues)):
+    print ( "hues: " )
+    print ( hues[k].astype(int) )
+    print ( huescount[k].astype(int) )
+  
+for k in range(0,len(lightness)):
+    print ( "lightness: " )
+    print ( lightness[k].astype(int) )
+    print ( lightnesscount[k].astype(int) )
+  
+for k in range(0,len(animation)):
+    print ( "animation: " )
+    print ( animation[k] )
+    print ( animationcount[k].astype(int) )  
 
+for k in range(0,len(shades)):
+    print ( "shades: " )
+    print ( shades[k] )
+    print ( shadescount[k].astype(int) )  
+
+for k in range(0,len(hatching)):
+    print ( "hatching: " )
+    print ( hatching[k] )
+    print ( hatchingcount[k].astype(int) )  
+
+for k in range(0,len(contrast)):
+    print ( "contrast: " )
+    print ( contrast[k] )
+    print ( contrastcount[k].astype(int) )  
