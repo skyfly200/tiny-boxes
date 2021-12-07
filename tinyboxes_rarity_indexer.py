@@ -2,10 +2,17 @@ import json
 import pymongo
 import numpy as np
 
-# dev notes
+# dev notesq   
 
-# shades is missing 6 and 7 data for some reason
-# contrast is showing very wierd low numbers
+# shades is missing 6 and 7 data for some reason, reworking that
+# contrast is fixed. 
+
+# todo: 
+# rewrite clunky logic used for initial two traits- cols and rows.. :p
+# provide json file to be comsumed by tinyboxbot, format rarity report for each non- LE token 
+# -gw
+
+
 
 client = pymongo.MongoClient("localhost", 27017)
 mydb = client["tinybox_attributes"]
