@@ -1,5 +1,4 @@
-quant: 
-1411
+{quant: 1411},
 {Box: 1,
 "Columns": "7",
 "Columns rarity": "8.22% ,
@@ -33839,4 +33838,4 @@ quant:
 "Hatching rarity": "1.56%",
 "Contrast value": "41",
 "Contrast rarity": "1.49%",
-},
+}
