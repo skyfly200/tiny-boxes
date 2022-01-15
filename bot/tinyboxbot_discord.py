@@ -14,7 +14,7 @@ from discord.ext import commands
 
 # Grab the API token from the .env file.
 #DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
-DISCORD_TOKEN="ODg3NTE5NzI0NDU0NDE2Mzg2.YUFVJw.zxFw6A-aOhqELnWgkBscfv_6feg"
+DISCORD_TOKEN="#################################################################"
 
 API_SUBURL = "https://api.opensea.io/api/v1/asset/0x46F9A4522666d2476a5F5Cd51ea3E0b5800E7f98/"
 
