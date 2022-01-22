@@ -33,6 +33,16 @@ spreadcount = np.zeros(shape=101)
 spreadcount = spreadcount.astype(int)
 hues = np.linspace(0,359,360)
 huescount = np.zeros(shape=360)
+saturation = np.linspace(0,359,360)
+saturationcount = np.zeros(shape=360)
+minheight = np.linspace(0,359,360)
+minheightcount = np.zeros(shape=360)
+maxheight = np.linspace(0,359,360)
+maxheightcount = np.zeros(shape=360)
+minwidth = np.linspace(0,359,360)
+minwidthcount = np.zeros(shape=360)
+maxwidth = np.linspace(0,359,360)
+maxwidthcount = np.zeros(shape=360)
 lightness = np.linspace(1,100,100)
 lightnesscount = np.zeros(shape=100)
 animation = np.array(["Snap Spin 90","Snap Spin 180","Snap Spin 270","Snap Spin Tri","Snap Spin Quad","Snap Spin Tetra","Spin","Slow Mo","Clockwork","Spread","Staggered Spread","Jitter","Jiggle","Jolt","Grow n Shrink","Squash n Stretch","Round","Glide","Wave","Fade","Skew X","Skew Y","Stretch","Jello","Unfurl"])
@@ -56,6 +66,11 @@ for j in range(1,1409):
     rowsval = (dict[j]["trait_rows"])
     colsval = (dict[j]["trait_columns"])
     mirroringval = (dict[j]["trait_mirroring"])
+    saturationval = (dict[j]["trait_saturation"])
+    minheightval = (dict[j]["trait_minheight"])
+    maxheightval = (dict[j]["trait_maxheight"])
+    minwidthval = (dict[j]["trait_minwidth"])
+    maxwidthval = (dict[j]["trait_maxwidth"])
     shapesval = (dict[j]["trait_shapes"])
     spreadval = (dict[j]["trait_spread"])
     spreadval = spreadval.rstrip(spreadval[-1])
@@ -82,6 +97,31 @@ for j in range(1,1409):
         flag2 = str(mirroring[k])
         if flag1 == flag2:
             mirroringcount[k] = mirroringcount[k] +1
+
+    for k in range(0,len(saturation)):
+        flag2 = saturation[k]
+        if saturationval == flag2:
+            saturationcount[k] = saturationcount[k] +1
+
+    for k in range(0,len(minwidth)):
+        flag2 = minwidth[k]
+        if minwidthval == flag2:
+            minwidthcount[k] = minwidthcount[k] +1
+
+    for k in range(0,len(maxwidth)):
+        flag2 = maxwidth[k]
+        if maxwidthval == flag2:
+            maxwidthcount[k] = maxwidthcount[k] +1
+
+    for k in range(0,len(minheight)):
+        flag2 = minheight[k]
+        if minheightval == flag2:
+            minheightcount[k] = minheightcount[k] +1
+
+    for k in range(0,len(maxwidth)):
+        flag2 = maxwidth[k]
+        if maxwidthval == flag2:
+            maxwidthcount[k] = maxwidthcount[k] +1
 
     for k in range(0,len(shapes)):
         flag2 = shapes[k]
@@ -113,10 +153,7 @@ for j in range(1,1409):
 
     for k in range(0,len(shades)):
         flag2 = str(shades[k])
-        #print("shades " + str(k))
-        #print(flag2 + shadesval )
         if shadesval == flag2:
-            #print("-----matched-----")
             shadescount[k] = shadescount[k] +1
 
     for k in range(0,len(hatching)):
@@ -153,6 +190,58 @@ for k in range(0,len(rows)):
     j = rowscount[k]
     print("        \""+str(j)+"\" ,")
 
+
+print("     ]")
+print("    },")
+print ("{")
+print("      \"saturation\": [")
+ 
+
+for k in range(0,len(saturation)):
+    j = saturationcount[k]
+    print("        \""+str(j)+"\" ,")
+
+
+print("     ]")
+print("    },")
+print ("{")
+print("      \"minheight\": [")
+ 
+
+for k in range(0,len(minheight)):
+    j = minheightcount[k]
+    print("        \""+str(j)+"\" ,")
+
+
+print("     ]")
+print("    },")
+print ("{")
+print("      \"maxheight\": [")
+ 
+
+for k in range(0,len(maxheight)):
+    j = maxheightcount[k]
+    print("        \""+str(j)+"\" ,")
+
+print("     ]")
+print("    },")
+print ("{")
+print("      \"minwidth\": [")
+ 
+
+for k in range(0,len(minwidth)):
+    j = minwidthcount[k]
+    print("        \""+str(j)+"\" ,")
+
+print("     ]")
+print("    },")
+print ("{")
+print("      \"maxwidth\": [")
+ 
+
+for k in range(0,len(maxwidth)):
+    j = maxwidthcount[k]
+    print("        \""+str(j)+"\" ,")
 
 
 print("     ]")

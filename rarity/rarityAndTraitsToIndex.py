@@ -34,6 +34,57 @@ for j in range(0,numberofboxes):
     percentage = round((int(rowrarity) / int(quantity))*100,2)
     print ("\"Row_rarity\": \"" + str(percentage)+"%\" ,")
 
+    saturationval = (dict[j]["trait_saturation"])
+    print( "\"saturation_value\": \"" + str(saturationval) +"\",")
+    saturationval = saturationval-1
+    saturationrarity = (rarity["boxtraits"][2]["saturation"][saturationval])
+    try:
+        percentage = round((int(saturationrarity) / int(quantity))*100,2)
+    except:
+        percentage = "0"
+    print ("\"Saturation_rarity\": \"" + str(percentage)+"%\" ,")
+
+    minheightval = (dict[j]["trait_minheight"])
+    print( "\"minheight_value\": \"" + str(minheightval) +"\",")
+    minheightval = minheightval-1
+    minheightrarity = (rarity["boxtraits"][3]["minheight"][minheightval])
+    try:
+        percentage = round((int(minheightrarity) / int(quantity))*100,2)
+    except:
+        percentage = "0"
+    print ("\"Minheight_rarity\": \"" + minheightrarity)
+
+    maxheightval = (dict[j]["trait_maxheight"])
+    print( "\"maxheight_value\": \"" + str(maxheightval) +"\",")
+    print( maxheightval )
+    maxheightval = maxheightval-1
+    maxheightrarity = (rarity["boxtraits"][4]["maxheight"][maxheightval])
+    try:
+        percentage = round((int(maxheightrarity) / int(quantity))*100,2)
+    except:
+        percentage = "0"
+    print ("\"Maxheight_rarity\": \"" + str(percentage)+"%\" ,")
+
+    minwidthval = (dict[j]["trait_minwidth"])
+    print( "\"minwidth_value\": \"" + str(minwidthval) +"\",")
+    minheightval = minheightval-1
+    minheightrarity = (rarity["boxtraits"][5]["minwidth"][minwidthval])
+    try:
+        percentage = round((int(minheightrarity) / int(quantity))*100,2)
+    except:
+        percentage = "0"
+    print ("\"Minheight_rarity\": \"" + str(percentage)+"%\" ,")
+
+    maxwidthval = (dict[j]["trait_maxwidth"])
+    print( "\"maxwidth_value\": \"" + str(maxwidthval) +"\",")
+    maxwidthval = maxwidthval-1
+    maxwidthrarity = (rarity["boxtraits"][6]["maxwidth"][maxwidthval])
+    try:
+        percentage = round((int(maxwidthrarity) / int(quantity))*100,2)
+    except:
+        percentage = "0"
+    print ("\"Maxwidth_rarity\": \"" + str(percentage)+"%\" ,")
+
     mirroringval = (dict[j]["trait_mirroring"])
     print ("\"Mirroring_value\": \"" + mirroringval + "\",")
     if mirroringval == "0,1,2":
@@ -168,14 +219,14 @@ for j in range(0,numberofboxes):
         mirroringval = 62  
 
 
-    mirroringrarity = (rarity["boxtraits"][2]["mirroring"][int(mirroringval)])
+    mirroringrarity = (rarity["boxtraits"][7]["mirroring"][int(mirroringval)])
     percentage = round((int(mirroringrarity) / int(quantity))*100,2)
     print ("\"Mirroring_rarity\": \"" + str(percentage)+"%\",")
 
     shapeval = (dict[j]["trait_shapes"])
     print("\"Shape_value\": \"" + str(shapeval) + "\",")
     shapeval = shapeval-1
-    shaperarity = (rarity["boxtraits"][3]["shapes"][int(shapeval)])
+    shaperarity = (rarity["boxtraits"][8]["shapes"][int(shapeval)])
     percentage = round((int(shaperarity) / int(quantity))*100,2)
     print ("\"Shape_rarity\": \"" + str(percentage)+"%\",")
 
@@ -183,21 +234,21 @@ for j in range(0,numberofboxes):
     print("\"Spread_value\": \"" + str(spreadval) + "\"," )
     spreadval = spreadval[:-1]
     spreadval = int(spreadval)-1
-    spreadrarity = (rarity["boxtraits"][4]["spread"][int(spreadval)])
+    spreadrarity = (rarity["boxtraits"][9]["spread"][int(spreadval)])
     percentage = round((int(spreadrarity) / int(quantity))*100,2)
     print ("\"Spread_rarity\": \"" + str(percentage)+"%\",")
 
     hueval = (dict[j]["trait_hue"])
     print("\"Hue_value\": \"" + str(hueval) + "\"," )
     hueval = int(hueval)-1
-    huerarity = (rarity["boxtraits"][5]["hue"][int(hueval)])
+    huerarity = (rarity["boxtraits"][10]["hue"][int(hueval)])
     percentage = round((int(huerarity) / int(quantity))*100,2)
     print ("\"Hue_rarity\": \"" + str(percentage)+"%\",")
 
     lightnessval = (dict[j]["trait_lightness"])
     print("\"Lightness_value\": \"" + str(lightnessval) + "\",")
     lightnessval = int(lightnessval)-1
-    lightnessrarity = (rarity["boxtraits"][6]["lightness"][int(lightnessval)])
+    lightnessrarity = (rarity["boxtraits"][11]["lightness"][int(lightnessval)])
     percentage = round((int(lightnessrarity) / int(quantity))*100,2)
     print ("\"Lightness_rarity\": \"" + str(percentage)+"%\",")
 
@@ -209,7 +260,7 @@ for j in range(0,numberofboxes):
             animationval = n 
 
 
-    animationrarity = (rarity["boxtraits"][7]["animation"][int(animationval)])
+    animationrarity = (rarity["boxtraits"][12]["animation"][int(animationval)])
     percentage = round((int(animationrarity) / int(quantity))*100,2)
     print ("\"Animation_rarity\": \"" + str(percentage)+"%\",")
 
@@ -218,7 +269,7 @@ for j in range(0,numberofboxes):
     print("\"Shades_value\": \"" + str(shadesval) + "\",")
 #    shadesval = shadesval[:-1]
     shadesval = int(shadesval)-1
-    shadesrarity = (rarity["boxtraits"][8]["shades"][int(shadesval)])
+    shadesrarity = (rarity["boxtraits"][13]["shades"][int(shadesval)])
     percentage = round((int(shadesrarity) / int(quantity))*100,2)
     print ("\"Shades_rarity\": \"" + str(percentage)+"%\",")
 
@@ -227,7 +278,7 @@ for j in range(0,numberofboxes):
     print("\"Hatching_value\": \"" + str(hatchingval) + "\",")
 #    hatchingval = hatchingval[:-1]
     hatchingval = int(hatchingval)-1
-    hatchingrarity = (rarity["boxtraits"][9]["hatching"][int(hatchingval)])
+    hatchingrarity = (rarity["boxtraits"][14]["hatching"][int(hatchingval)])
     percentage = round((int(hatchingrarity) / int(quantity))*100,2)
     print ("\"Hatching_rarity\": \"" + str(percentage)+"%\",")
 
@@ -237,7 +288,7 @@ for j in range(0,numberofboxes):
     	contrastval = contrastval[:-1]
     print("\"Contrast_value\": \"" + str(contrastval) + "\",")
     contrastval = int(contrastval)-1
-    contrastrarity = (rarity["boxtraits"][10]["contrast"][int(contrastval)])
+    contrastrarity = (rarity["boxtraits"][15]["contrast"][int(contrastval)])
     percentage = round((int(contrastrarity) / int(quantity))*100,2)
     print ("\"Contrast_rarity\": \"" + str(percentage)+"%\"")
 
