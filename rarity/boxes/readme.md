@@ -51,26 +51,25 @@ done
 
 [3]  - setup - npm i puppeteer  , execute via script above ^
 
-const puppeteer = require('puppeteer');
+        # collect screem pacture images with puppeteer headless browser
+        const puppeteer = require('puppeteer');
 
-//const args = process.argv;
-var x = process.argv[2];
+        //const args = process.argv;
+        var x = process.argv[2];
 
-var filename="file:///home/greg/puppeteer/";
-var newfilename="file:///home/greg/puppeteer/";
+        var filename="file:///home/greg/puppeteer/";
+        var newfilename="file:///home/greg/puppeteer/";
 
+        (async () => {
+          const browser = await puppeteer.launch();
+          const page = await browser.newPage();
 
-
-(async () => {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-
-  var filename2 = filename + x + ".svg";
-  await page.goto(filename2);
-  var newfilename2 =  x + ".png";
-  await page.screenshot({ path: newfilename2 });
-  await browser.close();
-})();
+          var filename2 = filename + x + ".svg";
+          await page.goto(filename2);
+          var newfilename2 =  x + ".png";
+          await page.screenshot({ path: newfilename2 });
+          await browser.close();
+        })();
 
 
 
