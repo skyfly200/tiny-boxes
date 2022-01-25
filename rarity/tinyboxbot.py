@@ -8,6 +8,7 @@ from discord import Embed
 from discord import File
 import requests
 import datetime
+import numpy
 
 
 #import os
@@ -17,7 +18,7 @@ from discord.ext import commands
 
 # Grab the API token from the .env file.
 #DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
-DISCORD_TOKEN="##########################################################"
+DISCORD_TOKEN="#############################################"
 
 OPENSEAAPI_SUBURL = "https://api.opensea.io/api/v1/asset/0x46F9A4522666d2476a5F5Cd51ea3E0b5800E7f98/"
 TINYBOXAPI_SUBURL = "https://tinybox.shop/.netlify/functions/metadata?id="
@@ -343,13 +344,26 @@ async def box(ctx, *args):
 
 	# would like to make this work
 
-	#avg_rarity = (int(col_rarity[0: -1]) + int(row_rarity[0: -1]) + int(mirroring_rarity[0: -1]) + int(shape_rarity[0: -1])+ int(spread_rarity[0: -1]) + int(lightess_rarity[0: -1]) + int(animation_rarity[0: -1]) + int(shades_rarity[0: -1]) + int(hatching_rarity[0: -1]) + int(conrast_rarity[0: -1]))
+	try:
+		#avg_rarity = float(int(col_rarity[0: -1])) + float(int(row_rarity[0: -1])) + float(int(mirroring_rarity[0: -1])) + float(int(shape_rarity[0: -1])) + float(int(spread_rarity[0: -1])) + float(int(lightess_rarity[0: -1])) + float(int(animation_rarity[0: -1])) + float(int(shades_rarity[0: -1])) + float(int(hatching_rarity[0: -1])) + float(int(conrast_rarity[0: -1]))
+		avg_rarity = (float(col_rarity[0: -1]) + float(row_rarity[0: -1]) + float(mirroring_rarity[0: -1]) + float(shape_rarity[0: -1]) + float(spread_rarity[0: -1]) + float(lightess_rarity[0: -1]) + float(animation_rarity[0: -1]) + float(shades_rarity[0: -1]) + float(hatching_rarity[0: -1]) + float(conrast_rarity[0: -1]))/ 10
+		print("rarity total:")
+		print(avg_rarity)
+	except:
+		pass
+
 	print("oo")
-	print(col_rarity[0: -1])
 	print("oo")
+	print("oo")
+	print("oo")
+	print( type(float(col_rarity[0: -1])))
+	#print( float(col_rarity[0: -1]) + float(animation_rarity[0: -1]) + float(row_rarity[0: -1]) + float(mirroring_rarity[0: -1]) + float(shape_rarity[0: -1]) + float(spread_rarity[0: -1]) + float(lightess_rarity[0: -1]))
+	avg_rarity = round((float(col_rarity[0: -1]) + float(animation_rarity[0: -1]) + float(row_rarity[0: -1]) + float(mirroring_rarity[0: -1]) + float(shape_rarity[0: -1]) + float(spread_rarity[0: -1]) + float(lightness_rarity[0: -1]) + float(shades_rarity[0: -1]) + float(hatching_rarity[0: -1]) + float(contrast_rarity[0: -1])) / 10, 2)
+
+	avg_rarity = str(avg_rarity) + "%"
 
 	#traits
-	#embed.add_field(name="Avg Rarity", value=avg_rarity, inline=True)
+	embed.add_field(name="Rarity rating", value=avg_rarity, inline=True)
 	embed.add_field(name="Scheme", value=str(trait_scheme), inline=True)
 	embed.add_field(name="Columns", value=str(trait_columns)+" ~ "+str(col_rarity), inline=True)
 	embed.add_field(name="Rows", value=str(trait_rows)+" ~ "+str(row_rarity), inline=True)
