@@ -14,6 +14,12 @@ traitsToRarity.py   - this script is run via "python3 traitsToRarity.py > rarity
 
 
 
-rarityAndTraitsToIndex.py   - this script is run via "rarityAndTraitsToIndex.py > rarity_by_box.json" it generates a queryable api for each NFT's trait rarity
+rarityAndTraitsToIndex.py   - this script is run via "python3 rarityAndTraitsToIndex.py > rarity_by_box.json" it generates a queryable api for each NFT's trait rarity
 
 
+# run discord bot
+
+tinyboxbot.py   - this script is run via "python3 tinyboxbot.py" 
+                - install dependencies - pip3 install datetime requests discord
+                
+                
