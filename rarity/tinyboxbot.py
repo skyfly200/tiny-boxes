@@ -8,7 +8,6 @@ from discord import Embed
 from discord import File
 import requests
 import datetime
-import numpy
 
 
 #import os
