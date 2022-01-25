@@ -1,11 +1,14 @@
+# NFT Rarity Display bot for discord
+# MIT GPL 2022 Greg Willson greg@biomassiv.es
+# Written for tinyboxes - tinybox.shop
+
 # Import discord.py. Allows access to Discord's API.
 import discord
 from discord import Embed
 from discord import File
 import requests
-#import cairosvg
 import datetime
-#from cairosvg import svg2png
+
 
 #import os
 #from dotenv import load_dotenv
@@ -14,7 +17,7 @@ from discord.ext import commands
 
 # Grab the API token from the .env file.
 #DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
-DISCORD_TOKEN="ODg3NTE5NzI0NDU0NDE2Mzg2.YUFVJw.ZLf-jJKusyGSnxx1fGKb9vL9aII"
+DISCORD_TOKEN="##########################################################"
 
 OPENSEAAPI_SUBURL = "https://api.opensea.io/api/v1/asset/0x46F9A4522666d2476a5F5Cd51ea3E0b5800E7f98/"
 TINYBOXAPI_SUBURL = "https://tinybox.shop/.netlify/functions/metadata?id="
@@ -67,21 +70,16 @@ async def box(ctx, *args):
 	print("---------------------------------------------")
 	brief = "Return a custom TinyBoxes NFT stats report."
 	response = "Tinybox NFT Status"
-	print("hello there : Collie Buddz 00")
 	ELEMENT = ctx.message.content
-	print("hello there : Collie Buddz 00 elem:" + ELEMENT)
+	print("ELEMENT ID: " + ELEMENT)
 	SUBELEMENT =  ELEMENT.split(' ')
-	print("hello there : Collie Buddz 00")
 	SUBSUB0 =  SUBELEMENT[1]  
-	print("hello there : Kabaka Pyramid: " + SUBSUB0)
+	print("SUBSUB0: " + SUBSUB0)
 	SUBSUB = SUBSUB0[0 : 1]
-	print("hello there : baba: " + SUBSUB)
+	print("SUBSUB pos/neg value: " + SUBSUB)
 	if (SUBSUB == "-"):
-		print("helllo there : Collie Buddz 2a")
-		print("helllo there : Collie Buddz 2a" + SUBSUB)
 		SUBSUB2 = 9936 + int(SUBSUB0)
 		LE_num = SUBSUB0[1 : 3] 
-		print("helllo there : Collie Buddz 2b")
 		SUBSUB2_0 = 11579208923731619542357098500868790785326998466564056403945758400791312963
 		print(SUBSUB2)
 		print("helllo there : Collie Buddz 2c")
@@ -98,20 +96,9 @@ async def box(ctx, *args):
 		print(OPENSEAAPI_URL)
 
 
-#	try:
-#	    if (DONT_SHOW_RARITY == "true"):
-#                print ( "Dont show rarity 2" )
-#	except blah:
-#	    pass
-
-	print("hello there : Rita Marley: ")
 	# get token data from api.opensea.io
 	NFTdata = requests.request("GET", API_URL)
 	OPENSEAdata = requests.request("GET", OPENSEAAPI_URL , headers={"X-APi-Key":"44c8a04c1fb745c3adc4b8e819328295"} )
-	print("hello there : Rita Marley:1 ")
-	print (API_URL)
-	print("hello there : Rita Marley:2 ")
-	print ( OPENSEAdata.json()['id'] )
 
 	#last_sale = OPENSEAdata.json()['last_sale']['payment_token']['eth_price']
 	#current_price = OPENSEAdata.json()['orders']['current_price']
@@ -124,13 +111,11 @@ async def box(ctx, *args):
 	footer_icon = "https://lh3.googleusercontent.com/jnY8ZP3Keh11pKLeBOHtRgGBwfUY3ghlAnfub6vI37FuLtzYfna9SjoE8gs7hXbEbw1GmsKDDkgdvoFqEKJZysfiRqScz-GO4rszPQ=s120"
 
 	#created = NFTdata.json()['asset_contract']['created_date']
-	print("hello there : Protoge reggae")
 	#created = datetime.date.created
 	#print(img)
 
 	#format the description
 	description = NFTdata.json()['description']
-	print("hello there : Collie Buddz 9a")
 	SUBdesc = description.split(' ')
 	description = SUBdesc[0] + " " + SUBdesc[1] + " " + SUBdesc[2] + " " + SUBdesc[3] + " " + SUBdesc[4] + " " + SUBdesc[5] + " " + SUBdesc[6]
 	#print(img)
@@ -138,7 +123,6 @@ async def box(ctx, *args):
 	token_id = NFTdata.json()['tokenID']
 	after_market = NFTdata.json()['external_url']
 	today = datetime.date.today()
-	print("helllo there : Collie Buddz 9b")
 
         #file conversion for svg to png
 	#cairosvg.svg2png(bytestring=svg, url=img, write_to="/tmp/output.png" width=400 height=400)
@@ -146,7 +130,6 @@ async def box(ctx, *args):
 
 	#file = discord.File("sample.png")
 	#file = discord.File("/tmp/output.png")
-	print(" Bob Marley")
 
 	try:
             current_price = OPENSEAdata.json()['orders'][0]['current_price']
@@ -156,12 +139,8 @@ async def box(ctx, *args):
 	sales = OPENSEAdata.json()['num_sales']
 	sales = int(sales)
 	print(" Queen Ifrica 3!!")
-	print(" Queen Ifrica 3!!")
-	print(" Queen Ifrica 3!!")
 	print(sales)
 	print(current_price)
-	print(" Queen Ifrica 3!!")
-	print(" Queen Ifrica 3!!")
 	print(" Queen Ifrica 3!!")
 
 		
@@ -176,7 +155,6 @@ async def box(ctx, *args):
 	#	last_sale_eventtype = NFTdata.json()['last_sale']['event_type']
 	#	last_sale_timestamp = NFTdata.json()['last_sale']['event_timestamp']
 	#	last_sale_total_price = NFTdata.json()['last_sale']['total_price']
-	print(" Queen Ifrica 3!!")
 #		try: 
 #			orders_array_len = len(NFTdata.json()['orders'])
 #			# if orders_array_len != ""
@@ -215,22 +193,36 @@ async def box(ctx, *args):
 	tinybox_link = NFTdata.json()['external_url']
 	#num_sales = NFTdata.json()['num_sales']
 
-	if (SUBSUB == "-"):
+
+	#SUBSUB0 = int(SUBSUB0)
+
+	if SUBSUB == "-":
 		embed = discord.Embed(color=0xff9999, title="Tinybox Limited Edition NFT#" + LE_num)
+		img = "https://raw.githubusercontent.com/skyfly200/tiny-boxes/master/rarity/boxesLE/" + SUBSUB0 + ".png"
+
+#	elif SUBSUB0 >= 0 and SUBSUB0 < 1000:
+#		embed = discord.Embed(color=0xff9999, title="Tinybox NFT#" + SUBSUB0)
+#		print (".lt. 999 boxes")
+#		img = "https://raw.githubusercontent.com/skyfly200/tiny-boxes/master/rarity/boxes/" + SUBSUB0 + ".png"
+#		print (img)
+
 	else:
 		embed = discord.Embed(color=0xff9999, title="Tinybox NFT#" + SUBSUB0)
-		img = "https://raw.githubusercontent.com/skyfly200/tiny-boxes/master/rarity/boxes/" + SUBSUB0 + ".png"
+		print (".gt. 999 boxes")
+		folder = "boxes"
+		SUBSUB0val = int(SUBSUB0)
+		if SUBSUB0val > 999:
+		    folder = "boxes2" 
+		img = "https://raw.githubusercontent.com/skyfly200/tiny-boxes/master/rarity/" + folder + "/" + SUBSUB0 + ".png"
 		print (img)
-		print ("Kingston be wise")
-		embed.set_image(url=img)
 
-	print(" flag6")
+
+
+	embed.set_image(url=img)
 	embed.add_field(name="Minting", value=description, inline=True)
 	#embed.add_field(name="Number of Sales", value=num_sales, inline=True)
 	#embed.add_field(name="Details", value=tinybox_link + " \n" + permalink, inline=True)
 	embed.add_field(name="Details", value=tinybox_link, inline=True)
-
-
 
 
 	#img = NFTdata.json()['image_thumbnail_url']
@@ -252,7 +244,6 @@ async def box(ctx, *args):
 		eth_price = current_price
 		print(" No current price listing in opendsea data")
 
-	print("you are beautiful")
 	embed.add_field(name="Current price:", value=eth_price, inline=True)
 	#embed.add_field(name="Created", value=created[ 0 : 10 ], inline=True)
 
@@ -261,76 +252,59 @@ async def box(ctx, *args):
 		print("j loop#:" + str(j) + " val: " + NFTdata.json()['attributes'][j]['trait_type'] )
 		if NFTdata.json()['attributes'][j]['trait_type'] == "Scheme":
 			trait_scheme = NFTdata.json()['attributes'][j]['value']
-	print("I love you 0")
-	print(trait_scheme)
 
 	for j in range(0,20):
 		print("j1 loop#:" + str(j) + " val: " + NFTdata.json()['attributes'][j]['trait_type'] )
 		if NFTdata.json()['attributes'][j]['trait_type'] == "Columns":
 			trait_columns = NFTdata.json()['attributes'][j]['value']
-	print("I love you 00")
-	print(trait_columns)
-
 
 	for j in range(0,20):
 		if NFTdata.json()['attributes'][j]['trait_type'] == "Rows":
 			trait_rows = NFTdata.json()['attributes'][j]['value']
-	print("I love you 2")
 
 	for j in range(0,20):
 		if NFTdata.json()['attributes'][j]['trait_type'] == "Mirroring":
 			trait_mirroring = NFTdata.json()['attributes'][j]['value']
-	print("I love you 3")
 
 	for j in range(0,20):
 		if NFTdata.json()['attributes'][j]['trait_type'] == "Saturation":
 			trait_saturation = NFTdata.json()['attributes'][j]['value']
-	print("I love you 3")
 
 	for j in range(0,20):
 		if NFTdata.json()['attributes'][j]['trait_type'] == "Shapes":
 			trait_shapes = NFTdata.json()['attributes'][j]['value']
-	print("I love you 3")
 
 	for j in range(0,20):
 		if NFTdata.json()['attributes'][j]['trait_type'] == "Spread":
 			trait_spread = NFTdata.json()['attributes'][j]['value']
-	print("I love you 3")
 
 	for j in range(0,20):
             if NFTdata.json()['attributes'][j]['trait_type'] == "Hue":
 	            trait_hue = NFTdata.json()['attributes'][j]['value']
-	print("I love you 3")
 
 	for j in range(0,20):
             if NFTdata.json()['attributes'][j]['trait_type'] == "Lightness":
 	            trait_lightness = NFTdata.json()['attributes'][j]['value']
-	print("I love you 3")
 
 	for j in range(0,20):
             if NFTdata.json()['attributes'][j]['trait_type'] == "Animation":
 	            trait_animation = NFTdata.json()['attributes'][j]['value']
-	print("I love you 3")
 
 	for j in range(0,20):
             if NFTdata.json()['attributes'][j]['trait_type'] == "Shades":
 	            trait_shades = NFTdata.json()['attributes'][j]['value']
-	print("I love you 3")
 
 	for j in range(0,20):
             if NFTdata.json()['attributes'][j]['trait_type'] == "Hatching":
 	            trait_hatching = NFTdata.json()['attributes'][j]['value']
-	print("I love you Hatching")
 
 	for j in range(0,20):
             if NFTdata.json()['attributes'][j]['trait_type'] == "Contrast":
 	            trait_contrast = NFTdata.json()['attributes'][j]['value']
-	print("I love you Contrast")
 
 	for j in range(0,20):
             if NFTdata.json()['attributes'][j]['trait_type'] == "Phase":
 	            trait_phase = NFTdata.json()['attributes'][j]['value']
-	print("I love you Phase")
 	if (SUBSUB == "-"):
 	    trait_phase = "Limited Edition"
 
@@ -339,38 +313,23 @@ async def box(ctx, *args):
 	            trait_rendered = NFTdata.json()['attributes'][j]['value']
             else:
                     trait_rendered = 0
-	print("I love you Rendered")
 
 
-	print("I love you set")
 
 	#rarity
 	traitvar = int(SUBSUB0)
 	col_rarity = BOXATTR[traitvar]['Columns_rarity']
-	print("hoolo_col")
 	row_rarity = BOXATTR[traitvar]['Row_rarity']
-	print("hoolo_row")
 	mirroring_rarity = BOXATTR[traitvar]['Mirroring_rarity']
-	print("hoolo_mir")
 	saturation_rarity = BOXATTR[traitvar]['Saturation_rarity']
-	#saturation_rarity = "TBA"
-	print("hoolo_satura")
 	shape_rarity = BOXATTR[traitvar]['Shape_rarity']
-	print("hoolo_shap")
 	spread_rarity = BOXATTR[traitvar]['Spread_rarity']
-	print("hoolo_spr")
 	hue_rarity = BOXATTR[traitvar]['Hue_rarity']
-	print("hoolo_hue")
 	lightness_rarity = BOXATTR[traitvar]['Lightness_rarity']
-	print("hoolo_lighness")
 	animation_rarity = BOXATTR[traitvar]['Animation_rarity']
-	print("hoolo_anima")
 	shades_rarity = BOXATTR[traitvar]['Shades_rarity']
-	print("hoolo_shades")
 	hatching_rarity = BOXATTR[traitvar]['Hatching_rarity']
-	print("hoolo_hatching")
 	contrast_rarity = BOXATTR[traitvar]['Contrast_rarity']
-	print("hoolo_contra")
 
 	minheight_value = BOXATTR[traitvar]['minheight_value']
 	Minheight_rarity = BOXATTR[traitvar]['Minheight_rarity']
@@ -384,51 +343,34 @@ async def box(ctx, *args):
 
 	# would like to make this work
 
-	avg_rarity = (int(col_rarity[0: -1]) + int(row_rarity[0: -1]) + int(mirroring_rarity[0: -1]) + int(shape_rarity[0: -1])+ int(spread_rarity[0: -1]) + int(lightess_rarity[0: -1]) + int(animation_rarity[0: -1]) + int(shades_rarity[0: -1]) + int(hatching_rarity[0: -1]) + int(conrast_rarity[0: -1]))
+	#avg_rarity = (int(col_rarity[0: -1]) + int(row_rarity[0: -1]) + int(mirroring_rarity[0: -1]) + int(shape_rarity[0: -1])+ int(spread_rarity[0: -1]) + int(lightess_rarity[0: -1]) + int(animation_rarity[0: -1]) + int(shades_rarity[0: -1]) + int(hatching_rarity[0: -1]) + int(conrast_rarity[0: -1]))
 	print("oo")
-	print("avg_rarity")
+	print(col_rarity[0: -1])
 	print("oo")
 
 	#traits
 	#embed.add_field(name="Avg Rarity", value=avg_rarity, inline=True)
 	embed.add_field(name="Scheme", value=str(trait_scheme), inline=True)
-	print("oo1")
 	embed.add_field(name="Columns", value=str(trait_columns)+" ~ "+str(col_rarity), inline=True)
-	print("oo2")
 	embed.add_field(name="Rows", value=str(trait_rows)+" ~ "+str(row_rarity), inline=True)
-	print("oo3")
 	embed.add_field(name="Mirroring", value=str(trait_mirroring)+" ~ "+str(mirroring_rarity), inline=True)
-	print("oo4")
 	embed.add_field(name="Saturation", value=str(trait_saturation)+" ~ "+str(saturation_rarity), inline=True)
-	print("oo5")
 	embed.add_field(name="Shapes", value=str(trait_shapes)+" ~ "+str(shape_rarity), inline=True)
-	print("oo6")
 	embed.add_field(name="Spread", value=str(trait_spread)+" ~ "+str(spread_rarity), inline=True)
-	print("oo7")
 	embed.add_field(name="Hue", value=str(trait_hue)+" ~ "+str(hue_rarity), inline=True)
-	print("oo8")
 	embed.add_field(name="Lightness", value=str(trait_lightness)+" ~ "+str(lightness_rarity), inline=True)
-	print("oo9")
 	embed.add_field(name="Animation", value=str(trait_animation)+" ~ "+str(animation_rarity), inline=True)
-	print("avg10")
 	embed.add_field(name="Shades", value=str(trait_shades)+" ~ "+str(shades_rarity), inline=True)
-	print("avg11")
 	embed.add_field(name="Hatching", value=str(trait_hatching)+" ~ "+str(hatching_rarity), inline=True)
-	print("avg12")
 	embed.add_field(name="Contrast", value=str(trait_contrast)+" ~ "+str(contrast_rarity), inline=True)
-	print("oo13")
 	embed.add_field(name="Width Min", value=str(minwidth_value) + " ~ " + str(Minwidth_rarity), inline=True)
 	embed.add_field(name="Width Max", value=str(maxwidth_value) + " ~ " + str(Maxwidth_rarity), inline=True)
 	embed.add_field(name="Height Min", value=str(minheight_value) + " ~ " + str(Minheight_rarity), inline=True)
 	embed.add_field(name="Height Max", value=str(maxheight_value) + " ~ " + str(Maxheight_rarity), inline=True)
-	print("hoolo_imgoo4")
 
 	embed.add_field(name="Aftermarket", value=permalink, inline=True)
 	embed.set_footer(text='Copyright (MIT) 2022 PolyTope Solutions', icon_url=footer_icon)
-	print("hoolo_imgoo5")
-	#await ctx.channel.send(response, embed=embed)
 	await ctx.channel.send(embed=embed)
-	print("hoolo_imgoo6")
 
 @bot.event
 async def on_command_error(ctx, error):
