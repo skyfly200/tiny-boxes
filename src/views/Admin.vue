@@ -271,6 +271,13 @@ export default Vue.extend({
       const refeshEndpoint  = 'https://api.opensea.io/asset/' + this.$store.state.tinyboxesAddress + '/' + id + '/?force_update=true';
       return await (this as any).$http.get(refeshEndpoint);
     },
+    async refreshAllTokensMetadata() {
+      // loop through all minted tokens
+      let id = 0;
+      for (id;id<=this.tokenCount;id++)
+        this.refreshTokenMetadata(id + '');
+      // loop through all LE tokens
+    },
     async lookupSales() {
       const t = this as any;
       t.transfers = await t.$http.get(
