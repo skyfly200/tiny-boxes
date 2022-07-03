@@ -1,4 +1,2 @@
 # Introduction
-TinyBoxes is a first of its kind Animated Proto-Generative NFT, rendered down to SVG art 100% on-chain.
-With customizable options, randomized traits and dynamic render settings, TinyBoxes pushes the bounds of whats possible NFTs.
-Our contract has been meticulously optimized to save you gas. We used bit packing to squeeze each tokens data into just 256 bits.
+TinyBoxes is a first of its kind Animated Proto-Generative NFT, rendered down to SVG art 100% on-chain, and squeezed into just 256 bits. With customizable options, randomized traits and dynamic render settings, TinyBoxes pushes the bounds of what is possible with generative NFT artwork when advanced RNG algorithms intersect with human ingenuity. And as if that wasn’t already cool enough, we’ve meticulously optimized the TinyBoxes contract in order to save you every last drop of gas possible. You’re welcome ;-)

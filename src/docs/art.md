@@ -1,5 +1,5 @@
 # Art
-TinyBoxes are animated one-of-a-kind art pieces generated from the following traits. 
+TinyBoxes are animated, one-of-a-kind SVG art pieces generated from the following traits: 
 
 ## Colors
 ### Root Color
@@ -59,7 +59,7 @@ The range of width and height of shape sizes
 
 ## Positioning
 ### Grid
-The number of rows and columns that shapes are distributed accross
+The number of rows and columns that shapes are distributed across
 
 ### Spread
 How much the shapes positions may diverge from the grid 0-100%
