@@ -15,6 +15,7 @@ module.exports = {
     editLinks: false,
     sidebar: [
       ['/', 'Home'],
+      ['/story', 'Story'],
       ['/art', 'Art'],
       ['/dapp', 'DApp'],
       ['/metadata', 'Metadata'],
