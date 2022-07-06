@@ -274,7 +274,7 @@ export default Vue.extend({
     async refreshAllTokensMetadata() {
       // loop through all minted tokens
       let id = 0;
-      for (id;id<=this.tokenCount;id++)
+      for (id;id<=(this as any).tokenCount;id++)
         this.refreshTokenMetadata(id + '');
       // loop through all LE tokens
     },
