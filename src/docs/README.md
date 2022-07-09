@@ -2,7 +2,7 @@
 home: true
 heroImage: ./img/logo.svg
 heroText: TinyBoxes Docs
-tagline: Discover the inner workings of TinyBoxes, so you can learn the tricks to minting the coolest Box around ;-)
+tagline: Discover the inner workings of TinyBoxes, so you can learn the tricks to minting the coolest TinyBox around ;-)
 actionText: Get Started →
 actionLink: /intro
 features:
