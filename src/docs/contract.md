@@ -23,7 +23,7 @@ Settings may be updated by a token owner or operator (ie. approvedFor) by callin
 These settings are used when rendering the tokens art on the DAPP and for the Metadata API, allowing you to update how your token appears on secondary markets and wallets.
 
 ### Background
-The background color of the token art.
+The background color of the token art. An RGB value in hexadecimal format.
 
 ### Duration
 Defaults to 10. Set higher to slow and lengthen animations, lower to speed up and shorten.
