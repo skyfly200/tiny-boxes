@@ -1,5 +1,5 @@
 # Story
-A concept originally conceived at  ETH Denver 2020 by NateAlex, Tinyboxes began through collaboration driven by a shared interest in on-chain innovation.
+A concept originally conceived at  ETH Denver 2020 by NateAlex, TinyBoxes began through collaboration driven by a shared interest in on-chain innovation.
 
 Development began summer 2020 and continued the rest of the year. During that time we were working hard on developing our DAPP, perfecting the art, refining the experience, adding animations and reducing gas on mint.
 
