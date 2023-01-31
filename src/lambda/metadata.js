@@ -122,6 +122,9 @@ exports.handler = async (event, context) => {
     
     console.log('Lookup Complete!')
 
+    // Remove doctype for valid OpenSea display
+    art = art.replace('<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">', '');
+
     // convert static art from SVG to PNG
 
     // capture MP4 video of SVG animation
