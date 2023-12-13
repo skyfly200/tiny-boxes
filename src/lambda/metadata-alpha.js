@@ -92,7 +92,7 @@ exports.handler = async (event, context) => {
     } else if (id === undefined) {
       // complain if id is missing
       console.log('Undefined ID parameter is required')
-      return generateResponse('Undefined ID parameter is required', 400)
+      return generateResponse('Undefined ID parameter is required', 204)
     }
 
     // check token exists and get owner
