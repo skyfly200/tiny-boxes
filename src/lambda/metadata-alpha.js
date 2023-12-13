@@ -83,7 +83,7 @@ exports.handler = async (event, context) => {
   try {
     const id = event.queryStringParameters.id
 
-    console.log(CONTRACT_ADDRESS);
+    //console.log(CONTRACT_ADDRESS);
 
     if (event.httpMethod !== 'GET') {
       // Only GET requests allowed
@@ -114,7 +114,6 @@ exports.handler = async (event, context) => {
     // TODO: lookup block for mint date calculation
     //const blockPromise = lookupMintedBlock(id);
     
-
     // await token data
     console.log("Awaiting requests...");
     let [data, art, block] = ['', '', '']
