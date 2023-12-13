@@ -146,8 +146,8 @@ exports.handler = async (event, context) => {
       .catch((err) => console.error(err))
     art = await artPromise
       .catch((err) => console.error(err))
-    // block = await blockPromise
-    //   .catch((err) => console.error(err))
+    block = await blockPromise
+      .catch((err) => console.error(err))
     if (data === undefined || art === undefined || block === undefined) return generateResponse('Server Error', 500)
     
     console.log('Lookup Complete!')
