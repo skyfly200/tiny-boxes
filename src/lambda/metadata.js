@@ -51,31 +51,57 @@ class ReadableString extends Readable {
   }
 }
 
+// function lookupMintedBlock(id) {
+//   const idHash = '0x' + ((id > 2222) ? BigInt(id) : parseInt(id, 10) ).toString(16).padStart(64, '0');
+//   console.log("Finding Token with id hash: ", idHash);
+//   return new Promise((resolve, reject) => {
+//     web3.eth
+//       .subscribe('logs', {
+//         address: CONTRACT_ADDRESS,
+//         topics: [
+//           '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+//           '0x0000000000000000000000000000000000000000000000000000000000000000',
+//           null,
+//           idHash,
+//         ],
+//       })
+//       .on("data", async (log) => {
+//         console.log('...Minted Block...')
+//         web3.eth.getBlock(log.blockNumber, (err, response) => {
+//           if (err) reject(err);
+//           else resolve(response);
+//         })
+//       })
+//       .on("error", function(log) {
+//         console.error(log);
+//       });
+//   })
+// }
+
 function lookupMintedBlock(id) {
-  const idHash = '0x' + ((id > 2222) ? BigInt(id) : parseInt(id, 10) ).toString(16).padStart(64, '0');
+  const idHash = '0x' + ((id > 2222) ? BigInt(id) : parseInt(id, 10)).toString(16).padStart(64, '0');
   console.log("Finding Token with id hash: ", idHash);
+
   return new Promise((resolve, reject) => {
-    web3.eth
-      .subscribe('logs', {
-        address: CONTRACT_ADDRESS,
-        topics: [
-          '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
-          '0x0000000000000000000000000000000000000000000000000000000000000000',
-          null,
-          idHash,
-        ],
-      })
-      .on("data", async (log) => {
-        console.log('...Minted Block...')
-        web3.eth.getBlock(log.blockNumber, (err, response) => {
-          if (err) reject(err);
-          else resolve(response);
-        })
-      })
-      .on("error", function(log) {
-        console.error(log);
-      });
-  })
+    web3.eth.getPastLogs({
+      fromBlock: 'earliest', // or specify a specific block number if known
+      toBlock: 'latest',
+      address: CONTRACT_ADDRESS,
+      topics: [
+        '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef', // ERC-20 Transfer Event signature
+        '0x0000000000000000000000000000000000000000000000000000000000000000', // From address (0x0 for mint events)
+        null, // To address
+        idHash, // Token ID
+      ],
+    }).then(logs => {
+      if (logs.length === 0) {
+        reject(new Error("No logs found for this token ID"));
+        return;
+      }
+      // Assuming the first log entry is the mint event
+      web3.eth.getBlock(logs[0].blockNumber).then(resolve).catch(reject);
+    }).catch(reject);
+  });
 }
 
 exports.handler = async (event, context) => {
@@ -83,7 +109,7 @@ exports.handler = async (event, context) => {
   try {
     const id = event.queryStringParameters.id
 
-    console.log(CONTRACT_ADDRESS);
+    //console.log(CONTRACT_ADDRESS);
 
     if (event.httpMethod !== 'GET') {
       // Only GET requests allowed
@@ -97,20 +123,22 @@ exports.handler = async (event, context) => {
 
     // check token exists and get owner
     console.log('Checking token of ID ', id, ' exists')
-    const owner = await tinyboxesContract.methods.ownerOf(id).call()
-    if (owner === '0x0000000000000000000000000000000000000000') {
+    const isLE = BigInt(id) > 2222;
+    const latest = isLE ? await tinyboxesContract.methods._tokenPromoIds().call() : await tinyboxesContract.methods._tokenIds().call()
+    if (id >= latest) {
       // complain if token is missing
-      console.log('Token ' + id + " dosn't exist")
-      return generateResponse('Token ' + id + " dosn't exist", 204)
+      console.log('Token ' + id + " doesn't exist")
+      return generateResponse('Token ' + id + " doesn't exist", 204)
+    } else {
+      const owner = await tinyboxesContract.methods.ownerOf(id).call()
     }
 
     // concurently lookup token data, palette, art & timestamp
     console.log('Looking Up Token Data...')
     const dataPromise = tinyboxesContract.methods.tokenData(id).call()
     const artPromise = tinyboxesContract.methods.tokenArt(id).call()
-    //const blockPromise = lookupMintedBlock(id);
+    const blockPromise = lookupMintedBlock(id);
     
-
     // await token data
     console.log("Awaiting requests...");
     let [data, art, block] = ['', '', '']
@@ -118,7 +146,9 @@ exports.handler = async (event, context) => {
       .catch((err) => console.error(err))
     art = await artPromise
       .catch((err) => console.error(err))
-    if (data === undefined || art === undefined) return generateResponse('Server Error', 500)
+    block = await blockPromise
+      .catch((err) => console.error(err))
+    if (data === undefined || art === undefined || block === undefined) return generateResponse('Server Error', 500)
     
     console.log('Lookup Complete!')
 
@@ -188,7 +218,7 @@ exports.handler = async (event, context) => {
       "Mono",
       "Random"
     ];
-    const isLE = BigInt(id) > 2222;
+
     const max256Int = 115792089237316195423570985008687907853269984665640564039457584007913129639936n;
     const description = (
       (isLE ? "Limited Edition " : "") +
@@ -313,6 +343,11 @@ exports.handler = async (event, context) => {
           display_type: "date",
           trait_type: 'Rendered',
           value: Date.now(),
+        },
+        {
+          display_type: "date",
+          trait_type: 'Minted',
+          value: (block.timestamp * 1000),
         },
       ],
     }
