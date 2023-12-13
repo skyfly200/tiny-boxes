@@ -51,31 +51,57 @@ class ReadableString extends Readable {
   }
 }
 
+// function lookupMintedBlock(id) {
+//   const idHash = '0x' + ((id > 2222) ? BigInt(id) : parseInt(id, 10) ).toString(16).padStart(64, '0');
+//   console.log("Finding Token with id hash: ", idHash);
+//   return new Promise((resolve, reject) => {
+//     web3.eth
+//       .subscribe('logs', {
+//         address: CONTRACT_ADDRESS,
+//         topics: [
+//           '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+//           '0x0000000000000000000000000000000000000000000000000000000000000000',
+//           null,
+//           idHash,
+//         ],
+//       })
+//       .on("data", async (log) => {
+//         console.log('...Minted Block...')
+//         web3.eth.getBlock(log.blockNumber, (err, response) => {
+//           if (err) reject(err);
+//           else resolve(response);
+//         })
+//       })
+//       .on("error", function(log) {
+//         console.error(log);
+//       });
+//   })
+// }
+
 function lookupMintedBlock(id) {
-  const idHash = '0x' + ((id > 2222) ? BigInt(id) : parseInt(id, 10) ).toString(16).padStart(64, '0');
+  const idHash = '0x' + ((id > 2222) ? BigInt(id) : parseInt(id, 10)).toString(16).padStart(64, '0');
   console.log("Finding Token with id hash: ", idHash);
+
   return new Promise((resolve, reject) => {
-    web3.eth
-      .subscribe('logs', {
-        address: CONTRACT_ADDRESS,
-        topics: [
-          '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
-          '0x0000000000000000000000000000000000000000000000000000000000000000',
-          null,
-          idHash,
-        ],
-      })
-      .on("data", async (log) => {
-        console.log('...Minted Block...')
-        web3.eth.getBlock(log.blockNumber, (err, response) => {
-          if (err) reject(err);
-          else resolve(response);
-        })
-      })
-      .on("error", function(log) {
-        console.error(log);
-      });
-  })
+    web3.eth.getPastLogs({
+      fromBlock: 'earliest', // or specify a specific block number if known
+      toBlock: 'latest',
+      address: CONTRACT_ADDRESS,
+      topics: [
+        '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef', // ERC-20 Transfer Event signature
+        '0x0000000000000000000000000000000000000000000000000000000000000000', // From address (0x0 for mint events)
+        null, // To address
+        idHash, // Token ID
+      ],
+    }).then(logs => {
+      if (logs.length === 0) {
+        reject(new Error("No logs found for this token ID"));
+        return;
+      }
+      // Assuming the first log entry is the mint event
+      web3.eth.getBlock(logs[0].blockNumber).then(resolve).catch(reject);
+    }).catch(reject);
+  });
 }
 
 exports.handler = async (event, context) => {
