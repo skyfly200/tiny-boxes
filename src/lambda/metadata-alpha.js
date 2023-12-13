@@ -112,7 +112,7 @@ exports.handler = async (event, context) => {
     const dataPromise = tinyboxesContract.methods.tokenData(id).call()
     const artPromise = tinyboxesContract.methods.tokenArt(id).call()
     // TODO: lookup block for mint date calculation
-    //const blockPromise = lookupMintedBlock(id);
+    const blockPromise = lookupMintedBlock(id);
     
     // await token data
     console.log("Awaiting requests...");
@@ -121,7 +121,11 @@ exports.handler = async (event, context) => {
       .catch((err) => console.error(err))
     art = await artPromise
       .catch((err) => console.error(err))
-    if (data === undefined || art === undefined) return generateResponse('Server Error', 500)
+    block = await blockPromise
+      .catch((err) => console.error(err))
+    if (data === undefined || art === undefined || block === undefined) return generateResponse('Server Error', 500)
+
+    console.log(block);
     
     console.log('Lookup Complete!')
 
