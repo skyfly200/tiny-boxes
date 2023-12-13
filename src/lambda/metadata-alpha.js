@@ -98,7 +98,7 @@ exports.handler = async (event, context) => {
     // check token exists and get owner
     console.log('Checking token of ID ', id, ' exists')
     const isLE = BigInt(id) > 2222;
-    const latest = isLE ? await tinyboxesContract.methods._tokenIds().call() : await tinyboxesContract.methods._tokenPromoIds().call()
+    const latest = isLE ? await tinyboxesContract.methods._tokenPromoIds().call() : await tinyboxesContract.methods._tokenIds().call()
     if (id >= latest) {
       // complain if token is missing
       console.log('Token ' + id + " doesn't exist")
