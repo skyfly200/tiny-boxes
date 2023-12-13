@@ -347,7 +347,7 @@ exports.handler = async (event, context) => {
         {
           display_type: "date",
           trait_type: 'Minted',
-          value: new Date(block.timestamp * 1000),
+          value: (block.timestamp * 1000),
         },
       ],
     }
