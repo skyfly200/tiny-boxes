@@ -149,8 +149,6 @@ exports.handler = async (event, context) => {
     block = await blockPromise
       .catch((err) => console.error(err))
     if (data === undefined || art === undefined || block === undefined) return generateResponse('Server Error', 500)
-
-    console.log(block)
     
     console.log('Lookup Complete!')
 
@@ -345,6 +343,12 @@ exports.handler = async (event, context) => {
           display_type: "date",
           trait_type: 'Rendered',
           value: Date.now(),
+        },
+        {
+          display_type: "date",
+          trait_type: 'Minted',
+          value: new Date(block.timestamp * 1000)
+          ,
         },
       ],
     }
