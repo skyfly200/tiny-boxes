@@ -104,8 +104,9 @@ exports.handler = async (event, context) => {
       // complain if token is missing
       console.log('Token ' + id + " doesn't exist")
       return generateResponse('Token ' + id + " doesn't exist", 204)
+    } else {
+      const owner = await tinyboxesContract.methods.ownerOf(id).call()
     }
-    const owner = await tinyboxesContract.methods.ownerOf(id).call()
 
     // concurently lookup token data, palette, art & timestamp
     console.log('Looking Up Token Data...')
