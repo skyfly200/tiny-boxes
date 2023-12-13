@@ -1,18 +1,10 @@
 import dotenv from 'dotenv'
 import Web3 from 'web3'
 import Readable from 'stream'
-import pinataSDK from '@pinata/sdk'
-import axios from 'axios'
-import FormData, { Stream } from 'form-data'
 import { tinyboxesABI } from '../tinyboxes-contract'
-import { resolve } from 'path'
-import fs from 'fs'
 dotenv.config()
 
 const {
-  PINATA_API_KEY,
-  PINATA_API_SECRET,
-  WALLET_PRIVATE_KEY,
   WEBSITE,
   EXTERNAL_URL_BASE,
   WEB3_PROVIDER_ENDPOINT,
