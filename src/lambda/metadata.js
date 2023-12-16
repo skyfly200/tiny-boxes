@@ -98,7 +98,7 @@ exports.handler = async (event, context) => {
       const owner = await tinyboxesContract.methods.ownerOf(id).call()
     }
 
-    // concurently lookup token data, palette, art & timestamp
+    // concurrently lookup token data, palette, art & timestamp
     console.log('Looking Up Token Data...')
     const dataPromise = tinyboxesContract.methods.tokenData(id).call()
     const artPromise = tinyboxesContract.methods.tokenArt(id).call()
