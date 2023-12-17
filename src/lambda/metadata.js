@@ -76,7 +76,7 @@ exports.handler = async (event, context) => {
     const id = event.queryStringParameters.id
     const bigID = BigInt(id);
     const minLE = BigInt("115792089237316195423570985008687907853269984665640564039457584007913129639935");
-    const maxLE = BigInt("115792089237316195423570985008687907853269984665640564039457584007913129639935") - BigInt(100);
+    const maxLE = BigInt("115792089237316195423570985008687907853269984665640564039457584007913129639835");
 
     //console.log(CONTRACT_ADDRESS);
 
@@ -99,11 +99,15 @@ exports.handler = async (event, context) => {
     console.log('Checking token of ID ', bigID, ' exists')
     
     const isLE = bigID >= maxLE;
-    const latest = isLE ? await tinyboxesContract.methods._tokenPromoIds().call() : await tinyboxesContract.methods._tokenIds().call()
+    const latest = isLE ?
+      minLE - BigInt(await tinyboxesContract.methods._tokenPromoIds().call()) :
+      BigInt(await tinyboxesContract.methods._tokenIds().call())
+
+    const exists = isLE ? bigID >= latest : bigID < latest
     
     console.log(bigID, minLE, isLE, latest)
 
-    if (bigID >= latest) {
+    if (!exists) {
       console.log('Token ' + bigID + " doesn't exist yet")
       return generateResponse('Token ' + bigID + " doesn't exist yet", 200)
     }
