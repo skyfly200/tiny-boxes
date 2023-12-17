@@ -75,6 +75,8 @@ exports.handler = async (event, context) => {
 
     const id = event.queryStringParameters.id
     const bigID = BigInt(id);
+    const minLE = BigInt("115792089237316195423570985008687907853269984665640564039457584007913129639935");
+    const maxLE = BigInt("115792089237316195423570985008687907853269984665640564039457584007913129639935") - BigInt(100);
 
     //console.log(CONTRACT_ADDRESS);
 
@@ -88,15 +90,22 @@ exports.handler = async (event, context) => {
       return generateResponse('Undefined ID parameter is required', 200)
     }
 
+    if (bigID >= 2222 || bigID > minLE) {
+      console.log('Token ID ' + bigID + " in invalid")
+      return generateResponse('Token ID ' + bigID + " is invalid", 200)
+    }
+
     // check token exists and get owner
     console.log('Checking token of ID ', bigID, ' exists')
-    const minLE = BigInt("115792089237316195423570985008687907853269984665640564039457584007913129639935");
-    const isLE = bigID >= minLE;
+    
+    const isLE = bigID >= maxLE;
     const latest = isLE ? await tinyboxesContract.methods._tokenPromoIds().call() : await tinyboxesContract.methods._tokenIds().call()
+    
     console.log(bigID, minLE, isLE, latest)
+
     if (bigID >= latest) {
-      console.log('Token ' + bigID + " doesn't exist")
-      return generateResponse('Token ' + bigID + " doesn't exist", 200)
+      console.log('Token ' + bigID + " doesn't exist yet")
+      return generateResponse('Token ' + bigID + " doesn't exist yet", 200)
     }
     //const owner = await tinyboxesContract.methods.ownerOf(id).call()
 
