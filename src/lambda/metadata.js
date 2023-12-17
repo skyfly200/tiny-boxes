@@ -93,6 +93,7 @@ exports.handler = async (event, context) => {
     const minLE = BigInt("115792089237316195423570985008687907853269984665640564039457584007913129639935");
     const isLE = bigID >= minLE;
     const latest = isLE ? await tinyboxesContract.methods._tokenPromoIds().call() : await tinyboxesContract.methods._tokenIds().call()
+    console.log(bigID, minLE, isLE, latest)
     if (bigID >= latest) {
       console.log('Token ' + bigID + " doesn't exist")
       return generateResponse('Token ' + bigID + " doesn't exist", 200)
