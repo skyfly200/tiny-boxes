@@ -73,7 +73,8 @@ exports.handler = async (event, context) => {
   // wrap things with error catching
   try {
 
-    const id = BigInt(event.queryStringParameters.id)
+    const id = event.queryStringParameters.id
+    const bigID = BigInt(id);
 
     //console.log(CONTRACT_ADDRESS);
 
@@ -88,13 +89,13 @@ exports.handler = async (event, context) => {
     }
 
     // check token exists and get owner
-    console.log('Checking token of ID ', id, ' exists')
+    console.log('Checking token of ID ', bigID, ' exists')
     const minLE = BigInt("115792089237316195423570985008687907853269984665640564039457584007913129639935");
-    const isLE = id >= minLE;
+    const isLE = bigID >= minLE;
     const latest = isLE ? await tinyboxesContract.methods._tokenPromoIds().call() : await tinyboxesContract.methods._tokenIds().call()
-    if (id >= latest) {
-      console.log('Token ' + id + " doesn't exist")
-      return generateResponse('Token ' + id + " doesn't exist", 200)
+    if (bigID >= latest) {
+      console.log('Token ' + bigID + " doesn't exist")
+      return generateResponse('Token ' + bigID + " doesn't exist", 200)
     } else {
       const owner = await tinyboxesContract.methods.ownerOf(id).call()
     }
