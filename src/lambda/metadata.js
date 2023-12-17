@@ -73,7 +73,6 @@ exports.handler = async (event, context) => {
   // wrap things with error catching
   try {
 
-    // TODO: parse out leading zeros
     const id = BigInt(event.queryStringParameters.id)
 
     //console.log(CONTRACT_ADDRESS);
@@ -90,11 +89,10 @@ exports.handler = async (event, context) => {
 
     // check token exists and get owner
     console.log('Checking token of ID ', id, ' exists')
-    const isLE = id > 2222;
+    const minLE = BigInt("115792089237316195423570985008687907853269984665640564039457584007913129639935");
+    const isLE = id >= minLE;
     const latest = isLE ? await tinyboxesContract.methods._tokenPromoIds().call() : await tinyboxesContract.methods._tokenIds().call()
     if (id >= latest) {
-      // TODO: check LE ids are in range
-      // complain if token is missing
       console.log('Token ' + id + " doesn't exist")
       return generateResponse('Token ' + id + " doesn't exist", 200)
     } else {
