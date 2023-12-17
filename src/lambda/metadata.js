@@ -72,6 +72,8 @@ function lookupMintedBlock(id) {
 exports.handler = async (event, context) => {
   // wrap things with error catching
   try {
+
+    // TODO: parse out leading zeros
     const id = event.queryStringParameters.id
 
     //console.log(CONTRACT_ADDRESS);
@@ -83,7 +85,7 @@ exports.handler = async (event, context) => {
     } else if (id === undefined) {
       // complain if id is missing
       console.log('Undefined ID parameter is required')
-      return generateResponse('Undefined ID parameter is required', 204)
+      return generateResponse('Undefined ID parameter is required', 200)
     }
 
     // check token exists and get owner
@@ -91,9 +93,10 @@ exports.handler = async (event, context) => {
     const isLE = BigInt(id) > 2222;
     const latest = isLE ? await tinyboxesContract.methods._tokenPromoIds().call() : await tinyboxesContract.methods._tokenIds().call()
     if (BigInt(id) >= latest) {
+      // TODO: check LE ids are in range
       // complain if token is missing
       console.log('Token ' + id + " doesn't exist")
-      return generateResponse('Token ' + id + " doesn't exist", 204)
+      return generateResponse('Token ' + id + " doesn't exist", 200)
     } else {
       const owner = await tinyboxesContract.methods.ownerOf(id).call()
     }
