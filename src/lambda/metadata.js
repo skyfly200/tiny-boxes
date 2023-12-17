@@ -90,7 +90,9 @@ exports.handler = async (event, context) => {
       return generateResponse('Undefined ID parameter is required', 200)
     }
 
-    if (bigID >= 2222 || bigID > minLE) {
+    console.log(bigID, minLE, maxLE)
+
+    if ((bigID >= 2222 && bigId < maxLE) || bigID > minLE) {
       console.log('Token ID ' + bigID + " in invalid")
       return generateResponse('Token ID ' + bigID + " is invalid", 200)
     }
@@ -105,7 +107,7 @@ exports.handler = async (event, context) => {
 
     const exists = isLE ? bigID >= latest : bigID < latest
     
-    console.log(bigID, minLE, isLE, latest)
+    // console.log(bigID, minLE, isLE, latest)
 
     if (!exists) {
       console.log('Token ' + bigID + " doesn't exist yet")
