@@ -92,7 +92,10 @@ exports.handler = async (event, context) => {
 
     console.log(bigID, minLE, maxLE)
 
-    if ((bigID >= 2222 && bigID < maxLE) || bigID > minLE) {
+    // TODO: validate id is an integer in range
+    // TODO: accept negative id values for LE tokens and convert to positive
+
+    if (bigID < BigInt(0) || (bigID >= 2222 && bigID < maxLE) || bigID > minLE) {
       console.log('Token ID ' + bigID + " in invalid")
       return generateResponse('Token ID ' + bigID + " is invalid", 200)
     }
