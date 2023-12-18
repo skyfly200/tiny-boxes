@@ -102,7 +102,7 @@ exports.handler = async (event, context) => {
 
     // TODO: accept negative ID values for LE tokens and convert them to positive
     if ( bigID < BigInt(0) ) {
-      bigID = minLE - bigID + 1;
+      bigID = minLE - bigID + BigInt(1);
     }
 
     // check token exists and get owner
