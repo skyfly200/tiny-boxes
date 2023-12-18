@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 import Web3 from 'web3'
 import Readable from 'stream'
 import { tinyboxesABI } from '../tinyboxes-contract'
+import { isInteger } from 'core-js/core/number'
 dotenv.config()
 
 const {
@@ -73,31 +74,35 @@ exports.handler = async (event, context) => {
   // wrap things with error catching
   try {
 
-    const id = event.queryStringParameters.id
-    const bigID = BigInt(id);
     const minLE = BigInt("115792089237316195423570985008687907853269984665640564039457584007913129639935");
     const maxLE = BigInt("115792089237316195423570985008687907853269984665640564039457584007913129639835");
-
+    
     //console.log(CONTRACT_ADDRESS);
 
     if (event.httpMethod !== 'GET') {
       // Only GET requests allowed
       console.log('Bad method:', event.httpMethod)
       return generateResponse('Bad method:' + event.httpMethod, 405)
-    } else if (id === undefined) {
+    }
+    
+    const id = event.queryStringParameters.id
+
+    if (id === undefined) {
       // complain if id is missing
       console.log('Undefined ID parameter is required')
       return generateResponse('Undefined ID parameter is required', 200)
     }
+    
+    const bigID = BigInt(id);
 
-    console.log(bigID, minLE, maxLE)
-
-    // TODO: validate id is an integer in range
-    // TODO: accept negative id values for LE tokens and convert to positive
-
-    if (bigID < BigInt(0) || (bigID >= 2222 && bigID < maxLE) || bigID > minLE) {
+    if (bigID < BigInt(-100) || (bigID >= 2222 && bigID < maxLE) || bigID > minLE) {
       console.log('Token ID ' + bigID + " in invalid")
       return generateResponse('Token ID ' + bigID + " is invalid", 200)
+    }
+
+    // TODO: accept negative ID values for LE tokens and convert them to positive
+    if ( bigID < BigInt(0) ) {
+      bigID = minLE - bigID + 1;
     }
 
     // check token exists and get owner
