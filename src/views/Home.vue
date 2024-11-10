@@ -138,13 +138,6 @@
                   input(type='text' name='b_81d0c7a7aabdc5c89bc737456_e8ca8b83a1' tabindex='-1' value='')
                 .clear
                   v-btn(type='submit' large name='subscribe' color="secondary") Subscribe
-      v-row.pb-8.pt-5.mb-8.nfteam.section
-        v-col(md=6 sm=8 xs=12 offset-md=3 offset-sm=2 align="center")
-          h1 NonFungibleTeam
-          v-divider(width="330rem")
-          h3 Striving to push the boundaries of NFTs
-          br
-          v-btn(href="https://nonfungible.team/" target="_blank") More Projects
     v-footer
       v-container.pa-0
         v-row
