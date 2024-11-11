@@ -12,11 +12,11 @@
           h3.text--secondary Create One of 2222 Unique Art Pieces
           br
           v-divider(width="50%")
-          .social-links.ma-4
+          .social-links.ma-5
             v-btn(icon large href="https://opensea.io/collection/tinyboxes" target="_blank")
               v-icon $custom
             v-btn(icon large href="https://discord.gg/2wWANVfCuE" target="_blank")
-              v-img(src="discord.svg")
+              v-img(width="44px" style="margin: 6px" src="@/assets/discord.svg")
             v-btn(icon large href="https://twitter.com/tinyboxeseth" target="_blank")
               v-icon mdi-twitter
             v-btn(icon large href="https://medium.com/@nonfungibleteam" target="_blank")
