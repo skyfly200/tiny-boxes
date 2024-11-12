@@ -4,6 +4,7 @@ import "./overrides.sass";
 import { preset } from 'vue-cli-plugin-vuetify-preset-shrine/preset'
 import OpenSeaIcon from "@/components/OpenSeaIcon.vue";
 import DiscordIcon from "@/components/DiscordIcon.vue";
+import RaribleIcon from "@/components/RaribleIcon.vue";
 
 Vue.use(Vuetify);
 
@@ -30,6 +31,9 @@ export default new Vuetify({
       },
       discord: { // name of our custom icon
         component: DiscordIcon, // our custom component
+      },
+      rarible: { // name of our custom icon
+        component: RaribleIcon, // our custom component
       },
     },
   },
