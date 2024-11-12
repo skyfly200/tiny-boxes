@@ -1,6 +1,13 @@
 const path = require('path')
 
 module.exports = {
+  devServer: {
+    hot: true,
+    watchOptions: {
+      poll: 1000, // Check for changes every second
+      aggregateTimeout: 300, // Delay rebuild after the first change
+    },
+  },
   configureWebpack: {
     resolve: {
       alias: {
