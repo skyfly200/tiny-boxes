@@ -125,6 +125,14 @@
               v-btn(large href="https://rarible.com/collection/0x46f9a4522666d2476a5f5cd51ea3e0b5800e7f98/items" target="_blank" color="primary" width="8rem")
                 v-icon.mr-3 $rarible
                 span.mr-2 Rarible
+        v-col(lg=4 cols=12 style="background-color: #444").pa-7
+          .d-flex.flex-column.justify-space-between.prizes(align="center")
+            h1 Visit Our Virtual Gallery
+            h3 Checkout the TinyBoxes on display in our gallery in Voxels
+            br
+            .d-flex.justify-center.my-5
+              v-btn(large href="https://www.voxels.com/play?coords=N@448E,59N" target="_blank" color="primary" width="8rem")
+                span.mr-2 Visit Our Gallery
       v-row.source
         v-col(md=6 sm=12 align="center" style="background-color: #444").d-flex.flex-column.justify-center
           .fancy-header(align="center")
