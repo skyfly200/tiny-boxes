@@ -127,12 +127,12 @@
                 span.mr-2 Rarible
         v-col(lg=4 cols=12 style="background-color: #444").pa-7
           .d-flex.flex-column.justify-space-between.prizes(align="center")
-            h1 Visit Our Virtual Gallery
-            h3 Checkout the TinyBoxes on display in our gallery in Voxels
+            h1 Visit the On-Chain Art Gallery
+            h3 Checkout the TinyBoxes on display in the On-Chain Art Gallery in Voxels
             br
             .d-flex.justify-center.my-5
               v-btn(large href="https://www.voxels.com/play?coords=N@448E,59N" target="_blank" color="primary" width="8rem")
-                span.mr-2 Visit Our Gallery
+                span.mr-2 Visit The Gallery
       v-row.source
         v-col(md=6 sm=12 align="center" style="background-color: #444").d-flex.flex-column.justify-center
           .fancy-header(align="center")
