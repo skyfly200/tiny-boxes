@@ -16,7 +16,7 @@
             v-btn(icon large href="https://opensea.io/collection/tinyboxes" target="_blank")
               v-icon $custom
             v-btn(icon large href="https://discord.gg/2wWANVfCuE" target="_blank")
-              v-img(width="44px" style="margin: 6px" src="@/assets/discord.svg")
+              v-img.ma-1(width="44px" src="@/assets/discord.svg")
             v-btn(icon large href="https://twitter.com/tinyboxeseth" target="_blank")
               v-icon mdi-twitter
             v-btn(icon large href="https://medium.com/@nonfungibleteam" target="_blank")
