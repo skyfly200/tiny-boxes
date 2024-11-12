@@ -21,7 +21,7 @@
               v-icon mdi-twitter
             v-btn(icon large href="https://medium.com/@nonfungibleteam" target="_blank")
               v-icon mdi-typewriter
-            v-btn(icon large href="#mc_embed_signup")
+            v-btn(icon large href="#mc_embed_signup" v-if="false")
               v-icon mdi-email
       v-row.section
         v-col(sm=6 xs=12 style="background-color: #444").pa-7
@@ -125,7 +125,7 @@
           v-icon(large) mdi-github
           a(href="https://github.com/skyfly200/tiny-boxes" target="_blank")
             h3 MIT Licensed on GitHub
-      v-row.section
+      v-row.section(v-if="false")
         v-col(md=6 sm=8 xs=12 offset-md=3 offset-sm=2).d-flex.justify-center
           v-card#mc_embed_signup.pb-3(max-width="1440px")
             v-form#mc-embedded-subscribe-form.validate(action='https://shop.us17.list-manage.com/subscribe/post?u=81d0c7a7aabdc5c89bc737456&id=e8ca8b83a1' method='post' name='mc-embedded-subscribe-form' target='_blank' novalidate='')
