@@ -15,6 +15,8 @@
           .social-links.ma-5
             v-btn(icon large href="https://opensea.io/collection/tinyboxes" target="_blank")
               v-icon $opensea
+            v-btn(icon large href="https://blur.io/eth/collection/tinyboxes" target="_blank")
+              v-img(src="@/assets/BLUR.png" width="44px")
             v-btn(icon large href="https://discord.gg/2wWANVfCuE" target="_blank")
               v-icon $discord
             v-btn(icon large href="https://twitter.com/tinyboxeseth" target="_blank")
@@ -108,8 +110,9 @@
               v-btn(large href="https://discord.gg/2wWANVfCuE" target="_blank" color="primary" width="8rem")
                 v-icon.mr-3 mdi-discord
                 span.mr-2 Join
+        
       v-row.source
-        v-col(md=6 sm=12 align="center").d-flex.flex-column.justify-center
+        v-col(md=6 sm=12 align="center" style="background-color: #444").d-flex.flex-column.justify-center
           .fancy-header(align="center")
             h1 Contract
             v-divider(width="150rem")
@@ -117,7 +120,7 @@
           a(href="https://etherscan.io/address/0x46f9a4522666d2476a5f5cd51ea3e0b5800e7f98" target="_blank")
             h3 {{ $store.state.tinyboxesAddress }}
           h3 Verified on Etherscan
-        v-col(md=6 sm=12 align="center").d-flex.flex-column.justify-center
+        v-col(md=6 sm=12 align="center"style="background-color: #666").d-flex.flex-column.justify-center
           .fancy-header(align="center")
             h1 Source Code
             v-divider(width="180rem")
