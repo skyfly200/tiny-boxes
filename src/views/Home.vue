@@ -14,9 +14,9 @@
           v-divider(width="50%")
           .social-links.ma-5
             v-btn(icon large href="https://opensea.io/collection/tinyboxes" target="_blank")
-              v-icon $custom
+              v-icon $opensea
             v-btn(icon large href="https://discord.gg/2wWANVfCuE" target="_blank")
-              v-img.ma-1(width="44px" src="@/assets/discord.svg")
+              v-icon $discord
             v-btn(icon large href="https://twitter.com/tinyboxeseth" target="_blank")
               v-icon mdi-twitter
             v-btn(icon large href="https://medium.com/@nonfungibleteam" target="_blank")

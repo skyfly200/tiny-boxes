@@ -3,6 +3,7 @@ import Vuetify from "vuetify/lib";
 import "./overrides.sass";
 import { preset } from 'vue-cli-plugin-vuetify-preset-shrine/preset'
 import OpenSeaIcon from "@/components/OpenSeaIcon.vue";
+import DiscordIcon from "@/components/DiscordIcon.vue";
 
 Vue.use(Vuetify);
 
@@ -24,8 +25,11 @@ export default new Vuetify({
   },
   icons: {
     values: {
-      custom: { // name of our custom icon
+      opensea: { // name of our custom icon
         component: OpenSeaIcon, // our custom component
+      },
+      discord: { // name of our custom icon
+        component: DiscordIcon, // our custom component
       },
     },
   },
