@@ -10,6 +10,9 @@ module.exports = {
     },
   },
   configureWebpack: {
+    cache: {
+      type: 'filesystem', // Caches webpack builds on the file system
+    },
     resolve: {
       alias: {
         Contracts: path.resolve(__dirname, 'contracts/'),
@@ -18,6 +21,15 @@ module.exports = {
   },
   transpileDependencies: ['vuetify'],
   chainWebpack: (config) => {
+    // Enable cache for Babel
+    config.module
+      .rule('js')
+      .use('babel-loader')
+      .tap((options) => {
+        options.cacheDirectory = true;
+        return options;
+      });
+    // Configure Solidity loader for .sol files
     config.module
       .rule('sol')
       .test(/\.sol$/)
