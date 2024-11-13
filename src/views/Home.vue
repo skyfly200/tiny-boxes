@@ -13,10 +13,6 @@
           br
           v-divider(width="50%")
           .social-links.ma-5
-            v-btn(icon large href="https://opensea.io/collection/tinyboxes" target="_blank")
-              v-icon $opensea
-            v-btn(icon large href="https://blur.io/eth/collection/tinyboxes" target="_blank")
-              v-img(src="@/assets/BLUR.png" width="44px")
             v-btn(icon large href="https://discord.gg/2wWANVfCuE" target="_blank")
               v-icon $discord
             v-btn(icon large href="https://twitter.com/tinyboxeseth" target="_blank")
@@ -25,6 +21,12 @@
               v-icon mdi-typewriter
             v-btn(icon large href="#mc_embed_signup" v-if="false")
               v-icon mdi-email
+            v-btn(icon large href="https://opensea.io/collection/tinyboxes" target="_blank")
+              v-icon $opensea
+            v-btn(icon large href="https://blur.io/eth/collection/tinyboxes" target="_blank")
+              v-img(src="@/assets/BLUR.png" height="44px" width="auto")
+            v-btn(icon large href="https://rarible.com/collection/0x46f9a4522666d2476a5f5cd51ea3e0b5800e7f98/items" target="_blank")
+              v-icon $rarible
       v-row.section
         v-col(sm=6 xs=12 style="background-color: #444").pa-7
           .d-flex.flex-column.justify-space-between.on-chain(align="center")
@@ -131,7 +133,7 @@
             br
             .d-flex.justify-center.my-5
               v-btn.px-4(large href="https://www.voxels.com/play?coords=N@448E,59N" target="_blank" color="primary" width="8rem")
-                p.ma-3 Visit The Gallery
+                span.ma-3 Visit
       v-row.source
         v-col(md=6 sm=12 align="center").d-flex.flex-column.justify-center
           .fancy-header(align="center")
