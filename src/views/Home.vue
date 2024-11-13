@@ -23,10 +23,10 @@
               v-icon mdi-email
             v-btn(icon large href="https://opensea.io/collection/tinyboxes" target="_blank")
               v-icon $opensea
-            v-btn(icon large href="https://blur.io/eth/collection/tinyboxes" target="_blank")
-              v-img(src="@/assets/BLUR.png" height="44px" width="auto")
             v-btn(icon large href="https://rarible.com/collection/0x46f9a4522666d2476a5f5cd51ea3e0b5800e7f98/items" target="_blank")
               v-icon $rarible
+            v-btn(v-if="false" large href="https://blur.io/eth/collection/tinyboxes" target="_blank")
+              v-img(src="@/assets/BLUR.png" height="44px" width="auto")
       v-row.section
         v-col(sm=6 xs=12 style="background-color: #444").pa-7
           .d-flex.flex-column.justify-space-between.on-chain(align="center")
