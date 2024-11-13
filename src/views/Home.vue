@@ -119,8 +119,8 @@
               v-btn.ma-2(large href="https://blur.io/eth/collection/tinyboxes" target="_blank" color="primary" width="8rem")
                 v-img(src="@/assets/BLUR.png" width="44px")
               v-btn.ma-2(large href="https://opensea.io/collection/tinyboxes" target="_blank" color="primary" width="8rem")
-                v-icon.mr-3 $opensea
-                span.ma-2 OpenSea
+                v-icon.ma-3 $opensea
+                span.mr-2 OpenSea
               v-btn.ma-2(large href="https://rarible.com/collection/0x46f9a4522666d2476a5f5cd51ea3e0b5800e7f98/items" target="_blank" color="primary" width="8rem")
                 v-icon.ma-3 $rarible
                 span.mr-2 Rarible
