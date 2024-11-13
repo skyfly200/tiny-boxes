@@ -142,7 +142,7 @@
           a(href="https://etherscan.io/address/0x46f9a4522666d2476a5f5cd51ea3e0b5800e7f98" target="_blank")
             h3 {{ $store.state.tinyboxesAddress }}
           h3 Verified on Etherscan
-        v-col(md=6 sm=12 align="center"style="background-color: #666").d-flex.flex-column.justify-center
+        v-col(md=6 sm=12 align="center" style="background-color: #666").d-flex.flex-column.justify-center
           .fancy-header(align="center")
             h1 Source Code
             v-divider(width="180rem")
