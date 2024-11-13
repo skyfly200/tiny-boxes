@@ -116,40 +116,41 @@
             h3 Buy and sell TinyBoxes on any NFT marketplace!
             br
             .d-flex.justify-center.my-5
-              v-btn(large href="https://blur.io/eth/collection/tinyboxes" target="_blank" color="primary" width="8rem")
+              v-btn.ma-2(large href="https://blur.io/eth/collection/tinyboxes" target="_blank" color="primary" width="8rem")
                 v-img(src="@/assets/BLUR.png" width="44px")
-                span.mr-2 BLUR
-              v-btn(large href="https://opensea.io/collection/tinyboxes" target="_blank" color="primary" width="8rem")
+              v-btn.ma-2(large href="https://opensea.io/collection/tinyboxes" target="_blank" color="primary" width="8rem")
                 v-icon.mr-3 $opensea
-                span.mr-2 OpenSea
-              v-btn(large href="https://rarible.com/collection/0x46f9a4522666d2476a5f5cd51ea3e0b5800e7f98/items" target="_blank" color="primary" width="8rem")
-                v-icon.mr-3 $rarible
+                span.ma-2 OpenSea
+              v-btn.ma-2(large href="https://rarible.com/collection/0x46f9a4522666d2476a5f5cd51ea3e0b5800e7f98/items" target="_blank" color="primary" width="8rem")
+                v-icon.ma-3 $rarible
                 span.mr-2 Rarible
         v-col(lg=4 cols=12 style="background-color: #444").pa-7
           .d-flex.flex-column.justify-space-between.prizes(align="center")
-            h1 Visit the On-Chain Art Gallery
+            h1 Visit The On-Chain Art Gallery
             h3 Checkout the TinyBoxes on display in the On-Chain Art Gallery in Voxels
             br
             .d-flex.justify-center.my-5
-              v-btn(large href="https://www.voxels.com/play?coords=N@448E,59N" target="_blank" color="primary" width="8rem")
-                span.mr-2 Visit The Gallery
+              v-btn.px-4(large href="https://www.voxels.com/play?coords=N@448E,59N" target="_blank" color="primary" width="8rem")
+                p.ma-3 Visit The Gallery
       v-row.source
-        v-col(md=6 sm=12 align="center" style="background-color: #444").d-flex.flex-column.justify-center
+        v-col(md=6 sm=12 align="center").d-flex.flex-column.justify-center
           .fancy-header(align="center")
             h1 Contract
             v-divider(width="150rem")
           br
+          h3 Address:
+          p {{ $store.state.tinyboxesAddress }}
           a(href="https://etherscan.io/address/0x46f9a4522666d2476a5f5cd51ea3e0b5800e7f98" target="_blank")
-            h3 {{ $store.state.tinyboxesAddress }}
-          h3 Verified on Etherscan
-        v-col(md=6 sm=12 align="center" style="background-color: #666").d-flex.flex-column.justify-center
+            h3 Verified on Etherscan
+        v-col(md=6 sm=12 align="center").d-flex.flex-column.justify-center
           .fancy-header(align="center")
             h1 Source Code
             v-divider(width="180rem")
           br
           v-icon(large) mdi-github
+          h3 Open Source MIT License
           a(href="https://github.com/skyfly200/tiny-boxes" target="_blank")
-            h3 MIT Licensed on GitHub
+            h3 View on GitHub
       v-row.section(v-if="false")
         v-col(md=6 sm=8 xs=12 offset-md=3 offset-sm=2).d-flex.justify-center
           v-card#mc_embed_signup.pb-3(max-width="1440px")
