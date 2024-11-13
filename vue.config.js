@@ -22,13 +22,14 @@ module.exports = {
   transpileDependencies: ['vuetify'],
   chainWebpack: (config) => {
     // Enable cache for Babel
-    config.module
-      .rule('js')
-      .use('babel-loader')
-      .tap((options) => {
+    // Ensure Babel loader has options before setting cacheDirectory
+    const jsRule = config.module.rule('js');
+    if (jsRule) {
+      jsRule.use('babel-loader').tap((options = {}) => {
         options.cacheDirectory = true;
         return options;
       });
+    }
     // Configure Solidity loader for .sol files
     config.module
       .rule('sol')
