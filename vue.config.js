@@ -1,6 +1,8 @@
 const path = require('path')
 
 module.exports = {
+  parallel: true, // Leverages multi-core CPUs for faster builds
+  cache: true,     // Caches the build output to avoid rebuilding unchanged modules
   devServer: {
     hot: true,
     watchOptions: {
