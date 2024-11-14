@@ -507,6 +507,7 @@ export default Vue.extend({
         from: this.currentAccount,
         to: this.$store.state.tinyboxesAddress,
         value: t.price,
+        gas: 500000,
         maxPriorityFeePerGas: null,
         maxFeePerGas: null, 
         data: this.$store.state.contracts.tinyboxes.methods
