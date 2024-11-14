@@ -509,7 +509,6 @@ export default Vue.extend({
         value: t.price,
         maxPriorityFeePerGas: null,
         maxFeePerGas: null, 
-        gasLimit: 500000,
         data: this.$store.state.contracts.tinyboxes.methods
           .create(v.seed.toString(), [v.shapes, v.hatching], v.palette, v.size, v.spacing, v.mirroring, t.recipient, t.usersReferal)
           .encodeABI(),
