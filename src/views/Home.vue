@@ -112,7 +112,7 @@
               v-btn(large href="https://discord.gg/2wWANVfCuE" target="_blank" color="primary" width="8rem")
                 v-icon.mr-3 mdi-discord
                 span.mr-2 Join
-        v-col(lg=4 cols=12 style="background-color: #777").pa-7
+        v-col(lg=6 cols=12 style="background-color: #777").pa-7
           .d-flex.flex-column.justify-space-between.prizes(align="center")
             h1 Marketplaces
             h3 Buy and sell TinyBoxes on any NFT marketplace!
@@ -126,7 +126,7 @@
               v-btn.ma-2(large href="https://rarible.com/collection/0x46f9a4522666d2476a5f5cd51ea3e0b5800e7f98/items" target="_blank" color="primary" width="8rem")
                 v-icon.ma-3 $rarible
                 span.mr-2 Rarible
-        v-col(lg=4 cols=12 style="background-color: #444").pa-7
+        v-col(lg=6 cols=12 style="background-color: #444").pa-7
           .d-flex.flex-column.justify-space-between.prizes(align="center")
             h1 Visit The On-Chain Art Gallery
             h3 Checkout the TinyBoxes on display in the On-Chain Art Gallery in Voxels
