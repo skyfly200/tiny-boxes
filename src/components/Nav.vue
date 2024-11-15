@@ -36,6 +36,11 @@
           Gravatar.gravatar.gravatar-desktop(v-on="on" :size="40" :email="currentAccount")
         h4.account-label Active Account
         span.address.address-tooltip {{ currentAccount !== '' ? formatAccount(currentAccount) : "loading" }}
+      v-tooltip(v-else bottom)
+        template(v-slot:activator="{ on }")
+          Gravatar.gravatar.gravatar-desktop(v-on="on" :size="40" :email="currentAccount")
+        h4.account-label Not Connected
+        span.address.address-tooltip Wallet Not Connected
       v-btn(@click="drawer = !drawer" text).mobile-menu-btn
         v-icon mdi-menu
     v-dialog(v-model="wrongNetworkFlag" width="300")
@@ -61,7 +66,7 @@ export default {
     },
   },
   mounted: async function() {
-    await this.$store.dispatch("initialize");
+    if (this.web3Status === 'loading') await this.$store.dispatch("initialize");
     this.wrongNetworkFlag = this.wrongNetwork;
   },
   data: () => ({

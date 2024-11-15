@@ -1517,6 +1517,7 @@ const store = new Vuex.Store({
     currentAccount: "",
     web3Status: "loading",
     web3: null,
+    walletConnected: false,
     network: null,
     targetNetwork: "main",
     count: null,
@@ -1549,12 +1550,16 @@ const store = new Vuex.Store({
     setAccount(state, address) {
       state.currentAccount = address;
     },
+    setWalletConnected(state, status) {
+      state.walletConnected = status;
+    },
     setNetwork(state, network) {
       state.network = network;
     },
   },
   actions: {
     async initialize(context) {
+      await context.dispatch("loadWeb3Default");
       await context.dispatch("loadWeb3");
       await context.dispatch("loadAccount");
       await context.dispatch("registerContracts");
@@ -1564,8 +1569,10 @@ const store = new Vuex.Store({
         // Default provider (Infura example)
         const infuraID = ""; // TODO: load id from an env var
         const defaultProvider = new Web3("https://mainnet.infura.io/v3/" + infuraID);
+        console.log(defaultProvider);
         context.commit("setWeb3", defaultProvider);
-        context.commit("setWeb3Status", "default");
+        context.commit("setWeb3Status", "active");
+        resolve(true);
       });
     },
     loadWeb3(context) {
@@ -1575,7 +1582,8 @@ const store = new Vuex.Store({
           try {
             // Request account access if needed
             (window as any).ethereum.enable().then(() => {
-              context.commit("setWeb3Status", "active"); // TODO - add a connected state
+              context.commit("setWeb3Status", "active");
+              context.commit("setWalletConnected", true);
               resolve(true);
             });
           } catch (error) {
@@ -1589,6 +1597,7 @@ const store = new Vuex.Store({
             new Web3((window as any).web3.currentProvider)
           );
           context.commit("setWeb3Status", "active");
+          context.commit("setWalletConnected", true);
           resolve(true);
         } else {
           // Non-dapp browsers...
