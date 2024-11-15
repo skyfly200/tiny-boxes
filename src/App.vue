@@ -1,7 +1,7 @@
 <template lang="pug">
   v-app
     Nav(v-if="this.$route.path !== '/'")
-    v-content
+    v-main
       router-view
 </template>
 
