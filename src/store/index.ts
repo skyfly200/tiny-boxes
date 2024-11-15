@@ -1559,6 +1559,14 @@ const store = new Vuex.Store({
       await context.dispatch("loadAccount");
       await context.dispatch("registerContracts");
     },
+    loadWeb3Default(context) {
+      return new Promise((resolve, reject) => {
+        // Default provider (Infura example)
+        const defaultProvider = new Web3("https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID"); // TODO: load id from an env var
+        context.commit("setWeb3", defaultProvider);
+        context.commit("setWeb3Status", "default");
+      });
+    },
     loadWeb3(context) {
       return new Promise((resolve, reject) => {
         if ((window as any).ethereum) {
