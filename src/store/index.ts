@@ -1562,7 +1562,8 @@ const store = new Vuex.Store({
     loadWeb3Default(context) {
       return new Promise((resolve, reject) => {
         // Default provider (Infura example)
-        const defaultProvider = new Web3("https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID"); // TODO: load id from an env var
+        const infuraID = ""; // TODO: load id from an env var
+        const defaultProvider = new Web3("https://mainnet.infura.io/v3/" + infuraID);
         context.commit("setWeb3", defaultProvider);
         context.commit("setWeb3Status", "default");
       });
