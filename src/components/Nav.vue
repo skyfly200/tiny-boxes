@@ -66,7 +66,6 @@ export default {
     },
   },
   mounted: async function() {
-    if (this.web3Status === 'loading') await this.$store.dispatch("initialize");
     this.wrongNetworkFlag = this.wrongNetwork;
   },
   data: () => ({
