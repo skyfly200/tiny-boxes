@@ -212,7 +212,6 @@ export default {
         schemeTitles: 'schemeTitles',
         openseaTokenURL: 'openseaTokenURL',
     }),
-    ...mapGetters(["currentAccount"]),
   },
   methods: {}
 };
