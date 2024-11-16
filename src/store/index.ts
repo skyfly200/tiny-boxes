@@ -1560,6 +1560,9 @@ const store = new Vuex.Store({
   actions: {
     async initialize(context) {
       await context.dispatch("loadWeb3Default");
+      await context.dispatch("registerContracts");
+    },
+    async connect(context) {
       await context.dispatch("loadWeb3");
       await context.dispatch("loadAccount");
       await context.dispatch("registerContracts");

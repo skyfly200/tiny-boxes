@@ -135,6 +135,7 @@ export default Vue.extend({
   },
   mounted: async function() {
     await this.$store.dispatch("initialize");
+    await this.$store.dispatch("connect");
     const t = this as any;
     dayjs.extend(utc)
     dayjs.extend(isBetween)

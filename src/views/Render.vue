@@ -133,7 +133,7 @@ export default Vue.extend({
   mounted: async function() {
     const t = this as any;
     await this.$store.dispatch("initialize");
-    if (!this.wrongNetwork) {
+    if (!(this as any).wrongNetwork) {
       t.loadFormDefaults();
       if (t.paramsSet) t.loadParams();
       else t.updateParams();

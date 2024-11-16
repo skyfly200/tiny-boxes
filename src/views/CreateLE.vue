@@ -242,7 +242,8 @@ export default Vue.extend({
   mounted: async function() {
     const t = this as any;
     await this.$store.dispatch("initialize");
-    if (!this.wrongNetwork) {
+    await this.$store.dispatch("connect");
+    if (!(this as any).wrongNetwork) {
       if (t.paramsSet) t.loadParams();
       else t.updateParams();
       t.loadToken();

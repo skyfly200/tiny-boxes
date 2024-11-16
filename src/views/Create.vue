@@ -250,6 +250,7 @@ export default Vue.extend({
   mounted: async function() {
     const t = this as any;
     await this.$store.dispatch("initialize");
+    await this.$store.dispatch("connect");
     if (!(this as any).wrongNetwork) {
       t.recipient = t.currentAccount;
       await t.lookupCurrentBlock();
