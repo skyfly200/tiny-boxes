@@ -104,6 +104,16 @@
               v-btn(large href="/docs" target="_blank" color="primary" width="8rem")
                 v-icon.mr-3 mdi-video
                 span.mr-2 See Them All
+        v-col(cols=12 style="background-color: #555").pa-7
+          .d-flex.flex-column.justify-space-between.prizes(align="center")
+            h1 Prizes
+            h3 Giving back to our community is imporant
+            h3 Join our Discord to hear about the latest promotions
+            br
+            .d-flex.justify-center.my-5
+              v-btn(large href="https://discord.gg/2wWANVfCuE" target="_blank" color="primary" width="8rem")
+                v-icon.mr-3 mdi-discord
+                span.mr-2 Join
       v-row.pb-6.section
         v-col(lg=6 cols=12 style="background-color: #999").pa-7
           .d-flex.flex-column.justify-space-between.gallery(align="center")
@@ -138,7 +148,7 @@
               v-btn.px-4(large href="https://www.voxels.com/play?coords=N@448E,59N" target="_blank" color="primary" width="8rem")
                 span.ma-3 Visit
       v-row.source
-        v-col(sm=12 align="center").d-flex.flex-column.justify-center
+        v-col(cols=12 align="center").d-flex.flex-column.justify-center
           h1 Suporting Web3 Ethos
         v-col(md=6 sm=12 align="center").d-flex.flex-column.justify-center
           .fancy-header(align="center")
