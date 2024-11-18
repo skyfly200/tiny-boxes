@@ -21,19 +21,11 @@
               v-icon mdi-typewriter
             v-btn(icon large href="#mc_embed_signup" v-if="false")
               v-icon mdi-email
-            v-btn(icon large href="https://opensea.io/collection/tinyboxes" target="_blank")
-              v-icon $opensea
-            v-btn(icon large href="https://rarible.com/collection/0x46f9a4522666d2476a5f5cd51ea3e0b5800e7f98/items" target="_blank")
-              v-icon $rarible
-            v-btn(text large href="https://blur.io/eth/collection/tinyboxes" target="_blank")
-              v-img.py-1(src="@/assets/BLUR.png" width="44px" style="padding: 0 10px")
       v-row.section
         v-col(sm=6 xs=12 style="background-color: #444").pa-7
           .d-flex.flex-column.justify-space-between.on-chain(align="center")
             h1 100% On-Chain
-            br
             h1 Animated
-            br
             h1 SVG Artwork
             .d-flex.justify-center.my-5
               v-btn(href="/docs" target="_blank" large color="secondary" width="8rem")
@@ -43,9 +35,7 @@
           .d-flex.flex-column.justify-space-between.proto-gen(align="center")
             h1 Proto-Generative
             h1 = 
-            h1 Custom
-            h1 +
-            h1 Random
+            h1 Custom + Random
             .d-flex.justify-center.my-5
               v-btn(to="/create" large color="primary" width="8rem")
                 v-icon.mr-3 mdi-creation
@@ -85,7 +75,7 @@
         v-col(lg=4 md=6 cols=12 style="background-color: #444").pa-7
           .d-flex.flex-column.justify-space-between.referral(align="center")
             h1 Referrals
-            h3 10-15% on each sale referred by your tokens
+            h3 Earn 10-15% on each new mint based on your mint
             h3 Earn by sharing or when someone copies one of your tokens options
             br
             .d-flex.justify-center.my-5
@@ -96,7 +86,7 @@
           .d-flex.flex-column.justify-space-between.le-tokens(align="center")
             h1 Limited Editions
             h3 Design exactly what you want
-            h3 Exclusive Distribution of 100 Max
+            h3 Exclusive Set of 100 Tokens Max
             H3 Redeem Whenever
             .d-flex.justify-center.my-5
               v-btn(to="/le" large color="secondary" width="8rem")
@@ -112,6 +102,17 @@
               v-btn(large href="https://discord.gg/2wWANVfCuE" target="_blank" color="primary" width="8rem")
                 v-icon.mr-3 mdi-discord
                 span.mr-2 Join
+      v-row.pb-6.section
+        v-col(lg=6 cols=12 style="background-color: #999").pa-7
+          .d-flex.flex-column.justify-space-between.gallery(align="center")
+            h1 Gallery
+            h3 Explore the collection of minted TinyBoxes
+            h3 Get inspired by what other have created
+            br
+            .d-flex.justify-center.my-5
+              v-btn(large to="/list" color="primary" width="8rem")
+                v-icon.mr-3 mdi-gridview
+                span.mr-2 View Mints
         v-col(lg=6 cols=12 style="background-color: #777").pa-7
           .d-flex.flex-column.justify-space-between.prizes(align="center")
             h1 Marketplaces
@@ -126,9 +127,9 @@
               v-btn.ma-2(large href="https://rarible.com/collection/0x46f9a4522666d2476a5f5cd51ea3e0b5800e7f98/items" target="_blank" color="primary" width="8rem")
                 v-icon.ma-3 $rarible
                 span.mr-2 Rarible
-        v-col(lg=6 cols=12 style="background-color: #444").pa-7
+        v-col(lg=6 cols=12 style="background-color: #555").pa-7
           .d-flex.flex-column.justify-space-between.prizes(align="center")
-            h1 Visit The On-Chain Art Gallery
+            h1 Metaverse Art Gallery
             h3 Checkout the TinyBoxes on display in the On-Chain Art Gallery in Voxels
             br
             .d-flex.justify-center.my-5
