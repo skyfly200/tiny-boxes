@@ -48,8 +48,8 @@
           .intro-text.d-flex.flex-column.justify-center
             h1 About Tinyboxes
             v-divider
-            p TinyBoxes is a first of its kind Animated Proto-Generative NFT, rendered down to SVG art 100% on-chain. With customizable options, randomized traits and dynamic render settings, TinyBoxes pushes the bounds of whats possible with NFTs. Our contract has been meticulously optimized to save you gas. We used bit packing to squeeze each tokens data into just 256 bits.
-            p TinyBoxes mint in 11 phases. Phases will be differentiated by there own unique color schemes. As one phase ends, minting is paused, and a countdown to the next phase begins. The countdown length increases by 6 hours each phase.
+            p A first of its kind Animated Proto-Generative NFT, with SVG art generated 100% on-chain. With customizable options, randomized traits and dynamic render settings, TinyBoxes pushes the bounds of whats possible with NFTs. Our contract has been meticulously optimized to save you gas. We used bit packing to squeeze each tokens data into just 256 bits.
+            p TinyBox tokens mint in 11 phases. Phases are differentiated by there unique color schemes. As a phase is completed, minting is paused, and a countdown to the next phase begins. The countdown length increases by 6 hours with each phase.
             p A scattering of randomized rectangles brought to life through color, mirroring and animation.
         v-col.project-stats.d-flex(md=1 cols=12)
           .stats.d-flex
