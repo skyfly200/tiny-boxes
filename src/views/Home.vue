@@ -185,7 +185,7 @@
       v-container.pa-0
         v-row
           v-col.pa-0(align="center")
-            .text-center.font-weight-thin.text--secondary &copy; NonFungibleTeam 2021
+            .text-center.font-weight-thin.text--secondary &copy; NonFungibleTeam 2024
 </template>
 
 <script lang="ts">
