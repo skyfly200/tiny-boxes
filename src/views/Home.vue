@@ -54,7 +54,7 @@
         v-col.project-stats.d-flex(md=1 cols=12)
           .stats.d-flex
             br
-            .stat
+            .stat(v-if="false")
               h3 0.1
                 v-icon mdi-ethereum
               p Per
