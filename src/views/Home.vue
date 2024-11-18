@@ -84,6 +84,16 @@
               v-btn(href="/docs/dapp" target="_blank" large color="primary" width="8rem")
                 v-icon.mr-3 mdi-link-variant
                 span.mr-2 More
+        v-col(lg=4 cols=12 style="background-color: #555").pa-7
+          .d-flex.flex-column.justify-space-between.animations(align="center")
+            h1 Animations
+            h3 Featuring 26 unique animations for your tokens
+            h3 Each finely crafted to captivate and amuse
+            br
+            .d-flex.justify-center.my-5
+              v-btn(large href="/docs" target="_blank" color="primary" width="8rem")
+                v-icon.mr-3 mdi-animation
+                span.mr-2 See Them All
         v-col(lg=4 md=6 cols=12 style="background-color: #666").pa-7
           .d-flex.flex-column.justify-space-between.le-tokens(align="center")
             h1 Limited Editions
@@ -94,16 +104,6 @@
               v-btn(to="/le" large color="secondary" width="8rem")
                 v-icon.mr-3 mdi-crystal-ball
                 span.mr-2 Redeem
-        v-col(lg=4 cols=12 style="background-color: #555").pa-7
-          .d-flex.flex-column.justify-space-between.animations(align="center")
-            h1 Animations
-            h3 Featuring 26 unique animations for your tokens
-            h3 Each finely crafted to captivate and amuse
-            br
-            .d-flex.justify-center.my-5
-              v-btn(large href="/docs" target="_blank" color="primary" width="8rem")
-                v-icon.mr-3 mdi-video
-                span.mr-2 See Them All
       v-row.pb-6.section
         v-col(md=6 cols=12 style="background-color: #aaa").pa-7
           .d-flex.flex-column.justify-space-between.prizes(align="center")
