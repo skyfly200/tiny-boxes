@@ -1514,7 +1514,7 @@ const store = new Vuex.Store({
     tinyboxesAddress: '0x46F9A4522666d2476a5F5Cd51ea3E0b5800E7f98',
     openseaStoreURL: 'https://opensea.io/assets/tinyboxes',
     openseaTokenURL: 'https://opensea.io/assets/0x46F9A4522666d2476a5F5Cd51ea3E0b5800E7f98/',
-    currentAccount: "",
+    currentAccount: "0xA000000000000000000000000000000000000000",
     web3Status: "loading",
     web3: null,
     walletConnected: false,
@@ -1570,9 +1570,9 @@ const store = new Vuex.Store({
     loadWeb3Default(context) {
       return new Promise((resolve, reject) => {
         // Default provider (Infura example)
-        const infuraEndpoint = process.env.WEB3_PROVIDER_ENDPOINT;
+        const infuraEndpoint = process.env.VUE_APP_WEB3_PROVIDER_ENDPOINT;
         const defaultProvider = new Web3(infuraEndpoint as any);
-        console.log(defaultProvider);
+        console.log(infuraEndpoint, defaultProvider);
         context.commit("setWeb3", defaultProvider);
         context.commit("setWeb3Status", "active");
         resolve(true);
