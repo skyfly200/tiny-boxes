@@ -66,7 +66,7 @@
               p Each
             .stat
               h3 2222
-              p Total
+              p Tokens
             v-divider(:vertical="!$vuetify.breakpoint.md && !$vuetify.breakpoint.lg  && !$vuetify.breakpoint.xl").mb-4
             .stat
               h3 +100
