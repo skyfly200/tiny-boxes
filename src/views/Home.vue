@@ -61,7 +61,7 @@
             .stat
               h3 11
               p Phases
-            .stat
+            .stat(v-if="false")
               h3 202
               p Each
             .stat
