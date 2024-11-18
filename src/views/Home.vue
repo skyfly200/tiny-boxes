@@ -9,7 +9,7 @@
           h1.font-weight-bold Boxes Upon Boxes
           h2.text--secondary Animated Generative Art NFTs
           h2.text--secondary On-Chain Artwork & Metadata
-          h3.text--secondary Create One of 2222 Unique Art Pieces
+          h2.text--secondary Create One of 2222 Unique Art Pieces
           br
           v-divider(width="50%")
           .social-links.ma-5
@@ -147,8 +147,9 @@
             .d-flex.justify-center.my-5
               v-btn.px-4(large href="https://www.voxels.com/play?coords=N@448E,59N" target="_blank" color="primary" width="8rem")
                 span.ma-3 Visit
+      h1 Suporting Web3 Ethos
       v-row.source
-        v-col(cols=12 align="center").d-flex.flex-column.justify-center
+        v-col(height="10vh" cols=12 align="center").d-flex.flex-column.justify-center
           h1 Suporting Web3 Ethos
         v-col(md=6 sm=12 align="center").d-flex.flex-column.justify-center
           .fancy-header(align="center")
