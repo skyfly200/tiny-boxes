@@ -136,6 +136,8 @@
               v-btn.px-4(large href="https://www.voxels.com/play?coords=N@448E,59N" target="_blank" color="primary" width="8rem")
                 span.ma-3 Visit
       v-row.source
+        v-col(sm=12 align="center").d-flex.flex-column.justify-center
+          h1 Suporting Web3 Ethos
         v-col(md=6 sm=12 align="center").d-flex.flex-column.justify-center
           .fancy-header(align="center")
             h1 Contract
