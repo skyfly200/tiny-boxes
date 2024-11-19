@@ -31,7 +31,7 @@
           v-icon {{ l.icon }}
         v-btn(v-else-if="l.type === 'link'" :href="l.path" target="_blank" icon)
           v-icon {{ l.icon }}
-      v-tooltip(v-if="web3Status === 'active'" bottom)
+      v-tooltip(v-if="walletConnected" bottom)
         template(v-slot:activator="{ on }")
           Gravatar.gravatar.gravatar-desktop(v-on="on" :size="40" :email="currentAccount")
         h4.account-label Active Account
@@ -108,13 +108,13 @@ export default {
         text: "Docs",
         path: "/docs"
       },
-      {
-        type: "link",
-        bar: true,
-        icon: "mdi-discord",
-        text: "Discord",
-        path: "https://discord.gg/2wWANVfCuE"
-      },
+      // {
+      //   type: "link",
+      //   bar: true,
+      //   icon: "mdi-discord",
+      //   text: "Discord",
+      //   path: "https://discord.gg/2wWANVfCuE"
+      // },
       {
         type: "link",
         bar: false,
@@ -135,7 +135,7 @@ export default {
     barLinks() {
       return this.links.filter( (l) => l.bar );
     },
-    ...mapGetters(["currentAccount", "web3Status", "wrongNetwork"]),
+    ...mapGetters(["currentAccount", "web3Status", "walletConnected", "wrongNetwork"]),
     ...mapState(["network", "targetNetwork"]),
   }
 };

@@ -1649,6 +1649,9 @@ const store = new Vuex.Store({
     web3Status: (state) => {
       return state.web3Status;
     },
+    walletConnected: (state) => {
+      return state.walletConnected;
+    },
     wrongNetwork: (state) => {
       return state.network !== null && state.network !== state.targetNetwork;
     },
