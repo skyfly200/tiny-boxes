@@ -144,7 +144,7 @@
             h2 Contract
             v-divider(width="150rem")
           br
-          v-icon(large) mdi-etherium
+          v-icon(large) mdi-ethereum
           h3 Address:
           p {{ $store.state.tinyboxesAddress }}
           a(href="https://etherscan.io/address/0x46f9a4522666d2476a5f5cd51ea3e0b5800e7f98" target="_blank")
