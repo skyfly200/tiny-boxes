@@ -33,12 +33,12 @@
           v-icon {{ l.icon }}
       v-tooltip(v-if="walletConnected" bottom)
         template(v-slot:activator="{ on }")
-          Gravatar.gravatar.gravatar-desktop(v-on="on" :size="40" :email="currentAccount")
+          Gravatar.ml-2.gravatar.gravatar-desktop(v-on="on" :size="40" :email="currentAccount")
         h4.account-label Active Account
         span.address.address-tooltip {{ currentAccount !== '' ? formatAccount(currentAccount) : "loading" }}
-      v-tooltip(v-else @click="t.$store.dispatch('connect')" bottom)
+      v-tooltip(v-else bottom)
         template(v-slot:activator="{ on }")
-          Gravatar.gravatar.gravatar-desktop(v-on="on" :size="40" :email="currentAccount")
+          Gravatar.ml-2.gravatar.gravatar-desktop(v-on="on" :size="40" :email="currentAccount" @click="$store.dispatch('connect')")
         h4.account-label Not Connected
         span.address.address-tooltip Wallet Not Connected
       v-btn(@click="drawer = !drawer" text).mobile-menu-btn
