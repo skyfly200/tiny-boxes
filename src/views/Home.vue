@@ -23,25 +23,6 @@
               v-icon mdi-typewriter
             v-btn(icon large href="#mc_embed_signup" v-if="false")
               v-icon mdi-email
-      v-row.section
-        v-col(sm=6 xs=12 style="background-color: #444").pa-7
-          .d-flex.flex-column.justify-space-between.on-chain(align="center")
-            h1 100% On-Chain
-            h1 Animated
-            h1 SVG Artwork
-            .d-flex.justify-center.my-5
-              v-btn(href="/docs" target="_blank" large color="secondary" width="8rem")
-                v-icon.mr-3 mdi-book-open-page-variant
-                span.mr-2 Learn
-        v-col(sm=6 xs=12 style="background-color: #666").pa-7
-          .d-flex.flex-column.justify-space-between.proto-gen(align="center")
-            h1 Proto-Generative
-            h1 = 
-            h1 Custom + Random
-            .d-flex.justify-center.my-5
-              v-btn(to="/create" large color="primary" width="8rem")
-                v-icon.mr-3 mdi-creation
-                span.mr-2 Create
       v-row.section.intro
         v-col.intro-image(md=3 sm=4 cols=12 offset-sm=1)
           .sample-art.d-flex
