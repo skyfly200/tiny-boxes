@@ -36,7 +36,7 @@
           Gravatar.gravatar.gravatar-desktop(v-on="on" :size="40" :email="currentAccount")
         h4.account-label Active Account
         span.address.address-tooltip {{ currentAccount !== '' ? formatAccount(currentAccount) : "loading" }}
-      v-tooltip(v-else @click="t.$store.dispatch("connect");" bottom)
+      v-tooltip(v-else @click="t.$store.dispatch('connect')" bottom)
         template(v-slot:activator="{ on }")
           Gravatar.gravatar.gravatar-desktop(v-on="on" :size="40" :email="currentAccount")
         h4.account-label Not Connected
