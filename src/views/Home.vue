@@ -81,15 +81,14 @@
         v-col(md=4 cols=12 style="background-color: #666").pa-7
           .d-flex.flex-column.justify-space-between.le-tokens(align="center")
             h1 Limited Editions
-            h3 Select Your Exact Token Art
             h3 Exclusive Set of 100 Tokens
+            h3 Select Your Exact Token Art
             h3 Redeemable Whenever
             br
             .d-flex.justify-center.my-5
               v-btn(to="/le" large color="secondary" width="8rem")
                 v-icon.mr-3 mdi-crystal-ball
                 span.mr-2 Redeem
-      v-row.pb-6.section
         v-col(md=6 cols=12 style="background-color: #aaa").pa-7
           .d-flex.flex-column.justify-space-between.prizes(align="center")
             h1 Prizes
@@ -98,7 +97,7 @@
             br
             .d-flex.justify-center.my-5
               v-btn(large href="https://discord.gg/2wWANVfCuE" target="_blank" color="secondary" width="8rem")
-                v-icon.mr-3 mdi-discord
+                v-icon.mr-3 $discord
                 span.mr-2 Join
         v-col(md=6 cols=12 style="background-color: #999").pa-7
           .d-flex.flex-column.justify-space-between.gallery(align="center")
@@ -108,7 +107,7 @@
             br
             .d-flex.justify-center.my-5
               v-btn(large to="/list" color="secondary" width="8rem")
-                v-icon.mr-3 mdi-gridview
+                v-icon.mr-3 mdi-view-grid
                 span.mr-2 Mints
       v-row.pb-6.section
         v-col(cols=12 style="background-color: #777").pa-7
@@ -134,7 +133,8 @@
             br
             .d-flex.justify-center.my-5
               v-btn.px-4(large href="https://www.voxels.com/play?coords=N@448E,59N" target="_blank" color="secondary" width="8rem")
-                span.ma-3 Jump In
+                v-icon.mr-3 mdi-arrow-down-bold-hexagon-outline
+                span.mr-2 Jump In
       v-row.source
         v-col.py-2(height="10vh" cols=12 align="center").d-flex.flex-column.justify-center
           h1 Suporting Web3 Ethos
