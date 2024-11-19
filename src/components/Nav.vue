@@ -63,7 +63,7 @@ export default {
   methods: {
     formatAccount(account) {
       return "0x" + account.slice(2, 6) + "...." + account.slice(-4);
-    },
+    }
   },
   mounted: async function() {
     this.wrongNetworkFlag = this.wrongNetwork;
@@ -128,15 +128,20 @@ export default {
         icon: "mdi-typewriter",
         text: "Blog",
         path: "https://medium.com/@nonfungibleteam"
-      },
+      }
     ]
   }),
   computed: {
     barLinks() {
-      return this.links.filter( (l) => l.bar );
+      return this.links.filter(l => l.bar);
     },
-    ...mapGetters(["currentAccount", "web3Status", "walletConnected", "wrongNetwork"]),
-    ...mapState(["network", "targetNetwork"]),
+    ...mapGetters([
+      "currentAccount",
+      "web3Status",
+      "walletConnected",
+      "wrongNetwork"
+    ]),
+    ...mapState(["network", "targetNetwork"])
   }
 };
 </script>
