@@ -64,7 +64,7 @@
             h3 Just Read, Save and View
             br
             .d-flex.justify-center.my-5
-              v-btn(href="/docs/dapp" target="_blank" large color="primary" width="8rem")
+              v-btn(href="/docs/dapp" target="_blank" large color="secondary" width="8rem")
                 v-icon.mr-3 mdi-link-variant
                 span.mr-2 More
         v-col(md=4 cols=12 style="background-color: #555").pa-7
@@ -75,7 +75,7 @@
             h3 Breathing Life To Simple Shapes
             br
             .d-flex.justify-center.my-5
-              v-btn(large href="/docs" target="_blank" color="primary" width="8rem")
+              v-btn(large href="/docs" target="_blank" color="secondary" width="8rem")
                 v-icon.mr-3 mdi-animation
                 span.mr-2 Preview
         v-col(md=4 cols=12 style="background-color: #666").pa-7
@@ -97,7 +97,7 @@
             h3 Join our Discord to hear about the latest promotions
             br
             .d-flex.justify-center.my-5
-              v-btn(large href="https://discord.gg/2wWANVfCuE" target="_blank" color="primary" width="8rem")
+              v-btn(large href="https://discord.gg/2wWANVfCuE" target="_blank" color="secondary" width="8rem")
                 v-icon.mr-3 mdi-discord
                 span.mr-2 Join
         v-col(md=6 cols=12 style="background-color: #999").pa-7
@@ -107,7 +107,7 @@
             h3 Get inspired by what other have created
             br
             .d-flex.justify-center.my-5
-              v-btn(large to="/list" color="primary" width="8rem")
+              v-btn(large to="/list" color="secondary" width="8rem")
                 v-icon.mr-3 mdi-gridview
                 span.mr-2 Mints
       v-row.pb-6.section
@@ -133,7 +133,7 @@
             h3 Hangout with other fans and collectors
             br
             .d-flex.justify-center.my-5
-              v-btn.px-4(large href="https://www.voxels.com/play?coords=N@448E,59N" target="_blank" color="primary" width="8rem")
+              v-btn.px-4(large href="https://www.voxels.com/play?coords=N@448E,59N" target="_blank" color="secondary" width="8rem")
                 span.ma-3 Jump In
       v-row.source
         v-col.py-2(height="10vh" cols=12 align="center").d-flex.flex-column.justify-center
