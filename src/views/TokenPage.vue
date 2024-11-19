@@ -80,15 +80,14 @@
         v-row
           v-col(cols="12")
             v-card
-              v-card-title(align="center") TinyBox Number {{ formatedID + "'s" }} Story
+              v-card-title(align="center") This TinyBox's Story
               v-card-text
                 .box-story(align="center")
                   p TinyBox number {{ formatedID }} was created at {{ (new Date(data.block.timestamp * 1000)).toLocaleTimeString() }} on {{ (new Date(data.block.timestamp * 1000)).toLocaleDateString() }}
-                  p by&nbsp;
+                  p by Address&nbsp;
                     a(:href="'https://etherscan.io/address/' + data.tx.from" target="_blank") {{ data.tx.from }}
                   p &nbsp;in TX&nbsp;
                     a(:href="'https://etherscan.io/tx/' + data.creation.transactionHash" target="_blank") {{ data.creation.transactionHash }}
-                  p &nbsp;of block number {{ data.block.number }}
                   p Its current owner is&nbsp;
                     a(:href="'https://etherscan.io/address/' + owner" target="_blank") {{ owner }}
                   a(:href="openseaTokenURL + id" title="View on OpenSea" target="_blank")
