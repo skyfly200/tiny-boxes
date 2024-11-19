@@ -179,8 +179,8 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { mapGetters, mapState } from "vuex";
+//import Vue from "vue";
+import { mapState } from "vuex";
 import Token from "@/components/Token.vue";
 import ColorsGrid from "@/components/ColorsGrid.vue";
 
@@ -188,7 +188,7 @@ export default {
   name: "Home",
   components: { Token, ColorsGrid },
   mounted: async function() {
-    const t = this as any;
+    const t = (this as any);
     await t.$store.dispatch("initialize");
   },
   data: () => ({
@@ -213,9 +213,9 @@ export default {
   }),
   computed: {
     ...mapState({
-        animationTitles: 'animationTitles',
-        schemeTitles: 'schemeTitles',
-        openseaTokenURL: 'openseaTokenURL',
+        animationTitles: "animationTitles",
+        schemeTitles: "schemeTitles",
+        openseaTokenURL: "openseaTokenURL"
     }),
   },
   methods: {}
