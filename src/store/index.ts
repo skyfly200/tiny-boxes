@@ -1572,7 +1572,6 @@ const store = new Vuex.Store({
         // Default provider (Infura example)
         const infuraEndpoint = process.env.VUE_APP_WEB3_PROVIDER_ENDPOINT;
         const defaultProvider = new Web3(infuraEndpoint as any);
-        console.log(infuraEndpoint, defaultProvider);
         context.commit("setWeb3", defaultProvider);
         context.commit("setWeb3Status", "active");
         resolve(true);
