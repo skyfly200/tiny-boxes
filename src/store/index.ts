@@ -1580,11 +1580,13 @@ const store = new Vuex.Store({
     },
     loadWeb3(context) {
       return new Promise((resolve, reject) => {
-        if ((window as any).ethereum) {
-          context.commit("setWeb3", new Web3((window as any).ethereum));
+        const w = (window as any)
+        if (w.ethereum) {
+          context.commit("setWeb3", new Web3(w.ethereum));
+          w.ethereum.on('disconnect', () => context.commit("setWalletConnected", false));
           try {
             // Request account access if needed
-            (window as any).ethereum.enable().then(() => {
+            w.ethereum.enable().then(() => {
               context.commit("setWeb3Status", "active");
               context.commit("setWalletConnected", true);
               resolve(true);
@@ -1593,14 +1595,15 @@ const store = new Vuex.Store({
             context.commit("setWeb3Status", "denied");
             reject("denied");
           }
-        } else if ((window as any).web3) {
+        } else if (w.web3) {
           // Legacy dapp browsers...
           context.commit(
             "setWeb3",
-            new Web3((window as any).web3.currentProvider)
+            new Web3(w.web3.currentProvider)
           );
           context.commit("setWeb3Status", "active");
           context.commit("setWalletConnected", true);
+          w.web3.currentProvider.on('disconnect', () => context.commit("setWalletConnected", false));
           resolve(true);
         } else {
           // Non-dapp browsers...
