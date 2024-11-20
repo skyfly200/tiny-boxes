@@ -1582,7 +1582,6 @@ const store = new Vuex.Store({
         const w = (window as any)
         if (w.ethereum) {
           context.commit("setWeb3", new Web3(w.ethereum));
-          w.ethereum.on('disconnect', () => context.commit("setWalletConnected", false));
           try {
             // Request account access if needed
             w.ethereum.enable().then(() => {
@@ -1602,7 +1601,6 @@ const store = new Vuex.Store({
           );
           context.commit("setWeb3Status", "active");
           context.commit("setWalletConnected", true);
-          w.web3.currentProvider.on('disconnect', () => context.commit("setWalletConnected", false));
           resolve(true);
         } else {
           // Non-dapp browsers...
