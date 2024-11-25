@@ -126,7 +126,6 @@ import Vue from "vue";
 import { mapGetters, mapState } from "vuex";
 import Token from "@/components/Token.vue";
 import ColorsGrid from "@/components/ColorsGrid.vue";
-import { log } from 'util';
 
 export default Vue.extend({
   name: "TokenPage",
