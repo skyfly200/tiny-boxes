@@ -1472,7 +1472,7 @@ const contractABI = [
 const contract = new web3.eth.Contract(contractABI, contractAddress);
 
 // Directory to save SVG files
-const artDirectory = path.join(__dirname, 'src', 'assets', 'art');
+const artDirectory = path.join(__dirname, 'public', 'art');
 
 // Ensure the art directory exists
 if (!fs.existsSync(artDirectory)) {
@@ -1522,7 +1522,7 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   // Fetch and save art for standard tokens
-  for (let tokenId = 1; tokenId <= totalStandardTokens; tokenId++) {
+  for (let tokenId = 0; tokenId <= totalStandardTokens; tokenId++) {
     try {
       const art = await contract.methods.tokenArt(tokenId).call();
       const filePath = path.join(artDirectory, `token_${tokenId}.svg`);

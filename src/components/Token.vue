@@ -17,7 +17,7 @@ export default Vue.extend({
   },
   methods: {
     load() {
-      this.src = "./assets/art/token_" + this.id + ".svg" // URL.createObjectURL(new Blob([this.data], {type: 'image/svg+xml'}));
+      this.src = "./art/token_" + this.id + ".svg" // URL.createObjectURL(new Blob([this.data], {type: 'image/svg+xml'}));
     }
   }
 });
