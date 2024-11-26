@@ -8,7 +8,7 @@ import Vue from "vue";
 
 export default Vue.extend({
   name: "Token",
-  props: ["id", "data"],
+  props: ["id", "data", "cached"],
   data: () => ({
     src: ""
   }),
@@ -17,7 +17,8 @@ export default Vue.extend({
   },
   methods: {
     load() {
-      this.src = "./art/token_" + this.id + ".svg" // URL.createObjectURL(new Blob([this.data], {type: 'image/svg+xml'}));
+      if (this.cached) this.src = "./art/token_" + this.id + ".svg";
+      else this.src = URL.createObjectURL(new Blob([this.data], {type: 'image/svg+xml'}));
     }
   }
 });

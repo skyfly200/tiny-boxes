@@ -38,8 +38,8 @@
                 .stat-title Limited Edition
           v-col(cols="12" md="4")
             v-card
-              Token(v-if="animate" :id="id+'A'" :data="data.animation" key="anim").token-graphic
-              Token(v-else :id="id" :data="data.art" key="static").token-graphic
+              Token(v-if="animate" :id="id+'A'" :data="data.animation" key="anim" cached="false").token-graphic
+              Token(v-else :id="id" :data="data.art" key="static" cached="false").token-graphic
               v-card-actions
                 v-tooltip(right)
                   template(v-slot:activator='{ on }')

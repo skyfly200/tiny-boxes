@@ -37,7 +37,7 @@
           v-row
             v-col(v-for="t of items" :key="'token-col-'+t.id" align="center" xl="1" lg="2" md="3" sm="4" xs="6")
               v-card.token(:to="'/token/' + t.id" tile)
-                Token(:id="t.id" :data="t.art")
+                Token(:id="t.id" :data="t.art" cached="true")
                 v-card-text.title {{ t.title }}
         template(v-slot:no-data)
           v-row.get-started
