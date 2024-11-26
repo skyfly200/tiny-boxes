@@ -17,7 +17,7 @@ export default Vue.extend({
   },
   methods: {
     load() {
-      if (this.cached) this.src = "./art/token_" + this.id + ".svg";
+      if (this.cached) this.src = "../art/token_" + this.id + ".svg";
       else this.src = URL.createObjectURL(new Blob([this.data], {type: 'image/svg+xml'}));
     }
   }
