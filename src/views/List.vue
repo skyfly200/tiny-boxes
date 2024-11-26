@@ -137,9 +137,9 @@ export default {
     },
     loadToken: async function(tokenID: any) {
       const t = this as any;
-      const artPromise = t.lookupArt(tokenID);
+      const artPromise = ""; //t.lookupArt(tokenID);
       const ownerPromise = t.lookupOwner(tokenID);
-      const art = await artPromise;
+      const art = ''; //await artPromise;
       const owner = await ownerPromise;
       t.$set(t.tokens, tokenID, {
         id: tokenID,
