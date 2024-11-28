@@ -6,7 +6,6 @@ import { tinyboxesABI } from '../tinyboxes-contract'
 dotenv.config()
 
 const {
-  WEB3_PROVIDER_ENDPOINT,
   NODE_APP_WEB3_PROVIDER_ENDPOINT,
   CONTRACT_ADDRESS,
   GITHUB_TOKEN,
