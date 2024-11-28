@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 import Web3 from 'web3'
 import Readable from 'stream'
-import { Octokit } from "@octokit/rest";
+import { Octokit } from "@octokit/rest"
 import axios from 'axios'
 import FormData, { Stream } from 'form-data'
 import { tinyboxesABI } from '../tinyboxes-contract'
