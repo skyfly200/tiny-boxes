@@ -9,8 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@octokit/rest": "^21.0.2",
     "@pinata/sdk": "^1.1.10",
     "axios": "^0.19.2",
+    "child_process": "^1.0.2",
     "dotenv": "^8.2.0",
     "form-data": "^3.0.0",
     "web3": "^1.2.9"
