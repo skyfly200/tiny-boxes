@@ -6,8 +6,6 @@ import { tinyboxesABI } from '../tinyboxes-contract'
 dotenv.config()
 
 const {
-  WEBSITE,
-  EXTERNAL_URL_BASE,
   WEB3_PROVIDER_ENDPOINT,
   NODE_APP_WEB3_PROVIDER_ENDPOINT,
   CONTRACT_ADDRESS,
@@ -17,7 +15,7 @@ const {
   BRANCH_NAME,
 } = process.env
 
-const infuraEndpoint = process.env.NODE_APP_WEB3_PROVIDER_ENDPOINT;
+const infuraEndpoint = NODE_APP_WEB3_PROVIDER_ENDPOINT;
 
 if (!infuraEndpoint) {
     console.error('Infura endpoint URL is not set in the environment variable VUE_APP_WEB3_PROVIDER_ENDPOINT.');
@@ -1476,7 +1474,7 @@ const contractABI = [
   ]
 
 // init web3 provider and load contract
-var web3 = new Web3(WEB3_PROVIDER_ENDPOINT)
+var web3 = new Web3(infuraEndpoint)
 const tinyboxesContract = new web3.eth.Contract(
   tinyboxesABI,
   CONTRACT_ADDRESS,
