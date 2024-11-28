@@ -1504,17 +1504,23 @@ exports.handler = async (event, context) => {
 
     console.log(payload);
 
+    let art, fileName;
+    const tokenId = 1111;
+
+    try {
+        art = await contract.methods.tokenArt(tokenId).call();
+        console.log(`Standard Token ID ${tokenId}: Art ${art}`);
+    } catch (error) {
+        console.log(`Error fetching/saving art for standard token ID ${tokenId}: ${error.message}`);
+    }
+
     // Generate SVG data in memory
     const svgs = [
         {
-          filename: "example1.svg",
-          content: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" /></svg>`,
+            filename: `token_${tokenId}.svg`,
+            content: art,
         },
-        {
-          filename: "example2.svg",
-          content: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="blue" /></svg>`,
-        },
-      ];
+    ];
 
     console.log(svgs);
 
