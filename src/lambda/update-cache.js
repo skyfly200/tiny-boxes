@@ -16,11 +16,10 @@ const {
 
 const infuraEndpoint = NODE_APP_WEB3_PROVIDER_ENDPOINT;
 
-console.log(infuraEndpoint)
+console.log(CONTRACT_ADDRESS)
 
 if (!infuraEndpoint) {
     console.error('Infura endpoint URL is not set in the environment variable NODE_APP_WEB3_PROVIDER_ENDPOINT.');
-    process.exit(1);
 }
 
 // ABI of the TinyBox contract (provided)
