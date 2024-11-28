@@ -16,8 +16,10 @@ const {
 
 const infuraEndpoint = NODE_APP_WEB3_PROVIDER_ENDPOINT;
 
+console.log(infuraEndpoint)
+
 if (!infuraEndpoint) {
-    console.error('Infura endpoint URL is not set in the environment variable VUE_APP_WEB3_PROVIDER_ENDPOINT.');
+    console.error('Infura endpoint URL is not set in the environment variable NODE_APP_WEB3_PROVIDER_ENDPOINT.');
     process.exit(1);
 }
 
