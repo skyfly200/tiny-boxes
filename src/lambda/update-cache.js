@@ -1505,13 +1505,23 @@ exports.handler = async (event, context) => {
     console.log(payload);
 
     let art, fileName;
-    const tokenId = 1111;
+    
+    let tokenId = 1111;
+    const isLE = tokenId < 0 || tokenId > 2222;
+    // LE token IDs start from the maximum uint256 value and decrement
+    const MAX_UINT256 = web3.utils.toBN('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
+    const tokenIdBN = MAX_UINT256.sub(web3.utils.toBN(tokenId));
+    const tokenIdLE = tokenIdBN.toString();
+
+    console.log(tokenId, tokenIdLE, isLE);
+
+    tokenId = isLE ? tokenIdLE : tokenId;
 
     try {
         art = await contract.methods.tokenArt(tokenId).call();
-        console.log(`Standard Token ID ${tokenId}: Art ${art}`);
+        console.log(`Token ID ${tokenId}: Art ${art}`);
     } catch (error) {
-        console.log(`Error fetching/saving art for standard token ID ${tokenId}: ${error.message}`);
+        console.log(`Error fetching/saving art for token ID ${tokenId}: ${error.message}`);
     }
 
     // Generate SVG data in memory
