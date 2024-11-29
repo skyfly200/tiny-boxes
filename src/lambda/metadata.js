@@ -81,6 +81,8 @@ function lookupMintedBlock(id) {
 exports.handler = async (event, context) => {
   // wrap things with error catching
   try {
+    console.log("Handler Invoked");
+    
     const id = event.queryStringParameters.id
 
     console.log(CONTRACT_ADDRESS);
