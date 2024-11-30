@@ -1484,6 +1484,15 @@ console.log(CONTRACT_ADDRESS)
 
 exports.handler = async (event, context) => {
   try {
+    console.log(event.body)
+    
+    if (!event.body) {
+      return {
+        statusCode: 400,
+        body: "Request body is empty/undefined",
+      };
+    }
+
     // Parse Webhook Payload
     const payload = JSON.parse(event.body);
 
