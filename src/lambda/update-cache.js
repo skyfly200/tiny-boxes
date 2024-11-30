@@ -1496,7 +1496,7 @@ exports.handler = async (event, context) => {
     // Parse Webhook Payload
     const payload = JSON.parse(event.body);
 
-    // console.log(payload);
+    console.log(payload);
 
     // Validate Webhook Event
     if (!payload || payload.webhookId !== "wh_n3qnbujh8ichzsv7") {
@@ -1561,10 +1561,10 @@ exports.handler = async (event, context) => {
     //   });
     // }
 
-    return {
-      statusCode: 200,
-      body: "Files pushed successfully to GitHub!",
-    };
+    // return {
+    //   statusCode: 200,
+    //   body: "Files pushed successfully to GitHub!",
+    // };
   } catch (error) {
     console.error("Error:", error);
     return {
