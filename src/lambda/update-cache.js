@@ -1506,6 +1506,15 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // lookup token ID from tx input data
+    const txLogs = payload.logs;
+    //const txHash = txLogs.transaction.hash;
+    const txHash = "0x7f163c784c1fbea3c997c847cdbcbad840497985e3624f04117b70cf7c9c0b78";
+    console.log(txLogs, txHash)
+    web3.eth.getTransaction(txHash).then((tx) => {
+      console.log(tx.input); // Logs the input data
+    });
+
     let art, fileName;
     
     let tokenId = 1111;
