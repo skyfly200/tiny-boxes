@@ -1484,7 +1484,7 @@ console.log(CONTRACT_ADDRESS)
 
 exports.handler = async (event, context) => {
   try {
-    console.log(event.body)
+    // console.log(event.body)
 
     if (!event.body) {
       return {
@@ -1496,7 +1496,7 @@ exports.handler = async (event, context) => {
     // Parse Webhook Payload
     const payload = JSON.parse(event.body);
 
-    console.log(payload);
+    // console.log(payload);
 
     // Validate Webhook Event
     if (!payload || payload.webhookId !== "wh_n3qnbujh8ichzsv7") {
@@ -1512,10 +1512,8 @@ exports.handler = async (event, context) => {
     console.log(txLogs, txHash)
     
     const tx = await web3.eth.getTransaction(txHash)
-    console.log(tx.input); // Logs the input data representing the token ID
     const inputData = tx.input;
     const rawIdData = tx.input.slice(10, 74);
-    console.log(rawIdData);
 
     let art, fileName;
     let tokenId = parseInt(rawIdData, 16);
@@ -1525,7 +1523,7 @@ exports.handler = async (event, context) => {
     const tokenIdBN = MAX_UINT256.sub(web3.utils.toBN(tokenId));
     const tokenIdLE = tokenIdBN.toString();
 
-    console.log(tokenId, tokenIdLE, isLE);
+    //console.log(tokenId, tokenIdLE, isLE);
 
     tokenId = isLE ? tokenIdLE : tokenId;
 
