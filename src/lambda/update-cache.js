@@ -1526,7 +1526,7 @@ exports.handler = async (event, context) => {
 
     let art, fileName;
     
-    let tokenId = 1111;
+    let tokenId = int(rawIdData, 16);
     const isLE = tokenId < 0 || tokenId > 2222;
     // LE token IDs start from the maximum uint256 value and decrement
     const MAX_UINT256 = web3.utils.toBN('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
