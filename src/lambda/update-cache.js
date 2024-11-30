@@ -1510,8 +1510,35 @@ exports.handler = async (event, context) => {
 
     // lookup token ID from tx input data
     const txLogs = payload.event.data.block.logs;
-    const txHash = txLogs && txLogs.transaction ? txLogs.transaction.hash : "0x7f163c784c1fbea3c997c847cdbcbad840497985e3624f04117b70cf7c9c0b78";
-    console.log(txLogs, txHash)
+    const txData = [
+      {
+        data: '0x0000000000000000000000000000000000000000000000000000000000000064000000000000000000000000000000000000000000000000000000000000000b0000000000000000000000000000000000000000000000000000000000000001',
+        topics: [
+          '0xbd960691de2d71e309b1eea54deff5f167fbe6ce9c20bbea1daff6e2d16d202b'
+        ],
+        index: 316,
+        account: { address: '0x46f9a4522666d2476a5f5cd51ea3e0b5800e7f98' },
+        transaction: {
+          hash: '0x45bd90eeca73cd5e0ee40114d84f16aa942a96df9f665afb1116b747143b3bd0',
+          nonce: 618,
+          index: 77,
+          from: [Object],
+          to: [Object],
+          value: '0x0',
+          gasPrice: '0x1c98e2cf7',
+          maxFeePerGas: '0x1c98e2cf7',
+          maxPriorityFeePerGas: '0x1c98e2cf7',
+          gas: 57112,
+          status: 1,
+          gasUsed: 37709,
+          cumulativeGasUsed: 10486426,
+          effectiveGasPrice: '0x1c98e2cf7',
+          createdContract: null
+        }
+      }
+    ];
+    const txHash = txData.transaction.hash;
+    console.log(txHash)
     
     const tx = await web3.eth.getTransaction(txHash)
     const inputData = tx.input;
