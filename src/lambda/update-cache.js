@@ -1485,7 +1485,7 @@ console.log(CONTRACT_ADDRESS)
 exports.handler = async (event, context) => {
   try {
     console.log(event.body)
-    
+
     if (!event.body) {
       return {
         statusCode: 400,
@@ -1496,15 +1496,15 @@ exports.handler = async (event, context) => {
     // Parse Webhook Payload
     const payload = JSON.parse(event.body);
 
+    console.log(payload);
+
     // Validate Webhook Event
-    if (!payload || payload.action !== "your-event") {
+    if (!payload || payload.webhookId !== "wh_n3qnbujh8ichzsv7") {
       return {
         statusCode: 400,
         body: "Invalid webhook event",
       };
     }
-
-    console.log(payload);
 
     let art, fileName;
     
