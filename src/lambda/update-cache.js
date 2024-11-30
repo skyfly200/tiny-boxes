@@ -1511,9 +1511,18 @@ exports.handler = async (event, context) => {
     //const txHash = txLogs.transaction.hash;
     const txHash = "0x7f163c784c1fbea3c997c847cdbcbad840497985e3624f04117b70cf7c9c0b78";
     console.log(txLogs, txHash)
-    web3.eth.getTransaction(txHash).then((tx) => {
-      console.log(tx.input); // Logs the input data
-    });
+    
+    const tx = await web3.eth.getTransaction(txHash)
+    console.log(tx.input); // Logs the input data representing the token ID
+    const inputData = tx.input;
+    const rawIdData = tx.input.slice(2, 34);
+    console.log(rawIdData);
+    
+
+    // const method = abi.find((item) => inputData.startsWith(web3.utils.sha3(item.name + "(" + item.inputs.map((i) => i.type).join(",") + ")").slice(0, 10)));
+
+    // const params = web3.eth.abi.decodeParameters(method.inputs, inputData.slice(10));
+    // console.log({ methodName: method.name, params });
 
     let art, fileName;
     
