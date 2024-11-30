@@ -1498,6 +1498,7 @@ exports.handler = async (event, context) => {
 
     console.log(payload);
     console.log(payload.event.data);
+    console.log(payload.event.data.block.logs);
 
     // Validate Webhook Event
     if (!payload || payload.webhookId !== "wh_n3qnbujh8ichzsv7") {
