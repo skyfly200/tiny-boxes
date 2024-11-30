@@ -1515,9 +1515,8 @@ exports.handler = async (event, context) => {
     const tx = await web3.eth.getTransaction(txHash)
     console.log(tx.input); // Logs the input data representing the token ID
     const inputData = tx.input;
-    const rawIdData = tx.input.slice(2, 34);
+    const rawIdData = tx.input.slice(10, 74);
     console.log(rawIdData);
-    
 
     // const method = abi.find((item) => inputData.startsWith(web3.utils.sha3(item.name + "(" + item.inputs.map((i) => i.type).join(",") + ")").slice(0, 10)));
 
@@ -1525,7 +1524,6 @@ exports.handler = async (event, context) => {
     // console.log({ methodName: method.name, params });
 
     let art, fileName;
-    
     let tokenId = parseInt(rawIdData, 16);
     const isLE = tokenId < 0 || tokenId > 2222;
     // LE token IDs start from the maximum uint256 value and decrement
