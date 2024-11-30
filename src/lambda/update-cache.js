@@ -1518,11 +1518,6 @@ exports.handler = async (event, context) => {
     const rawIdData = tx.input.slice(10, 74);
     console.log(rawIdData);
 
-    // const method = abi.find((item) => inputData.startsWith(web3.utils.sha3(item.name + "(" + item.inputs.map((i) => i.type).join(",") + ")").slice(0, 10)));
-
-    // const params = web3.eth.abi.decodeParameters(method.inputs, inputData.slice(10));
-    // console.log({ methodName: method.name, params });
-
     let art, fileName;
     let tokenId = parseInt(rawIdData, 16);
     const isLE = tokenId < 0 || tokenId > 2222;
