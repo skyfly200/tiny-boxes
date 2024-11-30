@@ -1508,7 +1508,7 @@ exports.handler = async (event, context) => {
     }
 
     // lookup token ID from tx input data
-    const txLogs = payload.logs;
+    const txLogs = payload.event.data.logs;
     const txHash = txLogs ? txLogs.transaction.hash : "0x7f163c784c1fbea3c997c847cdbcbad840497985e3624f04117b70cf7c9c0b78";
     console.log(txLogs, txHash)
     
