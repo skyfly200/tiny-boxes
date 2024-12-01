@@ -1534,6 +1534,7 @@ exports.handler = async (event, context) => {
         }
       }
     ];
+    // TODO: handle multiple log events and minting
     const txHash = txData[0].transaction.hash; // logs is a list
     console.log(txHash)
     
