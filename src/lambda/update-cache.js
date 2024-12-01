@@ -1539,7 +1539,6 @@ exports.handler = async (event, context) => {
     console.log(txHash)
     
     const tx = await web3.eth.getTransaction(txHash)
-    const inputData = tx.input;
     const rawIdData = tx.input.slice(10, 74);
 
     let art, fileName;
