@@ -1534,7 +1534,7 @@ exports.handler = async (event, context) => {
         }
       }
     ];
-    const txHash = txData.transaction.hash;
+    const txHash = txData[0].transaction.hash; // logs is a list
     console.log(txHash)
     
     const tx = await web3.eth.getTransaction(txHash)
