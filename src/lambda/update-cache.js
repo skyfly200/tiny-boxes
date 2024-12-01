@@ -1555,7 +1555,7 @@ exports.handler = async (event, context) => {
 
     try {
         art = await tinyboxesContract.methods.tokenArt(tokenId).call();
-        console.log(`Token ID ${tokenId}: Art ${art}`);
+        console.log(`Token ID ${tokenId} Art: ${art}`);
     } catch (error) {
         console.log(`Error fetching/saving art for token ID ${tokenId}: ${error.message}`);
     }
