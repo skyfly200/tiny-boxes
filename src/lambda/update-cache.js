@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import Web3 from 'web3'
-//import { Octokit } from "@octokit/rest"
+import { Octokit } from "@octokit/rest"
 import { tinyboxesABI } from '../tinyboxes-contract'
 
 dotenv.config()
