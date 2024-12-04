@@ -1569,26 +1569,26 @@ exports.handler = async (event, context) => {
     console.log(svgs);
 
     // Authenticate with GitHub
-    // const octokit = new Octokit({ auth: GITHUB_TOKEN });
+    const octokit = new Octokit({ auth: GITHUB_TOKEN });
     
 
-    // // Commit SVG data directly to GitHub
-    // for (const svg of svgs) {
-    //   const encodedContent = Buffer.from(svg.content).toString("base64"); // Encode in base64 for GitHub API
-    //   await octokit.repos.createOrUpdateFileContents({
-    //     owner: REPO_OWNER,
-    //     repo: REPO_NAME,
-    //     path: `svgs/${svg.filename}`, // Target directory and filename in repo
-    //     message: `Add/update ${svg.filename} via Netlify Function`,
-    //     content: encodedContent,
-    //     branch: BRANCH_NAME,
-    //   });
-    // }
+    // Commit SVG data directly to GitHub
+    for (const svg of svgs) {
+      const encodedContent = Buffer.from(svg.content).toString("base64"); // Encode in base64 for GitHub API
+      await octokit.repos.createOrUpdateFileContents({
+        owner: REPO_OWNER,
+        repo: REPO_NAME,
+        path: `svgs/${svg.filename}`, // Target directory and filename in repo
+        message: `Add/update ${svg.filename} via Netlify Function`,
+        content: encodedContent,
+        branch: BRANCH_NAME,
+      });
+    }
 
-    // return {
-    //   statusCode: 200,
-    //   body: "Files pushed successfully to GitHub!",
-    // };
+    return {
+      statusCode: 200,
+      body: "Files pushed successfully to GitHub!",
+    };
   } catch (error) {
     console.error("Error:", error);
     return {
