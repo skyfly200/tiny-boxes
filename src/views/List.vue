@@ -130,9 +130,11 @@ export default {
       const t = this as any;
       t.tokens = {};
       t.count = t.owned ? t.userCount : t.supply;
+      const delay = async (ms: any) => await new Promise(resolve => setTimeout(resolve, ms));
       for (let i = 0; i < t.count; i++) {
         const id = t.owned ? await t.lookupUsersToken(i) : await t.lookupTokenByIndex(i);
         t.loadToken(id);
+        delay(1000);
       }
     },
     loadToken: async function(tokenID: any) {
