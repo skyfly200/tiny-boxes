@@ -22,11 +22,6 @@
                   v-btn(large icon v-on="on" @click="sortDesc = !sortDesc" :depressed="sortDesc" color="purple")
                     v-icon {{ sortDesc ? "mdi-sort-numeric-ascending" : "mdi-sort-numeric-descending"}}
                 span {{ sortDesc ? "Ascending" : "Descending" }}
-            v-tooltip(v-if="false && web3Status === 'active'" bottom)
-                template(v-slot:activator="{ on }")
-                  v-btn(large icon v-on="on" @click="owned = !owned" :depressed="owned" color="purple")
-                    v-icon {{ owned ? "mdi-arrow-all" : "mdi-treasure-chest"}}
-                span {{ owned ? "All Boxes" : "Your Boxes" }}
         template(v-slot:loading)
           v-row
             v-col(align="center").tokens-loading
@@ -43,10 +38,10 @@
           v-row.get-started
             v-col(cols="12")
               v-card(align="center").get-started-card
-                p {{ owned ? "You dont have any tokens yet!" : "No tokens have been minted yet" }}
+                p {{ "No tokens could be loaded" }}
                 v-btn(v-if="!soldOut" to="/create" outlined color="secondary") Create
-                span(v-if="tokens !== {} && !soldOut && owned") &nbsp;or&nbsp;
-                v-btn(v-if="tokens !== {} && owned" :to="openseaStoreURL" outlined color="secondary") Buy
+                span(v-if="tokens !== {} && !soldOut") &nbsp;or&nbsp;
+                v-btn(v-if="tokens !== {}" :to="openseaStoreURL" outlined color="secondary") Buy
 </template>
 
 <script lang="ts">
@@ -64,7 +59,6 @@ export default {
     filter: {},
     sortDesc: false,
     bkg: 0,
-    owned: false,
     page: 0,
     itemsPerPageSelector: 20,
     max256: 115792089237316195423570985008687907853269984665640564039457584007913129639936n,
@@ -84,8 +78,7 @@ export default {
       const t = this as any;
       return Object.keys(t.tokens)
         .sort( (a,b) => parseInt(a) - parseInt(b))
-        .map( i => t.tokens[i] )
-        .filter( t => (t.owned ? t.owner === t.currentAccount : true) );
+        .map( i => t.tokens[i] );
     },
     ...mapGetters(["currentAccount", "web3Status", "itemsPerPage"]),
     ...mapState(["openseaStoreURL"]),
@@ -93,11 +86,10 @@ export default {
   mounted: async function() {
     const t = this as any;
     await t.$store.dispatch("initialize");
-    //t.page = t.$route.params.page ? parseInt(this.$route.params.page) : 1;
-    t.limit = await t.lookupLimit();
-    t.supply = await t.lookupSupply();
-    t.userCount = await t.lookupBalance();
+    t.limit = 2222; // await t.lookupLimit();
+    t.supply = 1421; // await t.lookupSupply();
     t.soldOut = t.supply === t.limit;
+    //t.page = t.$route.params.page ? parseInt(this.$route.params.page) : 1;
     t.page = parseInt(t.$route.params.page, 10);
     t.loadTokens();
   },
@@ -108,17 +100,8 @@ export default {
     lookupArt: function(id: any) {
       return (this as any).$store.state.contracts.tinyboxes.methods.tokenArt(id, (this as any).bkg, 10, 0, '').call();
     },
-    lookupOwner: function(id: any) {
-      return (this as any).$store.state.contracts.tinyboxes.methods.ownerOf(id).call();
-    },
     lookupSupply: function() {
       return (this as any).$store.state.contracts.tinyboxes.methods.totalSupply().call();
-    },
-    lookupBalance: function() {
-      return (this as any).$store.state.contracts.tinyboxes.methods.balanceOf((this as any).currentAccount).call();
-    },
-    lookupUsersToken(i: any) {
-      return (this as any).$store.state.contracts.tinyboxes.methods.tokenOfOwnerByIndex((this as any).currentAccount, i).call();
     },
     lookupTokenByIndex(i: any) {
       return (this as any).$store.state.contracts.tinyboxes.methods.tokenByIndex(i).call();
@@ -129,10 +112,10 @@ export default {
     loadTokens: async function() {
       const t = this as any;
       t.tokens = {};
-      t.count = t.owned ? t.userCount : t.supply;
+      t.count = t.supply;
       const delay = async (ms: any) => await new Promise(resolve => setTimeout(resolve, ms));
       for (let i = 0; i < t.count; i++) {
-        const id = t.owned ? await t.lookupUsersToken(i) : await t.lookupTokenByIndex(i);
+        const id = await t.lookupTokenByIndex(i);
         t.loadToken(id);
         delay(1000);
       }
@@ -140,14 +123,11 @@ export default {
     loadToken: async function(tokenID: any) {
       const t = this as any;
       const artPromise = ""; //t.lookupArt(tokenID);
-      const ownerPromise = t.lookupOwner(tokenID);
       const art = ''; //await artPromise;
-      const owner = await ownerPromise;
       t.$set(t.tokens, tokenID, {
         id: tokenID,
         title: tokenID > 100000 ? (BigInt(tokenID) - t.max256).toString() : tokenID,
         art: art,
-        owner: owner,
       });
       t.loading = false;
     },
@@ -169,7 +149,7 @@ export default {
             t.supply = await t.lookupSupply();
             t.soldOut = t.supply === t.limit;
             // rerender token list
-            if (!t.owned) t.loadToken(id);
+            t.loadToken(id);
           }.bind(t)
         )
         .on("error", function(log: any) {
