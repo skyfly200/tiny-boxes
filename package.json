@@ -28,6 +28,7 @@
     "core-js": "^3.6.4",
     "dayjs": "^1.10.4",
     "g": "^2.0.1",
+    "netlify-cli": "^17.38.0",
     "npm": "^8.13.2",
     "register-service-worker": "^1.7.1",
     "rellax": "^1.12.1",
