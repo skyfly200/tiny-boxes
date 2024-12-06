@@ -1,8 +1,9 @@
 import dotenv from 'dotenv'
 import Web3 from 'web3'
 // import { Octokit } from '@octokit/rest'
-const { Octokit } = require('@octokit/rest');
+const { Octokit } = require('@octokit/rest')
 import { tinyboxesABI } from '../tinyboxes-contract'
+import fetch from "node-fetch"
 
 dotenv.config()
 
@@ -1570,7 +1571,12 @@ exports.handler = async (event, context) => {
     console.log(svgs);
 
     // Authenticate with GitHub
-    const octokit = new Octokit({ auth: GITHUB_TOKEN });
+    const octokit = new Octokit({
+      auth: GITHUB_TOKEN,
+      request: {
+        fetch: fetch,
+      },
+    });
     
 
     // Commit SVG data directly to GitHub
