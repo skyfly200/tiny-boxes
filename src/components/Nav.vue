@@ -19,6 +19,10 @@
             v-list-item-icon
               v-icon {{ l.icon }}
             v-list-item-content {{ l.text }}
+          v-list-item(v-else-if="l.type === 'discord-link'" :href="l.path" target="_blank" link)
+            v-list-item-icon
+              v-icon $discord
+            v-list-item-content {{ l.text }}
         
     v-app-bar(app color="primary" dark)
       router-link(to="/")
@@ -108,13 +112,13 @@ export default {
         text: "Docs",
         path: "/docs"
       },
-      // {
-      //   type: "link",
-      //   bar: true,
-      //   icon: "mdi-discord",
-      //   text: "Discord",
-      //   path: "https://discord.gg/2wWANVfCuE"
-      // },
+      {
+        type: "discord-link",
+        bar: true,
+        icon: "",
+        text: "Discord",
+        path: "https://discord.gg/2wWANVfCuE"
+      },
       {
         type: "link",
         bar: false,
