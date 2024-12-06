@@ -1,5 +1,5 @@
 {
-  "name": "tinyboxes-metadata-api",
+  "name": "tinyboxes-api",
   "version": "1.0.0",
   "description": "",
   "main": "metadata.js",
