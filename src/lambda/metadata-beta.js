@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import Web3 from 'web3'
 import Readable from 'stream'
 import { tinyboxesABI } from '../tinyboxes-contract'
-import { isInteger } from 'core-js/core/number'
+// import { isInteger } from 'core-js/core/number'
 dotenv.config()
 
 const {
