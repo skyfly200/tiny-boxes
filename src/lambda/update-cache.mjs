@@ -1585,7 +1585,7 @@ exports.handler = async (event, context) => {
       await octokit.repos.createOrUpdateFileContents({
         owner: REPO_OWNER,
         repo: REPO_NAME,
-        path: `../../public/art/${svg.filename}`, // Target directory and filename in repo
+        path: `./public/art/${svg.filename}`, // Target directory and filename in repo
         message: `Add/update ${svg.filename} via Netlify Function`,
         content: encodedContent,
         branch: BRANCH_NAME,
