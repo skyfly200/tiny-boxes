@@ -1578,7 +1578,7 @@ exports.handler = async (event, context) => {
       },
     });
     
-    console.log(REPO_OWNER, REPO_NAME, BRANCH_NAME);
+    
     // Commit SVG data directly to GitHub
     for (const svg of svgs) {
       const encodedContent = Buffer.from(svg.content).toString("base64"); // Encode in base64 for GitHub API
