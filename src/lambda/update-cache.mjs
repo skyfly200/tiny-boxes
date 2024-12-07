@@ -18,7 +18,7 @@ const {
 
 const infuraEndpoint = NODE_APP_WEB3_PROVIDER_ENDPOINT;
 
-console.log(NODE_APP_WEB3_PROVIDER_ENDPOINT)
+// console.log(NODE_APP_WEB3_PROVIDER_ENDPOINT)
 
 if (!infuraEndpoint) console.error('Infura endpoint URL is not set in the environment variable NODE_APP_WEB3_PROVIDER_ENDPOINT.');
 
@@ -1480,7 +1480,7 @@ const tinyboxesContract = new web3.eth.Contract(
   CONTRACT_ADDRESS,
 )
 
-console.log(CONTRACT_ADDRESS)
+// console.log(CONTRACT_ADDRESS)
 
 exports.handler = async (event, context) => {
   try {
@@ -1496,9 +1496,9 @@ exports.handler = async (event, context) => {
     // Parse Webhook Payload
     const payload = JSON.parse(event.body);
 
-    console.log(payload);
-    console.log(payload.event.data);
-    console.log(payload.event.data.block.logs);
+    // console.log(payload);
+    // console.log(payload.event.data);
+    // console.log(payload.event.data.block.logs);
 
     // Validate Webhook Event
     if (!payload || payload.webhookId !== "wh_n3qnbujh8ichzsv7") {
@@ -1536,7 +1536,7 @@ exports.handler = async (event, context) => {
     ];
     // TODO: handle multiple log events and minting
     const txHash = txData[0].transaction.hash; // logs is a list
-    console.log(txHash)
+    // console.log(txHash)
     
     const tx = await web3.eth.getTransaction(txHash)
     const rawIdData = tx.input.slice(10, 74);
@@ -1555,7 +1555,7 @@ exports.handler = async (event, context) => {
 
     try {
         art = await tinyboxesContract.methods.tokenArt(tokenId).call();
-        console.log(`Token ID ${tokenId} Art: ${art}`);
+        // console.log(`Token ID ${tokenId} Art: ${art}`);
     } catch (error) {
         console.log(`Error fetching/saving art for token ID ${tokenId}: ${error.message}`);
     }
@@ -1568,7 +1568,7 @@ exports.handler = async (event, context) => {
         },
     ];
 
-    console.log(svgs);
+    // console.log(svgs);
 
     // Authenticate with GitHub
     const octokit = new Octokit({
@@ -1584,6 +1584,8 @@ exports.handler = async (event, context) => {
       const encodedContent = Buffer.from(svg.content).toString("base64"); // Encode in base64 for GitHub API
       const path = `public/art/${svg.filename}`
       const existingFileSHA = 'load this from GITHUB'
+
+      console.log(path)
 
       const response = await octokit.repos.getContent({
         owner: 'skyfly200',
