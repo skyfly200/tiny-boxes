@@ -1578,14 +1578,16 @@ exports.handler = async (event, context) => {
       },
     });
     
-    
+
     // Commit SVG data directly to GitHub
     for (const svg of svgs) {
       const encodedContent = Buffer.from(svg.content).toString("base64"); // Encode in base64 for GitHub API
+      const path = `public/art/${svg.filename}`
+      console.log(path);
       await octokit.repos.createOrUpdateFileContents({
         owner: REPO_OWNER,
         repo: REPO_NAME,
-        path: `public/art/${svg.filename}`, // Target directory and filename in repo
+        path: path, // Target directory and filename in repo
         message: `Add/update ${svg.filename} via Netlify Function`,
         content: encodedContent,
         branch: BRANCH_NAME,
