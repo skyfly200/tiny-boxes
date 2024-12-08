@@ -1590,7 +1590,7 @@ exports.handler = async (event, context) => {
       const response = await octokit.repos.getContent({
         owner: 'skyfly200',
         repo: 'tiny-boxes',
-        path: path
+        path: 'public/art/token_1409.svg'
       });
       
       const fileSha = response.data.sha;
