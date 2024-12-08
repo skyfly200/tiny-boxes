@@ -1488,6 +1488,17 @@ function logMessage(message) {
   fs.appendFileSync(logFilePath, `[${timestamp}] ${message}\n`);
 }
 
+// Function to write data cache to a JSON file
+function saveDataCache(file, data) {
+  // Convert data to string
+  const jsonString = JSON.stringify(data, null, 2);
+  // Write to a file
+  fs.writeFile(file, jsonString, (err) => {
+    if (err) throw err;
+    console.log('Data successfully written to data.json');
+  });
+}
+
 function logError(error) {
   console.error(error);
   logMessage(`ERROR: ${error}`);
@@ -1554,6 +1565,14 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
       errorCount++;
     }
   }
+
+  // save data cache to json
+  saveDataCache('DataCache.json', {
+    "standardCounter": 1421,
+    "limitedEditionCounter": 44,
+    "refreshed": 1733445289,
+    "tokens": []
+  });
 
   logMessage(`Operation completed. Successfully fetched art for ${successCount} tokens with ${errorCount} errors.`);
 })();
