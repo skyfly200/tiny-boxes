@@ -1583,14 +1583,13 @@ exports.handler = async (event, context) => {
     for (const svg of svgs) {
       const encodedContent = Buffer.from(svg.content).toString("base64"); // Encode in base64 for GitHub API
       const path = `public/art/${svg.filename}`
-      const existingFileSHA = 'load this from GITHUB'
 
       console.log(path)
 
       const response = await octokit.repos.getContent({
         owner: 'skyfly200',
         repo: 'tiny-boxes',
-        path: 'README.md'
+        path: path
       });
       
       const fileSha = response.data.sha;
@@ -1603,7 +1602,7 @@ exports.handler = async (event, context) => {
         message: `Add/update ${svg.filename} via Netlify Function`,
         content: encodedContent,
         branch: BRANCH_NAME,
-        sha: existingFileSHA,
+        sha: fileSha,
       });
     }
 
