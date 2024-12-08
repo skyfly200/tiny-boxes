@@ -48,6 +48,14 @@
           v-btn(@click="mintToken" color="success") Try Again
           v-spacer
           v-btn(@click="overlay = ''; loadToken()" color="error") Cancel
+      v-card.dialog-error(v-else-if="overlay === 'connect'" key="error")
+        v-card-title No Wallet Connected
+        v-card-text
+          v-alert(type="error" border="left") This part of the DAPP requires a web3 wallet connection to function
+        v-card-actions
+          v-btn(@click="$store.dispatch('connect')" color="success") Connect
+          v-spacer
+          v-btn(to="/list" color="error") View Mints
     v-container(fluid)
       v-row(flex)
         v-col(align="center" cols="12" sm="10" md="5" offset-sm="1")
@@ -250,23 +258,28 @@ export default Vue.extend({
   mounted: async function() {
     const t = this as any;
     await this.$store.dispatch("initialize");
-    await this.$store.dispatch("connect");
-    if (!(this as any).wrongNetwork) {
-      t.recipient = t.currentAccount;
-      await t.lookupCurrentBlock();
-      t.currentBlockTimestamp = new Date().getTime() * 1000;
-      const balance = await t.lookupBalance();
-      if (balance > 0) {
-        t.usersReferal = await t.lookupUsersToken(0);
-        t.usersReferal = t.usersReferal < 2222 ? t.usersReferal :  BigInt(t.usersReferal).toString(10);
-      } else t.usersReferal = "10000";
-      t.lookupLimit();
-      if (t.paramsSet) t.loadParams();
-      else t.updateParams();
-      t.loadToken();
-      t.listenForTokens();
-      t.listenForMyTokens();
-    }
+    this.$store.dispatch("connect").then( async () => {
+      console.log("connected")
+      if (!(this as any).wrongNetwork) {
+        t.recipient = t.currentAccount;
+        await t.lookupCurrentBlock();
+        t.currentBlockTimestamp = new Date().getTime() * 1000;
+        const balance = await t.lookupBalance();
+        if (balance > 0) {
+          t.usersReferal = await t.lookupUsersToken(0);
+          t.usersReferal = t.usersReferal < 2222 ? t.usersReferal :  BigInt(t.usersReferal).toString(10);
+        } else t.usersReferal = "10000";
+        t.lookupLimit();
+        if (t.paramsSet) t.loadParams();
+        else t.updateParams();
+        t.loadToken();
+        t.listenForTokens();
+        t.listenForMyTokens();
+      }
+    }).catch((error) => {
+      console.log("connection error: ", error);
+      this.overlay = "connect";
+    })
   },
   methods: {
     getSupply: function() {
