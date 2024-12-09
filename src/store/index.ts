@@ -1588,10 +1588,14 @@ const store = new Vuex.Store({
               context.commit("setWeb3Status", "active");
               context.commit("setWalletConnected", true);
               resolve(true);
+            }).catch( () => {
+              context.commit("setWeb3Status", "denied");
+              resolve(false);
             });
           } catch (error) {
-            context.commit("setWeb3Status", "denied");
-            reject("denied");
+            console.log(error)
+            context.commit("setWeb3Status", "failed");
+            reject("failed");
           }
         } else if (w.web3) {
           // Legacy dapp browsers...
