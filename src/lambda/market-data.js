@@ -22,7 +22,7 @@ exports.handler = async (event, context) => {
 
         console.log(resFloor);
 
-        const floor = resFloor;
+        const floor = await resFloor.json();
 
         return {
             statusCode: 200,
