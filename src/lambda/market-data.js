@@ -17,27 +17,16 @@ exports.handler = async (event, context) => {
             ALCHEMY_API_KEY +
             '/getFloorPrice?contractAddress=' +
             CONTRACT_ADDRESS
-
-        const urlSales = 
-            'https://eth-mainnet.g.alchemy.com/nft/v3/' +
-            ALCHEMY_API_KEY +
-            '/getNFTSales?contractAddress=' +
-            CONTRACT_ADDRESS
             
         const resFloor = await fetch(urlFloor, options)
-        const resSales = await fetch(urlSales, options)
 
         console.log(resFloor, resSales);
 
         const floor = resFloor;
-        const sales = resSales;
 
         return {
             statusCode: 200,
-            body: JSON.stringify({
-                floor: floor,
-                sales: sales
-            }),
+            body: JSON.stringify(floor),
         }
         
     } catch (err) {
