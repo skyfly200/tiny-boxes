@@ -12,15 +12,27 @@ exports.handler = async (event, context) => {
     try {
         const options = {method: 'GET', headers: {accept: 'application/json'}};
 
-        const urlFloor = 'https://eth-mainnet.g.alchemy.com/nft/v3/' + ALCHEMY_API_KEY + '/getFloorPrice?contractAddress=' + CONTRACT_ADDRESS
-        const resFloor = await fetch(urlFloor, options)
+        const urlFloor = 
+            'https://eth-mainnet.g.alchemy.com/nft/v3/' +
+            ALCHEMY_API_KEY +
+            '/getFloorPrice?contractAddress=' +
+            CONTRACT_ADDRESS
 
-        const urlSales = 'https://eth-mainnet.g.alchemy.com/nft/v3/' + ALCHEMY_API_KEY + '/getNFTSales?contractAddress=' + CONTRACT_ADDRESS
+        const urlSales = 
+            'https://eth-mainnet.g.alchemy.com/nft/v3/' +
+            ALCHEMY_API_KEY +
+            '/getNFTSales?contractAddress=' +
+            CONTRACT_ADDRESS
+            
+        const resFloor = await fetch(urlFloor, options)
         const resSales = await fetch(urlSales, options)
 
         return {
             statusCode: 200,
-            body: JSON.stringify({floor: resFloor.json(), sales: resSales.json()}),
+            body: JSON.stringify({
+                floor: resFloor.json(),
+                sales: resSales.json()
+            }),
         }
         
     } catch (err) {
