@@ -29,11 +29,14 @@ exports.handler = async (event, context) => {
 
         console.log(resFloor, resSales);
 
+        const floor = resFloor;
+        const sales = resSales;
+
         return {
             statusCode: 200,
             body: JSON.stringify({
-                floor: resFloor.json(),
-                sales: resSales.json()
+                floor: floor,
+                sales: sales
             }),
         }
         
