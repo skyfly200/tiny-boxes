@@ -20,7 +20,7 @@ exports.handler = async (event, context) => {
             
         const resFloor = await fetch(urlFloor, options)
 
-        console.log(resFloor, resSales);
+        console.log(resFloor);
 
         const floor = resFloor;
 
