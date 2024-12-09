@@ -27,6 +27,8 @@ exports.handler = async (event, context) => {
         const resFloor = await fetch(urlFloor, options)
         const resSales = await fetch(urlSales, options)
 
+        console.log(resFloor, resSales);
+
         return {
             statusCode: 200,
             body: JSON.stringify({
