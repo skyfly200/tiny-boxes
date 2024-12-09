@@ -17,10 +17,16 @@ exports.handler = async (event, context) => {
         const urlSales = 'https://eth-mainnet.g.alchemy.com/nft/v3/' + ALCHEMY_API_KEY + '/getNFTSales?contractAddress=' + CONTRACT_ADDRESS
         resSales = await fetch(urlSales, options)
 
-        return generateResponse({floor: resFloor.json(), sales: resSales.json()}, 200)
+        return {
+            statusCode: 200,
+            body: JSON.stringify({floor: resFloor.json(), sales: resSales.json()}),
+        }
         
     } catch (err) {
-      console.log(err)
-      return generateResponse('Server Error', 500)
+        console.log(err)
+        return {
+            statusCode: 500,
+            body: JSON.stringify('Server Error'),
+        }
     }
 }
