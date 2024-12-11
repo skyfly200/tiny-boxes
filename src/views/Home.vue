@@ -189,8 +189,10 @@ export default {
   mounted: async function() {
     const t = (this as any);
     await t.$store.dispatch("initialize");
+    t.fetchMarketData();
   },
   data: () => ({
+    floor: {},
     cards: [
       {
         lines: [
@@ -217,7 +219,19 @@ export default {
         openseaTokenURL: "openseaTokenURL"
     }),
   },
-  methods: {}
+  methods: {
+    fetchMarketData() {
+      (this as any).$http
+        .get('https://tinybox.shop/.netlify/functions/market-data')
+        .then((response: any) => {
+          console.log(response.data)
+          this.floor = response.data;
+        })
+        .catch((error: any) => {
+          console.error("Error fetching market data:", error);
+        });
+    },
+  }
 };
 </script>
 
