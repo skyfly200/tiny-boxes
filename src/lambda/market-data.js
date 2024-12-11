@@ -19,11 +19,8 @@ exports.handler = async (event, context) => {
             CONTRACT_ADDRESS
             
         const resFloor = await fetch(urlFloor, options)
-
-        console.log(resFloor);
-
         const floor = await resFloor.json();
-
+        
         return {
             statusCode: 200,
             body: JSON.stringify(floor),
