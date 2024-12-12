@@ -226,8 +226,8 @@ export default {
         .get('https://tinybox.shop/.netlify/functions/market-data')
         .then((response: any) => {
           console.log(response.data)
-          const openSeaFloor = response.data.openSea.floor
-          const looksRareFloor = response.data.looksRare.floor
+          const openSeaFloor = response.data.openSea.floorPrice
+          const looksRareFloor = response.data.looksRare.floorPrice
           const trueFloor = openSeaFloor <= looksRareFloor ? openSeaFloor : looksRareFloor
           this.floor = {...response.data, "trueFloor": trueFloor}
         })
