@@ -8,6 +8,7 @@ const {
 } = process.env
 
 exports.handler = async (event, context) => {
+    console.log(event)
     // wrap things with error catching
     try {
         const options = {method: 'GET', headers: {accept: 'application/json'}};
@@ -20,6 +21,8 @@ exports.handler = async (event, context) => {
             
         const resFloor = await fetch(urlFloor, options)
         const floor = await resFloor.json();
+
+        console.log(floor);
         
         return {
             statusCode: 200,
