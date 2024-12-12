@@ -115,6 +115,7 @@
             h1 Secondary Market
             h3 ERC721 standard NFT - Maximum compatiblity & interoperability
             h3 Buy and sell TinyBoxes on any NFT marketplace!
+            h3 Current Floor: {{ floor.trueFloor }}
             br
             .d-flex.justify-center.my-5
               v-btn.ma-2(large href="https://blur.io/eth/collection/tinyboxes" target="_blank" color="primary" width="8rem")
