@@ -225,7 +225,10 @@ export default {
         .get('https://tinybox.shop/.netlify/functions/market-data')
         .then((response: any) => {
           console.log(response.data)
-          this.floor = response.data;
+          const openSeaFloor = response.data.openSea.floor
+          const looksRareFloor = response.data.looksRare.floor
+          const trueFloor = openSeaFloor <= looksRareFloor ? openSeaFloor : looksRareFloor
+          this.floor = {...response.data, "trueFloor": trueFloor}
         })
         .catch((error: any) => {
           console.error("Error fetching market data:", error);
